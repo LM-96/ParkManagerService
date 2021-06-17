@@ -1,0 +1,284 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+<style type="text/css">
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+	font-size: 93%;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+	border-radius: 10px;
+	padding: 5px;
+}
+
+top {
+	width: 100%;
+}
+
+
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 90%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #abe876;
+    color: #1632cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 90%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+ks{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #0000CD	;
+	font-size: 90%;
+}
+kc{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #008000	;
+	font-size: 90%;
+}
+pre{
+	font-family: "Consolas";
+	font-size: 85%;
+	background-color: #f5f5f5;
+	border: 1.5px solid silver;
+	padding: 5px;
+}
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+	 
+    font-size: 18px;
+}
+k{
+    color: #990000;
+	font-weight: bold;
+	font-size: 90%;
+}
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+	padding: 10px;
+}
+
+h2 {
+    background-color: #9ed8ff;
+    font-size: 130%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 100%;
+}
+h4 {
+    background-color: #ccffcc;
+    font-size: 100%;
+	width: 95%;
+	border-radius: 5px;
+	padding: 2px;
+}
+h5 {
+    background-color: #d5ffb0;
+    font-size: 100%;
+
+}
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}
+div.remark{
+	background-color: #E3F2FD;
+    border: 1.5px solid #d5f2ed;
+    padding: 15px;
+    margin: 10px;
+	border-radius: 25px;
+}
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+ol, ul, li {
+  margin: 0;
+  margin-left: 10px;
+  padding: 0;
+  padding-bottom: 5px;
+}
+
+table, th, td {
+	border: 1px solid black;
+}
+
+img {
+	border: 1.5px solid #d5f2ed
+
+}
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+div.wrapdesc{
+	width: 90%;
+	margin: auto;
+}
+
+div.imagedesc{
+	width: 85%;
+	margin: auto;
+}
+</style>
+    
+<head>
+   
+<title>TemplateToFill</title></head>
+    
+<body>
+<div id="top">
+<h1>LABORATORIO DI INGEGNERIA DEI SISTEMI SOFTWARE <font size="5"></font> </h1>
+</div>  
+
+<div class="body"> 
+<h2>Introduction</h2>
+ 
+ 
+<h2>Requirements</h2>
+
+ 
+<div class="remark">
+Copy here the EXACT text fiven by the customer.
+</div>
+
+ 
+
+<h2>Requirement analysis</h2>
+
+<div class="remark">
+    <kc>NOUNS</kc>:
+    <ul>
+        <li><ks>Robot</ks>: a device able to execute move commands sent over the network. It must be capable of moving object as a transpot trolley with a squared form of fixed side length;</li>
+        <li><ks>Home location</ks>: fixed starting position inside the parking-area where the robot will be located before the software starts and where it will return if no jobs are pending;</li>
+        <li><ks>Parking-area</ks>: empty room that must include an indoor, indoor-area, outdoor, outdoor-area, parking-slots, thermometer and a fan;</li>
+        <li><ks>Indoor</ks>: used to get the car into the parking-area;</li>
+        <li><ks>Indoor-area</ks>: faces the indoor and hosts the car that needs to be parked. It is also equipped with a weightsensor;</li>
+        <li><ks>Weightsensor</ks>: sensor that measures the weigth of the car inside the indoor-area;</li>
+        <li><ks>Outdoor</ks>: used to exit the car from the parking-area;</li>
+        <li><ks>Outdoor-area</ks>: faces the outdoor and hosts the car to be picked up. It is also equipped with a ousonar. Once it is engaged by a car it should be freed within a prefixed interval of time;</li>
+        <li><ks>Outsonar</ks>: sonar that detects the presence of a car within a certain space;</li>
+        <li><ks>Parking-slot</ks>: area used for parking cars. The area covered by the parking-slots connot be crossed by the robot;</li>
+        <li><ks>Thermometer</ks>: tool used to measure the temperature inside the parking-area;</li>
+        <li><ks>Fan</ks>: tool used to lower the temperature inside the parking-area. It is activated when the temperature is above a certain prefixed value;</li>
+        <li><ks>Map</ks>: it is a representation of the parking-area. It is a grid of squares of fixed side length. It includes the parking-slot positions (marked with a red X) and the fixed obstacles in the area (marked with a black X);</li>
+        <li><ks>Fixed obstacle</ks>: non-moving object inside the parking-area that the robot cannot cross;</li>
+        <li><ks>Wall</ks>: fixed obstacle that delimits the parking-area;</li>
+        <li><ks>ParkingServiceGUI</ks>: a user interacting component that allow the client to manifest the interst of entering the car into the parking-area and receiving information abount the state of the parking-area (ei. free slots). Also allow the client to call the robot to park the car;</li>
+        <li><ks>ParkServiceStatusGUI</ks>: a user interacting component that allow the parking-manager to observe the status of the parking-area including temperature and status of the fan and the robot;</li>
+    </ul>
+    <kc>VERBS</kc>:
+    <ul>
+        <li><ks>Stop the robot</ks>: stops the robot in the position it is currently. This operation is always up to the parking-manager;</li>
+        <li><ks>Start the robot</ks>: start the robot from the position it is currently. This operation is always up to the parking-manager;</li>
+        <li><ks>Stop the fan</ks>: stops the fan from working. This operation can either be automated (by checking the temperature) or not;</li>
+        <li><ks>Start the fan</ks>: start the fan. This operation can either be automated (by checking the temperature) or not;</li>
+
+    </ul>
+</div>
+ 
+
+</div>
+
+<h2>Problem analysis</h2>
+ 
+
+<h2>Test plans</h2> 
+
+
+<h2>Project</h2> 
+ 
+</div>
+
+<h2>Testing</h2> 
+ 
+
+<h2>Deployment</h2> 
+
+ 
+<h2>Maintenance</h2> 
+ 
+<!-- USEFUL
+<table style="width:100%" border="1">
+<tr>
+<td style="width:50%">
+</td>
+<td></td>
+</tr>
+</table>
+-->
+	      	
+<br/><br/> 	
+</div>  
+
+<div style="background-color:rgba(86, 56, 253, 0.9); width:60%;text-align:left;color:white">
+By studentName email: student@studio.unibo.it  
+<img src="./img/emiglio.png" alt="mbot" width="15%" height="15%">
+</div> 
+</body>
+</html>
