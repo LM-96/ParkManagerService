@@ -189,7 +189,7 @@ div.imagedesc{
     
 <head>
    
-<title>TemplateToFill</title></head>
+<title>Automated Car Parking (Mattioli-Marchegiani)</title></head>
     
 <body>
 <div id="top">
@@ -204,7 +204,7 @@ div.imagedesc{
 
  
 <div class="remark">
-Copy here the EXACT text fiven by the customer.
+<a href=https://github.com/anatali/issLab2021/blob/main/it.unibo.issLabStart/userDocs/TFBO21ParkingISS.pdf>TFBO21ParkingISS.pdf</a>
 </div>
 
  
@@ -246,6 +246,57 @@ Copy here the EXACT text fiven by the customer.
 </div>
 
 <h2>Problem analysis</h2>
+	
+	<div class="remark">
+	For now, we will use the virtual robot given by the consumer and described in <em><a href=http://htmlpreview.github.io/?https://github.com/anatali/issLab2021/blob/main/it.unibo.boundaryWalk/userDocs/VirtualRobot2021.html target="web">VirtualRobot2021.html</a></em>
+	Then, about the robot, we highlight that:
+	<ol>
+		<li>In the <a href="VirtualRobot2021.html#commands" target="web">VirtualRobot2021.html: commands</a> the customer states that the robot can receive move commands in two different ways:
+		<ul>
+			<li>by sending messages to the port <tt>8090</tt> using  <ks>HTTP POST</ks> </li>
+			<li>by sending messages to the port <tt>8091</tt> using a <ks>websocket</ks> </li>
+		</ul>
+	
+		<li> With respect to the technological level, there are many libraries in many programming languages that support the required protcols. </li>
+	</ol>
+	
+	<center><k>Thanks to all the code present in the <a href=https://github.com/anatali/issLab2021/tree/main/it.unibo.qak21.basicrobot/resources>it.unibo.qak21.basicrobot/resources</a>, we can say that all <i>abstraction-gap</i> releated to the communication between <em>ParkManagerService</em> and the robot (virtual or concrete) are solved. We can also reuse this interaction model to the other devices of the system.</k></center></br>
+	
+	</div>
+	
+	<div class="remark">
+	<h3>Logical Architecture</h3>
+	Then, a primitive form of <ks>logical architecture</ks> is:
+	<center><div class="mxgraph" style="max-width:100%;" data-mxgraph="{&quot;highlight&quot;:&quot;#000000&quot;,&quot;lightbox&quot;:false,&quot;nav&quot;:true,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;Electron\&quot; modified=\&quot;2021-06-18T12:13:56.314Z\&quot; agent=\&quot;5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/14.6.13 Chrome/89.0.4389.128 Electron/12.0.7 Safari/537.36\&quot; etag=\&quot;N21NtZNzAyZ_gOz0NpxM\&quot; version=\&quot;14.6.13\&quot; type=\&quot;device\&quot;&gt;&lt;diagram id=\&quot;PS5p-miRpUZN3mHIzFUU\&quot; name=\&quot;Pagina-1\&quot;&gt;7Vhtb5swEP41kbYPrbAJBD62Sbtp2ku0VNr20YVL8OpgZpwm2a/fOZgGYtqmXbIXbVRquMc+g+957g7o+cP56pViRfZOpiB61EtXPX/UozQKKP43wLoC+nG/AmaKpxVEtsCEfwcLehZd8BTK1kQtpdC8aIOJzHNIdAtjSslle9pUivZVCzYDB5gkTLjoJ57qzG6LDrb4a+CzrL4yCeNqZM7qyXYnZcZSuWxA/kXPHyopdXU2Xw1BmNjVcan8Lu8ZvbsxBbnex8FPypEI9Fl//v6N7F9J/v3D4sSucsvEwm7400V+a29Yr+so4EoYcDTOlxnXMClYYkaWSDlimZ4LtAiesrKoWJjyFeCFz6dciKEUUm0W8qfTKU0SxEut5A00Rs6joB94xkPmemIvTax9yeZcGAUN5UJxUHh372FZT65EQ42zG5R6h6A0rBqQDdIrkHPQao1T7GgQ+ZWLVWwQW0aXW/6pb0nNGtzfgcxqbna39pYWPLHMPIEl6rDkMKQVZ/lM7EGRkpppLnM0T0jkdXAUJdDN0XXN0QHCHNYZXoc5HDhhJqQjzGF4pCj7TpTHTN28YznmuJqAuuUY0fszA/O7MGAi5CJ9nAYnuGESwfXUpSNlEE2TvRJhJ2sOlRiWoZCGp4HDkd/v4IgMgiORNHAZSLFgW1MqncmZzJm42KKo+EWemmo0MpHYznkrZWHD9RW0Xtt4sYWWba5gxfVn627Ov5jzUxpYc7RqjI3WtZHjfjdepxGNa6ByJVFYA1vnjdXyHoPiGDZQFnxSKawEVjctf7NmemZaIpq5zKFCLrkhYFR5MKXrGddCJjc12JiELvYqhNbDTeBeoZV4vwk8QK2VDC44A/14nhreH5StAoGF7rbdyA8uyOjPEeRgb0HG3o4gfe9XCLIhLyvADnXtCrBDo029OXrcVX3KymwTa2KNMdO4g3yDUI/8g5oNnE4XebHnCLkt00f62TNqU7P5bY6OZ5HA/NkVGnh1OH3vAE9/tP1YEgae0/Lijo7XP9azH3F5+W0FZv+G164ud+YxagsZ7NO6yGPFhTyruDhCjmMPj5+qKeFfWVPCrppCHO3+rymUDvrh760pscPV66urMSLjD5Mr/Hmh4NsCSv3Sfc2ElX7oPca29WbELcQEn5mem2AcTY6fm/jxhIkzOzDnaXrv+2tbNk8qDYdmE3Xd7hC+77BJu15c6dFahPsV52NF4MlHKIS59xcpLwums/+MdjEa7+TnwO35nYw+I0HR3H7y24w1vpv6Fz8A&lt;/diagram&gt;&lt;/mxfile&gt;&quot;}"></div><script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script></center></br>
+	
+	Zooming into <em>ParkManagerService</em>, we highlight the main entities of the system.
+	<k>We also specify that we use the <a href=http://htmlpreview.github.io/?https://github.com/anatali/issLab2021/blob/main/it.unibo.qakintro2020/userDocs/LabQakIntro2021.html><em>QActor (meta)model</em></a> to realize the <em>ParkManagerService</em></k>.</br>
+	Then, the result of a first zoom into the <em>ParkManagerService</em> using the <em>QActor</em> is:
+	<center><div class="mxgraph" style="max-width:100%;" data-mxgraph="{&quot;highlight&quot;:&quot;#000000&quot;,&quot;lightbox&quot;:false,&quot;nav&quot;:true,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;Electron\&quot; modified=\&quot;2021-06-18T12:12:53.569Z\&quot; agent=\&quot;5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/14.6.13 Chrome/89.0.4389.128 Electron/12.0.7 Safari/537.36\&quot; etag=\&quot;k5Gw2fcbA0DqPCFqa-71\&quot; version=\&quot;14.6.13\&quot; type=\&quot;device\&quot;&gt;&lt;diagram id=\&quot;PS5p-miRpUZN3mHIzFUU\&quot; name=\&quot;Pagina-1\&quot;&gt;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&lt;/diagram&gt;&lt;/mxfile&gt;&quot;}"></div><script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script></center></br>
+	
+	These actors model the main entities of the system:
+	<ul>
+		<li>the <ks>outSonar</ks> is modelled by the actor <em>outSonarActor</em> that emits the <ks>outbusy</ks> event when the sonar device reveals the presence of a car over the outdoor area. Notice that the actor does not need to have response/request mechanism because the only requirement given by the consumer is that the sonar must reveals the presence of the car;</li>
+		<li>the <ks>weight sensor</ks> is modelled by the actor <em>weightSensorActor</em> than emits the <ks>weightPresent</ks> event when the sensor reveals the presence of a car over the indoor area. This actor is similar to the previous one;</li>
+		<li>the <ks>fan</ks> is modelled by the actor <em>fanActor</em> that is able to receive dispatch messages <ks>powerOn</ks> or <ks>powerOff</ks> in order to manage the power of the fan. We specify that this messages are <i>fire and forget</i> than the communication is <i>asynchronous</i> to take the advantage of this type of interaction (<i>non-blocking calls</i>);
+		<li>the <ks>thermometer</ks> is modelled by the actor <em>thermometerActor</em> that:
+			<ul>
+				<li>emits two type of events, <ks>criticalTemp</ks> when the temperature of the parking area is great then the critical (case <k>TA &gt TMAX</k>) and <ks>tollerableTemp</ks> when the temperature returns to be <i>tollerable</i>(case <k>TA &#8804 TMAX</k>);
+				<li>is able to continuous write temperature to a publish/subrible proxy (like <a href=https://mqtt.org/ target="web"><i>MQTT</i></a> protocol); then, the other actors can <i>call</i> the <i>subscribe</i> primitive to the proxy if interested to observe the temperature. Because of the <em>QActor System</em> has large compatibility with <i>MQTT</i>, we suggest to use it but is also possible to use another system, also maded by the same projectist (e.g. using the <a href=https://en.wikipedia.org/wiki/Blackboard_(design_pattern)>Blackboard Pattern</a>);
+			</ul>
+		The use of public/subscribe protocol is very lightway and release the actor by sending messages guaranteeing an optimal scalability.
+		</li>
+		<li>the <ks>robot</ks> that has the role of <i>transport trolley</i> is modelled by the actor <em>transportTrolleyActor</em> that is able to receive dispatch messages:
+		<ul>
+			<li><ks>parkCar</ks> that represents the <i>command</i> to transport a car from indoor area to the specified park slot;</li>
+			<li><ks>exitCar</ks> that represents the <i>command</i> to transport a car from a parking slot to the outdoop area;</i>
+		</ul>
+		Notice that the informative content of the message is very important and it must always contains the <i>parking slot number</i> (both for park or exit a car).
+		</li>
+	</ul>
+	
+
+</div>
  
 
 <h2>Test plans</h2> 
