@@ -276,20 +276,20 @@ div.imagedesc{
 	
 	These actors model the main entities in the system:
 	<ul>
-		<li>the <ks>outSonar</ks> is modelled by the actor <em>outSonarActor</em> that emits the <ks>outbusy</ks> and <ks>outfree</ks> events when the sonar device detects the arriving/leaving respectively of a car over the outdoor area. Notice that the actor does not need to have response/request mechanism becouse with theese events give us all the information we need from the device;</li>
+		<li>the <ks>outSonar</ks> is modelled by the actor <em>outSonarActor</em> that emits the <ks>outBusy</ks> and <ks>outFree</ks> events when the sonar device detects the arriving/leaving respectively of a car over the outdoor area. Notice that the actor does not need to have response/request mechanism because these events give us all the information we need from the device;</li>
 		<li>the <ks>weight sensor</ks> is modelled by the actor <em>weightSensorActor</em> than emits the <ks>weightPresent</ks> and <ks>weightAbsent</ks> events when the sensor detects the arriving/leaving of a car over the indoor area. This actor is similar to the previous one;</li>
-		<li>the <ks>fan</ks> is modelled by the actor <em>fanActor</em> that is able to receive dispatch messages <ks>powerOn</ks> or <ks>powerOff</ks> in order to manage the status of the fan. We specify that this messages are <i>fire and forget</i> than the communication is <i>asynchronous</i> to take the advantages of this type of interaction (<i>non-blocking calls</i>). It is also useful to have a request/response mechanism to 
+		<li>the <ks>fan</ks> is modelled by the actor <em>fanActor</em> that is able to receive dispatch messages, <ks>powerOn</ks> or <ks>powerOff</ks>, in order to manage the status of the fan. We specify that this messages are <i>fire and forget</i> than the communication is <i>asynchronous</i> to take the advantages of this type of interaction (<i>non-blocking calls</i>). It is also useful to have a request/response mechanism to 
 		<li>the <ks>thermometer</ks> is modelled by the actor <em>thermometerActor</em> that:
 			<ul>
 				<li>emits two type of events, <ks>criticalTemp</ks> when the temperature of the parking area is greater then the critical (case <k>TA &gt TMAX</k>) and <ks>tollerableTemp</ks> when the temperature returns to be <i>tollerable</i>(case <k>TA &#8804 TMAX</k>);
-				<li>is able to continuous write temperature to a publish/subrible proxy (like <a href=https://mqtt.org/ target="web"><i>MQTT</i></a> protocol); then, the other actors can <i>call</i> the <i>subscribe</i> primitive to the proxy if interested to observe the temperature. Because of the <em>QActor System</em> has large compatibility with <i>MQTT</i>, we suggest to use it but is also possible to use another system, also maded by the same projectist (e.g. using the <a href=https://en.wikipedia.org/wiki/Blackboard_(design_pattern)>Blackboard Pattern</a>);
+				<li>is able to continuously write temperature to a publish/subrible proxy (like <a href=https://mqtt.org/ target="web"><i>MQTT</i></a> protocol); then, the other actors can <i>call</i> the <i>subscribe</i> primitive to the proxy if interested to observe the temperature. Since the <em>QActor System</em> has large compatibility with <i>MQTT</i>, we suggest to use it, but it is also possible to use another system, also made by the same projectist (e.g. using the <a href=https://en.wikipedia.org/wiki/Blackboard_(design_pattern)>Blackboard Pattern</a>);
 			</ul>
 		The use of public/subscribe protocol is very lightway and releases the actor by sending messages guaranteeing an optimal scalability.
 		</li>
 		<li>the <ks>robot</ks> that has the role of <i>transport trolley</i> is modelled by the actor <em>transportTrolleyActor</em> that is able to receive dispatch messages:
 		<ul>
 			<li><ks>parkCar</ks> that represents the <i>command</i> to transport a car from indoor area to the specified park slot;</li>
-			<li><ks>exitCar</ks> that represents the <i>command</i> to transport a car from a parking slot to the outdoop area;</i>
+			<li><ks>exitCar</ks> that represents the <i>command</i> to transport a car from a parking slot to the outdoor-area;</i>
 		</ul>
 		Notice that the informative content of the messages is very important and it must always contains the <i>parking slot number</i> (both for park or exit a car).
 		</li>
