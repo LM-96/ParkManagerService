@@ -233,7 +233,7 @@ div.imagedesc{
         <li><ks>ParkServiceStatusGUI</ks>: a user interacting component that allow the parking-manager to observe the status of the parking-area including temperature and status of the fan and the robot;</li>
 		<li><ks>Status</ks>: information about the state of the robot, the fan, the temperature of the room, the car waiting for entering/exiting the parking-area, free/occupied parking-slots;</li>
 		<li><ks>Token</ks>: a unique identifier of the couple car-slot inside the parking-area;</li>
-		<li><ks>Client</ks>: fisical person that posses a car;</li>
+		<lis><ks>Client</ks>: fisical person that posses a car;</lis>
     </ul>
     <kc>VERBS</kc>:
     <ul>
@@ -244,76 +244,16 @@ div.imagedesc{
 		<li><ks>Pick up car</ks>: the client who parked the car must be able of collecting it from the outdoor-areaby entering the token related to his/her car;</li>
 		<li><ks>Enter car</ks>: the client must be able to enter the car inside the indoor-area once it is free amd he/she must receive as answare the number of free parking-slots and if a slot is available he/she will receive a unique token;</li>
 		<li><ks>Check status</ks>: the manager must be able to check the status of the entire system;</li>
+		<li><ks>Inform the client</ks>: send/show a massage to the client;</li>
     </ul>
 </div>
 
 <div class="remark">
-	<h3>Definition of a formal model of the requirements</h3>
-	Since our software must move the robot inside the parking-area, we must find a way to automatically test all tasks concerning movements.</br></br>
+	<h3>Requirements formal model</h3>
 	
-	At this stage, we need to introduce a <ks>proper representation</ks> of the parking-area. Luckly, the consumer already gave us a file representing the parking-area as a <em>map</em>: <a href=https://github.com/anatali/issLab2021/blob/main/it.unibo.issLabStart/userDocs/parkingMap.txt>parkingMap.txt</a></br>
-	As we can see from the requirements, the map is a <k>grid of square with fixed size</k>:
-	
-	<pre>
-	
-	|r, 0, 0, 0, 0, 0, 0, X
-	|0, 0, <k>X</k>, <k>X</k>, 0, 0, 0, X
-	|0, 0, <k>X</k>, <k>X</k>, 0, 0, 0, X
-	|0, 0, <k>X</k>, <k>X</k>, 0, 0, 0, X
-	|0, 0, 0, 0, 0, 0, 0, X
-	|X, X, X, X, X, X, X, X
-	</pre>
-	
-	In the above representation, the consumer specify that:
-	<ul>
-		<li><b>r</b>: cell occupied by the robot</li>
-		<li><b>0</b>: cell not occupied</li>
-		<li><b><k>X</k></b>: cell representing a paking-slot</li>
-		<li><b>X</b>: cell occupied by fixed obstacle</li>
-	</ul>
-	
-	<h3><ks>mapUtil</ks></h3>
-	A proper support for the room-map can be given by the following utility:
-	<table style="width:100%" border="1">
-		<tr>
-			<td style="width:40%">
-				<a href="https://github.com/anatali/issLab2021/blob/main/it.unibo.kotlinSupports/app/src/main/kotlin/mapRoomKotlin/mapUtil.kt" target="code"><em>mapUtil.kt</em></a>  <br/>(project <i>it.unibo.kotlinSupports</i>)
-				<br/><br/>
-				<m>
-				For a demo, see 
-				<a href="https://github.com/anatali/issLab2021/blob/main/it.unibo.kotlinSupports/app/src/main/kotlin/mapRoomKotlin/MainMapUsage.kt" target="code">MainMapUsage.kt</a> 
-				</m>
-			</td>
-			<td>
-				<ol>
-				<li>creates a room map as a singleton;</li>
-				<li>provides the operation <bc>doMove(move: String )</bc> that updates the map according to the given robot move
-				(<tt>w | s | r | l | h </tt>)
-				</li>
-				<li>provides the operation <bc>getMapAndClean( ): String</bc> that returns a String-representation of the current map and
-				resets the map to the empty map;
-				</li>
-				<li>provides the operation <bc>showMap( )</bc> that prints on the standard output the String-representation of the current map.
-				</li>
-				</ol>
-			</td>
-		</tr>
-	</table> 
-	<k>This utility can be adapted to the map given by the consumer.</k>
-	
-	<h3>From Tasks to User Stories</h3>
-	
-	<table>
-		<tr>
-			<td style="width:70%">
-				<h4><em>moveToIn</em> Task</h4>
-				If the number of slots is greater than 0 and a car is waiting in the indoor-area, the transport trolley must 
-			</td>
-			<td>
-				<img src="./img/moveToIn_map.png" />
-			</td>
-		</tr>
-	</table>
+
+</div>
+ 
 
 </div>
 
