@@ -149,9 +149,14 @@ div.remark{
     margin: 10px;
 	border-radius: 25px;
 }
+table {
+	width:100%;
+}
 table, th, td {
   border: 1px solid black;
   border-collapse: collapse;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 ol, ul, li {
@@ -212,6 +217,7 @@ div.imagedesc{
 <h2>Requirement analysis</h2>
 
 <div class="remark">
+	<h3>Meaning of nouns and verbs</h3>
     <kc>NOUNS</kc>:
     <ul>
         <li><ks>DDR Robot</ks>: Differential Drive Robot. It is capable of moving in the environment by executing simple move commands. It can be equipped with a range of devices. It must be capable of moving object as a transpot trolley with a squared form of fixed side length;</li>
@@ -252,24 +258,40 @@ div.imagedesc{
 	<h3>Definition of a formal model of the requirements</h3>
 	Since our software must move the robot inside the parking-area, we must find a way to automatically test all tasks concerning movements.<br><br>
 	
-	At this stage, we need to introduce a <ks>proper representation</ks> of the parking-area. Luckly, the consumer already gave us a file representing the parking-area as a <em>map</em>: <a href="https://github.com/anatali/issLab2021/blob/main/it.unibo.issLabStart/userDocs/parkingMap.txt">parkingMap.txt</a><br>
-	As we can see from the requirements, the map is a <k>grid of square with fixed size</k>:
+	At this stage, we need to introduce a <ks>proper representation</ks> of the parking-area. Luckly, the customer already gave us a file representing the parking-area as a <em>map</em>: <a href="https://github.com/anatali/issLab2021/blob/main/it.unibo.issLabStart/userDocs/parkingMap.txt">parkingMap.txt</a><br>
+	As we can see from the requirements, the map is a <k>grid of square with fixed size</k>:</br></br>
 	
-	<pre>	
-	|r, 0, 0, 0, 0, 0, 0, X
-	|0, 0, <k>X</k>, <k>X</k>, 0, 0, 0, X
-	|0, 0, <k>X</k>, <k>X</k>, 0, 0, 0, X
-	|0, 0, <k>X</k>, <k>X</k>, 0, 0, 0, X
-	|0, 0, 0, 0, 0, 0, 0, X
-	|X, X, X, X, X, X, X, X
+	<table>
+		<tbody>
+			<td>
+				<center><img src="./img/base_map.png" alt="Map scheme" style="max-width:100%"/></center>
+				<center><i>Scheme of the map as a grid</i></center>
+			</td>
+			<td><center>
+	<pre style="max-width:100%">
+	
+	
+|r, 0, 0, 0, 0, 0, 0, X
+|0, 0, <k>X</k>, <k>X</k>, 0, 0, 0, X
+|0, 0, <k>X</k>, <k>X</k>, 0, 0, 0, X
+|0, 0, <k>X</k>, <k>X</k>, 0, 0, 0, X
+|0, 0, 0, 0, 0, 0, 0, X
+|X, X, X, X, X, X, X, X
+
 	</pre>
+			</center>
+			<center><i>Map given by the customer</i></center>
+			</td>
+		</tbody>
+	</table></br>
 	
-	In the above representation, the consumer specify that:
+	In the above representation, the customer specify that:
 	<ul>
-		<li><b>r</b>: cell occupied by the robot</li>
-		<li><b>0</b>: cell not occupied</li>
-		<li><b><k>X</k></b>: cell representing a paking-slot</li>
-		<li><b>X</b>: cell occupied by fixed obstacle</li>
+		<li><b>r</b> : cell occupied by the robot</li>
+		<li><b>0</b> : cell not occupied (robot can pass over it)</li>
+		<li><b><k>X</k></b> : cell representing a paking-slot</li>
+		<li><b>X</b> : cell occupied by fixed obstacle</li>
+		<li><div style="width:20px;height:20px;background-color:#FFF2CC;display:inline-block;border:1px solid #D6B656"></div>: home</li>
 	</ul>
 	
 	<h3><ks>mapUtil</ks></h3>
@@ -299,18 +321,179 @@ div.imagedesc{
 			</td>
 		</tr>
 	</tbody></table> 
-	<k>This utility can be adapted to the map given by the consumer.</k>
+	<k>This utility can be adapted to the map given by the customer.</k>
 	
-	<h3>From Tasks to User Stories</h3>
+	<h3>Use Case</h3>
+	From the user stories provided by the customer it is possible to produce an <a href=https://en.wikipedia.org/wiki/Use_case_diagram targer="web">Use Case Diagram</a>:
+	</br></br>
+	<center><img src="./img/useCase.png" style="max-width:100%" alt="Use case diagram" /></center></br>
+	Zooming into this diagram, we present some sample details about all use cases:
+	<center><table>
+	<tr><td colspan="2"><center><h4>Actor: User</h4></center></td></tr>
+		<tr>
+			<td style="width:50%">
+				<h5 style="padding-left:10px"><ks>Notify Interest</ks></h5>
+				<ul>
+					<li><b>Dependencies:</b> <i>Emit Slotnum</i></li>
+					<li><b>Description</b>: ...</li>
+				</ul>
+			</td>
+			<td>
+				<h5 style="padding-left:10px"><ks>Car Enter</ks></h5>
+				<ul>
+					<li><b>Dependencies:</b><i>Notify Interest</i>, <i>Emit TokenId</i></li>
+					<li><b>Description</b>: </li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<td style="width:50%">
+				<h5 style="padding-left:10px"><ks>Emit Slotnum</ks></h5>
+				<ul>
+					<li><b>Description</b>: </li>
+				</ul>
+			</td>
+			<td>
+				<h5 style="padding-left:10px"><ks>Emit Tokeid</ks></h5>
+				<ul>
+					<li><b>Description</b>: </li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<td style="width:50%">
+				<h5 style="padding-left:10px"><ks>Submit Token</ks></h5>
+				<ul>
+					<li><b>Description</b>: </li>
+				</ul>
+			</td>
+			<td>
+				<h5 style="padding-left:10px"><ks>Pickup Car</ks></h5>
+				<ul>
+					<li><b>Dependencies:</b> <i>Submit Token</i></li>
+					<li><b>Description</b>: </li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<h5 style="padding-left:10px"><ks>Emit Alarm</ks></h5>
+				<ul>
+					<li><b>Dependencies:</b> <i>Pickup Car</i></li>
+					<li><b>Description</b>: </li>
+				</ul>
+			</td>
+		</tr>
+	</table></center>
+	</br>
+	<center><table>
+	<tr><td colspan="2"><center><h4>Actor: Manager</h4></center></td></tr>
+		<tr>
+			<td style="width:50%">
+				<h5 style="padding-left:10px"><ks>Identification</ks></h5>
+				<ul>
+					<li><b>Description</b>: ...</li>
+				</ul>
+			</td>
+			<td>
+				<h5 style="padding-left:10px"><ks>Start Fan</ks></h5>
+				<ul>
+					<li><b>Dependencies:</b> <i>Identification</i></li>
+					<li><b>Description</b>: </li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<td style="width:50%">
+				<h5 style="padding-left:10px"><ks>Stop Fan</ks></h5>
+				<ul>
+					<li><b>Dependencies:</b> <i>Identification</i></li>
+					<li><b>Description</b>: </li>
+				</ul>
+			</td>
+			<td>
+				<h5 style="padding-left:10px"><ks>Start Trolley</ks></h5>
+				<ul>
+					<li><b>Dependencies:</b> <i>Identification</i></li>
+					<li><b>Description</b>: </li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<td style="width:50%">
+				<h5 style="padding-left:10px"><ks>Stop Trolley</ks></h5>
+				<ul>
+					<li><b>Dependencies:</b> <i>Identification</i></li>
+					<li><b>Description</b>: </li>
+				</ul>
+			</td>
+			<td>
+				<h5 style="padding-left:10px"><ks>Observe State</ks></h5>
+				<ul>
+					<li><b>Dependencies:</b> <i>Identification</i></li>
+					<li><b>Description</b>: </li>
+				</ul>
+			</td>
+		</tr>
+	</table></center>
+	
+	
+	<h3>Task Modeling</h3>
 	
 	<table>
-		<tbody><tr>
+		<tbody>
+		<tr>
 			<td style="width:60%">
-				<h4><em>moveToIn</em> Task</h4>
+				<h4 style="padding-left:10px"><ks><i>moveToIn</i></ks> Task</h4>
 				
 			</td>
 			<td>
-				<img src="img/moveToIn_map.png">
+				<center><img src="img/moveToIn_map.png" alt="moveToIn Graph" style="max-width:100%"></center>
+			</td>
+		</tr>
+		<tr>
+			<td style="width:60%">
+				<h4 style="padding-left:10px"><ks><i>moveToSlotIn</i></ks> Task</h4>
+				
+			</td>
+			<td>
+				<center><img src="img/moveToSlotIn_map.png" alt="moveToSlotIn Graph" style="max-width:100%"></center>
+			</td>
+		</tr>
+		<tr>
+			<td style="width:60%">
+				<h4 style="padding-left:10px"><ks><i>backToHome</i></ks> Task</h4>
+				
+			</td>
+			<td>
+				<center><img src="img/backToHome_map.png" alt="backToHome Graph" style="max-width:100%"></center>
+			</td>
+		</tr>
+		<tr>
+			<td style="width:60%">
+				<h4 style="padding-left:10px"><ks><i>moveToHome</i></ks> Task</h4>
+				
+			</td>
+			<td>
+				<center><img src="img/moveToHome_map.png" alt="moveToHome Graph" style="max-width:100%"></center>
+			</td>
+		</tr>
+		<tr>
+			<td style="width:60%">
+				<h4 style="padding-left:10px"><ks><i>moveToSlotOut</i></ks> Task</h4>
+				
+			</td>
+			<td>
+				<center><img src="img/moveToSlotOut_map.png" alt="moveToSlotOut Graph" style="max-width:100%"></center>
+			</td>
+		</tr>
+		<tr>
+			<td style="width:60%">
+				<h4 style="padding-left:10px"><ks><i>moveToOut</i></ks> Task</h4>
+				
+			</td>
+			<td>
+				<center><img src="img/moveToOut_map.png" alt="moveToOut Graph" style="max-width:100%"></center>
 			</td>
 		</tr>
 	</tbody></table>
@@ -323,7 +506,7 @@ div.imagedesc{
 <h2>Problem analysis</h2>
 	
 	<div class="remark">
-	For now, we will use the virtual robot given by the consumer and described in <em><a href=http://htmlpreview.github.io/?https://github.com/anatali/issLab2021/blob/main/it.unibo.boundaryWalk/userDocs/VirtualRobot2021.html target="web">VirtualRobot2021.html</a></em>
+	For now, we will use the virtual robot given by the customer and described in <em><a href=http://htmlpreview.github.io/?https://github.com/anatali/issLab2021/blob/main/it.unibo.boundaryWalk/userDocs/VirtualRobot2021.html target="web">VirtualRobot2021.html</a></em>
 	Then, about the robot, we highlight that:
 	<ol>
 		<li>In the <a href="VirtualRobot2021.html#commands" target="web">VirtualRobot2021.html: commands</a> the customer states that the robot can receive move commands in two different ways:
@@ -342,12 +525,12 @@ div.imagedesc{
 	<div class="remark">
 	<h3>Logical Architecture</h3>
 	Then, a primitive form of <ks>logical architecture</ks> is:
-	<center><div class="mxgraph" style="max-width:100%;" data-mxgraph="{&quot;highlight&quot;:&quot;#000000&quot;,&quot;lightbox&quot;:false,&quot;nav&quot;:true,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;Electron\&quot; modified=\&quot;2021-06-18T12:13:56.314Z\&quot; agent=\&quot;5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/14.6.13 Chrome/89.0.4389.128 Electron/12.0.7 Safari/537.36\&quot; etag=\&quot;N21NtZNzAyZ_gOz0NpxM\&quot; version=\&quot;14.6.13\&quot; type=\&quot;device\&quot;&gt;&lt;diagram id=\&quot;PS5p-miRpUZN3mHIzFUU\&quot; name=\&quot;Pagina-1\&quot;&gt;7Vhtb5swEP41kbYPrbAJBD62Sbtp2ku0VNr20YVL8OpgZpwm2a/fOZgGYtqmXbIXbVRquMc+g+957g7o+cP56pViRfZOpiB61EtXPX/UozQKKP43wLoC+nG/AmaKpxVEtsCEfwcLehZd8BTK1kQtpdC8aIOJzHNIdAtjSslle9pUivZVCzYDB5gkTLjoJ57qzG6LDrb4a+CzrL4yCeNqZM7qyXYnZcZSuWxA/kXPHyopdXU2Xw1BmNjVcan8Lu8ZvbsxBbnex8FPypEI9Fl//v6N7F9J/v3D4sSucsvEwm7400V+a29Yr+so4EoYcDTOlxnXMClYYkaWSDlimZ4LtAiesrKoWJjyFeCFz6dciKEUUm0W8qfTKU0SxEut5A00Rs6joB94xkPmemIvTax9yeZcGAUN5UJxUHh372FZT65EQ42zG5R6h6A0rBqQDdIrkHPQao1T7GgQ+ZWLVWwQW0aXW/6pb0nNGtzfgcxqbna39pYWPLHMPIEl6rDkMKQVZ/lM7EGRkpppLnM0T0jkdXAUJdDN0XXN0QHCHNYZXoc5HDhhJqQjzGF4pCj7TpTHTN28YznmuJqAuuUY0fszA/O7MGAi5CJ9nAYnuGESwfXUpSNlEE2TvRJhJ2sOlRiWoZCGp4HDkd/v4IgMgiORNHAZSLFgW1MqncmZzJm42KKo+EWemmo0MpHYznkrZWHD9RW0Xtt4sYWWba5gxfVn627Ov5jzUxpYc7RqjI3WtZHjfjdepxGNa6ByJVFYA1vnjdXyHoPiGDZQFnxSKawEVjctf7NmemZaIpq5zKFCLrkhYFR5MKXrGddCJjc12JiELvYqhNbDTeBeoZV4vwk8QK2VDC44A/14nhreH5StAoGF7rbdyA8uyOjPEeRgb0HG3o4gfe9XCLIhLyvADnXtCrBDo029OXrcVX3KymwTa2KNMdO4g3yDUI/8g5oNnE4XebHnCLkt00f62TNqU7P5bY6OZ5HA/NkVGnh1OH3vAE9/tP1YEgae0/Lijo7XP9azH3F5+W0FZv+G164ud+YxagsZ7NO6yGPFhTyruDhCjmMPj5+qKeFfWVPCrppCHO3+rymUDvrh760pscPV66urMSLjD5Mr/Hmh4NsCSv3Sfc2ElX7oPca29WbELcQEn5mem2AcTY6fm/jxhIkzOzDnaXrv+2tbNk8qDYdmE3Xd7hC+77BJu15c6dFahPsV52NF4MlHKIS59xcpLwums/+MdjEa7+TnwO35nYw+I0HR3H7y24w1vpv6Fz8A&lt;/diagram&gt;&lt;/mxfile&gt;&quot;}"></div><script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script></center></br>
+	<center><img src="./img/logical_arch_base.png" style="max-width:100%"//></center></br>
 	
 	Zooming into <em>ParkManagerService</em>, we highlight the main entities of the system.
 	<k>We also specify that we will use actors, thanks to the <a href=http://htmlpreview.github.io/?https://github.com/anatali/issLab2021/blob/main/it.unibo.qakintro2020/userDocs/LabQakIntro2021.html><em>QActor (meta)model</em></a>, to realize the <em>ParkManagerService</em></k>.</br>
 	Then, the result of a first zoom into the <em>ParkManagerService</em> using the <em>QActor</em> is:
-	<center><div class="mxgraph" style="max-width:100%;" data-mxgraph="{&quot;highlight&quot;:&quot;#000000&quot;,&quot;lightbox&quot;:false,&quot;nav&quot;:true,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;Electron\&quot; modified=\&quot;2021-06-18T14:26:20.319Z\&quot; agent=\&quot;5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/14.6.13 Chrome/89.0.4389.128 Electron/12.0.7 Safari/537.36\&quot; etag=\&quot;_mqGKeZKcm5SxIybsIvL\&quot; version=\&quot;14.6.13\&quot; type=\&quot;device\&quot;&gt;&lt;diagram id=\&quot;PS5p-miRpUZN3mHIzFUU\&quot; name=\&quot;Pagina-1\&quot;&gt;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&lt;/diagram&gt;&lt;/mxfile&gt;&quot;}"></div><script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script></center></br>
+	<center><img src="./img/problem_analysis_entities.png" style="max-width:100%"/></center></br>
 	
 	These actors model the main entities in the system:
 	<ul>
