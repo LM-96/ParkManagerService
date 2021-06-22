@@ -214,7 +214,7 @@ div.imagedesc{
 <div class="remark">
     <kc>NOUNS</kc>:
     <ul>
-        <li><ks>Robot</ks>: a device able to execute move commands sent over the network. It must be capable of moving object as a transpot trolley with a squared form of fixed side length;</li>
+        <li><ks>DDR Robot</ks>: Differential Drive Robot. It is capable of moving in the environment by executing simple move commands. It can be equipped with a range of devices. It must be capable of moving object as a transpot trolley with a squared form of fixed side length;</li>
         <li><ks>Home location</ks>: fixed starting position inside the parking-area where the robot will be located before the software starts and where it will return if no jobs are pending;</li>
         <li><ks>Parking-area</ks>: empty room that must include an indoor, indoor-area, outdoor, outdoor-area, parking-slots, thermometer and a fan;</li>
         <li><ks>Indoor</ks>: used to get the car into the parking-area;</li>
@@ -231,6 +231,9 @@ div.imagedesc{
         <li><ks>Wall</ks>: fixed obstacle that delimits the parking-area;</li>
         <li><ks>ParkingServiceGUI</ks>: a user interacting component that allow the client to manifest the interst of entering the car into the parking-area and receiving information abount the state of the parking-area (ei. free slots). Also allow the client to call the robot to park the car;</li>
         <li><ks>ParkServiceStatusGUI</ks>: a user interacting component that allow the parking-manager to observe the status of the parking-area including temperature and status of the fan and the robot;</li>
+		<li><ks>Status</ks>: information about the state of the robot, the fan, the temperature of the room, the car waiting for entering/exiting the parking-area, free/occupied parking-slots;</li>
+		<li><ks>Token</ks>: a unique identifier of the couple car-slot inside the parking-area;</li>
+		<lis><ks>Client</ks>: fisical person that posses a car;</lis>
     </ul>
     <kc>VERBS</kc>:
     <ul>
@@ -238,8 +241,15 @@ div.imagedesc{
         <li><ks>Start the robot</ks>: start the robot from the position it is currently. This operation is always up to the parking-manager;</li>
         <li><ks>Stop the fan</ks>: stops the fan from working. This operation can either be automated (by checking the temperature) or not;</li>
         <li><ks>Start the fan</ks>: start the fan. This operation can either be automated (by checking the temperature) or not;</li>
-
+		<li><ks>Pick up car</ks>: the client who parked the car must be able of collecting it from the outdoor-areaby entering the token related to his/her car;</li>
+		<li><ks>Enter car</ks>: the client must be able to enter the car inside the indoor-area once it is free amd he/she must receive as answare the number of free parking-slots and if a slot is available he/she will receive a unique token;</li>
+		<li><ks>Check status</ks>: the manager must be able to check the status of the entire system;</li>
     </ul>
+</div>
+
+<div class="remark">
+	<h3>Requirements formal model</h3>
+
 </div>
  
 
