@@ -356,7 +356,7 @@ div.imagedesc{
 				<h5 style="padding-left:10px"><ks>Car Enter</ks></h5>
 				<ul>
 					<li><b>Dependencies:</b><br><i>-Notify Interest</i><br>
-					<li><b>Pre Condition:</b><br><i><br>
+					<li><b>Pre Condition:</b><br><i>
 						-The user recieve a slotnum higher than 0;<br></i></li>
 					<li><b>Post Condition</b><br><i>-The car is parked;<br>
 						-The transport trolley can go back to its home position or fulfill another request;<br>
@@ -410,7 +410,7 @@ div.imagedesc{
 			<td>
 				<h5 style="padding-left:10px"><ks>Pickup Car</ks></h5>
 				<ul>
-					<li><b>Dependencies:</b><i>-Submit Token</i></li>
+					<li><b>Dependencies:</b><i><br>-Submit Token</i></li>
 					<li><b>Pre Condition</b></li>
 					<li><b>Post Condition</b><br><i>-The outdoor-area is free;<br>
 					</i></li>
@@ -494,11 +494,11 @@ div.imagedesc{
 			<td>
 				<h5 style="padding-left:10px"><ks>Start Trolley</ks></h5>
 				<ul>
-					<li><b>Dependencies:</b> <br><i>-Identification<br>
+					<li><b>Dependencies:</b> <br><i>-Identification
 						</i><br>
 					<li><b>Pre Condition:</b><br><i>-The transport trolley is stopped;</i><br>
 					</li>
-					<li><b>Post Condition</b>: -The transport trolley is resumed;</li>
+					<li><b>Post Condition</b><br><i>: -The transport trolley is resumed;</i></li>
 					<li><b>Main Scenario</b>:<ol>
 						<li>The transport trolley is resumed by the manager and continue to serve the current request, starts a new one or go back to the home position;	
 						</li>
@@ -516,7 +516,7 @@ div.imagedesc{
 						</i></li>
 					<li><b>Pre Condition:</b><br><i>-The transport trolley is working;</i><br>
 					</li>
-					<li><b>Post Condition</b>: -The transport trolley is stopped;</li>
+					<li><b>Post Condition</b><br><i>: -The transport trolley is stopped;</i></li>
 					<li><b>Main Scenario</b>: 
 						<ol>
 							<li>The transport trolley is stopped from the manager;
@@ -529,7 +529,7 @@ div.imagedesc{
 			<td>
 				<h5 style="padding-left:10px"><ks>Observe State</ks></h5>
 				<ul>
-					<li><b>Dependencies:</b> <i>Identification</i></li>
+					<li><b>Dependencies:</b><br><i>Identification</i></li>
 					<li><b>Pre Condition:</b></li>
 					<li><b>Post Condition:</b><br><i>-The status is shown</i></li>
 					<li><b>Main Scenario</b>: <ol>
@@ -555,7 +555,18 @@ div.imagedesc{
 		<tr>
 			<td style="width:60%">
 				<h4 style="padding-left:10px"><ks><i>moveToIn</i></ks> Task</h4>
-				
+				<ul>
+					<li><b>Relative Use Case</b>: <i>Car Enter</i></li>
+					<li><b>Legend:</b><br><br>
+						<ul>
+							<li><div style="width:20px;height:20px;background-color:#D5E8D4;display:inline-block;border:1px solid #82B366"></div> : location where you can find the robot at the task call;</li>
+							<li><div style="width:20px;height:20px;background-color:#F8CECC;display:inline-block;border:1px solid #B85450"></div> : indoor-area.</li>
+						</ul>
+					</li>
+					<li><b>Description</b>:
+					This task is used by the system for moving the trasport trolley towards the indoor area in order to pick up the car and park it.
+					</li>
+				</ul>
 			</td>
 			<td>
 				<center><img src="img/moveToIn_map.png" alt="moveToIn Graph" style="max-width:100%"></center>
@@ -564,7 +575,18 @@ div.imagedesc{
 		<tr>
 			<td style="width:60%">
 				<h4 style="padding-left:10px"><ks><i>moveToSlotIn</i></ks> Task</h4>
-				
+				<ul>
+					<li><b>Relative Use Case</b>: <i>Car Enter</i></li>
+					<li><b>Legend:</b><br><br>
+						<ul>
+							<li><div style="width:20px;height:20px;background-color:#F8CECC;display:inline-block;border:1px solid #B85450"></div> : location where you can find the robot at the task call;</li>
+							<li>Colored Square: cell used by the transport trolley to park the car in the adiacent parking-slot.</li>
+						</ul>
+					</li>
+					<li><b>Description</b>:
+					This task is used by the system for parking a car to a specified parking-slot.
+					</li>
+				</ul>
 			</td>
 			<td>
 				<center><img src="img/moveToSlotIn_map.png" alt="moveToSlotIn Graph" style="max-width:100%"></center>
@@ -573,7 +595,17 @@ div.imagedesc{
 		<tr>
 			<td style="width:60%">
 				<h4 style="padding-left:10px"><ks><i>backToHome</i></ks> Task</h4>
-				
+				<ul>
+					<li><b>Relative Use Case</b>: <i>Car Enter</i></li>
+					<li><b>Legend:</b><br><br>
+						<ul>
+							<li>Colored Square: location where you can find the robot at the task call.</li>
+						</ul>
+					</li>
+					<li><b>Description</b>:
+					This task is used by the system for returning the transport trolley to the home after it has parked a car and there are not pending requests.
+					</li>
+				</ul>
 			</td>
 			<td>
 				<center><img src="img/backToHome_map.png" alt="backToHome Graph" style="max-width:100%"></center>
@@ -582,7 +614,17 @@ div.imagedesc{
 		<tr>
 			<td style="width:60%">
 				<h4 style="padding-left:10px"><ks><i>moveToHome</i></ks> Task</h4>
-				
+				<ul>
+					<li><b>Relative Use Case</b>: <i>Submit Token</i></li>
+					<li><b>Legend:</b><br><br>
+						<ul>
+							<li><div style="width:20px;height:20px;background-color:#D5E8D4;display:inline-block;border:1px solid #82B366"></div> : location where you can find the robot at the task call.</li>
+						</ul>
+					</li>
+					<li><b>Description</b>:
+					This task is used by the system for moving the trasport trolley to the home.
+					</li>
+				</ul>
 			</td>
 			<td>
 				<center><img src="img/moveToHome_map.png" alt="moveToHome Graph" style="max-width:100%"></center>
@@ -591,7 +633,18 @@ div.imagedesc{
 		<tr>
 			<td style="width:60%">
 				<h4 style="padding-left:10px"><ks><i>moveToSlotOut</i></ks> Task</h4>
-				
+				<ul>
+					<li><b>Relative Use Case</b>: <i>Submit Token</i></li>
+					<li><b>Legend:</b><br><br>
+						<ul>
+							<li><div style="width:20px;height:20px;background-color:#D5E8D4;display:inline-block;border:1px solid #82B366"></div> : location where you can find the robot at the task call;</li>
+							<li>Colored Square: cell used by the transport trolley to pick up the car from the adiacent parking-slot.</li>
+						</ul>
+					</li>
+					<li><b>Description</b>:
+					This task is used by the system for picking up a car in order to transport it to the outdoor-area.
+					</li>
+				</ul>
 			</td>
 			<td>
 				<center><img src="img/moveToSlotOut_map.png" alt="moveToSlotOut Graph" style="max-width:100%"></center>
@@ -600,7 +653,18 @@ div.imagedesc{
 		<tr>
 			<td style="width:60%">
 				<h4 style="padding-left:10px"><ks><i>moveToOut</i></ks> Task</h4>
-				
+				<ul>
+					<li><b>Relative Use Case</b>: <i>Car Enter</i></li>
+					<li><b>Legend:</b><br><br>
+						<ul>
+							<li><div style="width:20px;height:20px;background-color:#F8CECC;display:inline-block;border:1px solid #B85450"></div> : outdoor-area;</li>
+							<li>Colored Square: location where you can find the robot at the task call.</li>
+						</ul>
+					</li>
+					<li><b>Description</b>:
+					This task is used by the system for transporting a car to the outdoor-area.
+					</li>
+				</ul>
 			</td>
 			<td>
 				<center><img src="img/moveToOut_map.png" alt="moveToOut Graph" style="max-width:100%"></center>
@@ -614,7 +678,7 @@ div.imagedesc{
 </div>
 
 <h2>Problem analysis</h2>
-	
+	<!--
 	<div class="remark">
 	For now, we will use the virtual robot given by the customer and described in <em><a href=http://htmlpreview.github.io/?https://github.com/anatali/issLab2021/blob/main/it.unibo.boundaryWalk/userDocs/VirtualRobot2021.html target="web">VirtualRobot2021.html</a></em>
 	Then, about the robot, we highlight that:
@@ -675,7 +739,7 @@ div.imagedesc{
 	<center><k>The previous points do not introduce an abstraction-gap thanks to the planty of libraries to manage them</k>.</center>
 	
 </div>
- 
+-->
 
 <h2>Test plans</h2> 
 
