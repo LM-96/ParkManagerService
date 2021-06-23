@@ -250,6 +250,304 @@ div.imagedesc{
 
 <div class="remark">
 	<h3>Definition of a formal model of the requirements</h3>
+
+	<h4>Use Cases</h4>
+
+	From the requirements we defined a model representing the use cases of the user/client and of the manager, in order to better visualize what is requested from the consumer.
+	<br>
+	<ks>User Actor</ks><br>
+	<em>Notify interest</em>
+	<table style="width:100%" border="1">
+		<tbody><tr>
+			<td style="width:40%">
+				Pre-condition
+			</td>
+			<td>
+				-The transport trolley is not stopped;<br>
+				-The indoor-area is free;
+			</td>
+		</tr>
+		<tr>
+			<td style="width:40%">
+				Post-condition
+			</td>
+			<td>
+				-The car enters the indoor-area;
+			</td>
+		</tr>
+		<tr>
+			<td style="width:40%">
+				Main Scenario
+			</td>
+			<td>
+				<ol>
+					<li>The user notify to the system the interest of entering his/her car inside the parking-area;
+					</li>
+					<li>The user receive a massage containing a slotnumber (use case Emit Slotnum);		
+					</li>
+					<li>The slot number received is higher than zero and representing the parking-slot number, the car can enter the indoor area; 			
+					</li>
+				</ol>
+			</td>			
+		</tr>
+		<tr>
+			<td style="width:40%">
+				Alternativa Scenario
+			</td>
+			<td>
+				3.1. The slot number is equal to zero meaning the parking-area is full. The car cannot enter; 			
+			</td>
+		</tr>
+	</tbody></table> 
+
+
+	<em>Car enter</em>
+	<table style="width:100%" border="1">
+		<tbody><tr>
+			<td style="width:40%">
+				Pre-condition
+			</td>
+			<td>
+				-The robot is not working;
+				-The CARENTER button is pressed;
+			</td>
+		</tr>
+		<tr>
+			<td style="width:40%">
+				Post-condition
+			</td>
+			<td>
+				-The car is parked;
+				-The transport trolley can go back to its home position or fulfill another request;
+			</td>
+		</tr>
+		<tr>
+			<td style="width:40%">
+				Main Scenario
+			</td>
+			<td>
+				<ol>
+					<li>The transport trolley moves the car from the indoor-area to the selected parking-slot;		
+					</li>
+					<li>The client receive a unique token (use case Emit Token) to pic up the car from the outdoor-area;</li>
+				</ol>
+			</td>			
+		</tr>
+		<tr>
+			<td style="width:40%">
+				Alternativa Scenario
+			</td>
+			<td>			
+			</td>
+		</tr>
+	</tbody></table> 
+
+	<br>
+	<ks>User Actor</ks><br>
+
+	<em>Stop Fan</em>
+	<table style="width:100%" border="1">
+		<tbody><tr>
+			<td style="width:40%">
+				Pre-condition
+			</td>
+			<td>
+				-The fan is working;
+			</td>
+		</tr>
+		<tr>
+			<td style="width:40%">
+				Post-condition
+			</td>
+			<td>
+				-The fan is stopped;
+			</td>
+		</tr>
+		<tr>
+			<td style="width:40%">
+				Main Scenario
+			</td>
+			<td>
+				<ol>
+					<li>When the temperature inside the parking-area is above a certain value the fan cools down the temperature;		
+					</li>
+				</ol>
+			</td>			
+		</tr>
+		<tr>
+			<td style="width:40%">
+				Alternativa Scenario
+			</td>
+			<td>			
+			</td>
+		</tr>
+	</tbody></table> 
+
+	<em>Obser State</em>
+	<table style="width:100%" border="1">
+		<tbody><tr>
+			<td style="width:40%">
+				Pre-condition
+			</td>
+			<td>
+			</td>
+		</tr>
+		<tr>
+			<td style="width:40%">
+				Post-condition
+			</td>
+			<td>
+				-The manager check information about the parking-area;
+			</td>
+		</tr>
+		<tr>
+			<td style="width:40%">
+				Main Scenario
+			</td>
+			<td>
+				<ol>
+					<li>The manager must be able of checking the status about the fan, the transport trolley, the temperature and the available slots. Also can view the history of the parking-area;		
+					</li>
+				</ol>
+			</td>			
+		</tr>
+		<tr>
+			<td style="width:40%">
+				Alternativa Scenario
+			</td>
+			<td>			
+			</td>
+		</tr>
+	</tbody></table> 
+
+	<em>Start Trolley</em>
+	<table style="width:100%" border="1">
+		<tbody><tr>
+			<td style="width:40%">
+				Pre-condition
+			</td>
+			<td>
+				-The transport trolley is stopped;
+			</td>
+		</tr>
+		<tr>
+			<td style="width:40%">
+				Post-condition
+			</td>
+			<td>
+				-The transport trolley is resumed;
+			</td>
+		</tr>
+		<tr>
+			<td style="width:40%">
+				Main Scenario
+			</td>
+			<td>
+				<ol>
+					<li>The transport trolley is resumed by the manager and continue to serve the current request, starts a new one or go back to the home position.	
+					</li>
+				</ol>
+			</td>			
+		</tr>
+		<tr>
+			<td style="width:40%">
+				Alternativa Scenario
+			</td>
+			<td>	
+				1.1. The temperature is above the max temperature fixed value;
+				1.1.1 The robot cannot be resumed;
+		
+			</td>
+		</tr>
+	</tbody></table> 
+
+	<em>Stop Trolley</em>
+	<table style="width:100%" border="1">
+		<tbody><tr>
+			<td style="width:40%">
+				Pre-condition
+			</td>
+			<td>
+				-The transport trolley is working;
+			</td>
+		</tr>
+		<tr>
+			<td style="width:40%">
+				Post-condition
+			</td>
+			<td>
+				-The transport trolley is stopped;
+			</td>
+		</tr>
+		<tr>
+			<td style="width:40%">
+				Main Scenario
+			</td>
+			<td>
+				<ol>
+					<li>The transport trolley is stopped from the manager in any moment (expecially when the temperature inside the parking area is above a fixed value);
+					</li>
+				</ol>
+			</td>			
+		</tr>
+		<tr>
+			<td style="width:40%">
+				Alternativa Scenario
+			</td>
+			<td>			
+			</td>
+		</tr>
+	</tbody></table> 
+
+	<em>Start Fan</em>
+	<table style="width:100%" border="1">
+		<tbody><tr>
+			<td style="width:40%">
+				Pre-condition
+			</td>
+			<td>
+				-The fan is stopped;
+				-The temperature inside the parking-area is above a certain fixedvalue; 
+			</td>
+		</tr>
+		<tr>
+			<td style="width:40%">
+				Post-condition
+			</td>
+			<td>
+				-The fan starts;
+			</td>
+		</tr>
+		<tr>
+			<td style="width:40%">
+				Main Scenario
+			</td>
+			<td>
+				<ol>
+					<li>The fan starts and decrease the temperature inside the parking-area. This task could be automated;
+					</li>
+				</ol>
+			</td>			
+		</tr>
+		<tr>
+			<td style="width:40%">
+				Alternativa Scenario
+			</td>
+			<td>			
+			</td>
+		</tr>
+	</tbody></table> 
+
+	
+
+
+
+
+
+
+
+
+
 	Since our software must move the robot inside the parking-area, we must find a way to automatically test all tasks concerning movements.<br><br>
 	
 	At this stage, we need to introduce a <ks>proper representation</ks> of the parking-area. Luckly, the consumer already gave us a file representing the parking-area as a <em>map</em>: <a href="https://github.com/anatali/issLab2021/blob/main/it.unibo.issLabStart/userDocs/parkingMap.txt">parkingMap.txt</a><br>
