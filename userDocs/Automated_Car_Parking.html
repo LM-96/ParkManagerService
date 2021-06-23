@@ -231,7 +231,7 @@ div.imagedesc{
         <li><ks>Outsonar</ks>: sonar that detects the presence of a car within a certain space;</li>
         <li><ks>Parking-slot</ks>: area used for parking cars. The area covered by the parking-slots connot be crossed by the robot;</li>
         <li><ks>Thermometer</ks>: tool used to measure the temperature inside the parking-area;</li>
-        <li><ks>Fan</ks>: tool used to lower the temperature inside the parking-area. It is activated when the temperature is above a certain prefixed value;</li>
+        <li><ks>Fan</ks>: tool used to lower the temperature inside the parking-area.</li>
         <li><ks>Map</ks>: it is a representation of the parking-area. It is a grid of squares of fixed side length. It includes the parking-slot positions (marked with a red X) and the fixed obstacles in the area (marked with a black X);</li>
         <li><ks>Fixed obstacle</ks>: non-moving object inside the parking-area that the robot cannot cross;</li>
         <li><ks>Wall</ks>: fixed obstacle that delimits the parking-area;</li>
@@ -239,7 +239,8 @@ div.imagedesc{
         <li><ks>ParkServiceStatusGUI</ks>: a user interacting component that allow the parking-manager to observe the status of the parking-area including temperature and status of the fan and the robot;</li>
 		<li><ks>Status</ks>: information about the state of the robot, the fan, the temperature of the room, the car waiting for entering/exiting the parking-area, free/occupied parking-slots;</li>
 		<li><ks>Token</ks>: a unique identifier of the couple car-slot inside the parking-area;</li>
-		<lis><ks>Client</ks>: fisical person that posses a car;</lis>
+		<li><ks>Client</ks>: fisical person that posses a car;</li>
+		<li><ks>TMAX</ks>: fixed max temperature above which the fan must be activated;</li>
     </ul>
     <kc>VERBS</kc>:
     <ul>
@@ -251,6 +252,7 @@ div.imagedesc{
 		<li><ks>Enter car</ks>: the client must be able to enter the car inside the indoor-area once it is free amd he/she must receive as answare the number of free parking-slots and if a slot is available he/she will receive a unique token;</li>
 		<li><ks>Check status</ks>: the manager must be able to check the status of the entire system;</li>
 		<li><ks>Inform the client</ks>: send/show a massage to the client;</li>
+		<li><ks>The start/stop of the fan <b>could also be automated</b></ks>: after a further analysis it has been decided that the start and stop of the fan are both automated and up to the manager; </li>
     </ul>
 </div>
 
@@ -335,57 +337,52 @@ div.imagedesc{
 			<td style="width:50%">
 				<h5 style="padding-left:10px"><ks>Notify Interest</ks></h5>
 				<ul>
-					<li><b>Dependencies:</b> <br> <i>-The transport trolley is not stopped;<br>
-						-The indoor-area is free;</i></li>
-					<li><b>Post Condition</b><br> <i>-The car enters the indoor-area;</i></li>
-					<li><b>Main Scenario</b>: <ol>
-						<li>The user notify to the system the interest of entering his/her car inside the parking-area;
+					<li><b>Dependencies:</b>
+					<li><b>Pre Condition:</b></li>
+					<li><b>Post Condition:</b><br> <i>-The user receive the slotnum;</i></li>
+					<li><b>Main Scenario:	</b> <ol>
+						<li>The user notify to the system the interest of entering his/her car inside the parking-area and adds to the request some useful information;
 						</li>
-						<li>The user receive a massage containing a slotnumber (use case Emit Slotnum);		
+						<li>The user receive a massage containing a slotnumber;		
 						</li>
-						<li>The slot number received is higher than zero and representing the parking-slot number, the car can enter the indoor area; 			
+						<li>The slot number received is higher than zero and representing the parking-slot number; 			
 						</li>
 					</ol></li>
-					<li><b>Alternative Scenario</b>: <br>3.1. The slot number is equal to zero meaning the parking-area is full. The car cannot enter; </li>
+					<li><b>Alternative Scenario</b>: <br>3.1. The slot number is equal to zero meaning the parking-area is full. In that moment, the car cannot enter; </li>
 					
 				</ul>
 			</td>
 			<td>
 				<h5 style="padding-left:10px"><ks>Car Enter</ks></h5>
 				<ul>
-					<li><b>Dependencies:</b><br><i>-The robot is not working;<br>
-						-The CARENTER button is pressed;</i></li>
+					<li><b>Dependencies:</b><br><i>-Notify Interest</i><br>
+					<li><b>Pre Condition:</b><br><i><br>
+						-The user recieve a slotnum higher than 0;<br></i></li>
 					<li><b>Post Condition</b><br><i>-The car is parked;<br>
-						-The transport trolley can go back to its home position or fulfill another request;
-					</i>
-					<li><b>Main Scenario</b>: <ol>
+						-The transport trolley can go back to its home position or fulfill another request;<br>
+						-The user has received the tokenId
+					</i></li>
+					<li><b>Main Scenario:</b> <ol>
+						<li>The user waits for a notification from the system that the indoor-area is free within a certain period of time;</li>
+						<li>The user drive the car into the indoor-area and exits the car;</li>
+						<li>The user press the CARENTER button;</li>
+						<li>The client receive a unique token (use case Emit TokenId) to pick up the car from the outdoor-area;</li>
 						<li>The transport trolley moves the car from the indoor-area to the selected parking-slot;		
 						</li>
-						<li>The client receive a unique token (use case Emit Token) to pic up the car from the outdoor-area;</li>
 					</ol></li>
-				</ul>
-			</td>
-		</tr>
-		<tr>
-			<td style="width:50%">
-				<h5 style="padding-left:10px"><ks>Emit Slotnum</ks></h5>
-				<ul>
-					<li><b>Dependencies:</b><i>Notify Interest</i>
-					<li><b>Main Scenario</b>: <ol>
-						<li>A message containing a number between 0 and number of slots is sent to the client;		
-						</li>
-					</ol></li>
-				</ul>
-			</td>
-			<td>
-				<h5 style="padding-left:10px"><ks>Emit Tokeid</ks></h5>
-				<ul>
-					<li><b>Dependencies:</b><i>Car Enter</i>
 
-						<li><b>Main Scenario</b>: <ol>
-							<li>A message containing a unique token is sent to the client;		
-							</li>
-						</ol></li></li>
+					<li><b>Alternative Scenario:</b><br>
+						Scenario a: The user does not move the car into the indoor-area within a fixed period of time.
+						<ol>
+							<li>The user loses the right to park the car and receive a proper notification;</li>
+							<li>The system releases the reserved parking-slot;</li>
+						</ol><br>
+						Scenario b: The user enters the indoor-area but does not press the CARENTER button within a fixed period of time.
+						<ol>
+							<li>The client receive a unique token (use case Emit TokenId) to pick up the car from the outdoor-area;</li>
+							<li>The transport trolley automatically parks the car;</li>
+						</ol>
+					</li>
 				</ul>
 			</td>
 		</tr>
@@ -393,42 +390,43 @@ div.imagedesc{
 			<td style="width:50%">
 				<h5 style="padding-left:10px"><ks>Submit Token</ks></h5>
 				<ul>
-					<li><b>Dependencies:</b><i></i>
-					<li><b>Post Condition</b><br><i>-The car dropped in the outdoor-area;<br>
+					<li><b>Dependencies:</b></li>
+					<li><b>Pre Condition</b></li>
+					<li><b>Post Condition</b><br><i>-The car is dropped in the outdoor-area;<br>
 							-The transport trolley can go back to its home position or fulfill another request;
 					</i>					
 					<li><b>Main Scenario</b>: <ol>
-						<li>The client enters the unique token received during the Car Enter use case;		
-						</li>
-						<li>The transport trolley takes over the car and moves it from the parking-slot to the outdoor-area; </li>
+						<li>The system check the existance of the token entered and gets the relative parking-slot</li>
+						<li>The transport trolley takes over the car and moves it from the parking-slot to the outdoor-area;</li>
 					</ol></li>
+					<li><b>Alternative Scenario:</b><br>
+						Scenario a: The token does not exist in the system.
+						<ol>
+							<li>The system asks for a valid token;</li>
+						</ol><br>
+					</li>
 				</ul>
 			</td>
 			<td>
 				<h5 style="padding-left:10px"><ks>Pickup Car</ks></h5>
 				<ul>
-					<li><b>Dependencies:</b> <i></i></li>
+					<li><b>Dependencies:</b><i>-Submit Token</i></li>
+					<li><b>Pre Condition</b></li>
 					<li><b>Post Condition</b><br><i>-The outdoor-area is free;<br>
-					</i>
+					</i></li>
 					<li><b>Main Scenario</b>: <ol>
 						<li>The client can pick up the car from the outdoor-area within a fixed period of time;		
 						</li>
 					</ol> </li>
-					<li><b>Alternative Scenario</b>: <br>1.1. The fixed period of time runs out;<br>
-						1.1.1. The manager free the outdoor-area </li>
 
-				</ul>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<h5 style="padding-left:10px"><ks>Emit Alarm</ks></h5>
-				<ul>
-					<li><b>Dependencies:</b> <i>Pickup Car</i></li>
-					<li><b>Description</b>: <ol>
-						<li>A alarm message is notified to the manager when a car is inside tha outdoor-area after the fixed period of time runs out;		
-						</li>
-					</ol></li>
+					<li><b>Alternative Scenario:</b><br>
+						Scenario a: The fixed period of time to pick up the car runs out.
+						<ol>
+							<li>A notification is sent to the manager;</li>
+							<li>The manager free the outdoor-area and a proper notification should be sent to the user;</li>
+						</ol>
+					</li>
+
 				</ul>
 			</td>
 		</tr>
@@ -440,20 +438,38 @@ div.imagedesc{
 			<td style="width:50%">
 				<h5 style="padding-left:10px"><ks>Identification</ks></h5>
 				<ul>
-					<li><b>Description</b>: The manager need to enter proper credential to access the system; </li>
+					<li><b>Dependencies:</b></li>
+					<li><b>Pre Condition</b></li>
+					<li><b>Post Condition</b></li>
+					<li><b>Main scenario</b>: 
+						<ol>
+							<li>The manager enters the proper credential to access the system; </li>
+							<li>The system after checking the credential opens the proper home page</li>
+						</ol>
+					</li>
+					
+					<li><b>Alternative Scenario:</b><br>
+						Scenario a: Credential not recognized.
+						<ol start="2">
+							<li>The system shows the identification screen again;</li>
+						</ol>
+					</li>
 				</ul>
 			</td>
 			<td>
 				<h5 style="padding-left:10px"><ks>Start Fan</ks></h5>
 				<ul>
-					<li><b>Dependencies:</b> <br><i>-Identification<br>
-						-The fan is stopped;<br>
-						-The temperature inside the parking-area is above a certain fixedvalue; </i></li>
-					<li><b>Post Condition</b>: -The fan starts;</li>
+					<li><b>Dependencies:</b> <br><i>-Identification
+						</i></li>
+					<li><b>Pre Condition:</b><br><i>-The fan is stopped;</i>
+					</li>
+					<li><b>Post Condition</b>: -The fan is started;</li>
 					<li><b>Main Scenario</b>: <ol>
 						<li>The fan starts and decrease the temperature inside the parking-area. This use case could be automated;
 						</li>
 					</ol></li>
+					<li><b>Alternative Scenario:</b>
+					</li>
 				</ul>
 			</td>
 		</tr>
@@ -461,26 +477,34 @@ div.imagedesc{
 			<td style="width:50%">
 				<h5 style="padding-left:10px"><ks>Stop Fan</ks></h5>
 				<ul>
-					<li><b>Dependencies:</b> <br><i>-Identification</i><br>
-						-The fan is working;<br>
-					- The temperature inside the parking-area is below a certain fixedvalue;  </li>
-					<li><b>Post Condition</b>: -The fan stops;</li>
+					<li><b>Dependencies:</b> <br><i>-Identification</i>
+					</li>
+					<li><b>Pre Condition:</b><br><i>-The fan is working;<br>
+						-The temperature inside the parking-area is below TMAX; </i>
+					</li>
+					<li><b>Post Condition</b>: -The fan is stopped;</li>
 					<li><b>Main Scenario</b>: <ol>
-						<li>The fan cools stops working. This use case could be automated;		
+						<li>The manager stops the fan;		
 						</li>
 					</ol></li>
+					<li><b>Alternative Scenario:</b>
+					</li>
 				</ul>
 			</td>
 			<td>
 				<h5 style="padding-left:10px"><ks>Start Trolley</ks></h5>
 				<ul>
 					<li><b>Dependencies:</b> <br><i>-Identification<br>
-						-The transport trolley is stopped;</i><br>
+						</i><br>
+					<li><b>Pre Condition:</b><br><i>-The transport trolley is stopped;</i><br>
+					</li>
 					<li><b>Post Condition</b>: -The transport trolley is resumed;</li>
 					<li><b>Main Scenario</b>:<ol>
 						<li>The transport trolley is resumed by the manager and continue to serve the current request, starts a new one or go back to the home position;	
 						</li>
 					</ol></li>
+					<li><b>Alternative Scenario:</b>
+					</li>
 				</ul>
 			</td>
 		</tr>
@@ -489,27 +513,39 @@ div.imagedesc{
 				<h5 style="padding-left:10px"><ks>Stop Trolley</ks></h5>
 				<ul>
 					<li><b>Dependencies:</b> <br><i>Identification<br>
-						-The transport trolley is working;</i></li>
+						</i></li>
+					<li><b>Pre Condition:</b><br><i>-The transport trolley is working;</i><br>
+					</li>
 					<li><b>Post Condition</b>: -The transport trolley is stopped;</li>
 					<li><b>Main Scenario</b>: 
 						<ol>
-							<li>The transport trolley is stopped from the manager in any moment (expecially when the temperature inside the parking area is above a fixed value);
+							<li>The transport trolley is stopped from the manager;
 							</li>
 						</ol></li>
+					<li><b>Alternative Scenario:</b>
+					</li>
 				</ul>
 			</td>
 			<td>
 				<h5 style="padding-left:10px"><ks>Observe State</ks></h5>
 				<ul>
 					<li><b>Dependencies:</b> <i>Identification</i></li>
-					<li><b>Description</b>: <ol>
-						<li>The manager must be able of checking the status about the fan, the transport trolley, the temperature and the available slots. Also can view the history of the parking-area;		
+					<li><b>Pre Condition:</b></li>
+					<li><b>Post Condition:</b><br><i>-The status is shown</i></li>
+					<li><b>Main Scenario</b>: <ol>
+						<li>The system's status is shown to the manager;		
 						</li>
 					</ol></li>
+					<li><b>Alternative Scenario:</b>
+					</li>
 				</ul>
 			</td>
 		</tr>
-	</table></center>
+	</table></center><br>
+
+	<center><k>About the fan, we specify that the fan must be automatically activated by the system if the temperature is abouve TMAX and specularly stopped when the temperature is below TMAX. 
+		Nonetheless, as specified in the use cases, the manager can manually start the fan if not already, and stop it only if the temperature is below TMAX.   
+	</k></center>
 	
 	
 	<h3>Task Modeling</h3>
