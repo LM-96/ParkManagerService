@@ -257,6 +257,7 @@ div.imagedesc{
 </div>
 
 <div class="remark">
+
 	<h3>Definition of a formal model of the requirements</h3>
 
 	Since our software must move the robot inside the parking-area, we must find a way to automatically test all tasks concerning movements.<br><br>
@@ -295,6 +296,88 @@ div.imagedesc{
 		<li><b><k>X</k></b> : cell representing a paking-slot</li>
 		<li><b>X</b> : cell occupied by fixed obstacle</li>
 		<li><div style="width:20px;height:20px;background-color:#FFF2CC;display:inline-block;border:1px solid #D6B656"></div>: home</li>
+	</ul>
+	
+	<h3>Overview of the requirements</h3>
+	The customer specifies all the devices and the <i>reserved-areas</i> of the parking room. Now, we introduce a first overview of all entities required by the customer:
+	
+	<table>
+		<tbody>
+			<td>
+				<center><img src="./img/req_graph.png" alt="Requirements overview" style="max-width:100%"/></center>
+				<center><i>Graphical overview of the requirements</i></center>
+			</td>
+			<td>
+				<center><img src="./img/req_parking_room.png" alt="Reserved Areas" style="max-width:100%"/></center>
+				<center><i>Reserved areas of the parking-room</i></center>
+			</td>
+		</tbody>
+	</table></br>
+	We have introduced a <i>cartesian plan</i> over the room in order to define a <i>reference system</i>. Then, as indicated in the image above, the reserved areas are:
+	<ul>
+		<li><b>HOME</b> in the cell <tt>(0, 0)</tt></li>
+		<li><b>Indoor-area</b> in the cell <tt>(6, 0)</tt></li>
+		<li><b>Outdoor-area</b> in the cell <tt>(6, 4)</tt></li>
+		<li><b>Parking-slots</b> in the cells <tt>(2:3, 1:3)</tt></li>
+	</ul>
+	Customer also specify that the robot can walk over all cell of the parking-room except over the parking-slots.
+	Zooming into the parking-area, we decide to numerate the available parking-sloot as indicated in the image above.
+	Instead, about the entities:<br><br>
+	<ul>
+	
+	<li><b>Trolley</b>: customer specifies that it is a <i>DDR Robot</i> and also give us the needed software to build it at <a href=https://github.com/anatali/issLab2021/tree/main/it.unibo.qak21.basicrobot target="web"><em>it.unibo.qak21.basicrobot</em></a>;</li><br>
+	
+	<li><b>Thermometer</b>: this is a <i>RESTful resources</i> that works on a server;</li><br>
+	
+	<li><b>Weight Sensor</b>: a device connected to a proper platfom (e.g. Arduino) managable via software (e.g. in C++); customer did not provide any software so we must write code. Assuming to write it in C++, the interface for the weigth sensor is:
+	<table style="width:100%" border="1">
+		<tbody><tr>
+			<td style="width:40%">
+				<a href="./sources/IWeigthSensor.h" target="code"><em>IWeigthSensor.h</em></a>
+				<br><br>
+			</td>
+			<td>
+				<ol>
+				<li>provides the operation <bc>getWeigth( ): double</bc> that returns the weigth detected by the phisical sensor;
+				</li>
+				<li>provides the operation <bc>weigthUp( ): bool</bc> that returns a boolean representing if there is someone up to the sensor;
+				</li>
+				</ol>
+			</td>
+		</tr>
+	</tbody></table> 
+	</li><br>
+	
+	<li><b>Fan</b>: a device connected to a proper platform (e.g. Arduino) managable via software (e.g. in C++); customer did not provide any software but he give us the code to turn on/off a led connected to a Raspberry (<a href=https://github.com/anatali/issLab2021/tree/main/it.unibo.rasp2021/resources/Raspberry/bls target="web">it.unibo.rasp2021/resources/Raspberry/bls</a>) that can be adapted to work with a fan.
+	Ideed, as a led, the unique operations that the software must provides are <bc>turnOn( )</bc> and <bc>turnOff( )</bc> in order to power on or power off the phisical fan.
+	</li><br>
+	
+	<li><b>Sonar</b>: a device connected to a proper platform (e.g. Arduino) managable via software (e.g. in C++); customer provides us the code <a href=https://github.com/anatali/issLab2021/blob/main/it.unibo.rasp2021/resources/rasp/sonar/SonarAlone.c target="code">SonarAlone.c</a>: this C program continuously reads the distance from the phisical sonar connected to a Raspberry and print it to the standard output. In order to make this code more useful, we have adapted it in a previous developement:</li>
+	<table style="width:100%" border="1">
+		<tbody><tr>
+			<td style="width:40%">
+				<a href="https://github.com/LM-96/RaspiTools/blob/main/RaspiTools-app/src/main/resources/SonarAlone.c" target="code"><em>SonarAlone.c</em></a>  <br>(project <i>RaspiTools</i>)
+				<br><br>
+				<m>
+				For a demo, see 
+				<a href="https://github.com/LM-96/RaspiTools/blob/main/RaspiTools-app/src/main/java/it/lm96/raspitools/sonar/CSonar.java" target="code">CSonar.java</a> 
+				</m>
+			</td>
+			<td>
+				<ol>
+				<li>allows the argument <bc>-t</bc> to specify the TRIG pin of the phisical device;</li>
+				<li>allows the argument <bc>-e</bc> to specify the ECHO pin of the phisical device;</li>
+				<li>allows the argument <bc>-d</bc> to specify the time must padd between one measurement and another;</li>
+				<li>allows the argument <bc>-s</bc> to specify a single measurement;</li>
+				<li>allows the argument <bc>-i</bc> to specify the possibility to control the cicle of measurement with an UNIX signal (<i>SIGUSR1</i>).</li>
+				</ol>
+				For example, if we have a Sonar with ECHO and TRIG pin respectively connected to the pins 0 and 2 of a Raspberry, the invocation to get a single measurement is:
+				<pre>  ./SonarAlone -e 0 -t 2 -s</pre>
+				This invocation prints the value readed by the phisical sonar to the standard output.
+			</td>
+		</tr>
+	</tbody></table>
+	
 	</ul>
 	
 	<h3><ks>mapUtil</ks></h3>
