@@ -327,9 +327,11 @@ div.imagedesc{
 	
 	<li><b>Trolley</b>: customer specifies that it is a <i>DDR Robot</i> and also give us the needed software to build it at <a href=https://github.com/anatali/issLab2021/tree/main/it.unibo.qak21.basicrobot target="web"><em>it.unibo.qak21.basicrobot</em></a>;</li><br>
 	
-	<li><b>Thermometer</b>: this is a <i>RESTful resources</i> that works on a server;</li><br>
+	<li><b>Thermometer</b>: the customer does not provide any software, so we must manage it;</li><br>
 	
-	<li><b>Weight Sensor</b>: a device connected to a proper platfom (e.g. Arduino) managable via software (e.g. in C++); customer did not provide any software so we must write code. Assuming to write it in C++, the interface for the weigth sensor is:
+	<li><b>Weight Sensor</b>: the customer does not provide any software, so we must manage it;
+	<!--
+	a device connected to a proper platfom (e.g. Arduino) managable via software (e.g. in C++); customer did not provide any software so we must write code. Assuming to write it in C++, the interface for the weigth sensor is:
 	<table style="width:100%" border="1">
 		<tbody><tr>
 			<td style="width:40%">
@@ -345,14 +347,14 @@ div.imagedesc{
 				</ol>
 			</td>
 		</tr>
-	</tbody></table> 
+	</tbody></table> -->
 	</li><br>
 	
-	<li><b>Fan</b>: a device connected to a proper platform (e.g. Arduino) managable via software (e.g. in C++); customer did not provide any software but he give us the code to turn on/off a led connected to a Raspberry (<a href=https://github.com/anatali/issLab2021/tree/main/it.unibo.rasp2021/resources/Raspberry/bls target="web">it.unibo.rasp2021/resources/Raspberry/bls</a>) that can be adapted to work with a fan.
+	<li><b>Fan</b>: the customer does not provide any software, so we must manage it; however, he give us the code to turn on/off a led connected to a Raspberry (<a href=https://github.com/anatali/issLab2021/tree/main/it.unibo.rasp2021/resources/Raspberry/bls target="web">it.unibo.rasp2021/resources/Raspberry/bls</a>) that can be adapted to work with a fan.
 	Ideed, as a led, the unique operations that the software must provides are <bc>turnOn( )</bc> and <bc>turnOff( )</bc> in order to power on or power off the phisical fan.
 	</li><br>
 	
-	<li><b>Sonar</b>: a device connected to a proper platform (e.g. Arduino) managable via software (e.g. in C++); customer provides us the code <a href=https://github.com/anatali/issLab2021/blob/main/it.unibo.rasp2021/resources/rasp/sonar/SonarAlone.c target="code">SonarAlone.c</a>: this C program continuously reads the distance from the phisical sonar connected to a Raspberry and print it to the standard output. In order to make this code more useful, we have adapted it in a previous developement:</li>
+	<li><b>Sonar</b>: the customer provides us the code <a href=https://github.com/anatali/issLab2021/blob/main/it.unibo.rasp2021/resources/rasp/sonar/SonarAlone.c target="code">SonarAlone.c</a>: this C program continuously reads the distance from a phisical sonar connected to a Raspberry and print it to the standard output. In order to make this code more useful, we have adapted it in a previous developement:</li>
 	<table style="width:100%" border="1">
 		<tbody><tr>
 			<td style="width:40%">
@@ -431,7 +433,9 @@ div.imagedesc{
 						<li>The slot number received is higher than zero and representing the parking-slot number; 			
 						</li>
 					</ol></li>
-					<li><b>Alternative Scenario</b>: <br>3.1. The slot number is equal to zero meaning the parking-area is full. In that moment, the car cannot enter; </li>
+					<li><b>Alternative Scenario</b>: <br>
+					<ol start="3"><li>The slot number is equal to zero meaning the parking-area is full. In that moment, the car cannot enter.</li></ol>
+					
 					
 				</ul>
 			</td>
@@ -449,6 +453,7 @@ div.imagedesc{
 						<li>The user waits for a notification from the system that the indoor-area is free within a certain period of time;</li>
 						<li>The user drive the car into the indoor-area and exits the car;</li>
 						<li>The user press the CARENTER button;</li>
+						<li>The system checks the positive presence of the car in the indoor-area;</li>
 						<li>The client receive a unique token (use case Emit TokenId) to pick up the car from the outdoor-area;</li>
 						<li>The transport trolley moves the car from the indoor-area to the selected parking-slot;		
 						</li>
@@ -456,16 +461,23 @@ div.imagedesc{
 
 					<li><b>Alternative Scenario:</b><br>
 						Scenario a: The user does not move the car into the indoor-area within a fixed period of time.
-						<ol>
+						<ol start="2">
 							<li>The user loses the right to park the car and receive a proper notification;</li>
 							<li>The system releases the reserved parking-slot;</li>
 						</ol><br>
 						Scenario b: The user enters the indoor-area but does not press the CARENTER button within a fixed period of time.
-						<ol>
+						<ol start="3">
 							<li>The client receive a unique token (use case Emit TokenId) to pick up the car from the outdoor-area;</li>
 							<li>The transport trolley automatically parks the car;</li>
 						</ol>
+						Scenario c: The user does not enter the indoor-area but press the CARENTER button.
+						<ol start="2">
+							<li>The system checks that the indoor-area is empty;</li>
+							<li>The system sends a proper notification to the user saying the car must be inside the indoor-area;</li>
+						</ol>
 					</li>
+					
+
 				</ul>
 			</td>
 		</tr>
@@ -479,13 +491,23 @@ div.imagedesc{
 							-The transport trolley can go back to its home position or fulfill another request;
 					</i>					
 					<li><b>Main Scenario</b>: <ol>
-						<li>The system check the existance of the token entered and gets the relative parking-slot</li>
+						<li>The system checks the existance of the token entered and gets the relative parking-slot</li>
+						<li>The system checks the outdoor area is free;</li>
+						<li>The system notifies the user to wait the car at the outdoor-area;</li>
 						<li>The transport trolley takes over the car and moves it from the parking-slot to the outdoor-area;</li>
+						<li>The system notifies the user to pick up the car from the outdoor-area.</li>
 					</ol></li>
 					<li><b>Alternative Scenario:</b><br>
 						Scenario a: The token does not exist in the system.
-						<ol>
+						<ol start="2">
 							<li>The system asks for a valid token;</li>
+						</ol><br>
+						Scenario b: The outdoor-area is occupied by another car.
+						<ol start="2">
+							<li>The system notifies the user to wait;</li>
+							<li>When the outdoor-area is free, the system notifies the user to wait the car at the outdoor-area;</li>
+							<li>The transport trolley takes over the car and moves it from the parking-slot to the outdoor-area;</li>
+							<li>The system notifies the user to pick up the car from the outdoor-area.</li>
 						</ol><br>
 					</li>
 				</ul>
@@ -498,7 +520,7 @@ div.imagedesc{
 					<li><b>Post Condition</b><br><i>-The outdoor-area is free;<br>
 					</i></li>
 					<li><b>Main Scenario</b>: <ol>
-						<li>The client can pick up the car from the outdoor-area within a fixed period of time;		
+						<li>The client can pick up the car from the outdoor-area within a fixed period of time (DTFREE);		
 						</li>
 					</ol> </li>
 
@@ -761,6 +783,24 @@ div.imagedesc{
 </div>
 
 <h2>Problem analysis</h2>
+
+	<div class="remark"><h3>First Logical Architecture</h3>
+	<center><img src="./img/logical_architecture.png" alt="First Logical Architecture" style="max-width:50%"></center></div>
+	
+	<div class="remark">
+	<h3>QAK - Metamodeling</h3>
+	It is useful to adopt the <a href=http://htmlpreview.github.io/?https://github.com/anatali/issLab2021/blob/main/it.unibo.qakintro2020/userDocs/LabQakIntro2021.html><em>QActor (meta)model</em></a> to provide an executable model for the logical architecture. By adopting this meta-model we can map the General Executable Object by as QAK-Actors in order to produce a more detailed logical architecture:
+	
+	<center><img src="./img/logical_architecture_qak.png" alt="Logical Architecture with QAK" style="max-width:60%"></center><br>
+	
+	<h3>Interaction ParkManagerService-ParkServiceGUI</h3>
+	<center><img src="./img/logical_architecture_messages.png" alt="Interaction ParkManagerService-ParkServiceGUI" style="max-width:60%"></center><br>
+	
+	<h4>Message Type Analysis</h4>
+	
+	
+	</div>
+
 	<!--
 	<div class="remark">
 	For now, we will use the virtual robot given by the customer and described in <em><a href=http://htmlpreview.github.io/?https://github.com/anatali/issLab2021/blob/main/it.unibo.boundaryWalk/userDocs/VirtualRobot2021.html target="web">VirtualRobot2021.html</a></em>
