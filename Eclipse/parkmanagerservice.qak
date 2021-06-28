@@ -1,9 +1,0 @@
-System carparking
-
-Context ctxcarparking ip[host="localhost" port=8000]
-
-QActor parkingservicehui context ctxcarparking {
-	State s0 initial {
-		println("ParkingServiceGUI | started")
-	}
-}
