@@ -466,7 +466,7 @@ div.imagedesc{
 							<li>The user loses the right to park the car and receive a proper notification;</li>
 							<li>The system releases the reserved parking-slot;</li>
 						</ol><br>
-						Scenario b: The user enters the indoor-area but does not press the CARENTER button within a fixed period of time.
+						Scenario b: The user enters the indoor-area but does not press the CARENTER button within a fixed period of time (ITOCC).
 						<ol start="3">
 							<li>The client receive a unique token (use case Emit TokenId) to pick up the car from the outdoor-area;</li>
 							<li>The transport trolley automatically parks the car;</li>
@@ -795,10 +795,9 @@ div.imagedesc{
 	<center><img src="./img/logical_architecture_qak.png" alt="Logical Architecture with QAK" style="max-width:60%"></center><br>
 	
 	<h3>Interaction ParkManagerService-ParkServiceGUI</h3>
-	<center><img src="./img/logical_architecture_messages.png" alt="Interaction ParkManagerService-ParkServiceGUI" style="max-width:60%"></center><br>
+	<center><img src="./img/logical_architecture_interaction_gui.png" alt="Interaction ParkManagerService-ParkServiceGUI" style="max-width:60%"></center><br>
 	
 	<h4>Message Type Analysis</h4>
-
 
 	<center><table>
 
@@ -895,7 +894,96 @@ div.imagedesc{
 			</td>
 		</tr>
 		
+		<tr>
+		<td colspan="2">
+			<h5 style="padding-left:10px"><ks>canEnterCar(X)</ks></h5>
+				<ul>
+					<li><b>Type:</b> Dispatch;</li>
+					<li><b>From:</b> ParkManagerService;</li>
+					<li><b>To:</b> ParkServiceGUI;</li>
+					<li><b>Payload:</b> <br>
+						<ul>
+							<li><b>X:</b> generic informational message;</li>
+						</ul></li>
+					<li><b>Explanation:</b> From the requirement analysis it is known that the service will notify the user when he can move car to the indoor;</li>				
+				</ul>
+		</td>
+		</tr>
+		
 	</table></center><br>
+	
+	<h3>Timer for DTFREE and ITOCC</h3>
+	<center><img src="img/logical_architecture_dtfree_itocc.png" alt="Interaction for counting DTFREE and ITOCC" style="max-width:60%"></center>
+	
+	<h4>Message Type Analysis</h4>
+	
+	<center>
+	<table>
+		<tr>
+			<td style="width:50%">
+				<h5 style="padding-left:10px"><ks>startItoccCounter(X)</ks></h5>
+				<ul>
+					<li><b>Type:</b> Dispatch;</li>
+					<li><b>From:</b> ParkManagerService;</li>
+					<li><b>To:</b> ItoccCounter;</li>
+					<li><b>Payload:</b> <br>
+						<ul>
+							<li><b>X:</b> generic informational message;</li>
+						</ul></li>
+					<li><b>Explanation:</b> The message is a <i>command</i> to start the count;</li>				
+				</ul>
+			</td>
+			<td style="width:50%">
+				<h5 style="padding-left:10px"><ks>startDtfreeCounter(X)</ks></h5>
+				<ul>
+					<li><b>Type:</b> Dispatch;</li>
+					<li><b>From:</b> ParkManagerService;</li>
+					<li><b>To:</b> DtfreeCounter;</li>
+					<li><b>Payload:</b> <br>
+						<ul>
+							<li><b>X:</b> generic informational message;</li>
+						</ul></li>
+					<li><b>Explanation:</b> The message is a <i>command</i> to start the count;</li>				
+				</ul>
+			</td>
+		</tr>
+
+		<tr>
+			<td style="width:50%">
+				<h5 style="padding-left:10px"><ks>itoccReached</ks></h5>
+				<ul>
+					<li><b>Type:</b> Dispatch/Event;</li>
+					<li><b>From:</b> ItoccCounter;</li>
+					<li><b>To:</b> ? ;</li>
+					<li><b>Payload:</b> ? ;</li>
+					<li><b>Explanation:</b> The projectist has to decide if this message is a Dispatch or an Event:
+						<ul>
+						<li>if he choices it is a dispatch, then he also has to decide if the message can be send to 
+							the <i>ParkServiceGUI</i> or if it has to be sent to the <i>ParkManagerService</i> (but this could introduce a small overhead for the service);</li>
+						<li>if he choices it is an event then he also has to decide if the event can directly be handled by the <i>ParkServiceGUI</i> or if it has to be handled by the <i>ParkManagerService</i> (but this could introduce a small overhead for the service); this way is more reusable because of the actor who emits the event does not need to say who is recipient of the message.</li>
+						</ul>
+					</li>				
+				</ul>
+			</td>
+			<td style="width:50%">
+				<h5 style="padding-left:10px"><ks>dtfreeReached</ks></h5>
+				<ul>
+					<li><b>Type:</b> Dispatch/Event;</li>
+					<li><b>From:</b> DtfreeCounter;</li>
+					<li><b>To:</b> ? ;</li>
+					<li><b>Payload:</b> ? ;</li>
+					<li><b>Explanation:</b> The projectist has to decide if this message is a Dispatch or an Event:
+						<ul>
+						<li>if he choices it is a dispatch, then he also has to decide if the message can be send to 
+							the <i>ParkServiceStatusGUI</i> or if it has to be sent to the <i>ParkManagerService</i> (but this could introduce a small overhead for the service);</li>
+						<li>if he choices it is an event then he also has to decide if the event can directly be handled by the <i>ParkServiceStatusGUI</i> or if it has to be handled by the <i>ParkManagerService</i> (but this could introduce a small overhead for the service); this way is more reusable because of the actor who emits the event does not need to say who is recipient of the message.</li>
+						</ul>
+					</li>				
+				</ul>
+			</td>
+		</tr>
+	</table>
+	</center>
 	
 	</div>
 	
@@ -903,9 +991,8 @@ div.imagedesc{
 	<h3>The executable model (QAK)</h3>
 	<ul>
 	<li><a href="sources/parkmanagerservice_1.0.qak"><em>parkmanagerservice_1.0.qak</em></a>: a first very basic executable model;</li>
-	<li><a href="sources/parkmanagerservice_2.0.qak"><em>parkmanagerservice_2.0.qak</em></a>: evolution of the previous model with counters and mock state in order to realize automated test plan;</li>
+	<li><a href="sources/parkmanagerservice_2.0.qak"><em>parkmanagerservice_2.0.qak</em></a>: evolution of the previous model with counters and a <a href="../Eclipse/ParkManagerService/src/it/unibo/parkingstate/MockState.kt" target="code"><k>Mock State</k></a> in order to realize automated test plan;</li>
 	</ul>
-	
 	
 	</div>
 
