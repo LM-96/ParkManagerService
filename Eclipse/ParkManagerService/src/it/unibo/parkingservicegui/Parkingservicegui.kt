@@ -18,6 +18,7 @@ class Parkingservicegui ( name: String, scope: CoroutineScope  ) : ActorBasicFsm
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		 	var RECEIVED_SLOTNUM = 0
 				var MY_TOKEN = 0
+				val state = it.unibo.parkingstate.MockState
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
@@ -41,19 +42,26 @@ class Parkingservicegui ( name: String, scope: CoroutineScope  ) : ActorBasicFsm
 								println("$name | received reply with SLOTNUM=$RECEIVED_SLOTNUM")
 						}
 					}
-					 transition( edgeName="goto",targetState="moveTheCar", cond=doswitchGuarded({ RECEIVED_SLOTNUM > 0  
+					 transition( edgeName="goto",targetState="waitMoveToIndoor", cond=doswitchGuarded({ RECEIVED_SLOTNUM > 0  
 					}) )
 					transition( edgeName="goto",targetState="noAvailableSlot", cond=doswitchGuarded({! ( RECEIVED_SLOTNUM > 0  
 					) }) )
 				}	 
+				state("waitMoveToIndoor") { //this:State
+					action { //it:State
+						println("$name | client is waiting the idoor is free")
+					}
+					 transition(edgeName="t1",targetState="moveTheCar",cond=whenDispatch("canEnterCar"))
+				}	 
 				state("moveTheCar") { //this:State
 					action { //it:State
-						delay(2000) 
+						delay(5000) 
+						 state.setIndoorState(`it.unibo.parkingstate`.DoorState.OCCUPIED)  
 						println("$name | client has moved the car in the INDOOR")
 						request("carenter", "carenter($RECEIVED_SLOTNUM)" ,"parkingmanagerservice" )  
 						println("$name | client has press CARENTER")
 					}
-					 transition(edgeName="t1",targetState="receivedToken",cond=whenReply("token"))
+					 transition(edgeName="t2",targetState="receivedToken",cond=whenReply("token"))
 				}	 
 				state("receivedToken") { //this:State
 					action { //it:State
@@ -72,7 +80,7 @@ class Parkingservicegui ( name: String, scope: CoroutineScope  ) : ActorBasicFsm
 						request("pickup", "pickup($MY_TOKEN)" ,"parkingmanagerservice" )  
 						println("$name | client has required to pickup the car")
 					}
-					 transition(edgeName="t2",targetState="waitPickupConfirm",cond=whenReply("canPickup"))
+					 transition(edgeName="t3",targetState="waitPickupConfirm",cond=whenReply("canPickup"))
 				}	 
 				state("waitPickupConfirm") { //this:State
 					action { //it:State
@@ -84,6 +92,7 @@ class Parkingservicegui ( name: String, scope: CoroutineScope  ) : ActorBasicFsm
 				state("pickup") { //this:State
 					action { //it:State
 						delay(5000) 
+						 state.setOutdoorState(`it.unibo.parkingstate`.DoorState.FREE)  
 						println("$name | client has picked up his car")
 					}
 				}	 
