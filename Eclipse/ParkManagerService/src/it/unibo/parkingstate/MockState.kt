@@ -1,5 +1,8 @@
 package it.unibo.parkingstate
 
+import it.unibo.parkingslot.SimpleParkingSlotManager
+import it.unibo.parkingslot.ParkingSlotManager
+
 object MockState : StateReader {
 	
 	private var indoor = DoorState.FREE
@@ -8,8 +11,18 @@ object MockState : StateReader {
 	private var temperature = 0.0
 	private var trolley = TrolleyState.IDLE
 	
+	private var slotMgr : ParkingSlotManager = SimpleParkingSlotManager(1)
+	
 	init {
 		println("\t\tMockstate: init...")
+	}
+	
+	fun setParkingSlotManager(parkingSlotManager : ParkingSlotManager) {
+		this.slotMgr = parkingSlotManager
+	}
+	
+	fun getParkingSlotManager() : ParkingSlotManager {
+		return slotMgr;
 	}
 	
 	fun setIndoorState(state: DoorState) {

@@ -16,8 +16,9 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 	@kotlinx.coroutines.ObsoleteCoroutinesApi
 	@kotlinx.coroutines.ExperimentalCoroutinesApi			
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
-		  val SLOT_MANAGER = it.unibo.parkingslot.SimpleParkingSlotManager(1)
-				val state = it.unibo.parkingstate.MockState  
+		  
+				val state = it.unibo.parkingstate.MockState
+				var SLOTNUM = 0
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
@@ -28,27 +29,37 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 				state("work") { //this:State
 					action { //it:State
 						println("$name | waiting for request...")
+						updateResourceRep( "work"  
+						)
 					}
-					 transition(edgeName="t4",targetState="handleEnter",cond=whenRequest("enter"))
-					transition(edgeName="t5",targetState="handleCarEnter",cond=whenRequest("carenter"))
-					transition(edgeName="t6",targetState="handlePickup",cond=whenRequest("pickup"))
+					 transition(edgeName="t0",targetState="handleEnter",cond=whenRequest("enter"))
+					transition(edgeName="t1",targetState="handleCarEnter",cond=whenRequest("carenter"))
+					transition(edgeName="t2",targetState="handlePickup",cond=whenRequest("pickup"))
 				}	 
 				state("handleEnter") { //this:State
 					action { //it:State
 						println("$name in ${currentState.stateName} | $currentMsg")
-						 var SLOTNUM = SLOT_MANAGER.getFreeSlot()  
-						println("$name | replying enter request win [SLOTNUM = $SLOTNUM]")
+						 SLOTNUM = state.getParkingSlotManager().getFreeSlot()  
+						println("$name | replying enter request with [SLOTNUM = $SLOTNUM]")
 						answer("enter", "slotnum", "slotnum($SLOTNUM)"   )  
+						updateResourceRep( "reply with SLOTNUM=$SLOTNUM"  
+						)
 					}
-					 transition( edgeName="goto",targetState="checkIndoorFree", cond=doswitch() )
+					 transition( edgeName="goto",targetState="checkIndoorFree", cond=doswitchGuarded({ SLOTNUM > 0  
+					}) )
+					transition( edgeName="goto",targetState="work", cond=doswitchGuarded({! ( SLOTNUM > 0  
+					) }) )
 				}	 
 				state("checkIndoorFree") { //this:State
 					action { //it:State
 						 if(state.getIndoorState().equals(`it.unibo.parkingstate`.DoorState.FREE)) {  
-						forward("canEnterCar", "canEnterCar(OK)" ,"parkingservicegui" ) 
+						updateResourceRep( "canEnterCar(OK)"  
+						)
 						forward("startItoccCounter", "startItoccCounter(START)" ,"itocccounter" ) 
 						 } else {  
 						println("$name | indoor-Area is already engaged")
+						updateResourceRep( "canEnterCar(WAIT)"  
+						)
 						 }  
 					}
 					 transition( edgeName="goto",targetState="work", cond=doswitch() )
@@ -62,9 +73,11 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 								println("$name | client has not moved the car into the indoor")
 								 } else {
 												var TOKEN = payloadArg(0).toInt()
-												SLOT_MANAGER.occupySlot(TOKEN)	 
+												state.getParkingSlotManager().occupySlot(TOKEN)	 
 								println("$name | generated TOKEN=$TOKEN")
 								answer("carenter", "token", "token($TOKEN)"   )  
+								updateResourceRep( "reply with TOKEN=$TOKEN"  
+								)
 								println("$name | trolley will take the car")
 								 	state.setIndoorState(`it.unibo.parkingstate`.DoorState.FREE) }  
 						}
@@ -77,7 +90,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 						if( checkMsgContent( Term.createTerm("pickup(TOKEN)"), Term.createTerm("pickup(TOKEN)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								 	var TOKEN = payloadArg(0) 
-												var slotnum_free = SLOT_MANAGER.freeSlotByToken(TOKEN)  
+												var slotnum_free = state.getParkingSlotManager().freeSlotByToken(TOKEN)  
 								 	if(state.getOutdoorState().equals(`it.unibo.parkingstate`.DoorState.FREE)) { 
 												state.setOutdoorState(`it.unibo.parkingstate`.DoorState.OCCUPIED)
 								println("$name | trolley will transport car in the outdoor")

@@ -16,8 +16,10 @@ Dispatch itoccReached : itoccReached(X)
 Dispatch startDtfreeCounter : startDtfreeCounter(X)
 Dispatch startItoccCounter : startItoccCounter(X)
 
-Context ctxcarparking ip[host="localhost" port=8000]
 
+
+Context ctxcarparking ip[host="localhost" port=8000]
+ /*
 QActor parkingservicegui context ctxcarparking {
 	
 	[# 	var RECEIVED_SLOTNUM = 0
@@ -28,6 +30,7 @@ QActor parkingservicegui context ctxcarparking {
 	State s0 initial {
 		println("$name | started")
 	} Goto requestToEnter
+	
 	
 	State requestToEnter {
 		request parkingmanagerservice -m enter : enter(hello)
@@ -92,12 +95,14 @@ QActor parkingservicegui context ctxcarparking {
 	State noAvailableSlot {
 		println("$name | no slot available... i go elsewhere or retry later")
 	}
-}
+} */
 
 QActor parkingmanagerservice context ctxcarparking {
 	
-	[#  val SLOT_MANAGER = it.unibo.parkingslot.SimpleParkingSlotManager(1)
-		val state = it.unibo.parkingstate.MockState #]
+	[#  
+		val state = it.unibo.parkingstate.MockState
+		var SLOTNUM = 0
+	#]
 	
 	State s0 initial {
 		println("$name | started")
@@ -105,6 +110,7 @@ QActor parkingmanagerservice context ctxcarparking {
 	
 	State work {
 		println("$name | waiting for request...")
+		updateResource [# "work" #]
 	} Transition t
 		whenRequest enter -> handleEnter
 		whenRequest carenter -> handleCarEnter
@@ -112,17 +118,22 @@ QActor parkingmanagerservice context ctxcarparking {
 	
 	State handleEnter {
 		printCurrentMessage
-		[# var SLOTNUM = SLOT_MANAGER.getFreeSlot() #]
-		println("$name | replying enter request win [SLOTNUM = $SLOTNUM]")
+		[# SLOTNUM = state.getParkingSlotManager().getFreeSlot() #]
+		println("$name | replying enter request with [SLOTNUM = $SLOTNUM]")
 		replyTo enter with slotnum : slotnum($SLOTNUM)
-	} Goto checkIndoorFree
+		
+		updateResource[# "reply with SLOTNUM=$SLOTNUM" #]
+		
+	} Goto checkIndoorFree if [# SLOTNUM > 0 #] else work
 	
 	State checkIndoorFree {
 		[# if(state.getIndoorState().equals(`it.unibo.parkingstate`.DoorState.FREE)) { #]
-			forward parkingservicegui -m canEnterCar : canEnterCar(OK)
+			//forward parkingservicegui -m canEnterCar : canEnterCar(OK)
+			updateResource [# "canEnterCar(OK)" #]
 			forward itocccounter -m startItoccCounter : startItoccCounter(START)
 		[# } else { #]
 			println("$name | indoor-Area is already engaged")
+			updateResource [# "canEnterCar(WAIT)" #]
 			//TODO: if indoor area is already engaged...
 		[# } #]
 	} Goto work
@@ -137,9 +148,10 @@ QActor parkingmanagerservice context ctxcarparking {
 				
 			[# } else {
 				var TOKEN = payloadArg(0).toInt()
-				SLOT_MANAGER.occupySlot(TOKEN)	#]
+				state.getParkingSlotManager().occupySlot(TOKEN)	#]
 			println("$name | generated TOKEN=$TOKEN")
 			replyTo carenter with token:token($TOKEN)
+			updateResource[# "reply with TOKEN=$TOKEN" #]
 			
 			//Simulate trolley has take the car
 			println("$name | trolley will take the car")
@@ -151,7 +163,7 @@ QActor parkingmanagerservice context ctxcarparking {
 		printCurrentMessage
 		onMsg(pickup : pickup(TOKEN)) {
 			[# 	var TOKEN = payloadArg(0) 
-				var slotnum_free = SLOT_MANAGER.freeSlotByToken(TOKEN) #]
+				var slotnum_free = state.getParkingSlotManager().freeSlotByToken(TOKEN) #]
 			
 			[# 	if(state.getOutdoorState().equals(`it.unibo.parkingstate`.DoorState.FREE)) { 
 				state.setOutdoorState(`it.unibo.parkingstate`.DoorState.OCCUPIED)

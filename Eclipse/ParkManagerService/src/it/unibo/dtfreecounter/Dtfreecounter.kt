@@ -30,7 +30,7 @@ class Dtfreecounter ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( na
 					action { //it:State
 						println("$name | working...")
 					}
-					 transition(edgeName="t10",targetState="count",cond=whenDispatch("startDtfreeCounter"))
+					 transition(edgeName="t6",targetState="count",cond=whenDispatch("startDtfreeCounter"))
 				}	 
 				state("count") { //this:State
 					action { //it:State
@@ -38,8 +38,8 @@ class Dtfreecounter ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( na
 						stateTimer = TimerActor("timer_count", 
 							scope, context!!, "local_tout_dtfreecounter_count", DTFREE )
 					}
-					 transition(edgeName="t11",targetState="reached",cond=whenTimeout("local_tout_dtfreecounter_count"))   
-					transition(edgeName="t12",targetState="count",cond=whenDispatch("startDtfreeCounter"))
+					 transition(edgeName="t7",targetState="reached",cond=whenTimeout("local_tout_dtfreecounter_count"))   
+					transition(edgeName="t8",targetState="count",cond=whenDispatch("startDtfreeCounter"))
 				}	 
 				state("reached") { //this:State
 					action { //it:State

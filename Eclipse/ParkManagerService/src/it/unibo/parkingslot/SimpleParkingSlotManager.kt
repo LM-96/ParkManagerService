@@ -7,7 +7,7 @@ class SimpleParkingSlotManager(maxSlot : Int) : ParkingSlotManager {
 	private val totalSlot = maxSlot
 	
 	override fun getFreeSlot() : Int {
-		for(i in 0..totalSlot) {
+		for(i in 0..(totalSlot - 1)) {
 			if(slots[i] == ParkingSlotState.FREE) {
 				slots[i] = ParkingSlotState.RESERVED
 				return i+1
@@ -33,7 +33,7 @@ class SimpleParkingSlotManager(maxSlot : Int) : ParkingSlotManager {
 	}
 	
 	override fun freeSlotByToken(token : String) : Int {
-		for(i in 0..totalSlot) {
+		for(i in 0..(totalSlot-1)) {
 			if(tokens[i].equals(token)) {
 				if(slots[i] == ParkingSlotState.OCCUPIED) {
 					slots[i] == ParkingSlotState.FREE
