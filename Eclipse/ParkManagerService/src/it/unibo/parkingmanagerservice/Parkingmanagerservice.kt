@@ -52,7 +52,8 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 				}	 
 				state("checkIndoorFree") { //this:State
 					action { //it:State
-						 if(state.getIndoorState().equals(`it.unibo.parkingstate`.DoorState.FREE)) {  
+						 if(state.getIndoorState().equals(`it.unibo.parkingstate`.DoorState.FREE)) { 
+									state.setIndoorState(`it.unibo.parkingstate`.DoorState.OCCUPIED)  
 						updateResourceRep( "canEnterCar(OK)"  
 						)
 						forward("startItoccCounter", "startItoccCounter(START)" ,"itocccounter" ) 
@@ -69,17 +70,19 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 						println("$name in ${currentState.stateName} | $currentMsg")
 						if( checkMsgContent( Term.createTerm("carenter(SLOTNUM)"), Term.createTerm("carenter(SLOTNUM)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
-								 	if(state.getIndoorState().equals(`it.unibo.parkingstate`.DoorState.FREE)) { 
+								 	if(state.getWeightFromSensor() <= 0) { 
 								println("$name | client has not moved the car into the indoor")
 								 } else {
 												var TOKEN = payloadArg(0).toInt()
 												state.getParkingSlotManager().occupySlot(TOKEN)	 
+								forward("stopCount", "stopCount(STOP)" ,"itocccounter" ) 
 								println("$name | generated TOKEN=$TOKEN")
 								answer("carenter", "token", "token($TOKEN)"   )  
 								updateResourceRep( "reply with TOKEN=$TOKEN"  
 								)
 								println("$name | trolley will take the car")
-								 	state.setIndoorState(`it.unibo.parkingstate`.DoorState.FREE) }  
+								 	state.setIndoorState(`it.unibo.parkingstate`.DoorState.FREE) } 
+												state.setWeightOnSensor(0.0)
 						}
 					}
 					 transition( edgeName="goto",targetState="work", cond=doswitch() )
@@ -90,16 +93,27 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 						if( checkMsgContent( Term.createTerm("pickup(TOKEN)"), Term.createTerm("pickup(TOKEN)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								 	var TOKEN = payloadArg(0) 
-												var slotnum_free = state.getParkingSlotManager().freeSlotByToken(TOKEN)  
-								 	if(state.getOutdoorState().equals(`it.unibo.parkingstate`.DoorState.FREE)) { 
-												state.setOutdoorState(`it.unibo.parkingstate`.DoorState.OCCUPIED)
+												var slotnum_free = state.getParkingSlotManager().freeSlotByToken(TOKEN) 
+												 if(slotnum_free == -1) {
+								answer("pickup", "canPickup", "canPickup(INVALIDTOK)"   )  
+								updateResourceRep( "canPickup(INVALIDTOK)" 
+								)
+								 	} else {
+													if(state.getOutdoorState().equals(`it.unibo.parkingstate`.DoorState.FREE)) { 
+													state.setOutdoorState(`it.unibo.parkingstate`.DoorState.OCCUPIED)
 								println("$name | trolley will transport car in the outdoor")
 								answer("pickup", "canPickup", "canPickup(OK)"   )  
 								println("$name | slot $slotnum_free is going to be free")
 								forward("startDtfreeCounter", "startDtfreeCounter(START)" ,"dtfreecounter" ) 
-								 } else {  
+								updateResourceRep( "canPickup(OK)"  
+								)
+								 		} else {  
 								println("$name | the outdoor is already engaged by another car... please wait")
-								 }  
+								answer("pickup", "canPickup", "canPickup(WAIT)"   )  
+								updateResourceRep( "canPickup(WAIT)" 
+								)
+								 		}
+												}				
 						}
 					}
 					 transition( edgeName="goto",targetState="work", cond=doswitch() )

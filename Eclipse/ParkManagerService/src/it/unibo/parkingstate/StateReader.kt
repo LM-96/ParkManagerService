@@ -7,4 +7,6 @@ interface StateReader {
 	fun getFanState() : PowerState
 	fun getTemperature() : Double
 	fun getTrolleyState() : TrolleyState
+	fun getWeightFromSensor() : Double
+	fun getDistanceFromSonar() : Double
 }

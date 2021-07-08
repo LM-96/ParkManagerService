@@ -10,11 +10,28 @@ object MockState : StateReader {
 	private var fan = PowerState.POWERED_OFF
 	private var temperature = 0.0
 	private var trolley = TrolleyState.IDLE
+	private var weightSensor = 0.0
+	private var distanceSonar = 0.0
 	
 	private var slotMgr : ParkingSlotManager = SimpleParkingSlotManager(1)
 	
 	init {
 		println("\t\tMockstate: init...")
+	}
+	
+	fun reset() {
+		reset(SimpleParkingSlotManager(1))
+	}
+	
+	fun reset(slotMgr : ParkingSlotManager) {
+		indoor = DoorState.FREE
+		outdoor = DoorState.FREE
+		fan = PowerState.POWERED_OFF
+		temperature = 0.0
+		trolley = TrolleyState.IDLE
+		weightSensor = 0.0
+		distanceSonar = 0.0
+		this.slotMgr = slotMgr
 	}
 	
 	fun setParkingSlotManager(parkingSlotManager : ParkingSlotManager) {
@@ -47,6 +64,14 @@ object MockState : StateReader {
 		this.trolley = state
 	}
 	
+	fun setWeightOnSensor(weight: Double) {
+		this.weightSensor = weight
+	}
+	
+	fun setDistanceFromSonar(distance: Double) {
+		this.distanceSonar = distance
+	}
+	
 	override fun getOutdoorState() : DoorState {
 		return outdoor
 	}
@@ -67,5 +92,12 @@ object MockState : StateReader {
 		return trolley
 	}
 	
+	override fun getDistanceFromSonar() : Double {
+		return distanceSonar
+	}
+	
+	override fun getWeightFromSensor() : Double {
+		return weightSensor
+	}
 	
 }

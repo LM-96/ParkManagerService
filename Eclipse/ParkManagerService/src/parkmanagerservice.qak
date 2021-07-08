@@ -15,7 +15,7 @@ Dispatch dtfreeReached : dtfreeReached(X)
 Dispatch itoccReached : itoccReached(X)
 Dispatch startDtfreeCounter : startDtfreeCounter(X)
 Dispatch startItoccCounter : startItoccCounter(X)
-
+Dispatch stopCount : stopCount(X)
 
 
 Context ctxcarparking ip[host="localhost" port=8000]
@@ -127,10 +127,12 @@ QActor parkingmanagerservice context ctxcarparking {
 	} Goto checkIndoorFree if [# SLOTNUM > 0 #] else work
 	
 	State checkIndoorFree {
-		[# if(state.getIndoorState().equals(`it.unibo.parkingstate`.DoorState.FREE)) { #]
+		[# if(state.getIndoorState().equals(`it.unibo.parkingstate`.DoorState.FREE)) { 
+			state.setIndoorState(`it.unibo.parkingstate`.DoorState.OCCUPIED) #]
 			//forward parkingservicegui -m canEnterCar : canEnterCar(OK)
 			updateResource [# "canEnterCar(OK)" #]
 			forward itocccounter -m startItoccCounter : startItoccCounter(START)
+			
 		[# } else { #]
 			println("$name | indoor-Area is already engaged")
 			updateResource [# "canEnterCar(WAIT)" #]
@@ -141,7 +143,7 @@ QActor parkingmanagerservice context ctxcarparking {
 	State handleCarEnter {
 		printCurrentMessage
 		onMsg(carenter : carenter(SLOTNUM)) {
-			[# 	if(state.getIndoorState().equals(`it.unibo.parkingstate`.DoorState.FREE)) { 
+			[# 	if(state.getWeightFromSensor() <= 0) { 
 			#]
 				println("$name | client has not moved the car into the indoor")
 				//TODO: see NotifyInterest alternative scenario
@@ -149,13 +151,17 @@ QActor parkingmanagerservice context ctxcarparking {
 			[# } else {
 				var TOKEN = payloadArg(0).toInt()
 				state.getParkingSlotManager().occupySlot(TOKEN)	#]
+			forward itocccounter -m stopCount:stopCount(STOP)
 			println("$name | generated TOKEN=$TOKEN")
 			replyTo carenter with token:token($TOKEN)
 			updateResource[# "reply with TOKEN=$TOKEN" #]
 			
 			//Simulate trolley has take the car
 			println("$name | trolley will take the car")
-			[# 	state.setIndoorState(`it.unibo.parkingstate`.DoorState.FREE) } #]
+			
+			[# 	state.setIndoorState(`it.unibo.parkingstate`.DoorState.FREE) } 
+				state.setWeightOnSensor(0.0)
+			#]
 		}
 	} Goto work
 	
@@ -163,21 +169,34 @@ QActor parkingmanagerservice context ctxcarparking {
 		printCurrentMessage
 		onMsg(pickup : pickup(TOKEN)) {
 			[# 	var TOKEN = payloadArg(0) 
-				var slotnum_free = state.getParkingSlotManager().freeSlotByToken(TOKEN) #]
-			
-			[# 	if(state.getOutdoorState().equals(`it.unibo.parkingstate`.DoorState.FREE)) { 
-				state.setOutdoorState(`it.unibo.parkingstate`.DoorState.OCCUPIED)
+				var slotnum_free = state.getParkingSlotManager().freeSlotByToken(TOKEN) 
+				 if(slotnum_free == -1) {
+			#]
+									
+					replyTo pickup with canPickup : canPickup(INVALIDTOK)
+					updateResource[# "canPickup(INVALIDTOK)"#]
+					//TODO: handle invalid token
+					
+			[# 	} else {
+					if(state.getOutdoorState().equals(`it.unibo.parkingstate`.DoorState.FREE)) { 
+					state.setOutdoorState(`it.unibo.parkingstate`.DoorState.OCCUPIED)
 			#]
 					println("$name | trolley will transport car in the outdoor")
 					replyTo pickup with canPickup : canPickup(OK)
 					println("$name | slot $slotnum_free is going to be free")
 					forward dtfreecounter -m startDtfreeCounter : startDtfreeCounter(START)
+					
+					updateResource[# "canPickup(OK)" #]
 				
-			[# } else { #]
+			[# 		} else { #]
 					println("$name | the outdoor is already engaged by another car... please wait")
+					replyTo pickup with canPickup : canPickup(WAIT)
+					updateResource[# "canPickup(WAIT)"#]
 					//TODO: if outdoor area is already engaged?
 				
-			[# } #]
+			[# 		}
+				}				
+			#]
 		}
 	} Goto work
 }
@@ -196,19 +215,24 @@ QActor itocccounter context ctxcarparking {
 	
 	State work {
 		println("$name | working...")
+		updateResource [# "work"#]
 	} Transition t
 		whenMsg startItoccCounter -> count
+		whenMsg stopCount -> work
 	
 	State count {
 		println("$name | start ITOCC count...")
+		updateResource [# "count"#]
 	} Transition t
 		whenTimeVar ITOCC -> reached
 		whenMsg startItoccCounter -> count
+		whenMsg stopCount -> work
 		
 	State reached {
-		[# if(state.getIndoorState().equals(`it.unibo.parkingstate`.DoorState.FREE)) {#]
+		[# if(state.getWeightFromSensor() <= 0) {#]
 			//forward parkingservicegui -m itoccReached : itoccReached(REACHED)
 			//TODO: how to notify to the client
+			updateResource [# "ITOCC"#]
 			println("$name | ITOCC reached and indoor is free... Client should be notified")
 		[# } #]
 	} Goto work
@@ -226,18 +250,23 @@ QActor dtfreecounter context ctxcarparking {
 	
 	State work {
 		println("$name | working...")
+		updateResource[# "work" #]
 	} Transition t
 		whenMsg startDtfreeCounter -> count
+		whenMsg stopCount -> work
 	
 	State count {
 		println("$name | start DTFREE count...")
+		updateResource[# "count" #]
 	} Transition t
 		whenTimeVar DTFREE -> reached
 		whenMsg startDtfreeCounter -> count
+		whenMsg stopCount -> work
 	
 	State reached {
-		[# if(state.getOutdoorState().equals(`it.unibo.parkingstate`.DoorState.OCCUPIED)) {#]
-			forward parkingservicestatusgui -m dtfreeReached : dtfreeReached(REACHED)
+		[# if(state.getDistanceFromSonar() >= 0) {#]
+			//forward parkingservicestatusgui -m dtfreeReached : dtfreeReached(REACHED)
+			updateResource [# "DTFREE"#]
 			println("$name | DTFREE reached and outdoor is occupied... Manager has been notified")
 		[# } #]
 	} Goto work

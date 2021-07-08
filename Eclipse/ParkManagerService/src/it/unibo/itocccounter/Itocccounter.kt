@@ -29,21 +29,29 @@ class Itocccounter ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( nam
 				state("work") { //this:State
 					action { //it:State
 						println("$name | working...")
+						updateResourceRep( "work" 
+						)
 					}
 					 transition(edgeName="t3",targetState="count",cond=whenDispatch("startItoccCounter"))
+					transition(edgeName="t4",targetState="work",cond=whenDispatch("stopCount"))
 				}	 
 				state("count") { //this:State
 					action { //it:State
 						println("$name | start ITOCC count...")
+						updateResourceRep( "count" 
+						)
 						stateTimer = TimerActor("timer_count", 
 							scope, context!!, "local_tout_itocccounter_count", ITOCC )
 					}
-					 transition(edgeName="t4",targetState="reached",cond=whenTimeout("local_tout_itocccounter_count"))   
-					transition(edgeName="t5",targetState="count",cond=whenDispatch("startItoccCounter"))
+					 transition(edgeName="t5",targetState="reached",cond=whenTimeout("local_tout_itocccounter_count"))   
+					transition(edgeName="t6",targetState="count",cond=whenDispatch("startItoccCounter"))
+					transition(edgeName="t7",targetState="work",cond=whenDispatch("stopCount"))
 				}	 
 				state("reached") { //this:State
 					action { //it:State
-						 if(state.getIndoorState().equals(`it.unibo.parkingstate`.DoorState.FREE)) { 
+						 if(state.getWeightFromSensor() <= 0) { 
+						updateResourceRep( "ITOCC" 
+						)
 						println("$name | ITOCC reached and indoor is free... Client should be notified")
 						 }  
 					}

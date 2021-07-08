@@ -27,7 +27,7 @@ class Parkingservicestatusgui ( name: String, scope: CoroutineScope  ) : ActorBa
 					action { //it:State
 						println("$name | working")
 					}
-					 transition(edgeName="t9",targetState="receivedDtfreeAlarm",cond=whenDispatch("dtfreeReached"))
+					 transition(edgeName="t13",targetState="receivedDtfreeAlarm",cond=whenDispatch("dtfreeReached"))
 				}	 
 				state("receivedDtfreeAlarm") { //this:State
 					action { //it:State

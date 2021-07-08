@@ -29,22 +29,29 @@ class Dtfreecounter ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( na
 				state("work") { //this:State
 					action { //it:State
 						println("$name | working...")
+						updateResourceRep( "work"  
+						)
 					}
-					 transition(edgeName="t6",targetState="count",cond=whenDispatch("startDtfreeCounter"))
+					 transition(edgeName="t8",targetState="count",cond=whenDispatch("startDtfreeCounter"))
+					transition(edgeName="t9",targetState="work",cond=whenDispatch("stopCount"))
 				}	 
 				state("count") { //this:State
 					action { //it:State
 						println("$name | start DTFREE count...")
+						updateResourceRep( "count"  
+						)
 						stateTimer = TimerActor("timer_count", 
 							scope, context!!, "local_tout_dtfreecounter_count", DTFREE )
 					}
-					 transition(edgeName="t7",targetState="reached",cond=whenTimeout("local_tout_dtfreecounter_count"))   
-					transition(edgeName="t8",targetState="count",cond=whenDispatch("startDtfreeCounter"))
+					 transition(edgeName="t10",targetState="reached",cond=whenTimeout("local_tout_dtfreecounter_count"))   
+					transition(edgeName="t11",targetState="count",cond=whenDispatch("startDtfreeCounter"))
+					transition(edgeName="t12",targetState="work",cond=whenDispatch("stopCount"))
 				}	 
 				state("reached") { //this:State
 					action { //it:State
-						 if(state.getOutdoorState().equals(`it.unibo.parkingstate`.DoorState.OCCUPIED)) { 
-						forward("dtfreeReached", "dtfreeReached(REACHED)" ,"parkingservicestatusgui" ) 
+						 if(state.getDistanceFromSonar() >= 0) { 
+						updateResourceRep( "DTFREE" 
+						)
 						println("$name | DTFREE reached and outdoor is occupied... Manager has been notified")
 						 }  
 					}

@@ -36,7 +36,7 @@ class SimpleParkingSlotManager(maxSlot : Int) : ParkingSlotManager {
 		for(i in 0..(totalSlot-1)) {
 			if(tokens[i].equals(token)) {
 				if(slots[i] == ParkingSlotState.OCCUPIED) {
-					slots[i] == ParkingSlotState.FREE
+					slots[i] = ParkingSlotState.FREE
 					tokens[i] = ""
 					
 					return i+1; 
