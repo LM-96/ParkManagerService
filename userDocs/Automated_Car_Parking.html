@@ -420,7 +420,7 @@ div.imagedesc{
 	<tr><td colspan="2"><center><h4>Actor: User</h4></center></td></tr>
 		<tr>
 			<td style="width:50%">
-				<h5 style="padding-left:10px"><ks>Notify Interest</ks></h5>
+				<h5 style="padding-left:10px"><a name="NotifyInterest" style="text-decoration:none;"><ks>Notify Interest</ks></a></h5>
 				<ul>
 					<li><b>Dependencies:</b>
 					<li><b>Pre Condition:</b></li>
@@ -433,14 +433,14 @@ div.imagedesc{
 						<li>The slot number received is higher than zero and representing the parking-slot number; 			
 						</li>
 					</ol></li>
-					<li><b>Alternative Scenario</b>: <br>
+					<li><b><a name="NotifyInterestAlternative" style="text-decoration:none;">Alternative Scenario</a></b>: <br>
 					<ol start="3"><li>The slot number is equal to zero meaning the parking-area is full. In that moment, the car cannot enter.</li></ol>
 					
 					
 				</ul>
 			</td>
 			<td>
-				<h5 style="padding-left:10px"><ks>Car Enter</ks></h5>
+				<h5 style="padding-left:10px"><a name="CarEnter" style="text-decoration:none;"><ks>Car Enter</ks></a></h5>
 				<ul>
 					<li><b>Dependencies:</b><br><i>-Notify Interest</i><br>
 					<li><b>Pre Condition:</b><br><i>
@@ -461,21 +461,28 @@ div.imagedesc{
 					</ol></li>
 
 					<li><b>Alternative Scenario:</b><br>
-						Scenario a: The user does not move the car into the indoor-area within a fixed period of time.
+						Scenario <a name="CarEnterSa" style="text-decoration:none;">a</a>: The user does not move the car into the indoor-area within a fixed period of time.
 						<ol start="2">
 							<li>The user loses the right to park the car and receive a proper notification;</li>
 							<li>The system releases the reserved parking-slot;</li>
 						</ol><br>
-						Scenario b: The user enters the indoor-area but does not press the CARENTER button within a fixed period of time (ITOCC).
+						Scenario <a name="CarEnterSb" style="text-decoration:none;">b</a>: The user enters the indoor-area but does not press the CARENTER button within a fixed period of time (ITOCC).
 						<ol start="3">
 							<li>The client receive a unique token (use case Emit TokenId) to pick up the car from the outdoor-area;</li>
 							<li>The transport trolley automatically parks the car;</li>
-						</ol>
-						Scenario c: The user does not enter the indoor-area but press the CARENTER button.
+						</ol><br>
+						Scenario <a name="CarEnterSc" style="text-decoration:none;">c</a>: The user does not enter the indoor-area but press the CARENTER button.
 						<ol start="2">
 							<li>The system checks that the indoor-area is empty;</li>
 							<li>The system sends a proper notification to the user saying the car must be inside the indoor-area;</li>
-						</ol>
+						</ol><br>
+						Scenario <a name="CarEnterSd" style="text-decoration:none;">d</a>: The indoor-area is already engaged.
+						Scenario <a name="CarEnterSd" style="text-decoration:none;">d</a>: The indoor-area is already engaged.
+						<ol start="2">
+							<li>The system checks that the indoor-area is already engaged then asks the client for waiting;</li>
+							<li>When the indoor-area is free, the system sends a notification to the client for entering the car;</li>
+							<li>Continue from point 3 of the main scenario</li>
+						</ol><br>
 					</li>
 					
 
@@ -484,7 +491,7 @@ div.imagedesc{
 		</tr>
 		<tr>
 			<td style="width:50%">
-				<h5 style="padding-left:10px"><ks>Submit Token</ks></h5>
+				<h5 style="padding-left:10px"><a name="SubmitToken" style="text-decoration:none;"><ks>Submit Token</ks></a></h5>
 				<ul>
 					<li><b>Dependencies:</b></li>
 					<li><b>Pre Condition</b></li>
@@ -499,11 +506,11 @@ div.imagedesc{
 						<li>The system notifies the user to pick up the car from the outdoor-area.</li>
 					</ol></li>
 					<li><b>Alternative Scenario:</b><br>
-						Scenario a: The token does not exist in the system.
+						Scenario <a name="SubmitTokenSa" style="text-decoration:none;">a</a>: The token does not exist in the system.
 						<ol start="2">
 							<li>The system asks for a valid token;</li>
 						</ol><br>
-						Scenario b: The outdoor-area is occupied by another car.
+						Scenario <a name="SubmitTokenSb" style="text-decoration:none;">b</a>: The outdoor-area is occupied by another car.
 						<ol start="2">
 							<li>The system notifies the user to wait;</li>
 							<li>When the outdoor-area is free, the system notifies the user to wait the car at the outdoor-area;</li>
@@ -514,7 +521,7 @@ div.imagedesc{
 				</ul>
 			</td>
 			<td>
-				<h5 style="padding-left:10px"><ks>Pickup Car</ks></h5>
+				<h5 style="padding-left:10px"><a name="PickupCar" style="text-decoration:none;"><ks>Pickup Car</ks></a></h5>
 				<ul>
 					<li><b>Dependencies:</b><i><br>-Submit Token</i></li>
 					<li><b>Pre Condition</b></li>
@@ -526,7 +533,7 @@ div.imagedesc{
 					</ol> </li>
 
 					<li><b>Alternative Scenario:</b><br>
-						Scenario a: The fixed period of time to pick up the car runs out.
+						Scenario <a name="PickupCarSa" style="text-decoration:none;">a</a>: The fixed period of time to pick up the car runs out.
 						<ol>
 							<li>A notification is sent to the manager;</li>
 							<li>The manager free the outdoor-area and a proper notification should be sent to the user;</li>
@@ -1080,8 +1087,8 @@ div.imagedesc{
 	<div class="remark">
 	<h3>The executable model (QAK)</h3>
 	<ul>
-	<li><a href="sources/parkmanagerservice_1.0.qak"><em>parkmanagerservice_1.0.qak</em></a>: a first very basic executable model;</li>
-	<li><a href="sources/parkmanagerservice_2.0.qak"><em>parkmanagerservice_2.0.qak</em></a>: evolution of the previous model with counters and a <a href="https://github.com/LM-96/ParkManagerService/blob/main/Eclipse/ParkManagerService/src/it/unibo/parkingstate/MockState.kt" target="code"><k>Mock State</k></a> in order to realize automated test plan;</li>
+	<li><a href="https://github.com/LM-96/ParkManagerService/blob/main/userDocs/sources/parkmanagerservice_1.0.qak"><em>parkmanagerservice_1.0.qak</em></a>: a first very basic executable model;</li>
+	<li><a href="https://github.com/LM-96/ParkManagerService/blob/main/userDocs/sources/parkmanagerservice_2.0.qak"><em>parkmanagerservice_2.0.qak</em></a>: evolution of the previous model with counters and a <a href="https://github.com/LM-96/ParkManagerService/blob/main/Eclipse/ParkManagerService/src/it/unibo/parkingstate/MockState.kt" target="code"><k>Mock State</k></a> in order to realize automated test plan;</li>
 	</ul>
 	
 	</div>
@@ -1096,12 +1103,12 @@ div.imagedesc{
 
 	<div class="remark">
 		<h3>First Test Plan</h3>
-		(Code in <a href="https://github.com/LM-96/ParkManagerService/blob/main/Eclipse/ParkManagerService/test/it/unibo/parkmanagerservicetest/FirstTestPlan.java" target="code"><em>FirstTestPlan.java</em></a>)<br><br>
+		(Test made with Junit and Java in <a href="https://github.com/LM-96/ParkManagerService/blob/main/Eclipse/ParkManagerService/test/it/unibo/parkmanagerservicetest/FirstTestPlan.java" target="code"><em>FirstTestPlan.java</em></a>, see also the new executable model ready for test using Coap <a href="https://github.com/LM-96/ParkManagerService/blob/main/userDocs/sources/parkmanagerservice_2.1.qak" target="code"><em>parkmanagerservice_2.1.qak</em></a>)<br><br>
 
 		<table>
 			<tr>
 				<td>
-					<h5>testNotifyInterestNoSlotFree</h5>
+					<h5>testNotifyInterestNoSlotFree (alternative scenario of <a href="#NotifyInterestAlternative">Notify Interest</a>)</h5>
 					<ul>
 						<li>
 							<b>Tests: </b>a client wants to enter but no slots are available;
@@ -1119,7 +1126,7 @@ div.imagedesc{
 			</tr>
 			<tr>
 				<td>
-					<h5>testNotifyInterestSlotFree</h5>
+					<h5>testNotifyInterestSlotFree (main scenario of <a href="#NotifyInterest">Notify Interest</a>)</h5>
 					<ul>
 						<li>
 							<b>Tests: </b>a client wants to enter and there is one slot free;
@@ -1138,26 +1145,7 @@ div.imagedesc{
 			</tr>
 			<tr>
 				<td>
-					<h5>testNotifyInterestSlotFree</h5>
-					<ul>
-						<li>
-							<b>Tests: </b>a client wants to enter and there is one slot free;
-						</li>
-						<li>
-							<b>Conditions to pass: </b>
-							<ul>
-								<li>The SLOTNUM sent from the system is equal to the numebr of the parking-slot free;</li>
-								<li>The parking-slot must become reserved;</li>
-								<li>The system must send a confirmation message for parking the car;</li>
-								<li>The ITOCC counter must be started;</li>
-							</ul>
-						</li>	
-					</ul>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<h5>testCarEnterIndoorFree</h5>
+					<h5>testCarEnterIndoorFree (main scenario of <a href="#CarEnter">Car Enter</a>)</h5>
 					<ul>
 						<li>
 							<b>Tests: </b>a client has received the SLOTNUM, the indoor is reserved for him then presses CARENTER;
@@ -1176,26 +1164,7 @@ div.imagedesc{
 			</tr>
 			<tr>
 				<td>
-					<h5>testCarEnterIndoorFree</h5>
-					<ul>
-						<li>
-							<b>Tests: </b>a client has received the SLOTNUM, the indoor is reserved for him then presses CARENTER;
-						</li>
-						<li>
-							<b>Conditions to pass: </b>
-							<ul>
-								<li>The system says to the user that can enter and start the counter;</li>
-								<li>The system replies with token message and stopped the counter;</li>
-								<li>The parking-slot must become occupied;</li>
-								<li>The system comes back to its job;</li>
-							</ul>
-						</li>	
-					</ul>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<h5>testNotifyInterestSlotFreeButIndoorAlreadyEngaged</h5>
+					<h5>testNotifyInterestSlotFreeButIndoorAlreadyEngaged (alternative <a href="#CarEnterSd">scenario d</a> of Car Enter)</h5>
 					<ul>
 						<li>
 							<b>Tests: </b>indoor-area is occupied and a client request to enter;
@@ -1212,7 +1181,7 @@ div.imagedesc{
 			</tr>
 			<tr>
 				<td>
-					<h5>testUserNotEnterCarInItocc</h5>
+					<h5>testUserNotEnterCarInItocc (alternative <a href="#CarEnterSa">scenario a</a> of Car Enter)</h5>
 					<ul>
 						<li>
 							<b>Tests: </b>when a user is waiting for entering the car but itocc is reached;
@@ -1233,7 +1202,7 @@ div.imagedesc{
 
 			<tr>
 				<td>
-					<h5>testSubmitTokenInvalid</h5>
+					<h5>testSubmitTokenInvalid (alternative <a href="#SubmitTokenSa">scenario a</a> of Submit Token)</h5>
 					<ul>
 						<li>
 							<b>Tests: </b>a user send the token to pickup his car but it is invalid;
@@ -1251,7 +1220,7 @@ div.imagedesc{
 			</tr>
 			<tr>
 				<td>
-					<h5>testSubmitToken</h5>
+					<h5>testSubmitToken (main scenario of <a href="#SubmitToken">Sumbit Token</a>)</h5>
 					<ul>
 						<li>
 							<b>Tests: </b>a user sends the correct token to pickup his car and the outdoor area is free;
@@ -1272,7 +1241,7 @@ div.imagedesc{
 
 			<tr>
 				<td>
-					<h5>testSubmitTokenButOutdoorEngaged</h5>
+					<h5>testSubmitTokenButOutdoorEngaged (alternative <a href="#SubmitTokenSb">scenario b</a> of Submit Token)</h5>
 					<ul>
 						<li>
 							<b>Tests: </b>a user sends the correct token to pickup his car and the outdoor area is already engaged;
@@ -1290,7 +1259,7 @@ div.imagedesc{
 
 			<tr>
 				<td>
-					<h5>testUserNotPickUpInDtfree</h5>
+					<h5>testUserNotPickUpInDtfree (alternative <a href="#PickupCarSa">scenario a</a> of Pickup Car)</h5>
 					<ul>
 						<li>
 							<b>Tests: </b>a user sends the correct token to pickup his car and the outdoor area is free, the user does not take the car and the dtfree counter is reached;
