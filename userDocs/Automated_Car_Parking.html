@@ -1092,7 +1092,7 @@ div.imagedesc{
 	To carry out the test plan, a MokeState was used. It is a shared singleton class that allows to keep the status information inside it so
 	that they can be modified and used during tests or by other classes. Two utilitiy classes were also introduced: SpeackerTCP and JcopObserver.
 	SpeackerTCP deals with the management of sending TCP messages to the actors in order to incorporate a common behavior in a single reference class.
-	JcopObserver, on the other hand, is a naive observer that observes what happens to a certain actor.
+	JcopObserver, on the other hand, is a naive observer that observes what happens to a certain actor using the coap protocol which is incorporated in qak logic.
 
 	<div class="remark">
 		<h3>Tests</h3>
@@ -1103,7 +1103,7 @@ div.imagedesc{
 					<h5>testNotifyInterestNoSlotFree</h5>
 					<ul>
 						<li>
-							<b>Tests: </b>a client wants to enter but no slot are available;
+							<b>Tests: </b>a client wants to enter but no slots are available;
 						</li>
 						<li>
 							<b>Conditions to pass: </b>
@@ -1126,7 +1126,7 @@ div.imagedesc{
 						<li>
 							<b>Conditions to pass: </b>
 							<ul>
-								<li>The SLOTNUM sent from the system is equal to the numebr of the parking-slot free;</li>
+								<li>The SLOTNUM sent from the system is equal to the number of the parking-slot free;</li>
 								<li>The parking-slot must become reserved;</li>
 								<li>The system must send a confirmation message for parking the car;</li>
 								<li>The ITOCC counter must be started;</li>
@@ -1313,6 +1313,23 @@ div.imagedesc{
 	</div>
 
 </div>
+
+<h2>Work Plan</h2>
+	<div class="remark">
+		<h3><b>1) Devices (12 hours)</b></h3>
+		Device software management:
+			<ul>
+				<li>Sonar (3 hours);</li>
+				<li>Weight sensor (3 hours);</li>
+				<li>Fan (3 hours);</li>
+				<li>Thermometer (3 hours),</li>
+			</ul>
+
+			<h3><b>2) ParkManagerService (3 days)</b></h3>
+			<h3><b>3) ParkingServiceGUI (2 days)</b></h3>
+			<h3><b>4) ParkServiceStatusGUI (2 days)</b></h3>			
+	</div> 
+
 
 <h2>Project</h2> 
  
