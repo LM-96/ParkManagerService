@@ -913,6 +913,11 @@ div.imagedesc{
 	</table></center><br>
 	
 	<h3>Timer for DTFREE and ITOCC</h3>
+	From the requirements are needed two timers for handling the entering/exiting of the cars (DTFREE and ITOCC). If we directly let the ParkManagerService
+	manage the count-down it would be forced to stop until the end of the count-down; so it is necessary to introduce two active entities as timers that will
+	notify the ParkManagerService at the end of the count-down. Since we are using the QAK system they will be modelled as first level actor that we call 
+	ItoccCounter and DtfreeCounter.
+
 	<center><img src="img/logical_architecture_dtfree_itocc.png" alt="Interaction for counting DTFREE and ITOCC" style="max-width:60%"></center>
 	
 	<h4>Message Type Analysis</h4>
@@ -1081,71 +1086,233 @@ div.imagedesc{
 	
 	</div>
 
-	<!--
-	<div class="remark">
-	For now, we will use the virtual robot given by the customer and described in <em><a href=http://htmlpreview.github.io/?https://github.com/anatali/issLab2021/blob/main/it.unibo.boundaryWalk/userDocs/VirtualRobot2021.html target="web">VirtualRobot2021.html</a></em>
-	Then, about the robot, we highlight that:
-	<ol>
-		<li>In the <a href="VirtualRobot2021.html#commands" target="web">VirtualRobot2021.html: commands</a> the customer states that the robot can receive move commands in two different ways:
-		<ul>
-			<li>by sending messages to the port <tt>8090</tt> using  <ks>HTTP POST</ks> </li>
-			<li>by sending messages to the port <tt>8091</tt> using a <ks>websocket</ks> </li>
-		</ul>
-	
-		<li> With respect to the technological level, there are many libraries in many programming languages that support the required protocols. </li>
-	</ol>
-	
-	<center><k>Thanks to all the code present in the <a href=https://github.com/anatali/issLab2021/tree/main/it.unibo.qak21.basicrobot/resources>it.unibo.qak21.basicrobot/resources</a>, we can say that all <i>abstraction-gap</i> releated to the communication between <em>ParkManagerService</em> and the robot (virtual or concrete) are solved. We can also reuse this interaction model to the other devices of the system.</k></center></br>
-	
-	</div>
-	
-	<div class="remark">
-	<h3>Logical Architecture</h3>
-	Then, a primitive form of <ks>logical architecture</ks> is:
-	<center><img src="./img/logical_arch_base.png" style="max-width:100%"//></center></br>
-	
-	Zooming into <em>ParkManagerService</em>, we highlight the main entities of the system.
-	<k>We also specify that we will use actors, thanks to the <a href=http://htmlpreview.github.io/?https://github.com/anatali/issLab2021/blob/main/it.unibo.qakintro2020/userDocs/LabQakIntro2021.html><em>QActor (meta)model</em></a>, to realize the <em>ParkManagerService</em></k>.</br>
-	Then, the result of a first zoom into the <em>ParkManagerService</em> using the <em>QActor</em> is:
-	<center><img src="./img/problem_analysis_entities.png" style="max-width:100%"/></center></br>
-	
-	These actors model the main entities in the system:
-	<ul>
-		<li>the <ks>outSonar</ks> is modelled by the actor <em>outSonarActor</em> that emits the <ks>outBusy</ks> and <ks>outFree</ks> events when the sonar device detects the arriving/leaving respectively of a car over the outdoor area. Notice that the actor does not need to have response/request mechanism because these events give us all the information we need from the device;</li>
-		<li>the <ks>weight sensor</ks> is modelled by the actor <em>weightSensorActor</em> than emits the <ks>weightPresent</ks> and <ks>weightAbsent</ks> events when the sensor detects the arriving/leaving of a car over the indoor area. This actor is similar to the previous one;</li>
-		<li>the <ks>fan</ks> is modelled by the actor <em>fanActor</em> that is able to receive dispatch messages, <ks>powerOn</ks> or <ks>powerOff</ks>, in order to manage the status of the fan. We specify that this messages are <i>fire and forget</i> than the communication is <i>asynchronous</i> to take the advantages of this type of interaction (<i>non-blocking calls</i>). It is also useful to have a request/response mechanism to 
-		<li>the <ks>thermometer</ks> is modelled by the actor <em>thermometerActor</em> that:
-			<ul>
-				<li>emits two type of events, <ks>criticalTemp</ks> when the temperature of the parking area is greater then the critical (case <k>TA &gt TMAX</k>) and <ks>tollerableTemp</ks> when the temperature returns to be <i>tollerable</i>(case <k>TA &#8804 TMAX</k>);
-				<li>is able to continuously write temperature to a publish/subrible proxy (like <a href=https://mqtt.org/ target="web"><i>MQTT</i></a> protocol); then, the other actors can <i>call</i> the <i>subscribe</i> primitive to the proxy if interested to observe the temperature. Since the <em>QActor System</em> has large compatibility with <i>MQTT</i>, we suggest to use it, but it is also possible to use another system, also made by the same projectist (e.g. using the <a href=https://en.wikipedia.org/wiki/Blackboard_(design_pattern)>Blackboard Pattern</a>);
-			</ul>
-		The use of public/subscribe protocol is very lightway and releases the actor by sending messages guaranteeing an optimal scalability.
-		</li>
-		<li>the <ks>robot</ks> that has the role of <i>transport trolley</i> is modelled by the actor <em>transportTrolleyActor</em> that is able to receive dispatch messages:
-		<ul>
-			<li><ks>parkCar</ks> that represents the <i>command</i> to transport a car from indoor area to the specified park slot;</li>
-			<li><ks>exitCar</ks> that represents the <i>command</i> to transport a car from a parking slot to the outdoor-area;</i>
-		</ul>
-		Notice that the informative content of the messages is very important and it must always contains the <i>parking slot number</i> (both for park or exit a car).
-		</li>
-	</ul></br>
-	<center><k>We reasoned in event-driven logic for all the information urgent for the system and that we cannot continuosly ask for. Instead,  for the useful information for logging, manager and user experience, we choose to use a publish/subscbribe protocol.</k></center>
-</div>
-
-<div class="remark">
-	<h3>Logging and Security Analysis</h3>
-	
-	<ul>
-		<li>About <ks>security</ks>: a manager, in order to use the <em>ParkServiceStatusGUI</em>, must owns proper permissions. After further analysis it would seem appropriate to add a cryptography layer over the messages (i.e. <a href=https://docs.oracle.com/javase/8/docs/api/javax/crypto/package-summary.html target="web">javax.crypto</a>);</li>
-		<li>About <ks>logging</ks>: we concluded that it might be useful to implement a logging mechanism to store the history of the system (i.e. a database with SQLite/MongoDB, see also <a href=https://docs.oracle.com/javase/8/docs/technotes/guides/jdbc/ target="web">JDBC</a>).</li>
-	</ul>
-	<center><k>The previous points do not introduce an abstraction-gap thanks to the planty of libraries to manage them</k>.</center>
-	
-</div>
--->
 
 <h2>Test plans</h2> 
+<div class="remark">
+	To carry out the test plan, a MokeState was used. It is a shared singleton class that allows to keep the status information inside it so
+	that they can be modified and used during tests or by other classes. Two utilitiy classes were also introduced: SpeackerTCP and JcopObserver.
+	SpeackerTCP deals with the management of sending TCP messages to the actors in order to incorporate a common behavior in a single reference class.
+	JcopObserver, on the other hand, is a naive observer that observes what happens to a certain actor.
 
+	<div class="remark">
+		<h3>Tests</h3>
+
+		<table>
+			<tr>
+				<td>
+					<h5>testNotifyInterestNoSlotFree</h5>
+					<ul>
+						<li>
+							<b>Tests: </b>a client wants to enter but no slot are available;
+						</li>
+						<li>
+							<b>Conditions to pass: </b>
+							<ul>
+								<li>The SLOTNUM sent from the system is equal to 0;</li>
+								<li>The system comes back to its job;</li>
+								<li>The ITOCC counter must not have changed;</li>
+							</ul>
+						</li>	
+					</ul>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<h5>testNotifyInterestSlotFree</h5>
+					<ul>
+						<li>
+							<b>Tests: </b>a client wants to enter and there is one slot free;
+						</li>
+						<li>
+							<b>Conditions to pass: </b>
+							<ul>
+								<li>The SLOTNUM sent from the system is equal to the numebr of the parking-slot free;</li>
+								<li>The parking-slot must become reserved;</li>
+								<li>The system must send a confirmation message for parking the car;</li>
+								<li>The ITOCC counter must be started;</li>
+							</ul>
+						</li>	
+					</ul>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<h5>testNotifyInterestSlotFree</h5>
+					<ul>
+						<li>
+							<b>Tests: </b>a client wants to enter and there is one slot free;
+						</li>
+						<li>
+							<b>Conditions to pass: </b>
+							<ul>
+								<li>The SLOTNUM sent from the system is equal to the numebr of the parking-slot free;</li>
+								<li>The parking-slot must become reserved;</li>
+								<li>The system must send a confirmation message for parking the car;</li>
+								<li>The ITOCC counter must be started;</li>
+							</ul>
+						</li>	
+					</ul>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<h5>testCarEnterIndoorFree</h5>
+					<ul>
+						<li>
+							<b>Tests: </b>a client has received the SLOTNUM, the indoor is reserved for him then presses CARENTER;
+						</li>
+						<li>
+							<b>Conditions to pass: </b>
+							<ul>
+								<li>The system says to the user that can enter and start the counter;</li>
+								<li>The system replies with token message and stopped the counter;</li>
+								<li>The parking-slot must become occupied;</li>
+								<li>The system comes back to its job;</li>
+							</ul>
+						</li>	
+					</ul>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<h5>testCarEnterIndoorFree</h5>
+					<ul>
+						<li>
+							<b>Tests: </b>a client has received the SLOTNUM, the indoor is reserved for him then presses CARENTER;
+						</li>
+						<li>
+							<b>Conditions to pass: </b>
+							<ul>
+								<li>The system says to the user that can enter and start the counter;</li>
+								<li>The system replies with token message and stopped the counter;</li>
+								<li>The parking-slot must become occupied;</li>
+								<li>The system comes back to its job;</li>
+							</ul>
+						</li>	
+					</ul>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<h5>testNotifyInterestSlotFreeButIndoorAlreadyEngaged</h5>
+					<ul>
+						<li>
+							<b>Tests: </b>indoor-area is occupied and a client request to enter;
+						</li>
+						<li>
+							<b>Conditions to pass: </b>
+							<ul>
+								<li>The system notifies user to wait for entering car;</li>
+								<li>The system comes back to its job;</li>
+							</ul>
+						</li>	
+					</ul>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<h5>testUserNotEnterCarInItocc</h5>
+					<ul>
+						<li>
+							<b>Tests: </b>when a user is waiting for entering the car but itocc is reached;
+						</li>
+						<li>
+							<b>Conditions to pass: </b>
+							<ul>
+								<li>The system says to the user that can enter;</li>
+								<li>The system comes back to its job;</li>
+								<li>The ITOCC count has reached the max value;</li>
+								<li>The parking-slot previously occupied is now free;</li>
+								<li>The system comes back to its job;</li>
+							</ul>
+						</li>	
+					</ul>
+				</td>
+			</tr>
+
+			<tr>
+				<td>
+					<h5>testSubmitTokenInvalid</h5>
+					<ul>
+						<li>
+							<b>Tests: </b>a user send the token to pickup his car but it is invalid;
+						</li>
+						<li>
+							<b>Conditions to pass: </b>
+							<ul>
+								<li>The system sends an error message;</li>
+								<li>The system comes back to its job;</li>
+								<li>The DTFREE count is not started;</li>
+							</ul>
+						</li>	
+					</ul>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<h5>testSubmitToken</h5>
+					<ul>
+						<li>
+							<b>Tests: </b>a user sends the correct token to pickup his car and the outdoor area is free;
+						</li>
+						<li>
+							<b>Conditions to pass: </b>
+							<ul>
+								<li>The system has validated the request;</li>
+								<li>The outdoor is occupied;</li>
+								<li>The parking-slot is free;</li>
+								<li>The DTFREE count is started;</li>
+								<li>The system comes back to its job;</li>
+							</ul>
+						</li>	
+					</ul>
+				</td>
+			</tr>
+
+			<tr>
+				<td>
+					<h5>testSubmitTokenButOutdoorEngaged</h5>
+					<ul>
+						<li>
+							<b>Tests: </b>a user sends the correct token to pickup his car and the outdoor area is already engaged;
+						</li>
+						<li>
+							<b>Conditions to pass: </b>
+							<ul>
+								<li>The system says the client to wait;</li>
+								<li>The system comes back to its job;</li>								
+							</ul>
+						</li>	
+					</ul>
+				</td>
+			</tr>
+
+			<tr>
+				<td>
+					<h5>testUserNotPickUpInDtfree</h5>
+					<ul>
+						<li>
+							<b>Tests: </b>a user sends the correct token to pickup his car and the outdoor area is free, the user does not take the car and the dtfree counter is reached;
+						</li>
+						<li>
+							<b>Conditions to pass: </b>
+							<ul>
+								<li>The system has validated the request;</li>
+								<li>The outdoor is occupied;</li>	
+								<li>The parking-slot is free;</li>
+								<li>The DTFREE count is started;</li>	
+								<li>The ITOCC count has reached the max value;</li>
+								<li>The outdorr is free;</li>				
+							</ul>
+						</li>	
+					</ul>
+				</td>
+			</tr>
+
+		</table>
+	</div>
+
+</div>
 
 <h2>Project</h2> 
  

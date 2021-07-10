@@ -163,7 +163,7 @@ public class FirstTestPlan {
 	
 	/*
 	 * Check the system when a client has received the SLOTNUM, the indoor
-	 * is reserved for him then press CARENTER -> the system sends the token and occupied
+	 * is reserved for him then presses CARENTER -> the system sends the token and occupied
 	 * the slot
 	 */
 	@Test
@@ -192,7 +192,7 @@ public class FirstTestPlan {
 		//The user has entered is car into the Indoor-Area. Simulate CARENTER pression
 		String tokenMsg = pmsSpk.sendRequest("carenter", Integer.toString(slotNum));
 		
-		//Check the system response with token message and stopped the counter
+		//Check the system replies with token message and stopped the counter
 		assertTrue(tokenMsg.contains("token") && tokenMsg.contains("reply"));
 		assertEquals("reply with TOKEN=1", pmsObs.nextChange());
 		assertEquals("work", icObs.nextChange());
@@ -240,8 +240,8 @@ public class FirstTestPlan {
 	}
 	
 	/*
-	 * Check the system when is waiting an user for entering car but
-	 * itocc reached -> the counter go into the state reached
+	 * Check the system when a user does not enter the car end
+	 * itocc is reached -> the counter go into the state reached
 	 */
 	@Test
 	public void testUserNotEnterCarInItocc() throws IOException, InterruptedException {
@@ -263,6 +263,8 @@ public class FirstTestPlan {
 		String newState = icObs.nextChangeIn(3000);
 		assertTrue(newState != null);
 		assertEquals("ITOCC", newState);
+
+		//MANCA IL TEST DEL PARKING SLOT LIBERATO
 		
 		//Check system and counter work
 		assertEquals("work", pmsObs.nextChange());
@@ -270,7 +272,7 @@ public class FirstTestPlan {
 	}
 	
 	/*
-	 * Check the system when an user send the token to pickup his car
+	 * Check the system when a user send the token to pickup his car
 	 * but it is invalid -> the system notifies the user that the token is invalid
 	 */
 	@Test
@@ -298,7 +300,7 @@ public class FirstTestPlan {
 	}
 	
 	/*
-	 * Check the system when an user send the correct token to pickup his car
+	 * Check the system when a user sends the correct token to pickup his car
 	 * and the outdoor area is free -> the system notifies the user for pickup
 	 * car, reserves the outdoor and free the slot
 	 */
@@ -331,7 +333,7 @@ public class FirstTestPlan {
 	}
 	
 	/*
-	 * Check the system when an user send the correct token to pickup his car
+	 * Check the system when a user sends the correct token to pickup his car
 	 * and the outdoor area is already engaged -> the system notifies the user to wait
 	 */
 	@Test
@@ -371,8 +373,8 @@ public class FirstTestPlan {
 	}
 	
 	/*
-	 * Check the system when an user send the correct token to pickup his car
-	 * and the outdoor area is free, but the user has not taken the car ->
+	 * Check the system when a user sends the correct token to pickup his car
+	 * and the outdoor area is free, the user does not take the car and the dtfree counter is reached ->
 	 * the system notifies the user for pickup and dtfree counter go to state count
 	 */
 	@Test
@@ -401,6 +403,8 @@ public class FirstTestPlan {
 		assertTrue(newState != null);
 		assertEquals("DTFREE", newState);
 		assertEquals("work", dcObs.nextChange());
+
+		//MANCA CHE IL MANAGER TOGLIE LA MACCHINA QUINDI FAR SI CHE SIA LIBERA L'OUTDOOR
 	}
 
 }
