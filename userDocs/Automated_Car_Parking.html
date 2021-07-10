@@ -1081,7 +1081,7 @@ div.imagedesc{
 	<h3>The executable model (QAK)</h3>
 	<ul>
 	<li><a href="sources/parkmanagerservice_1.0.qak"><em>parkmanagerservice_1.0.qak</em></a>: a first very basic executable model;</li>
-	<li><a href="sources/parkmanagerservice_2.0.qak"><em>parkmanagerservice_2.0.qak</em></a>: evolution of the previous model with counters and a <a href="../Eclipse/ParkManagerService/src/it/unibo/parkingstate/MockState.kt" target="code"><k>Mock State</k></a> in order to realize automated test plan;</li>
+	<li><a href="sources/parkmanagerservice_2.0.qak"><em>parkmanagerservice_2.0.qak</em></a>: evolution of the previous model with counters and a <a href="https://github.com/LM-96/ParkManagerService/blob/main/Eclipse/ParkManagerService/src/it/unibo/parkingstate/MockState.kt" target="code"><k>Mock State</k></a> in order to realize automated test plan;</li>
 	</ul>
 	
 	</div>
@@ -1089,13 +1089,14 @@ div.imagedesc{
 
 <h2>Test plans</h2> 
 <div class="remark">
-	To carry out the test plan, a MokeState was used. It is a shared singleton class that allows to keep the status information inside it so
-	that they can be modified and used during tests or by other classes. Two utilitiy classes were also introduced: SpeackerTCP and JcopObserver.
-	SpeackerTCP deals with the management of sending TCP messages to the actors in order to incorporate a common behavior in a single reference class.
-	JcopObserver, on the other hand, is a naive observer that observes what happens to a certain actor using the coap protocol which is incorporated in qak logic.
+	To carry out the test plan, a <a href="https://github.com/LM-96/ParkManagerService/blob/main/Eclipse/ParkManagerService/src/it/unibo/parkingstate/MockState.kt" target="code"><k>Mock State</k></a> was used. It is a shared <a href="https://en.wikipedia.org/wiki/Singleton_pattern" target="web">Singleton</a> class that allows to keep the status information inside it so
+	that they can be modified and used during tests or by other classes. Two utility Java classes were also introduced: <a href="https://github.com/LM-96/ParkManagerService/blob/main/Eclipse/ParkManagerService/test/it/unibo/parkimanagerservice/test/utils/TcpActorSpeaker.java" target="code"><em>TcpActorSpeaker</em></a> and <a href="https://github.com/LM-96/ParkManagerService/blob/main/Eclipse/ParkManagerService/test/it/unibo/parkimanagerservice/test/utils/JCoapObserver.java" target="code"><em>JCoapObserver</em></a>.
+	TcpActorSpeaker deals with the management of sending TCP messages to the actors in order to incorporate a common behavior in a single reference class.
+	JCoapObserver, on the other hand, is a naive observer that observes what happens to a certain actor using the coap protocol which is incorporated in Qak system.
 
 	<div class="remark">
-		<h3>Tests</h3>
+		<h3>First Test Plan</h3>
+		(Code in <a href="https://github.com/LM-96/ParkManagerService/blob/main/Eclipse/ParkManagerService/test/it/unibo/parkmanagerservicetest/FirstTestPlan.java" target="code"><em>FirstTestPlan.java</em></a>)<br><br>
 
 		<table>
 			<tr>
