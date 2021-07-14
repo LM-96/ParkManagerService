@@ -1,23 +1,29 @@
-# Compiled class file
-*.class
+bin
+bin/default
+.metadata
+.classpath
+.project
+build
+logs
 
-# Log file
-*.log
+log4jInfo.log
 
-# BlueJ files
-*.ctxt
+#node
+nodeCode/*/node_modules/
+*.lck
+package-lock.json
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
+# MQTT generated
+*-tcp*
 
-# Package Files #
-*.jar
-*.war
-*.nar
-*.ear
-*.zip
-*.tar.gz
-*.rar
+ # Ignore Gradle project-specific cache directory
+.gradle
+gradlew
+gradlew.bat
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+
+/ReadMe.html
+.lck/ 
+docker/
+/.metadata/
+/src-gen/
