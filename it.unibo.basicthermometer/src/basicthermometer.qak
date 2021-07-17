@@ -1,0 +1,17 @@
+System basicthermometer
+
+Context ctxthermometer ip[host="localhost" port=8001]
+
+QActor thermometeractor context ctxthermometer {
+	
+	[# var thermometer : it.unibo.basicthermometer.thermometer.Thermometer #]
+	
+	State s0 initial {
+		println("$name | started")
+	}
+	
+	State work {
+		updateResource[# thermometer.readTemperature().toString() #]
+	} Transition t0
+		whenTime 1000 -> work
+}
