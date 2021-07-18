@@ -1,0 +1,43 @@
+{% extends '../index.html' %}
+
+{% block content %}
+//th.html
+
+<p>Value: <span id="value"></span></p>
+<input type="range" id='temp' min="1" max="100" value="50">
+
+
+<p>Message received from socket:</p>
+<p id='msg'></p>
+<script>
+
+    var slider = document.getElementById("temp");
+    var output = document.getElementById("value");
+    output.innerHTML = slider.value;
+
+    slider.oninput = function() {
+        output.innerHTML = this.value;
+        socket.send(JSON.stringify({
+            'temperature': this.value,
+        }));
+    };
+
+
+    const socket = new WebSocket(
+        'ws://' +
+        window.location.host +
+        '/ws/thermometer/'
+    );
+
+    socket.onmessage = function (e) {
+        const data = JSON.parse(e.data);
+        console.log(data)
+        document.querySelector('#msg').innerHTML = (data.temperature)
+
+    }
+
+
+
+</script> 
+
+{% endblock %}
