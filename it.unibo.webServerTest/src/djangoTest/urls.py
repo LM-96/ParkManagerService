@@ -19,5 +19,5 @@ from django.urls.conf import include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('thermometer/', include('thermometer.urls')),
+    path('devices/', include('devices.urls')),
 ]
