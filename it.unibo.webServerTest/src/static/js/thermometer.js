@@ -11,6 +11,8 @@ slider_temp.oninput = function() {
 };
 
 
+
+
 const thermometer_socket = new WebSocket(
     'ws://' +
     window.location.host +
@@ -21,5 +23,14 @@ thermometer_socket.onmessage = function (e) {
     const data = JSON.parse(e.data);
     console.log(data)
     document.querySelector('#msg_temp').innerHTML = (data.data)
+
+}
+
+thermometer_socket.onopen = function (e) {
+    const data = JSON.parse(e.data);
+    document.querySelector('#msg_temp').innerHTML = (data.data)
+    thermometer_socket.send(JSON.stringify({
+        'data': this.value,
+    }));
 
 }

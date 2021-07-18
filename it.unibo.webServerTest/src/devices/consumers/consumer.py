@@ -21,14 +21,15 @@ class BasicConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         msg_json = json.loads(text_data)
-        data = msg_json['data']
-        await self.channel_layer.group_send(
-            self.group_name,
-            {
-                'type': 'data_message',
-                'data': data,
-            }
-        )
+        if 'data' in msg_json:
+            data = msg_json['data']
+            await self.channel_layer.group_send(
+                self.group_name,
+                {
+                    'type': 'data_message',
+                    'data': data,
+                }
+            )
 
     async def data_message(self, event):
         data = event['data']
