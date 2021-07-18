@@ -26,9 +26,8 @@ thermometer_socket.onmessage = function (e) {
 
 }
 
-thermometer_socket.onopen = function (e) {
-    const data = JSON.parse(e.data);
-    document.querySelector('#msg_temp').innerHTML = (data.data)
+thermometer_socket.onopen = function () {
+    document.querySelector('#msg_temp').innerHTML = (slider_temp.value)
     thermometer_socket.send(JSON.stringify({
         'data': slider_temp.value,
     }));
