@@ -17,6 +17,7 @@ const fan_socket = new WebSocket(
     '/ws/fan/'
 );
 
+
 fan_socket.onmessage = function (e) {
     const data = JSON.parse(e.data);
     console.log(data)

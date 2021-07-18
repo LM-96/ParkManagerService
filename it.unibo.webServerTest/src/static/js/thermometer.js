@@ -30,7 +30,7 @@ thermometer_socket.onopen = function (e) {
     const data = JSON.parse(e.data);
     document.querySelector('#msg_temp').innerHTML = (data.data)
     thermometer_socket.send(JSON.stringify({
-        'data': this.value,
+        'data': slider_temp.value,
     }));
 
 }
