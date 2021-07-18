@@ -23,3 +23,11 @@ weight_socket.onmessage = function (e) {
     document.querySelector('#msg_weight').innerHTML = (data.data)
 
 }
+
+weight_socket.onopen = function () {
+    document.querySelector('#msg_weight').innerHTML = (slider_weight.value)
+    weight_socket.send(JSON.stringify({
+        'data': slider_weight.value,
+    }));
+
+}
