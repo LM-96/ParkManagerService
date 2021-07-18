@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<div id='thermometer'>
+<div id='thermometer' style="display: inline-block; margin-right: 30px;">
     <h1>Thermometer</h1>
     <p>Value: <span id="value_temp"></span></p>
     <input type="range" id='temp' min="1" max="100" value="50">
@@ -11,7 +11,7 @@
     <p>Message received from socket: <span id='msg_temp'></span></p>
 </div> 
 
-<div id='weightsensor'>
+<div id='weightsensor' style="display: inline-block; margin-right: 30px;">
     <h1>Weight Sensor</h1>
     <p>Value: <span id="value_weight"></span></p>
     <input type="range" id='weight' min="1" max="100" value="50">
@@ -20,7 +20,7 @@
     <p>Message received from socket: <span id='msg_weight'></span></p>
 </div>
 
-<div id='fandiv'>
+<div id='fandiv' style="display: inline-block; margin-right: 30px;">
     <h1>Fan</h1>
     <p>Value: <span id="value_fan"></span></p>
     <input type="range" id='fan' min="1" max="100" value="50">
