@@ -1,0 +1,4 @@
+{"device":"fan","id":"fan","type":"virtual","address":"ws://localhost:8000/ws/fan/"}
+{"device":"thermometer","id":"thermometer","type":"virtual","address":"ws://localhost:8000/ws/thermometer/"}
+{"device":"sonar","id":"outsonar","type":"virtual","address":"ws://localhost:8000/ws/sonar/"}
+{"device":"weight_sensor","id":"indoor sensor","type":"virtual","address":"ws://localhost:8000/ws/weightsensor/"}
