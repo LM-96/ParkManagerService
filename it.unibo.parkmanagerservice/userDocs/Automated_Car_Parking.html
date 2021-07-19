@@ -1086,8 +1086,8 @@ div.imagedesc{
 	<div class="remark">
 	<h3>The executable model (QAK)</h3>
 	<ul>
-	<li><a href="https://github.com/LM-96/ParkManagerService/tree/main/src/parkmanagerservice_1.0.qako"><em>parkmanagerservice_1.0.qak</em></a>: a first very basic executable model;</li>
-	<li><a href="https://github.com/LM-96/ParkManagerService/tree/main/src/parkmanagerservice_2.0.qako"><em>parkmanagerservice_2.0.qak</em></a>: evolution of the previous model with counters and a <a href="https://github.com/LM-96/ParkManagerService/blob/main/src/it/unibo/parkingstate/MockState.kt" target="code"><k>Mock State</k></a> in order to realize automated test plan;</li>
+	<li><a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.parkmanagerservice/src/parkmanagerservice_1.0.qako"><em>parkmanagerservice_1.0.qak</em></a>: a first very basic executable model;</li>
+	<li><a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.parkmanagerservice/src/parkmanagerservice_2.0.qako"><em>parkmanagerservice_2.0.qak</em></a>: evolution of the previous model with counters and a <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkingstate/MockState.kt" target="code"><k>Mock State</k></a> in order to realize automated test plan;</li>
 	</ul>
 	
 	</div>
@@ -1095,14 +1095,14 @@ div.imagedesc{
 
 <h2>Test plans</h2> 
 <div class="remark">
-	To carry out the test plan, a <a href="https://github.com/LM-96/ParkManagerService/blob/main/src/it/unibo/parkingstate/MockState.kt" target="code"><k>Mock State</k></a> was used. It is a shared <a href="https://en.wikipedia.org/wiki/Singleton_pattern" target="web">Singleton</a> class that allows to keep the status information inside it so
-	that they can be modified and used during tests or by other classes. Two utility Java classes were also introduced: <a href="https://github.com/LM-96/ParkManagerService/blob/main/test/it/unibo/parkimanagerservice/test/utils/TcpActorSpeaker.java" target="code"><em>TcpActorSpeaker</em></a> and <a href="https://github.com/LM-96/ParkManagerService/blob/main/test/it/unibo/parkimanagerservice/test/utils/JCoapObserver.java" target="code"><em>JCoapObserver</em></a>.
+	To carry out the test plan, a <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkingstate/MockState.kt" target="code"><k>Mock State</k></a> was used. It is a shared <a href="https://en.wikipedia.org/wiki/Singleton_pattern" target="web">Singleton</a> class that allows to keep the status information inside it so
+	that they can be modified and used during tests or by other classes. Two utility Java classes were also introduced: <a href="https://github.com/LM-96/ParkManagerService/blob/it.unibo.parkmanagerservice/main/test/it/unibo/parkimanagerservice/test/utils/TcpActorSpeaker.java" target="code"><em>TcpActorSpeaker</em></a> and <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkimanagerservice/test/utils/JCoapObserver.java" target="code"><em>JCoapObserver</em></a>.
 	TcpActorSpeaker deals with the management of sending TCP messages to the actors in order to incorporate a common behavior in a single reference class.
 	JCoapObserver, on the other hand, is a naive observer that observes what happens to a certain actor using the coap protocol which is incorporated in Qak system.
 
 	<div class="remark">
 		<h3>First Test Plan</h3>
-		(Test made with Junit and Java in <a href="https://github.com/LM-96/ParkManagerService/blob/main/test/it/unibo/parkmanagerservicetest/FirstTestPlan.java" target="code"><em>FirstTestPlan.java</em></a>, see also the new executable model ready for test using Coap <a href="https://github.com/LM-96/ParkManagerService/tree/main/src/parkmanagerservice_2.1.qako" target="code"><em>parkmanagerservice_2.1.qak</em></a>)<br><br>
+		(Test made with Junit and Java in <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/FirstTestPlan.java" target="code"><em>FirstTestPlan.java</em></a>, see also the new executable model ready for test using Coap <a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.parkmanagerservice/src/parkmanagerservice_2.1.qako" target="code"><em>parkmanagerservice_2.1.qak</em></a>)<br><br>
 
 		<table>
 			<tr>
