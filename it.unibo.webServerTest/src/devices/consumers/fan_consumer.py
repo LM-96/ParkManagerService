@@ -1,6 +1,8 @@
 from .consumer import BasicConsumer
 import json
 
+# Consumer for the fan websocket
+
 class FanConsumer(BasicConsumer):
 
     def __init__(self, *args, **kwargs):

@@ -1,6 +1,7 @@
 from .consumer import BasicConsumer
 import json
 
+# Consumer for the sonar websocket
 class SonarConsumer(BasicConsumer):
 
     def __init__(self, *args, **kwargs):

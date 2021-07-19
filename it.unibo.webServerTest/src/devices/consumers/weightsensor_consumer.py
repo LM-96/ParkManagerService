@@ -2,6 +2,8 @@
 from .consumer import BasicConsumer
 import json
 
+# Consumer for the weight sensor websocket
+
 class WeightSensorConsumer(BasicConsumer):
 
     def __init__(self, *args, **kwargs):
@@ -9,4 +11,3 @@ class WeightSensorConsumer(BasicConsumer):
         self.group_name = 'weightsensor_group'
 
 
-    pass

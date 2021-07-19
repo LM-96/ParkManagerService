@@ -1,6 +1,8 @@
 from .consumer import BasicConsumer
 import json
 
+# Consumer for the thermometer websocket
+
 class ThermometerConsumer(BasicConsumer):
 
     def __init__(self, *args, **kwargs):
@@ -9,4 +11,3 @@ class ThermometerConsumer(BasicConsumer):
 
    
 
-    pass

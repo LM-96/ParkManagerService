@@ -1,6 +1,8 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
 
+# Base consumer class. It handles messages from/to the socket 
+
 class BasicConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
@@ -38,4 +40,3 @@ class BasicConsumer(AsyncWebsocketConsumer):
             'data': data
         }))
 
-    pass

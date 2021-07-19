@@ -2,25 +2,25 @@
 
 {% block content %}
 
-<div id='thermometer' style="display: inline-block; margin-right: 50px; width: 20%;">
+<div style="display: inline-block; margin-right: 50px; width: 20%;">
     <h1>Thermometer</h1>
-    <p>Value: <span id="value_temp"></span></p>
+    <p>Value: <span id="value_temp"></span> C°</p>
     <input type="range" id='temp' min="-10.0" max="50.0" value="18" step="0.5">
 
 
-    <p>Message received from socket: <span id='msg_temp' ></span></p>
+    <p>Message received from socket: <span id='msg_temp' ></span> C°</p>
 </div> 
 
-<div id='weightsensor' style="display: inline-block; margin-right: 50px; width: 20%;">
+<div style="display: inline-block; margin-right: 50px; width: 20%;">
     <h1>Weight Sensor</h1>
     <p>Value: <span id="value_weight"></span> ton</p>
     <input type="range" id='weight' min="0" max="10" value="0", step="0.1">
 
 
-    <p>Message received from socket: <span id='msg_weight'></span></p>
+    <p>Message received from socket: <span id='msg_weight'></span> ton</p>
 </div>
 
-<div id='fandiv' style="display: inline-block; margin-right: 50px; width: 20%;">
+<div style="display: inline-block; margin-right: 50px; width: 20%;">
     <h1>Fan</h1>
     <p>Value: <span id="value_fan"></span></p>
     <input type="checkbox" id='fan'>
@@ -29,13 +29,13 @@
     <p>Message received from socket: <span id='msg_fan'></span></p>
 </div>
 
-<div id='sonardiv' style="display: inline-block; margin-right: 50px; width: 20%;">
+<div style="display: inline-block; margin-right: 50px; width: 20%;">
     <h1>Sonar</h1>
-    <p>Value: <span id="value_sonar"></span></p>
-    <input type="range" id='sonar' min="1" max="100" value="50">
+    <p>Value: <span id="value_sonar"></span> cm</p>
+    <input type="range" id='sonar' min="0" max="1000" value="0">
 
 
-    <p>Message received from socket: <span id='msg_sonar'></span></p>
+    <p>Message received from socket: <span id='msg_sonar'></span> cm</p>
 </div> 
 
 {% endblock %}
