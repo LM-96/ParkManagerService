@@ -14,74 +14,83 @@ import it.unibo.basicweightsensor.WeightSensorType
 import it.unibo.basicsonar.SonarFactory
 import it.unibo.basicsonar.SonarType
 import java.io.File
+import java.util.concurrent.locks.ReentrantLock
 
 object DeviceManager {
 	
 	@JvmStatic val CONFIG_FILE = "config.json"
 	
 	private val devices = mutableMapOf<String, AbstractDevice?>()
+	@JvmStatic private val lock = ReentrantLock()
 	
 	init {
-		println("DeviceManager | Starting")
-		val configFilePath = Paths.get(CONFIG_FILE)
-		
-		if(!Files.exists(configFilePath)) {
-			println("DeviceManager | File ${configFilePath.toAbsolutePath().toString()} does not exists. Cannot start system.")
-			System.exit(-1)
-		}
-		println("DeviceManager | Found configuration file at ${configFilePath.toAbsolutePath().toString()}")
-		
-		val reader = Files.newBufferedReader(Paths.get(CONFIG_FILE))
-		println("DeviceManager | Config file opened")
-		
-		var line : String? = reader.readLine()
-		var json : JSONObject
-		
-		var device : DeviceType
-		var id : String
-		
-		while(line != null) {
+		lock.lock()
+		try {
+			println("DeviceManager | Starting")
+			val configFilePath = Paths.get(CONFIG_FILE)
 			
-			if(!line.startsWith("#")) {
-				json = JSONObject(line)
-				device = DeviceType.valueOf(json.getString("device").toUpperCase())
-				id = json.getString("id")
+			if(!Files.exists(configFilePath)) {
+				println("DeviceManager | File ${configFilePath.toAbsolutePath().toString()} does not exists. Cannot start system.")
+				System.exit(-1)
+			}
+			println("DeviceManager | Found configuration file at ${configFilePath.toAbsolutePath().toString()}")
+			
+			val reader = Files.newBufferedReader(Paths.get(CONFIG_FILE))
+			println("DeviceManager | Config file opened")
+			
+			var line : String? = reader.readLine()
+			var json : JSONObject
+			
+			var device : DeviceType
+			var id : String
+			
+			while(line != null) {
 				
-				println("DeviceManager | Found device \"$id\" [$device]")
-				
-				when(device) {
-					DeviceType.FAN -> devices.put(id,
-						FanFactory.create(id, FanType.valueOf(json.getString("type").toUpperCase()),
-											json.getString("address")
-							))
+				if(!line.startsWith("#")) {
+					json = JSONObject(line)
+					device = DeviceType.valueOf(json.getString("device").toUpperCase())
+					id = json.getString("id")
 					
-					DeviceType.SONAR -> devices.put(id,
-						SonarFactory.create(id, SonarType.valueOf(json.getString("type").toUpperCase()),
-											json.getString("address")
-							))
+					println("DeviceManager | Found device \"$id\" [$device]")
 					
-					DeviceType.WEIGHT_SENSOR -> devices.put(id,
-						WeightSensorFactory.create(id, WeightSensorType.valueOf(json.getString("type").toUpperCase()),
-											json.getString("address")
-							))
-					
-					DeviceType.THERMOMETER -> devices.put(id,
-						ThermometerFactory.create(id, ThermometerType.valueOf(json.getString("type").toUpperCase()),
-											json.getString("address")
-							))
+					when(device) {
+						DeviceType.FAN -> devices.put(id,
+							FanFactory.create(id, FanType.valueOf(json.getString("type").toUpperCase()),
+												json.getString("address")
+								))
+						
+						DeviceType.SONAR -> devices.put(id,
+							SonarFactory.create(id, SonarType.valueOf(json.getString("type").toUpperCase()),
+												json.getString("address")
+								))
+						
+						DeviceType.WEIGHT_SENSOR -> devices.put(id,
+							WeightSensorFactory.create(id, WeightSensorType.valueOf(json.getString("type").toUpperCase()),
+												json.getString("address")
+								))
+						
+						DeviceType.THERMOMETER -> devices.put(id,
+							ThermometerFactory.create(id, ThermometerType.valueOf(json.getString("type").toUpperCase()),
+												json.getString("address")
+								))
+					}
 				}
+				
+				line = reader.readLine()
+				
 			}
 			
-			line = reader.readLine()
-			
-		}
-		
-		println("DeviceManager | All devices has been loaded")
+			println("DeviceManager | All devices has been loaded")
+		} finally {lock.unlock()}
 	}
 	
 	fun requestDevice(id : String) : AbstractDevice? {
-		println("DeviceManager | Requested device with id=\"$id\"")
-		return devices.get(id)
+		lock.lock()
+		try {
+			println("DeviceManager | Requested device with id=\"$id\"")
+			return devices.get(id)
+		} finally {lock.unlock()}
+		
 	}
 	
 }

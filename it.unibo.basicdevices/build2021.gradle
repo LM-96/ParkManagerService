@@ -107,7 +107,7 @@ eclipse {
     }	
  }
  
-mainClassName = 'it.unibo.ctxbasicrobot.MainCtxbasicrobotKt'
+mainClassName = 'it.unibo.ctxthermometer.MainCtxthermometerKt'
 
 jar {
     println("building jar")

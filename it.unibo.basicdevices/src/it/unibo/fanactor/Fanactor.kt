@@ -40,9 +40,9 @@ class Fanactor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, s
 						)
 						println("$name | fan state : ${state.toString()}")
 					}
-					 transition(edgeName="t00",targetState="poweron",cond=whenDispatch("fanon"))
-					transition(edgeName="t01",targetState="poweroff",cond=whenDispatch("fanoff"))
-					transition(edgeName="t02",targetState="work",cond=whenDispatch("updatefanstate"))
+					 transition(edgeName="t02",targetState="poweron",cond=whenDispatch("fanon"))
+					transition(edgeName="t03",targetState="poweroff",cond=whenDispatch("fanoff"))
+					transition(edgeName="t04",targetState="work",cond=whenDispatch("updatefanstate"))
 				}	 
 				state("poweron") { //this:State
 					action { //it:State

@@ -1,0 +1,30 @@
+System basicthermometer
+
+Dispatch updatethermometerstate : updatethermometerstate(X)
+
+Context ctxthermometer ip[host="localhost" port=8001]
+
+QActor thermometeractor context ctxthermometer {
+	
+	//Aggiungere lancio evento quando raggiunta temperatura
+	
+	[# 	val thermometer = it.unibo.basicdevices.DeviceManager.requestDevice("thermometer")
+		
+		if(thermometer == null) {
+			println("$name | unable to use the thermometer")
+			System.exit(-1)
+		}
+		
+		thermometer as it.unibo.basicthermometer.Thermometer
+	#]
+	
+	State s0 initial {
+		println("$name | started")
+	} Goto work
+	
+	State work {
+		updateResource[# thermometer.readTemperature().toString() #]
+	} Transition t0
+		whenTime 2000 -> work
+		whenMsg updatethermometerstate -> work
+}

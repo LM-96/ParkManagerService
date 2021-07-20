@@ -1,0 +1,32 @@
+System basicweightsensor
+
+Dispatch updatesensorstate : updatesensorstate(X)
+
+Context ctxweightsensor ip[host="localhost" port=8004]
+
+QActor weightsensoractor context ctxweightsensor {
+	
+	[# 
+		val sensor = it.unibo.basicdevices.DeviceManager.requestDevice("indoor sensor")
+		var weight : Double
+		
+		if(sensor == null) {
+			println("$name | unable to use the sonar")
+			System.exit(-1)
+		}
+		
+		sensor as it.unibo.basicweightsensor.WeightSensor
+	#]
+	
+	State s0 initial {
+		println("$name | started")
+	} Goto work
+	
+	State work {
+		[# weight = sensor.readWeight() #]
+		updateResource[# weight.toString() #]
+		println("$name | weight distance : ${weight}")
+	} Transition t0
+		whenMsg  updatesensorstate -> work
+	
+}

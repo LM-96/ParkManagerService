@@ -30,6 +30,7 @@ class Sonaractor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 				state("s0") { //this:State
 					action { //it:State
 						println("$name | started")
+						 distance = sonar.readDistance()  
 					}
 					 transition( edgeName="goto",targetState="work", cond=doswitch() )
 				}	 
@@ -40,7 +41,7 @@ class Sonaractor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 						)
 						println("$name | sonar distance : ${distance}")
 					}
-					 transition(edgeName="t00",targetState="work",cond=whenDispatch("updatesonarstate"))
+					 transition(edgeName="t05",targetState="work",cond=whenDispatch("updatesonarstate"))
 				}	 
 			}
 		}
