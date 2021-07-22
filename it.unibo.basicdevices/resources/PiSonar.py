@@ -1,11 +1,12 @@
 import RPi.GPIO as GPIO
 from time import sleep
 from time import time
-from sympy.functions.elementary import trigonometric
-from org.apache.commons.compress.archivers.sevenz import StartHeader
 
 ECHO = 0
 TRIG = 0
+
+def welcome():
+    return "PiSonar.py | Welcome from python"
 
 def setup(echo, trig):
     ECHO = echo

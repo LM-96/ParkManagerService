@@ -76,6 +76,8 @@ void handle_sigint(int signo)  {
 	}
 }
 
+void handle_sigusr1(int signo) {}
+
 void parseArgs(int argc, char* argv[], bool* single, bool* interr) {
 	int c, num;
 	while((c = getopt(argc, argv, "e:t:d:si")) != -1) {
@@ -111,8 +113,8 @@ void parseArgs(int argc, char* argv[], bool* single, bool* interr) {
 		}
 	}
 	
-	cout << " SonarAlone | configuration [ PIN_ECHO:" << echo << ", PIN_TRIG:"
-				<< trig << ", DELAY:" << delay_t << ", SIGLE_MEASURE:" << *single << ", INTERRUPT:" << *interr << " ] " << endl;
+	/*cout << " SonarAlone | configuration [ PIN_ECHO:" << echo << ", PIN_TRIG:"
+				<< trig << ", DELAY:" << delay_t << ", SIGLE_MEASURE:" << *single << ", INTERRUPT:" << *interr << " ] " << endl;*/
 }
 
 int main(int argc, char* argv[]) {
@@ -136,7 +138,7 @@ int main(int argc, char* argv[]) {
 	
 	do {
 		if(interr) {
-			printf(" SonarAlone | waiting for signal...\n");
+			//printf(" SonarAlone | waiting for signal...\n");
 			sigwait(&signal_set, &sig_number);
 		}
 		cout << getCM() << endl;

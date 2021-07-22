@@ -7,7 +7,10 @@ import java.io.BufferedReader
 import java.util.concurrent.ArrayBlockingQueue
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.runBlocking
 
+@ExperimentalCoroutinesApi
 class CPiSonar(id : String, echoPin : Int, trigPin : Int) : Sonar(id) {
 	
 	companion object {
@@ -25,19 +28,20 @@ class CPiSonar(id : String, echoPin : Int, trigPin : Int) : Sonar(id) {
 		proc = Runtime.getRuntime().exec("$EXECUTABLE -t $trigPin -e $echoPin -i")
 		sonarAloneChan = SonarAloneSource(proc.getInputStream())
 		pid = sonarAloneChan.getNext()
+		println("CPiSonar | started $EXECUTABLE with pid=$pid")
 	}
 	
 	override fun readDistance() : Int {
-		Runtime.getRuntime().exec("kill -10 $pid")
+		Runtime.getRuntime().exec("kill -10 $pid").waitFor()
 		return sonarAloneChan.getNext()
 	}
 	
 }
 
-private class SonarAloneSource(inputStream : InputStream) {
+private class SonarAloneSource(inputStream : InputStream) : Thread() {
 	
 	private val input = BufferedReader(InputStreamReader(inputStream))
-	private val queue = ArrayBlockingQueue<Int>(1)
+	private val queue = ArrayBlockingQueue<Int>(5)
 	
 	init{
 		start()
@@ -47,12 +51,12 @@ private class SonarAloneSource(inputStream : InputStream) {
 		return queue.take()
 	}
 	
-	private fun start() {
-		GlobalScope.launch {
-			var line = input.readLine()
-			while(line != null) {
-				queue.put(line.toInt())			
-			}
+	override fun run() {
+		var line = input.readLine()
+		while(line != null) {
+			println("CPiSonar | readed data from PiSonarAlone:$line")
+			queue.put(line.toInt())
+			line = input.readLine()	
 		}
 	}
 }

@@ -24,11 +24,12 @@ object SonarFactory {
 			println("SonarFactory | unable to find the executable for C sonar on Raspberry")
 			val source = Paths.get(CPiSonar.Companion.SOURCE)
 			if(Files.exists(source)) {
-				Runtime.getRuntime().exec("g++  ${CPiSonar.Companion.SOURCE} -l wiringPi -o  ${CPiSonar.Companion.EXECUTABLE}")
-				if(Files.exists(source))
+				Runtime.getRuntime().exec("g++  ${CPiSonar.Companion.SOURCE} -l wiringPi -o  ${CPiSonar.Companion.EXECUTABLE}").waitFor()
+				if(Files.exists(exec))
 					println("SonarFactory | ${CPiSonar.Companion.SOURCE} compiled into ${CPiSonar.Companion.EXECUTABLE}")
 				else {
 					println("SonarFactory | unable to compile ${CPiSonar.Companion.SOURCE}")
+					println("SonarFactory | try to manually compile using[g++  ${CPiSonar.Companion.SOURCE} -l wiringPi -o  ${CPiSonar.Companion.EXECUTABLE}]")
 					System.exit(-1)
 				}
 			} else {

@@ -119,4 +119,13 @@ jar {
         attributes 'Main-Class': "$mainClassName"
     }
 }
+
+distZip {
+	into("$baseName-$version/bin") {
+		from '.'
+		include 'configs/*'
+		include 'resources/*'
+		include '*.pl'
+	}
+}
  

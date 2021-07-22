@@ -14,7 +14,8 @@ class JythonPiSonar(id: String, echoPin : Int, trigPin : Int) : Sonar(id) {
 	init {
 		val python = PythonInterpreter()
 		python.exec("from resources import PiSonar")
-		python.exec("PiSonar.setup(" + echoPin + "," + trigPin + ")")
+		println("${python.get("PiSonar.welcome()")}")
+		python.exec("PiSonar.setup($echoPin, $trigPin)")
 		pyGetCM = python.get("PiSonar.getCM") as PyFunction
 
 	}
