@@ -21,7 +21,7 @@ class Weightsensoractor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm
 				var weight : Double
 				
 				if(sensor == null) {
-					println("$name | unable to use the sonar")
+					println("$name | unable to use the weight sensor")
 					System.exit(-1)
 				}
 				

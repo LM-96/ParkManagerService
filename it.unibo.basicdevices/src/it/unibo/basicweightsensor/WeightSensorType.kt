@@ -1,5 +1,5 @@
 package it.unibo.basicweightsensor
 
 enum class WeightSensorType {
-	VIRTUAL
+	VIRTUAL, SONAR_FAKE_WS
 }

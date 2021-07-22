@@ -13,12 +13,17 @@ import it.unibo.basicweightsensor.WeightSensorFactory
 import it.unibo.basicweightsensor.WeightSensorType
 import it.unibo.basicsonar.SonarFactory
 import it.unibo.basicsonar.SonarType
+import it.unibo.basicsonar.Sonar
+import it.unibo.basicfan.Fan
+import it.unibo.basicweightsensor.WeightSensor
+import it.unibo.basicthermometer.Thermometer
 import java.io.File
 import java.util.concurrent.locks.ReentrantLock
+import org.json.JSONException
 
 object DeviceManager {
 	
-	@JvmStatic val CONFIG_FILE = "config.json"
+	@JvmStatic val CONFIG_FILE = "configs/devices.conf"
 	
 	private val devices = mutableMapOf<String, AbstractDevice?>()
 	@JvmStatic private val lock = ReentrantLock()
@@ -48,34 +53,28 @@ object DeviceManager {
 				
 				if(!line.startsWith("#")) {
 					json = JSONObject(line)
-					device = DeviceType.valueOf(json.getString("device").toUpperCase())
-					id = json.getString("id")
-					
-					println("DeviceManager | Found device \"$id\" [$device]")
-					
-					when(device) {
-						DeviceType.FAN -> devices.put(id,
-							FanFactory.create(id, FanType.valueOf(json.getString("type").toUpperCase()),
-												json.getString("address")
-								))
+					if(json.has("id")) {
+						id = json.getString("id")
+						if(json.has("type")) {
+							device = DeviceType.valueOf(json.getString("device").toUpperCase())
+							println("DeviceManager | Found device \"$id\" [$device]")
 						
-						DeviceType.SONAR -> devices.put(id,
-							SonarFactory.create(id, SonarType.valueOf(json.getString("type").toUpperCase()),
-												json.getString("address")
-								))
-						
-						DeviceType.WEIGHT_SENSOR -> devices.put(id,
-							WeightSensorFactory.create(id, WeightSensorType.valueOf(json.getString("type").toUpperCase()),
-												json.getString("address")
-								))
-						
-						DeviceType.THERMOMETER -> devices.put(id,
-							ThermometerFactory.create(id, ThermometerType.valueOf(json.getString("type").toUpperCase()),
-												json.getString("address")
-								))
+							when(device) {
+								DeviceType.FAN -> devices.put(id, getFan(json))
+								DeviceType.SONAR -> devices.put(id, getSonar(json))
+								DeviceType.WEIGHT_SENSOR -> devices.put(id, getWeightSensor(json))
+								DeviceType.THERMOMETER -> devices.put(id, getThermometer(json))
+							}
+						} else {
+							println("DeviceManager | Configuratio file error: the device with id=$id does not have type")
+							System.exit(-1)
+						}
+					} else {
+						println("DeviceManager | Configuration file error: a device does not have the id")
+						System.exit(-1)
 					}
+					
 				}
-				
 				line = reader.readLine()
 				
 			}
@@ -91,6 +90,59 @@ object DeviceManager {
 			return devices.get(id)
 		} finally {lock.unlock()}
 		
+	}
+	
+	private fun getFan(json : JSONObject) : Fan? {
+		val res = FanFactory.create(json.getString("id"), FanType.valueOf(json.getString("type").toUpperCase()),
+									if(json.has("address")) json.getString("address") else null)
+		
+		if(res != null) println("   -> Fan correcty loaded")
+		else println("   -> unable to load Fan [config=${json.toString()}]")
+		
+		return res
+	}
+	
+	private fun getSonar(json : JSONObject) : Sonar? {
+		val res = SonarFactory.create(json.getString("id"),
+						SonarType.valueOf(json.getString("type").toUpperCase()),
+						if(json.has("address")) json.getString("address") else null,
+						if(json.has("echo")) json.getInt("echo") else null,
+						if(json.has("trig")) json.getInt("trig") else null)
+		
+		if(res != null) println("   -> Sonar correcty loaded")
+		else println("   -> unable to load Sonar [config=${json.toString()}]")
+		
+		return res
+	}
+	
+	private fun getWeightSensor(json : JSONObject) : WeightSensor? {
+		var sonar : Sonar? = null
+		if(json.has("sonar")) {
+			var sonarJson = json.getJSONObject("sonar")
+			if(sonarJson != null)
+				sonar = getSonar(sonarJson)
+		}
+		
+		val res = WeightSensorFactory.create(json.getString("id"),
+				WeightSensorType.valueOf(json.getString("type").toUpperCase()),
+				if(json.has("address")) json.getString("address") else null, sonar,
+				if(json.has("treshold")) json.getInt("treshold") else null)
+		
+		if(res != null) println("   -> Weight Sensor correcty loaded")
+		else println("   -> unable to load Weight Sensor [config=${json.toString()}]")
+		
+		return res
+	}
+	
+	private fun getThermometer(json : JSONObject) : Thermometer? {
+		val res = ThermometerFactory.create(json.getString("id"),
+				ThermometerType.valueOf(json.getString("type").toUpperCase()),
+				if(json.has("address")) json.getString("address") else null)
+		
+		if(res != null) println("   -> Thermometer correcty loaded")
+		else println("   -> unable to load Thermometer [config=${json.toString()}]")
+		
+		return res
 	}
 	
 }

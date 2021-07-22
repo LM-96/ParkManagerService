@@ -7,7 +7,7 @@ import it.unibo.basicdevices.DeviceType
 
 class WsThermometer(id : String, address : String) : Thermometer(id) {
 	
-	val updater = WebSocketValueUpdater<Double>(0.0, address, {s : String -> JSONObject(s).getDouble("data")})
+	private val updater = WebSocketValueUpdater<Double>(0.0, address, {s : String -> JSONObject(s).getDouble("data")})
 	
 	init {
 		updater.start()

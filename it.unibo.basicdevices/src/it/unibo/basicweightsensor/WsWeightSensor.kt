@@ -8,7 +8,7 @@ import it.unibo.basicdevices.AbstractDevice
 
 class WsWeightSensor(id : String, address : String) : WeightSensor(id) {
 	
-	val updater = WebSocketValueUpdater<Double>(0.0, address, {s : String -> JSONObject(s).getDouble("data")})
+	private val updater = WebSocketValueUpdater<Double>(0.0, address, {s : String -> JSONObject(s).getDouble("data")})
 	
 	init {
 		updater.start()
