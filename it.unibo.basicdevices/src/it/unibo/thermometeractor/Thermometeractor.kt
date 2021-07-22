@@ -24,6 +24,8 @@ class Thermometeractor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm(
 				}
 				
 				thermometer as it.unibo.basicthermometer.Thermometer
+				var temp = 0.0
+				var tempState = `it.unibo.basicthermometer`.TemperatureState.NORMAL
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
@@ -33,7 +35,18 @@ class Thermometeractor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm(
 				}	 
 				state("work") { //this:State
 					action { //it:State
-						updateResourceRep( thermometer.readTemperature().toString()  
+						 
+									temp = thermometer.readTemperature()
+									if(temp >= `it.unibo.basicthermometer`.Thermometer.CRITICAL_TEMP
+										&& tempState == `it.unibo.basicthermometer`.TemperatureState.NORMAL) {
+											tempState = `it.unibo.basicthermometer`.TemperatureState.CRITICAL		
+						emit("criticaltemp", "criticaltemp(CRITICAL)" ) 
+						 } else if(temp < `it.unibo.basicthermometer`.Thermometer.CRITICAL_TEMP
+										&& tempState == `it.unibo.basicthermometer`.TemperatureState.CRITICAL) {
+											tempState = `it.unibo.basicthermometer`.TemperatureState.NORMAL
+						emit("criticaltemp", "criticaltemp(NORMAL)" ) 
+						 }  
+						updateResourceRep( temp.toString()  
 						)
 						stateTimer = TimerActor("timer_work", 
 							scope, context!!, "local_tout_thermometeractor_work", 2000.toLong() )

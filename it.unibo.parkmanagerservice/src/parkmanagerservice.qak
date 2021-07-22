@@ -1,24 +1,40 @@
 System carparking
 
+/* Messages for entering car */
 Request	enter 		: 	enter(X)
 Reply	slotnum 	: 	slotnum(SLOTNUM)
-
 Dispatch canEnterCar : canEnterCar(X)
-
 Request	carenter	:	carenter(SLOTNUM)
 Reply	token		:	token(TOKEN)
 
+/* Messages for pickup car */
 Request pickup		:	pickup(TOKEN)
 Reply	canPickup	:	canPickup(X)
 
+/* Messages for counters */
 Dispatch dtfreeReached : dtfreeReached(X)
 Dispatch itoccReached : itoccReached(X)
 Dispatch startDtfreeCounter : startDtfreeCounter(X)
 Dispatch startItoccCounter : startItoccCounter(X)
 Dispatch stopCount : stopCount(X)
 
+/* Messages for device */
+Dispatch fanon : fanon(X)
+Dispatch fanoff : fanoff(X)
+Event criticaltemp : criticaltemp(X)
 
-Context ctxcarparking ip[host="localhost" port=8000]
+/* Main context */
+Context ctxcarparking ip[host="localhost" port=8010]
+
+/* Context for devices */
+Context ctxthermometer ip[host="192.168.1.100" port=8001]
+Context ctxfan ip[host="192.168.1.100" port=8002]
+Context ctxsonar ip[host="192.168.1.100" port=8003]
+Context ctxweightsensor ip[host="192.168.1.100" port=8004]
+
+/* Actors for devices */
+ExternalQActor fanactor context ctxfan
+
  /*
 QActor parkingservicegui context ctxcarparking {
 	
@@ -284,5 +300,39 @@ QActor parkingservicestatusgui context ctxcarparking {
 	
 	State receivedDtfreeAlarm {
 		println("$name | the manager has been notified for DTFREE reached")
+	} Goto work
+}
+
+QActor antifireactor context ctxcarparking {
+	
+	[# var type : String #]
+	
+	State s0 initial {
+		println("$name | started")
+	} Goto work
+	
+	State work {
+		println("$name | working")
+	} Transition t0
+		whenEvent criticaltemp -> handleCriticalTemp
+	
+	State handleCriticalTemp {
+		onMsg(criticaltemp:criticaltemp(X)) {
+			[# 
+				type = payloadArg(0) 
+				if(type.equals("CRITICAL")) {
+			#]
+					println("$name | thermometer signaled critical temperature")
+					forward fanactor -m fanon : fanon(ON)
+			[#
+				} else if(type.equals("NORMAL")) {
+			#]
+					println("$name | thermothere signaled normal temperature")
+					forward fanactor -m fanoff : fanoff(OFF)
+			[#
+					
+				}
+			#]
+		}
 	} Goto work
 }
