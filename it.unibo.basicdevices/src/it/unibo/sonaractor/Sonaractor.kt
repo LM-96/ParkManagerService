@@ -17,8 +17,12 @@ class Sonaractor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 	@kotlinx.coroutines.ExperimentalCoroutinesApi			
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		 
+				var DISTANCE : Int
+				var STATE : String
+				var JSONSTATE : String
+				var POLLING_TIME : Long = 1000
+				var MIN_DISTANCE = 300
 				val sonar = it.unibo.basicdevices.DeviceManager.requestDevice("outsonar")
-				var distance : Int
 				
 				if(sonar == null) {
 					println("$name | unable to use the sonar")
@@ -26,22 +30,60 @@ class Sonaractor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 				}
 				
 				sonar as it.unibo.basicsonar.Sonar
+				
+				DISTANCE = sonar.readDistance()
+				if(DISTANCE > MIN_DISTANCE) STATE="off"
+				else STATE = "on"
+				
+				JSONSTATE = "{\"sonar\":\"$DISTANCE\",\"state\":\"$STATE\"}"
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
 						println("$name | started")
-						 distance = sonar.readDistance()  
+						updateResourceRep( JSONSTATE  
+						)
 					}
 					 transition( edgeName="goto",targetState="work", cond=doswitch() )
 				}	 
 				state("work") { //this:State
 					action { //it:State
-						 distance = sonar.readDistance()  
-						updateResourceRep( distance.toString()  
-						)
-						println("$name | sonar distance : ${distance}")
+						println("$name | last state : ${JSONSTATE}")
 					}
-					 transition(edgeName="t05",targetState="work",cond=whenDispatch("updatesonarstate"))
+					 transition(edgeName="t04",targetState="setpolling",cond=whenDispatch("dopolling"))
+				}	 
+				state("setpolling") { //this:State
+					action { //it:State
+						if( checkMsgContent( Term.createTerm("dopolling(TIME)"), Term.createTerm("dopolling(X)"), 
+						                        currentMsg.msgContent()) ) { //set msgArgList
+								 POLLING_TIME = payloadArg(0).toLong()  
+						}
+					}
+					 transition( edgeName="goto",targetState="polling", cond=doswitch() )
+				}	 
+				state("polling") { //this:State
+					action { //it:State
+						 
+									DISTANCE = sonar.readDistance()
+									
+									if(STATE.equals("off") && DISTANCE < MIN_DISTANCE) {
+										STATE = "on"
+						emit("sonaron", "sonaron(ON)" ) 
+						
+									} else if(STATE.equals("on") && DISTANCE > MIN_DISTANCE) {
+										STATE = "off"
+										
+						emit("sonaroff", "sonaroff(OFF)" ) 
+						
+									}
+									
+									JSONSTATE = "{\"distance\":\"$DISTANCE\",\"state\":\"$STATE\"}"
+						updateResourceRep( JSONSTATE  
+						)
+						stateTimer = TimerActor("timer_polling", 
+							scope, context!!, "local_tout_sonaractor_polling", POLLING_TIME )
+					}
+					 transition(edgeName="t05",targetState="polling",cond=whenTimeout("local_tout_sonaractor_polling"))   
+					transition(edgeName="t06",targetState="work",cond=whenDispatch("stoppolling"))
 				}	 
 			}
 		}

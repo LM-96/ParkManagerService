@@ -28,8 +28,4 @@ class WsFan(id: String, address : String) : Fan(id) {
 		updater.say("{\"cmd\": \"false\"}")
 	}
 	
-	override fun getState() : FanState {
-		return updater.getActual()
-	}
-	
 }

@@ -26,6 +26,7 @@ class Thermometeractor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm(
 				thermometer as it.unibo.basicthermometer.Thermometer
 				var temp = 0.0
 				var tempState = `it.unibo.basicthermometer`.TemperatureState.NORMAL
+				var POLLING_TIME : Long = 2000
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
@@ -49,7 +50,7 @@ class Thermometeractor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm(
 						updateResourceRep( temp.toString()  
 						)
 						stateTimer = TimerActor("timer_work", 
-							scope, context!!, "local_tout_thermometeractor_work", 2000.toLong() )
+							scope, context!!, "local_tout_thermometeractor_work", POLLING_TIME )
 					}
 					 transition(edgeName="t00",targetState="work",cond=whenTimeout("local_tout_thermometeractor_work"))   
 					transition(edgeName="t01",targetState="work",cond=whenDispatch("updatethermometerstate"))

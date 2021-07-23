@@ -26,7 +26,7 @@ object DeviceManager {
 	@JvmStatic val CONFIG_FILE = "configs/devices.conf"
 	
 	private val devices = mutableMapOf<String, AbstractDevice?>()
-	@JvmStatic private val lock = ReentrantLock()
+	private val lock = ReentrantLock()
 	
 	init {
 		lock.lock()

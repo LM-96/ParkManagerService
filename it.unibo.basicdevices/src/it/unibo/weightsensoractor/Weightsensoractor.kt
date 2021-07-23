@@ -18,7 +18,11 @@ class Weightsensoractor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		 
 				val sensor = it.unibo.basicdevices.DeviceManager.requestDevice("indoor sensor")
-				var weight : Double
+				var WEIGHT : Double
+				var STATE = ""
+				var JSONSTATE = ""
+				var POLLING_TIME : Long = 1000
+				val MIN_WEIGHT = 0.1
 				
 				if(sensor == null) {
 					println("$name | unable to use the weight sensor")
@@ -26,21 +30,59 @@ class Weightsensoractor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm
 				}
 				
 				sensor as it.unibo.basicweightsensor.WeightSensor
+				
+				WEIGHT = sensor.readWeight()
+				if(WEIGHT < MIN_WEIGHT)	STATE = "off"
+				else STATE = "on"
+				JSONSTATE = "{\"weight\":\"$WEIGHT\",\"state\":\"$STATE\"}"
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
 						println("$name | started")
+						updateResourceRep( JSONSTATE  
+						)
 					}
 					 transition( edgeName="goto",targetState="work", cond=doswitch() )
 				}	 
 				state("work") { //this:State
 					action { //it:State
-						 weight = sensor.readWeight()  
-						updateResourceRep( weight.toString()  
-						)
-						println("$name | weight distance : ${weight}")
+						println("$name | last state : ${JSONSTATE}")
 					}
-					 transition(edgeName="t06",targetState="work",cond=whenDispatch("updatesensorstate"))
+					 transition(edgeName="t07",targetState="setpolling",cond=whenDispatch("dopolling"))
+				}	 
+				state("setpolling") { //this:State
+					action { //it:State
+						if( checkMsgContent( Term.createTerm("dopolling(TIME)"), Term.createTerm("dopolling(X)"), 
+						                        currentMsg.msgContent()) ) { //set msgArgList
+								 POLLING_TIME = payloadArg(0).toLong()  
+						}
+					}
+					 transition( edgeName="goto",targetState="polling", cond=doswitch() )
+				}	 
+				state("polling") { //this:State
+					action { //it:State
+						 
+									WEIGHT = sensor.readWeight() 
+									
+									if(STATE.equals("off") && WEIGHT > MIN_WEIGHT) {
+										STATE = "on"
+						emit("weighton", "weighton(ON)" ) 
+						
+									} else if(STATE.equals("on") && WEIGHT < MIN_WEIGHT) {
+										STATE = "off"
+										
+						emit("weightoff", "weightoff(OFF)" ) 
+						
+									}
+									
+									JSONSTATE = "{\"weight\":\"$WEIGHT\",\"state\":\"$STATE\"}"
+						updateResourceRep( JSONSTATE  
+						)
+						stateTimer = TimerActor("timer_polling", 
+							scope, context!!, "local_tout_weightsensoractor_polling", POLLING_TIME )
+					}
+					 transition(edgeName="t08",targetState="polling",cond=whenTimeout("local_tout_weightsensoractor_polling"))   
+					transition(edgeName="t09",targetState="work",cond=whenDispatch("stoppolling"))
 				}	 
 			}
 		}
