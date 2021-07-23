@@ -23,13 +23,14 @@ sonar_socket.onmessage = function (e) {
     const data = JSON.parse(e.data);
     console.log(data)
     document.querySelector('#msg_sonar').innerHTML = (data.data)
+    document.querySelector("#sonar").value = parseInt(data.data)
+    document.querySelector("#value_sonar").innerHTML = (data.data)
 
 }
 
-sonar_socket.onopen = function () {
+sonar_socket.onconnect = function () {
     document.querySelector('#msg_sonar').innerHTML = (slider_sonar.value)
     sonar_socket.send(JSON.stringify({
         'data': slider_sonar.value,
     }));
-
 }

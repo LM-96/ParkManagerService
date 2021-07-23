@@ -5,6 +5,17 @@ import json
 
 class BasicConsumer(AsyncWebsocketConsumer):
 
+    
+    async def update_on_connect(self):
+        if self.state != None:
+            await self.channel_layer.group_send(
+                    self.group_name,
+                    {
+                        'type': 'data_message',
+                        'data': self.state,
+                    }
+                ) 
+
     async def connect(self):
 
         await self.channel_layer.group_add(
@@ -12,6 +23,8 @@ class BasicConsumer(AsyncWebsocketConsumer):
             self.channel_name 
         )
 
+        self.update_on_connect()
+        
         await self.accept()
 
 
@@ -25,17 +38,18 @@ class BasicConsumer(AsyncWebsocketConsumer):
         msg_json = json.loads(text_data)
         if 'data' in msg_json:
             data = msg_json['data']
+
             await self.channel_layer.group_send(
                 self.group_name,
                 {
                     'type': 'data_message',
                     'data': data,
                 }
-            )
+            ) 
 
     async def data_message(self, event):
         data = event['data']
-
+        self.state = data if self.state != None else None
         await self.send(text_data=json.dumps({
             'data': data
         }))
