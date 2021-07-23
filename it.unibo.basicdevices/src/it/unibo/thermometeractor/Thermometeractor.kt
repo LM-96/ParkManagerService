@@ -26,7 +26,8 @@ class Thermometeractor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm(
 				thermometer as it.unibo.basicthermometer.Thermometer
 				var temp = 0.0
 				var tempState = `it.unibo.basicthermometer`.TemperatureState.NORMAL
-				var POLLING_TIME : Long = 2000
+				val POLLING_TIME = it.unibo.basicthermometer.Thermometer.getPollingMillis()
+				val CRITICAL_TEMP = it.unibo.basicthermometer.Thermometer.getCriticalTemp()
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
@@ -38,11 +39,11 @@ class Thermometeractor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm(
 					action { //it:State
 						 
 									temp = thermometer.readTemperature()
-									if(temp >= `it.unibo.basicthermometer`.Thermometer.CRITICAL_TEMP
+									if(temp >= CRITICAL_TEMP
 										&& tempState == `it.unibo.basicthermometer`.TemperatureState.NORMAL) {
 											tempState = `it.unibo.basicthermometer`.TemperatureState.CRITICAL		
 						emit("criticaltemp", "criticaltemp(CRITICAL)" ) 
-						 } else if(temp < `it.unibo.basicthermometer`.Thermometer.CRITICAL_TEMP
+						 } else if(temp < CRITICAL_TEMP
 										&& tempState == `it.unibo.basicthermometer`.TemperatureState.CRITICAL) {
 											tempState = `it.unibo.basicthermometer`.TemperatureState.NORMAL
 						emit("criticaltemp", "criticaltemp(NORMAL)" ) 
