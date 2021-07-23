@@ -1,21 +1,15 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
 
+from devices.state import State
+
 # Base consumer class. It handles messages from/to the socket 
 
 class BasicConsumer(AsyncWebsocketConsumer):
 
-    
-    async def update_on_connect(self):
-        if self.state != None:
-            print(self.group_name + " connection " + self.state)
-            await self.channel_layer.group_send(
-                    self.group_name,
-                    {
-                        'type': 'data_message',
-                        'data': self.state,
-                    }
-                ) 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.state = State()
 
     async def connect(self):
 
@@ -26,7 +20,15 @@ class BasicConsumer(AsyncWebsocketConsumer):
         
         await self.accept()
 
-        await self.update_on_connect()
+        print(self.group_name + " " + self.state.get(self.group_name))
+
+        await self.channel_layer.group_send(
+                self.group_name,
+                {
+                    'type': 'data_message',
+                    'data': self.state.get(self.group_name),
+                }
+            ) 
 
 
     async def disconnect(self, code):
@@ -35,18 +37,18 @@ class BasicConsumer(AsyncWebsocketConsumer):
             self.channel_name
         )
 
+
     async def receive(self, text_data):
         msg_json = json.loads(text_data)
         if 'data' in msg_json:
             data = msg_json['data']
-            print(self.group_name + " 1 " + self.state)
-            self.state = data if self.state != None else None
-            print(self.group_name + " 2 " + self.state)
+            self.state.set(self.group_name, data)
+            print(self.state.get(self.group_name))
             await self.channel_layer.group_send(
                 self.group_name,
                 {
                     'type': 'data_message',
-                    'data': self.state,
+                    'data': data,
                 }
             ) 
 
