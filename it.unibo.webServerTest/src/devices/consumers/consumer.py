@@ -8,6 +8,7 @@ class BasicConsumer(AsyncWebsocketConsumer):
     
     async def update_on_connect(self):
         if self.state != None:
+            print(self.group_name + " connection " + self.state)
             await self.channel_layer.group_send(
                     self.group_name,
                     {
