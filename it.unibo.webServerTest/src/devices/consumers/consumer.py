@@ -38,13 +38,19 @@ class BasicConsumer(AsyncWebsocketConsumer):
         msg_json = json.loads(text_data)
         if 'data' in msg_json:
             data = msg_json['data']
+            print(self.group_name + " 1 " + self.state)
             self.state = data if self.state != None else None
-            print("LOLOLOLOLOL " + self.state)
-            await self.update_on_connect()
+            print(self.group_name + " 2 " + self.state)
+            await self.channel_layer.group_send(
+                self.group_name,
+                {
+                    'type': 'data_message',
+                    'data': self.state,
+                }
+            ) 
 
     async def data_message(self, event):
         data = event['data']
-        
         await self.send(text_data=json.dumps({
             'data': data
         }))
