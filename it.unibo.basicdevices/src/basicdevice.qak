@@ -3,6 +3,7 @@ System basicdevices
 //MESSAGES DEFINITION ****************************************************/
 //-Thermometer
 Dispatch updatethermometerstate : updatethermometerstate(X)
+Event criticaltemp : criticaltemp(X)
 //-Fan
 Dispatch fanon : fanon(X)
 Dispatch fanoff : fanoff(X)
@@ -18,6 +19,8 @@ Context ctxfan ip[host="localhost" port=8002]
 Context ctxsonar ip[host="localhost" port=8003]
 Context ctxweightsensor ip[host="localhost" port=8004]
 
+Context ctxcarparking ip[host="192.168.1.100" port=8010]
+
 QActor thermometeractor context ctxthermometer {
 	
 	//Aggiungere lancio evento quando raggiunta temperatura
@@ -30,6 +33,8 @@ QActor thermometeractor context ctxthermometer {
 		}
 		
 		thermometer as it.unibo.basicthermometer.Thermometer
+		var temp = 0.0
+		var tempState = `it.unibo.basicthermometer`.TemperatureState.NORMAL
 	#]
 	
 	State s0 initial {
@@ -37,7 +42,20 @@ QActor thermometeractor context ctxthermometer {
 	} Goto work
 	
 	State work {
-		updateResource[# thermometer.readTemperature().toString() #]
+		[# 
+			temp = thermometer.readTemperature()
+			if(temp >= `it.unibo.basicthermometer`.Thermometer.CRITICAL_TEMP
+				&& tempState == `it.unibo.basicthermometer`.TemperatureState.NORMAL) {
+					tempState = `it.unibo.basicthermometer`.TemperatureState.CRITICAL		
+		#]
+					emit criticaltemp : criticaltemp(CRITICAL)
+		[# } else if(temp < `it.unibo.basicthermometer`.Thermometer.CRITICAL_TEMP
+				&& tempState == `it.unibo.basicthermometer`.TemperatureState.CRITICAL) {
+					tempState = `it.unibo.basicthermometer`.TemperatureState.NORMAL
+		#]
+					emit criticaltemp : criticaltemp(NORMAL)				
+		[# } #]
+		updateResource[# temp.toString() #]
 	} Transition t0
 		whenTime 2000 -> work
 		whenMsg updatethermometerstate -> work
