@@ -148,6 +148,7 @@ QActor sonaractor context ctxsonar {
 		onMsg(dopolling : dopolling(X)) {
 			[# POLLING_TIME = payloadArg(0).toLong() #]
 		}
+		println("$name | started polling with time $POLLING_TIME")
 	} Goto polling
 	
 	State polling {
@@ -173,6 +174,7 @@ QActor sonaractor context ctxsonar {
 	} Transition t0
 		whenTimeVar POLLING_TIME -> polling
 		whenMsg stoppolling -> work
+		whenMsg dopolling -> setpolling
 	
 }
 
@@ -213,6 +215,7 @@ QActor weightsensoractor context ctxweightsensor {
 		onMsg(dopolling : dopolling(X)) {
 			[# POLLING_TIME = payloadArg(0).toLong() #]
 		}
+		println("$name | started polling with time $POLLING_TIME")
 	}  Goto polling
 		
 	State polling {
@@ -238,5 +241,6 @@ QActor weightsensoractor context ctxweightsensor {
 	} Transition t0
 		whenTimeVar POLLING_TIME -> polling
 		whenMsg stoppolling -> work
+		whenMsg dopolling -> setpolling
 	
 }

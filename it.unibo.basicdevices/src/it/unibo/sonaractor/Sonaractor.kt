@@ -57,6 +57,7 @@ class Sonaractor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								 POLLING_TIME = payloadArg(0).toLong()  
 						}
+						println("$name | started polling with time $POLLING_TIME")
 					}
 					 transition( edgeName="goto",targetState="polling", cond=doswitch() )
 				}	 
@@ -84,6 +85,7 @@ class Sonaractor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 					}
 					 transition(edgeName="t05",targetState="polling",cond=whenTimeout("local_tout_sonaractor_polling"))   
 					transition(edgeName="t06",targetState="work",cond=whenDispatch("stoppolling"))
+					transition(edgeName="t07",targetState="setpolling",cond=whenDispatch("dopolling"))
 				}	 
 			}
 		}

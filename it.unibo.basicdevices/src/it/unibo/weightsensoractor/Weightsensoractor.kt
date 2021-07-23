@@ -48,7 +48,7 @@ class Weightsensoractor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm
 					action { //it:State
 						println("$name | last state : ${JSONSTATE}")
 					}
-					 transition(edgeName="t07",targetState="setpolling",cond=whenDispatch("dopolling"))
+					 transition(edgeName="t08",targetState="setpolling",cond=whenDispatch("dopolling"))
 				}	 
 				state("setpolling") { //this:State
 					action { //it:State
@@ -56,6 +56,7 @@ class Weightsensoractor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								 POLLING_TIME = payloadArg(0).toLong()  
 						}
+						println("$name | started polling with time $POLLING_TIME")
 					}
 					 transition( edgeName="goto",targetState="polling", cond=doswitch() )
 				}	 
@@ -81,8 +82,9 @@ class Weightsensoractor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm
 						stateTimer = TimerActor("timer_polling", 
 							scope, context!!, "local_tout_weightsensoractor_polling", POLLING_TIME )
 					}
-					 transition(edgeName="t08",targetState="polling",cond=whenTimeout("local_tout_weightsensoractor_polling"))   
-					transition(edgeName="t09",targetState="work",cond=whenDispatch("stoppolling"))
+					 transition(edgeName="t09",targetState="polling",cond=whenTimeout("local_tout_weightsensoractor_polling"))   
+					transition(edgeName="t010",targetState="work",cond=whenDispatch("stoppolling"))
+					transition(edgeName="t011",targetState="setpolling",cond=whenDispatch("dopolling"))
 				}	 
 			}
 		}
