@@ -22,10 +22,10 @@ class BasicConsumer(AsyncWebsocketConsumer):
             self.group_name,
             self.channel_name 
         )
-
-        self.update_on_connect()
         
         await self.accept()
+
+        self.update_on_connect()
 
 
     async def disconnect(self, code):
