@@ -22,6 +22,12 @@ Dispatch stopCount : stopCount(X)
 Dispatch fanon : fanon(X)
 Dispatch fanoff : fanoff(X)
 Event criticaltemp : criticaltemp(X)
+Event weighton : weighton(X)
+Event weightoff : weightoff(X)
+Event sonaron : sonaron(X)
+Event sonaroff : sonaroff(X)
+Dispatch dopolling : dopolling(TIME)
+Dispatch stoppolling : stoppolling(X)
 
 /* Main context */
 Context ctxcarparking ip[host="localhost" port=8010]
@@ -321,6 +327,7 @@ QActor antifireactor context ctxcarparking {
 			[# 
 				type = payloadArg(0) 
 				if(type.equals("CRITICAL")) {
+					//Must send and alert to the manager
 			#]
 					println("$name | thermometer signaled critical temperature")
 					forward fanactor -m fanon : fanon(ON)

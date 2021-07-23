@@ -24,7 +24,7 @@ Context ctxfan ip[host="localhost" port=8002]
 Context ctxsonar ip[host="localhost" port=8003]
 Context ctxweightsensor ip[host="localhost" port=8004]
 
-//Context ctxcarparking ip[host="192.168.1.100" port=8010]
+Context ctxcarparking ip[host="192.168.1.100" port=8010]
 
 QActor thermometeractor context ctxthermometer {
 	

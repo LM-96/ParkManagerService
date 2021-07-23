@@ -37,6 +37,7 @@ class Antifireactor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( na
 								 
 												type = payloadArg(0) 
 												if(type.equals("CRITICAL")) {
+													//Must send and alert to the manager
 								println("$name | thermometer signaled critical temperature")
 								forward("fanon", "fanon(ON)" ,"fanactor" ) 
 								
