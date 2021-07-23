@@ -38,7 +38,7 @@ class BasicConsumer(AsyncWebsocketConsumer):
         msg_json = json.loads(text_data)
         if 'data' in msg_json:
             data = msg_json['data']
-
+            self.state = data if self.state != None else None
             await self.channel_layer.group_send(
                 self.group_name,
                 {
@@ -49,7 +49,7 @@ class BasicConsumer(AsyncWebsocketConsumer):
 
     async def data_message(self, event):
         data = event['data']
-        self.state = data if self.state != None else None
+        
         await self.send(text_data=json.dumps({
             'data': data
         }))
