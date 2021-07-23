@@ -8,6 +8,7 @@ import okhttp3.OkHttpClient
 import java.util.concurrent.TimeUnit
 import okhttp3.Request
 import org.json.JSONObject
+import java.util.concurrent.locks.ReentrantLock
 
 class WebSocketValueUpdater<T>(value : T, address : String, converter : (String) -> T) : AbstractValueUpdater<T>(value) {
 	
@@ -23,6 +24,7 @@ class WebSocketValueUpdater<T>(value : T, address : String, converter : (String)
 				.url(address)
 				.build()
 			ws = client.newWebSocket(request, listener)
+			listener.waitConnected()
 			
 		}
 	}
@@ -51,10 +53,26 @@ private class ValueWebSocketListener<T>(value : LockableValue<T>, converter : (S
 	val value = value
 	val converter = converter
 	lateinit var url : String
+	val lock = ReentrantLock()
+	val cond = lock.newCondition()
+	var connected = false
 	
 	override fun onOpen(webSocket : WebSocket, response : Response) {
 		url = response.request.url.toString()
 		println("WebSocketValueUpdater[${url}] | WebSocket connected")
+		lock.lock()
+		try {
+			connected = true
+			cond.signalAll()
+		} finally {lock.unlock()}
+	}
+	
+	fun waitConnected() {
+		lock.lock()
+		try {
+			while(!connected)
+				cond.await()
+		} finally {lock.unlock()}
 	}
 	
 	override fun onMessage(webSocket: WebSocket, text: String) {
