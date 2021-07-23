@@ -7,7 +7,9 @@ class BasicConsumer(AsyncWebsocketConsumer):
 
     
     async def update_on_connect(self):
+        print("CIAO")
         if self.state != None:
+            print("LOOOOOOL " + self.state)
             await self.channel_layer.group_send(
                     self.group_name,
                     {
@@ -25,7 +27,7 @@ class BasicConsumer(AsyncWebsocketConsumer):
         
         await self.accept()
 
-        self.update_on_connect()
+        await self.update_on_connect()
 
 
     async def disconnect(self, code):
