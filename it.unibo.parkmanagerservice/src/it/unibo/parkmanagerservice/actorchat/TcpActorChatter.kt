@@ -39,10 +39,12 @@ class TcpActorChatter(contextIp : String, contextPort : Int, actor : String) : A
 	
 	override fun sendRequest(type : String, content : String) {
 		outSock.write("msg($type,request,tcpactorchatter,$actor,$type($content),${counter.addAndGet(1)})\n")
+		outSock.flush()
 	}
 	
 	override fun sendDispatch(type : String, content : String) {
 		outSock.write("msg($type,dispatch,tcpactorchatter,$actor,$type($content),${counter.addAndGet(1)})\n")
+		outSock.flush()
 	}
 	
 	override fun readLastResponse() : ApplMessage {
@@ -70,6 +72,7 @@ private class DedicatedDispatchWriter(writer : BufferedWriter, counter : AtomicI
 	
 	override fun writeDispatch(type : String, content : String) {
 		writer.write("msg($type,dispatch,tcpactorchatter,$actor,$type($content),${counter.addAndGet(1)})\n")
+		writer.flush()
 	}
 	
 }
@@ -80,6 +83,7 @@ private class BufferedMessageOutputStream(writer : BufferedWriter) : MessageOutp
 	
 	override fun write(msg : ApplMessage) {
 		writer.write(msg.toString().trim() + "\n")
+		writer.flush()
 	}
 	
 }
@@ -88,22 +92,6 @@ private class BufferedMessageInputStream(reader: BufferedReader) : MessageInputS
 	private val reader = reader
 	
 	override fun read() : ApplMessage {
-		return MsgParser.createMessage(reader.readLine())
-	}
-}
-
-private class MsgParser {
-	companion object {
-		@JvmStatic fun createMessage(msg : String) : ApplMessage {
-			 //sysUtil.colorPrint( "ApplMessage | CREATE: $msg " )
-            val jsonContent = msg.split("{")[1].split("}")[0]
-            val content = "{$jsonContent}"
-            //sysUtil.colorPrint( "ApplMessage | jsonContent: $jsonContent " )
-            val msgNoContent = msg.replace(jsonContent,"xxx")  //xxx will become item[4]
-            //sysUtil.colorPrint( "ApplMessage | msgNoContent=$msgNoContent " )
-            val body  = msgNoContent.replace("msg","").replace("(","").replace(")","")
-            val items = body.split(",")
-            return ApplMessage(items[0],items[1], items[2], items[3], content, items[5] )
-		}
+		return ApplMessage(reader.readLine())
 	}
 }

@@ -4,6 +4,12 @@ import it.unibo.kactor.ApplMessage
 
 interface ActorChatter {
 	
+	companion object {
+		fun newChatterFor(contextIp : String, contextPort : Int, actorName : String) : ActorChatter {
+			return TcpActorChatter(contextIp, contextPort, actorName)
+		}
+	}
+	
 	fun getMessageInputStream() : MessageInputStream
 	fun getMessageOutputStream() : MessageOutputStream
 	
