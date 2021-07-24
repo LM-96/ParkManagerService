@@ -21,11 +21,11 @@ class WsFan(id: String, address : String) : Fan(id) {
 	}
 	
 	override fun powerOn() {
-		updater.say("{\"cmd\": \"true\"}")
+		updater.say("{\"data\": \"true\"}")
 	}
 	
 	override fun powerOff() {
-		updater.say("{\"cmd\": \"false\"}")
+		updater.say("{\"data\": \"false\"}")
 	}
 	
 }

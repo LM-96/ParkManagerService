@@ -44,6 +44,7 @@ class WebSocketValueUpdater<T>(value : T, address : String, converter : (String)
 	
 	fun say(text : String) {
 		ws?.send(text)
+		println("WebSocketValueUpdater[${address}] | sended text [$text]")
 	}
 	
 }
