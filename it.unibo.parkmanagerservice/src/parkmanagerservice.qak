@@ -1,7 +1,16 @@
 System carparking
 
+/*
+ * Tabelle SQLITE
+ * Utente(ID [PK], NAME, SURNAME, MAIL [UNIQUE], STATE, TIME)
+ * 	STATE = "Interested", "Parked", "Pickup"
+ * ParkingSlot(SLOTNUM [PK], SLOTSTATE, TOKEN, UID [FK])
+ * 	SLOTSTATE = "Free", "Reserved", "Occupied"
+ * 
+ */
+
 /* Messages for entering car */
-Request	enter 		: 	enter(X)
+Request	enter 		: 	enter(NAME,SURNAME,MAIL)
 Reply	slotnum 	: 	slotnum(SLOTNUM)
 Dispatch canEnterCar : canEnterCar(X)
 Request	carenter	:	carenter(SLOTNUM)
@@ -122,8 +131,13 @@ QActor parkingservicegui context ctxcarparking {
 QActor parkingmanagerservice context ctxcarparking {
 	
 	[#  
+		it.unibo.parkmanagerservice.persistence.ParkingRepositories.createBasics(6)
+		val userRepo = it.unibo.parkmanagerservice.persistence.ParkingRepositories.getUserRepository()
+		val slotRepo = it.unibo.parkmanagerservice.persistence.ParkingRepositories.getParkingSlotRepository()
 		val state = it.unibo.parkingstate.MockState
-		var SLOTNUM = 0
+		var USER : it.unibo.parkmanagerservice.bean.User
+		var SLOT : it.unibo.parkmanagerservice.bean.ParkingSlot?
+		var SLOTNUM : Long = 0
 	#]
 	
 	State s0 initial {
@@ -140,7 +154,26 @@ QActor parkingmanagerservice context ctxcarparking {
 	
 	State handleEnter {
 		printCurrentMessage
-		[# SLOTNUM = state.getParkingSlotManager().getFreeSlot() #]
+		[# SLOTNUM = 0 #]
+		onMsg (enter : enter(NAME,SURNAME,MAIL)) {
+			[#
+				USER = `it.unibo.parkmanagerservice`.bean.User(name = payloadArg(0), 
+						surname = payloadArg(1), mail = payloadArg(2),
+						state = `it.unibo.parkmanagerservice`.bean.UserState.INTERESTED,
+						time = java.sql.Timestamp(System.currentTimeMillis())
+				)
+				
+				SLOT = slotRepo?.getFirstFree()
+				if(SLOT != null) {
+					SLOT!!.slotstate = `it.unibo.parkmanagerservice`.bean.ParkingSlotState.RESERVED
+					SLOT!!.user = USER
+					SLOTNUM = SLOT!!.slotnum
+					userRepo?.create(USER)
+					slotRepo?.update(SLOT!!)
+				}
+			#]
+		}
+		
 		println("$name | replying enter request with [SLOTNUM = $SLOTNUM]")
 		replyTo enter with slotnum : slotnum($SLOTNUM)
 		

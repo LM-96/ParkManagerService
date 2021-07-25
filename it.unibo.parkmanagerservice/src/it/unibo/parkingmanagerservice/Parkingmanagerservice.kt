@@ -17,8 +17,13 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 	@kotlinx.coroutines.ExperimentalCoroutinesApi			
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		  
+				it.unibo.parkmanagerservice.persistence.ParkingRepositories.createBasics(6)
+				val userRepo = it.unibo.parkmanagerservice.persistence.ParkingRepositories.getUserRepository()
+				val slotRepo = it.unibo.parkmanagerservice.persistence.ParkingRepositories.getParkingSlotRepository()
 				val state = it.unibo.parkingstate.MockState
-				var SLOTNUM = 0
+				var USER : it.unibo.parkmanagerservice.bean.User
+				var SLOT : it.unibo.parkmanagerservice.bean.ParkingSlot?
+				var SLOTNUM : Long = 0
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
@@ -39,7 +44,25 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 				state("handleEnter") { //this:State
 					action { //it:State
 						println("$name in ${currentState.stateName} | $currentMsg")
-						 SLOTNUM = state.getParkingSlotManager().getFreeSlot()  
+						 SLOTNUM = 0  
+						if( checkMsgContent( Term.createTerm("enter(NAME,SURNAME,MAIL)"), Term.createTerm("enter(NAME,SURNAME,MAIL)"), 
+						                        currentMsg.msgContent()) ) { //set msgArgList
+								
+												USER = `it.unibo.parkmanagerservice`.bean.User(name = payloadArg(0), 
+														surname = payloadArg(1), mail = payloadArg(2),
+														state = `it.unibo.parkmanagerservice`.bean.UserState.INTERESTED,
+														time = java.sql.Timestamp(System.currentTimeMillis())
+												)
+												
+												SLOT = slotRepo?.getFirstFree()
+												if(SLOT != null) {
+													SLOT!!.slotstate = `it.unibo.parkmanagerservice`.bean.ParkingSlotState.RESERVED
+													SLOT!!.user = USER
+													SLOTNUM = SLOT!!.slotnum
+													userRepo?.create(USER)
+													slotRepo?.update(SLOT!!)
+												}
+						}
 						println("$name | replying enter request with [SLOTNUM = $SLOTNUM]")
 						answer("enter", "slotnum", "slotnum($SLOTNUM)"   )  
 						updateResourceRep( "reply with SLOTNUM=$SLOTNUM"  
