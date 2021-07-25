@@ -7,7 +7,7 @@ import org.json.JSONObject
 class WsFan(id: String, address : String) : Fan(id) {
 	
 	val updater = WebSocketValueUpdater<FanState>(FanState.OFF, address,
-		{s : String -> FanState.fromBoolean(JSONObject(s).getBoolean("data"))})
+		{s : String -> FanState.valueOf(JSONObject(s).getString("data"))})
 	
 	init {
 		updater.start()
@@ -15,17 +15,17 @@ class WsFan(id: String, address : String) : Fan(id) {
 	
 	override fun set(newState : FanState) {
 		when(newState) {
-			FanState.ON -> updater.say("{\"data\": \"true\"}")
-			FanState.OFF -> updater.say("{\"data\": \"false\"}")
+			FanState.ON -> updater.say("{\"data\": \"ON\"}")
+			FanState.OFF -> updater.say("{\"data\": \"OFF\"}")
 		}		
 	}
 	
 	override fun powerOn() {
-		updater.say("{\"data\": \"true\"}")
+		updater.say("{\"data\": \"ON\"}")
 	}
 	
 	override fun powerOff() {
-		updater.say("{\"data\": \"false\"}")
+		updater.say("{\"data\": \"OFF\"}")
 	}
 	
 }

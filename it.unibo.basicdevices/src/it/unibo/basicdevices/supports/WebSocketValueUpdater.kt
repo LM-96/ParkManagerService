@@ -43,8 +43,10 @@ class WebSocketValueUpdater<T>(value : T, address : String, converter : (String)
 	}
 	
 	fun say(text : String) {
-		ws?.send(text)
-		println("WebSocketValueUpdater[${address}] | sended text [$text]")
+		if(ws?.send(text) == true)
+			println("WebSocketValueUpdater[${address}] | sended text [$text]")
+		else
+			println("WebSocketValueUpdater[${address}] | unable to send text [$text]")
 	}
 	
 }
@@ -66,6 +68,10 @@ private class ValueWebSocketListener<T>(value : LockableValue<T>, converter : (S
 			connected = true
 			cond.signalAll()
 		} finally {lock.unlock()}
+	}
+
+	override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
+		println("WebSocketValueUpdater[${url}] | WebSocket error: ${t.localizedMessage}")
 	}
 	
 	fun waitConnected() {
