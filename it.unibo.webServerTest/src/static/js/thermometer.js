@@ -1,7 +1,6 @@
 
 var slider_temp = document.getElementById("temp");
 var output_temp = document.getElementById("value_temp");
-output_temp.innerHTML = slider_temp.value;
 
 slider_temp.oninput = function() {
     output_temp.innerHTML = this.value;

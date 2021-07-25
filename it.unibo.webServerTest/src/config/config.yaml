@@ -1,0 +1,35 @@
+thermometer:
+    ctx: "ctxthermometer"
+    actor: "thermometeractor"
+    port: 8001
+    name: "thermometer"
+    group_name: "thermometer_group"
+    init_value: '0'
+
+fan:
+    ctx: "ctxfan"
+    actor: "fanactor"
+    port: 8002
+    name: "fan"
+    group_name: "fan_group"
+    init_value: 'OFF'
+
+sonar:
+    ctx: "ctxsonar"
+    actor: "sonaractor"
+    port: 8003
+    name: "sonar"
+    group_name: "sonar_group"
+    init_value: '1000'
+
+weightsensor:
+    ctx: "ctxweightsensor"
+    actor: "weightsensoractor"
+    port: 8004
+    name: "weightsensor"
+    group_name: "weightsensor_group"
+    init_value: '0'
+
+system:
+    host: "localhost"
+    port: 8000

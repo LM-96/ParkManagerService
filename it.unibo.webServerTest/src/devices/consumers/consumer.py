@@ -43,12 +43,12 @@ class BasicConsumer(AsyncWebsocketConsumer):
         if 'data' in msg_json:
             data = msg_json['data']
             self.state.set(self.group_name, data)
-            print(self.state.get(self.group_name))
+            print(data)
             await self.channel_layer.group_send(
                 self.group_name,
                 {
                     'type': 'data_message',
-                    'data': data,
+                    'data': self.state.get(self.group_name),
                 }
             ) 
 

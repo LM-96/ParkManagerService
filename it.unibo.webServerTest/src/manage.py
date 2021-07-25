@@ -2,8 +2,15 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+import yaml
+import munch
 
 
+with open("config/config.yaml", 'r') as yaml_file:
+    yaml_dict = yaml.load(yaml_file, yaml.FullLoader)
+    config = munch.munchify(yaml_dict)
+
+    
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'djangoTest.settings')
@@ -19,4 +26,5 @@ def main():
 
 
 if __name__ == '__main__':
+ 
     main()
