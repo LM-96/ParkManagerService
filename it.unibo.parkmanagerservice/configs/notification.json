@@ -1,0 +1,4 @@
+{"logo":"resources/logo.html"
+{"type":"SLOTNUM","subject":"Invio SLOTNUM [ParkManagerService]", "content-type": "text/html","html":"resources/slotnum_mail.html", "linkpattern": "localhost:8080/carenter?slotnum=$SLOTNUM&userid=$USERID"}
+{"type":"TOKEN","subject":"Invio TOKEN [ParkManagerService]", "content-type": "text/html","html":"resources/token_mail.html","linkpattern": "localhost:8080/pickup?token=$TOKEN&userid=$USERID"}
+{"type":"PICKUP","subject":"Ritiro macchina [ParkManagerService]", "content-type": "text/html","html":"resources/slotnum_mail.html"}

@@ -1,5 +1,5 @@
 package it.unibo.parkmanagerservice.notification
 
-enum class NotifyType {
+enum class NotificationType {
     SLOTNUM, TOKEN, PICKUP, GENERAL
 }

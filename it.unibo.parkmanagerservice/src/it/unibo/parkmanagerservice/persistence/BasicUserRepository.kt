@@ -38,4 +38,8 @@ class BasicUserRepository : UserRepository {
         return users.values.filter { it.state == state }.sortedBy { it.time }.get(0)
     }
 
+    override fun getByMail(mail: String): User? {
+        return users.values.find { it.mail.equals(mail) }
+    }
+
 }

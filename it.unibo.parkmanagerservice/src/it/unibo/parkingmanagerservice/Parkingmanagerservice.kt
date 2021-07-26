@@ -91,7 +91,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 				state("handleCarEnter") { //this:State
 					action { //it:State
 						println("$name in ${currentState.stateName} | $currentMsg")
-						if( checkMsgContent( Term.createTerm("carenter(SLOTNUM)"), Term.createTerm("carenter(SLOTNUM)"), 
+						if( checkMsgContent( Term.createTerm("carenter(SLOTNUM,MAIL)"), Term.createTerm("carenter(SLOTNUM)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								 	if(state.getWeightFromSensor() <= 0) { 
 								println("$name | client has not moved the car into the indoor")

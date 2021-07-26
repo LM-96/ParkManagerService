@@ -16,4 +16,6 @@ interface UserRepository {
     //Return the first used entered in this state
     fun getFirstInState(state : UserState) : User?
 
+    fun getByMail(mail : String) : User?
+
 }

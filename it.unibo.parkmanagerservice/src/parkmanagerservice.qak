@@ -11,10 +11,9 @@ System carparking
 
 /* Messages for entering car */
 Request	enter 		: 	enter(NAME,SURNAME,MAIL)
-Reply	slotnum 	: 	slotnum(SLOTNUM)
-Dispatch canEnterCar : canEnterCar(X)
-Request	carenter	:	carenter(SLOTNUM)
-Reply	token		:	token(TOKEN)
+Reply	slotnum 	: 	slotnum(SLOTNUM) //{"slotnum":"0", "msg":"","indoor":"free"} //True, False
+Request	carenter	:	carenter(SLOTNUM, MAIL)
+Reply	token		:	token(TOKEN) //{"token":"XXXXX","msg":""}
 
 /* Messages for pickup car */
 Request pickup		:	pickup(TOKEN)

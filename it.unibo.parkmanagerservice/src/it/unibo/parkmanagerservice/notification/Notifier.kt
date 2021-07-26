@@ -2,6 +2,7 @@ package it.unibo.parkmanagerservice.notification
 
 interface Notifier {
 
-    fun sendNotification(obj : String?, type : NotifyType, link : String?, content : String)
+    fun sendNotification(notification: Notification)
+    fun sendNotificationWithDefaultContent(dest : String, type: NotificationType)
 
 }
