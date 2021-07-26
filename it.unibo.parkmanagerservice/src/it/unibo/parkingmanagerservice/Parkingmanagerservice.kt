@@ -24,6 +24,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 				var USER : it.unibo.parkmanagerservice.bean.User
 				var SLOT : it.unibo.parkmanagerservice.bean.ParkingSlot?
 				var SLOTNUM : Long = 0
+				val CHANNEL = it.unibo.parkmanagerservice.notification.NotificationChannel.channel
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
@@ -113,7 +114,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 				state("handlePickup") { //this:State
 					action { //it:State
 						println("$name in ${currentState.stateName} | $currentMsg")
-						if( checkMsgContent( Term.createTerm("pickup(TOKEN)"), Term.createTerm("pickup(TOKEN)"), 
+						if( checkMsgContent( Term.createTerm("pickup(TOKEN,MAIL)"), Term.createTerm("pickup(TOKEN)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								 	var TOKEN = payloadArg(0) 
 												var slotnum_free = state.getParkingSlotManager().freeSlotByToken(TOKEN) 

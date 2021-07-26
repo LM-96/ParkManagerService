@@ -1,5 +1,6 @@
 package it.unibo.parkmanagerservice.notification
 
+import it.unibo.parkmanagerservice.bean.User
 import org.json.JSONObject
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -18,6 +19,7 @@ class MailNotifier : Notifier {
     private val PROPS = System.getProperties()
 
     private var SESSION : Session
+    private var TRANSPORT : Transport
 
     init {
         val configFilePath = Paths.get(CONFIG_FILE)
@@ -69,11 +71,8 @@ class MailNotifier : Notifier {
         PROPS.put("mail.smtp.host", HOST)
         PROPS.put("mail.smtp.port", PORT)
 
-        SESSION = Session.getInstance(PROPS, object : Authenticator() {
-            override fun getPasswordAuthentication() :  PasswordAuthentication {
-                return PasswordAuthentication(FROM, PASS)
-            }
-        })
+        SESSION = Session.getInstance(PROPS, PasswordAuthenticator(FROM, PASS))
+        TRANSPORT = SESSION.getTransport("smtp")
     }
 
     override fun sendNotification(notification: Notification) {
@@ -87,5 +86,22 @@ class MailNotifier : Notifier {
         Transport.send(msg)
     }
 
+    override fun sendNotificationToUserWithDefaultContent(user: User, type: NotificationType, args : Array<String>) {
+        val notification = DefaultNotificationFactory.createForUser(user, type, args)
+        if(notification != null) {
+            sendNotification(notification)
+        } else println("MailNotifier | Unable to generate notification ${type} to send to ${user.mail}")
+    }
 
+
+}
+
+private class PasswordAuthenticator(FROM : String, PASS : String) : Authenticator() {
+
+    private val FROM = FROM
+    private val PASS = PASS
+
+    override fun getPasswordAuthentication() :  PasswordAuthentication {
+        return PasswordAuthentication(FROM, PASS)
+    }
 }

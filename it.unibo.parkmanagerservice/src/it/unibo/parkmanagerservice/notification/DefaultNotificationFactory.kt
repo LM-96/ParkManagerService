@@ -10,7 +10,6 @@ import java.util.stream.Collectors
 object DefaultNotificationFactory {
 
     @JvmStatic private val CONFIG_FILE = "configs/notification.json"
-    @JvmStatic private var LOGO : String? = null
     @JvmStatic private val basicNotifications = mutableMapOf<NotificationType, Notification>()
 
     init {
@@ -19,51 +18,87 @@ object DefaultNotificationFactory {
             println("DefaultNotificationFactory | Unable to find configuration file at ${configFile.toAbsolutePath()}")
             System.exit(-1)
         }
+        println("DefaultNotificationFactory | Found configuration file")
+
         val reader = Files.newBufferedReader(configFile)
         var json : JSONObject
         var line = reader.readLine()
         var notification : Notification
 
-        while(line != null) {
+        while(if(line!=null) !line.startsWith("#") else false) {
             json = JSONObject(line)
-
-            if(json.has("logo")) {
-                val logoFile = Paths.get(json.getString("logo"))
-                if(!Files.exists(logoFile)) {
-                    println("DefaultNotificationFactory | Unable to load logo at file ${logoFile.toAbsolutePath()}")
-                } else {
-                    LOGO = Files.lines(logoFile).collect(Collectors.joining("\n"))
-                }
-            }
 
             if(json.has("type")) {
                 notification = Notification()
-                type = NotificationType.valueOf(json.getString("type").toUpperCase())
+                notification.type = NotificationType.valueOf(json.getString("type").toUpperCase())
+                println("DefaultNotificationFactory | Found pattern for notification ${notification.type}")
 
+                if(json.has("subject")) notification.subject = json.getString("subject")
+                else println("DefaultNotificationFactory | Unable to find subject for ${notification.type} in ${configFile.toAbsolutePath()}")
 
-                when(type) {
-                    NotificationType.SLOTNUM -> {
+                if(json.has("content-type")) {
+                    notification.contentType = json.getString("content-type")
+                    if(notification.contentType.equals("text/html")) {
+                       if(json.has("html")) {
+                           var htmlFile = Paths.get(json.getString("html"))
+                           if(!Files.exists(htmlFile)) println("DefaultNotificationFactory | Unable to load html content for notification ${notification.type} in ${configFile.toAbsolutePath()}")
+                           else notification.content = "${Files.lines(htmlFile).collect(Collectors.joining("\n"))}"
+                       } else println("DefaultNotificationFactory | ${notification.type} in ${configFile.toAbsolutePath()} has \"text/html\" content but html file is not specified")
+                    } else if(notification.contentType.equals("text")) {
+                        if(json.has("text")) notification.content == json.getString("text")
+                        else println("DefaultNotificationFactory | ${notification.type} in ${configFile.toAbsolutePath()} has \"text\" content but text is not specified")
+                    } else println("DefaultNotificationFactory | Content Type for ${notification.type} in ${configFile.toAbsolutePath()} can not be managed")
+                } else println("DefaultNotificationFactory | Content Type for${notification.type} in ${configFile.toAbsolutePath()} is not specified")
 
-                    }
-
-                    NotificationType.TOKEN -> {
-
-                    }
-
-                    NotificationType.PICKUP -> {
-
-                    }
+                if(json.has("linkpattern")) {
+                    notification.content = notification.content.replace("${'$'}LINK", json.getString("linkpattern"))
                 }
+
+                basicNotifications.put(notification.type!!, notification)
             }
 
+            line = reader.readLine()
         }
+        println("DefaultNotificationFactory | Configuration ended")
     }
 
     @JvmStatic fun createForUser(user : User, notificationType: NotificationType, args : Array<String>) : Notification? {
-        when(notificationType) {
-            NotificationType.SLOTNUM -> Notification(destination = user.mail, type = notificationType,
-            subject = "Invio SLOTNUM ParkManagerService")
+        var res : Notification? = null
+        if(basicNotifications.containsKey(notificationType)) {
+            res = basicNotifications.get(notificationType)!!.copy()
+            res.type = notificationType
+            res.destination = user.mail
+            res.content = res.content.replace("${'$'}USERMAIL",user.mail)
+            when(notificationType) {
+                NotificationType.SLOTNUM -> {
+                    res.content = "${res.content
+                        .replace("${'$'}SLOTNUM", args[0])
+                        .replace("${'$'}BTNAME", "Vai a CARENTER")
+                        .replace("${'$'}NAME", user.name)
+                        .replace("${'$'}SURNAME", user.surname)
+                    }"
+                }
+
+                NotificationType.TOKEN -> {
+                    res.content = "${res.content
+                        .replace("${'$'}TOKEN", args[0])
+                        .replace("${'$'}BTNAME", "Vai a PICKUP")
+                        .replace("${'$'}NAME", user.name)
+                        .replace("${'$'}SURNAME", user.surname)
+                    }"
+                }
+
+                NotificationType.PICKUP -> {
+                    res.content = "${res.content
+                        .replace("${'$'}BTNAME", "ParkManagerService")
+                        .replace("${'$'}NAME", user.name)
+                        .replace("${'$'}SURNAME", user.surname)
+                    }"
+                }
+            }
         }
+
+        return res
     }
 
 }

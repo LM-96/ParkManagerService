@@ -11,13 +11,13 @@ System carparking
 
 /* Messages for entering car */
 Request	enter 		: 	enter(NAME,SURNAME,MAIL)
-Reply	slotnum 	: 	slotnum(SLOTNUM) //{"slotnum":"0", "msg":"","indoor":"free"} //True, False
+Reply	slotnum 	: 	slotnum(SLOTNUM) //{"slotnum":"0", "err":"","indoor":"free"} //FREE, OCCUPIED
 Request	carenter	:	carenter(SLOTNUM, MAIL)
-Reply	token		:	token(TOKEN) //{"token":"XXXXX","msg":""}
+Reply	token		:	token(TOKEN) //{"token":"XXXXX","err":""}
 
 /* Messages for pickup car */
-Request pickup		:	pickup(TOKEN)
-Reply	canPickup	:	canPickup(X)
+Request pickup		:	pickup(TOKEN,MAIL)
+Reply	canPickup	:	canPickup(X)//{"msg":""}
 
 /* Messages for counters */
 Dispatch dtfreeReached : dtfreeReached(X)
@@ -36,6 +36,9 @@ Event sonaron : sonaron(X)
 Event sonaroff : sonaroff(X)
 Dispatch dopolling : dopolling(TIME)
 Dispatch stoppolling : stoppolling(X)
+
+/* Messages for notification */
+Dispatch notifyuser : notifyuser(NOTIFICATION)
 
 /* Main context */
 Context ctxcarparking ip[host="localhost" port=8010]
@@ -137,6 +140,7 @@ QActor parkingmanagerservice context ctxcarparking {
 		var USER : it.unibo.parkmanagerservice.bean.User
 		var SLOT : it.unibo.parkmanagerservice.bean.ParkingSlot?
 		var SLOTNUM : Long = 0
+		val CHANNEL = it.unibo.parkmanagerservice.notification.NotificationChannel.channel
 	#]
 	
 	State s0 initial {
@@ -338,6 +342,29 @@ QActor parkingservicestatusgui context ctxcarparking {
 	
 	State receivedDtfreeAlarm {
 		println("$name | the manager has been notified for DTFREE reached")
+	} Goto work
+}
+
+QActor notificationactor context ctxcarparking {
+	
+	[# 
+		val NOTIFIER = it.unibo.parkmanagerservice.notification.MailNotifier()
+		val CHANNEL = it.unibo.parkmanagerservice.notification.NotificationChannel.channel		
+	#]
+	
+	State s0 initial {
+		println("$name | started")
+	}
+	
+	State work {
+		println("$name | working")
+	} Transition t0
+		whenMsg notifyuser -> handleNotificationToSend
+	
+	State handleNotificationToSend {
+		[# 
+			NOTIFIER.sendNotification(CHANNEL.receive())
+		#]
 	} Goto work
 }
 
