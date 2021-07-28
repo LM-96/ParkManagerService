@@ -62,7 +62,7 @@ object DefaultNotificationFactory {
         println("DefaultNotificationFactory | Configuration ended")
     }
 
-    @JvmStatic fun createForUser(user : User, notificationType: NotificationType, args : Array<String>) : Notification? {
+    @JvmStatic fun createForUser(user : User, notificationType: NotificationType, args : Array<String>) : Notification {
         var res : Notification? = null
         if(basicNotifications.containsKey(notificationType)) {
             res = basicNotifications.get(notificationType)!!.copy()
@@ -98,7 +98,7 @@ object DefaultNotificationFactory {
             }
         }
 
-        return res
+        return res!!
     }
 
 }

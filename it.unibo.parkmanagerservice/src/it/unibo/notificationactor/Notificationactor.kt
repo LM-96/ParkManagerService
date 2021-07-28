@@ -17,7 +17,7 @@ class Notificationactor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm
 	@kotlinx.coroutines.ExperimentalCoroutinesApi			
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		 
-				val NOTIFIER = it.unibo.parkmanagerservice.notification.MailNotifier()
+				val NOTIFIER = it.unibo.parkmanagerservice.notification.SystemNotifier.get()
 				val CHANNEL = it.unibo.parkmanagerservice.notification.NotificationChannel.channel		
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
@@ -29,14 +29,17 @@ class Notificationactor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm
 					action { //it:State
 						println("$name | working")
 					}
-					 transition(edgeName="t014",targetState="handleNotificationToSend",cond=whenDispatch("notifyuser"))
+					 transition(edgeName="t018",targetState="handleNotificationToSend",cond=whenDispatch("notifyuser"))
 				}	 
 				state("handleNotificationToSend") { //this:State
 					action { //it:State
 						 
 									NOTIFIER.sendNotification(CHANNEL.receive())
 					}
-					 transition( edgeName="goto",targetState="work", cond=doswitch() )
+					 transition( edgeName="goto",targetState="work", cond=doswitchGuarded({ CHANNEL.isEmpty  
+					}) )
+					transition( edgeName="goto",targetState="handleNotificationToSend", cond=doswitchGuarded({! ( CHANNEL.isEmpty  
+					) }) )
 				}	 
 			}
 		}

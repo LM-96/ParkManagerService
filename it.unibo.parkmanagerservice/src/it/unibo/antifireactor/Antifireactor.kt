@@ -28,7 +28,7 @@ class Antifireactor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( na
 					action { //it:State
 						println("$name | working")
 					}
-					 transition(edgeName="t015",targetState="handleCriticalTemp",cond=whenEvent("criticaltemp"))
+					 transition(edgeName="t019",targetState="handleCriticalTemp",cond=whenEvent("criticaltemp"))
 				}	 
 				state("handleCriticalTemp") { //this:State
 					action { //it:State

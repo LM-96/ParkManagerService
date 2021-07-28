@@ -2,6 +2,7 @@ package it.unibo.parkmanagerservice.persistence
 
 import it.unibo.parkmanagerservice.bean.User
 import it.unibo.parkmanagerservice.bean.UserState
+import java.util.*
 
 interface UserRepository {
 
@@ -15,7 +16,7 @@ interface UserRepository {
 
     //Return the first used entered in this state
     fun getFirstInState(state : UserState) : User?
-
     fun getByMail(mail : String) : User?
+    fun getByToken(token : String) : Optional<User>
 
 }

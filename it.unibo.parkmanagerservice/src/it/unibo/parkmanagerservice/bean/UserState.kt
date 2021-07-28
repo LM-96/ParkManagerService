@@ -1,5 +1,5 @@
 package it.unibo.parkmanagerservice.bean
 
 enum class UserState {
-    INTERESTED, PARKED, PICKUP
+    CREATED, INTERESTED, INDOOR_RESERVED, PARKED, WANTS_TO_GO, OUTDOOR_RESERVED, PICKEDUP
 }

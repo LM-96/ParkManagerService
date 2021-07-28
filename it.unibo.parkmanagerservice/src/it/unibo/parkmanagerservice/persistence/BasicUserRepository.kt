@@ -1,15 +1,17 @@
 package it.unibo.parkmanagerservice.persistence
 
+import it.unibo.parkmanagerservice.bean.LocalDoorState
 import it.unibo.parkmanagerservice.bean.User
 import it.unibo.parkmanagerservice.bean.UserState
 import java.sql.SQLException
-import java.util.concurrent.atomic.AtomicInteger
+import java.util.*
 import java.util.concurrent.atomic.AtomicLong
 
 class BasicUserRepository : UserRepository {
 
     private val users = mutableMapOf<Long, User>()
     private val idgen = AtomicLong(0)
+    private val localState = LocalDoorState.get()
 
     override fun create(user: User) {
         user.id = idgen.getAndIncrement()
@@ -20,7 +22,8 @@ class BasicUserRepository : UserRepository {
         users.put(user.id, user)
     }
 
-    override fun update(user: User) { }
+    override fun update(user: User) {
+    }
 
     override fun retrieve(id: Long): User? {
         return users.get(id)
@@ -35,11 +38,15 @@ class BasicUserRepository : UserRepository {
     }
 
     override fun getFirstInState(state: UserState): User? {
-        return users.values.filter { it.state == state }.sortedBy { it.time }.get(0)
+        return users.values.filter { it.state == state }.sortedBy { it.time }.firstOrNull()
     }
 
     override fun getByMail(mail: String): User? {
         return users.values.find { it.mail.equals(mail) }
+    }
+
+    override fun getByToken(token : String) : Optional<User> {
+        return Optional.ofNullable(users.values.find { it.token.equals(token) })
     }
 
 }

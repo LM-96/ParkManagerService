@@ -2,6 +2,7 @@ package it.unibo.parkmanagerservice.persistence
 
 import it.unibo.parkmanagerservice.bean.ParkingSlot
 import it.unibo.parkmanagerservice.bean.ParkingSlotState
+import java.util.*
 
 class BasicParkingSlotRepository : ParkingSlotRepository {
 
@@ -25,12 +26,20 @@ class BasicParkingSlotRepository : ParkingSlotRepository {
         return slots.values.filter { it.slotstate.equals(state) }
     }
 
-    override fun getByToken(token: String): ParkingSlot? {
-        return slots.values.find { if(it.token != null)  it.token.equals(token) else false}
+    override fun getByToken(token: String): Optional<ParkingSlot> {
+        return Optional.ofNullable(slots.values.find { if(it.user?.token != null)  it.user?.token.equals(token) else false})
     }
 
-    override fun getFirstFree(): ParkingSlot? {
-        return slots.values.find { it.slotstate.equals(ParkingSlotState.FREE) }
+    override fun getFirstFree(): Optional<ParkingSlot> {
+        return Optional.ofNullable(slots.values.find { it.slotstate.equals(ParkingSlotState.FREE) })
+    }
+
+    override fun getReservedForUser(userId: Long): Optional<ParkingSlot> {
+        return Optional.ofNullable(slots.values.find { it.user?.id == userId })
+    }
+
+    override fun getReservedForUserByToken(token: String): Optional<ParkingSlot> {
+        return Optional.ofNullable(slots.values.find { it.user?.token?.equals(token) ?: false })
     }
 
 

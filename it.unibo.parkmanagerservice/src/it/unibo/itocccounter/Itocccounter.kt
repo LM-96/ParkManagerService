@@ -32,8 +32,8 @@ class Itocccounter ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( nam
 						updateResourceRep( "work" 
 						)
 					}
-					 transition(edgeName="t3",targetState="count",cond=whenDispatch("startItoccCounter"))
-					transition(edgeName="t4",targetState="work",cond=whenDispatch("stopCount"))
+					 transition(edgeName="t7",targetState="count",cond=whenDispatch("startItoccCounter"))
+					transition(edgeName="t8",targetState="work",cond=whenDispatch("stopCount"))
 				}	 
 				state("count") { //this:State
 					action { //it:State
@@ -43,9 +43,9 @@ class Itocccounter ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( nam
 						stateTimer = TimerActor("timer_count", 
 							scope, context!!, "local_tout_itocccounter_count", ITOCC )
 					}
-					 transition(edgeName="t5",targetState="reached",cond=whenTimeout("local_tout_itocccounter_count"))   
-					transition(edgeName="t6",targetState="count",cond=whenDispatch("startItoccCounter"))
-					transition(edgeName="t7",targetState="work",cond=whenDispatch("stopCount"))
+					 transition(edgeName="t9",targetState="reached",cond=whenTimeout("local_tout_itocccounter_count"))   
+					transition(edgeName="t10",targetState="count",cond=whenDispatch("startItoccCounter"))
+					transition(edgeName="t11",targetState="work",cond=whenDispatch("stopCount"))
 				}	 
 				state("reached") { //this:State
 					action { //it:State

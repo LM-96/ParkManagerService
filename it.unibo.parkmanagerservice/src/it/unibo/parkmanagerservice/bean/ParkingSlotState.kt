@@ -1,5 +1,5 @@
 package it.unibo.parkmanagerservice.bean
 
 enum class ParkingSlotState {
-    RESERVED, OCCUPIED, FREE
+    RESERVED, OCCUPIED, ALMOST_FREE, FREE
 }

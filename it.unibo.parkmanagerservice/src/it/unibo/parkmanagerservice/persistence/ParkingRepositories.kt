@@ -16,7 +16,7 @@ object ParkingRepositories {
 
             for (i in 1..numOfSlot) {
                 (slotRepo as BasicParkingSlotRepository).create(
-                    ParkingSlot(slotnum = i.toLong(), slotstate = ParkingSlotState.FREE, null, null))
+                    ParkingSlot(slotnum = i.toLong(), slotstate = ParkingSlotState.FREE, null))
             }
         }
     }

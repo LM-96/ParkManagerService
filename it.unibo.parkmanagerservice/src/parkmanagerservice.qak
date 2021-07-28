@@ -40,6 +40,10 @@ Dispatch stoppolling : stoppolling(X)
 /* Messages for notification */
 Dispatch notifyuser : notifyuser(NOTIFICATION)
 
+/* Messages to trolley */
+Dispatch parkcar : parkcar(SLOTNUM)
+Dispatch pickup : pickup(SLOTNUM)
+
 /* Main context */
 Context ctxcarparking ip[host="localhost" port=8010]
 
@@ -51,96 +55,30 @@ Context ctxweightsensor ip[host="192.168.1.100" port=8004]
 
 /* Actors for devices */
 ExternalQActor fanactor context ctxfan
-
- /*
-QActor parkingservicegui context ctxcarparking {
-	
-	[# 	var RECEIVED_SLOTNUM = 0
-		var MY_TOKEN = 0
-		val state = it.unibo.parkingstate.MockState
-	#]
-	
-	State s0 initial {
-		println("$name | started")
-	} Goto requestToEnter
-	
-	
-	State requestToEnter {
-		request parkingmanagerservice -m enter : enter(hello)
-		println("$name | sended request to enter")
-	} Transition t
-		whenReply slotnum -> receivedSlotnum
-	
-	State receivedSlotnum {
-		printCurrentMessage
-		onMsg (slotnum : slotnum(SLOTNUM)) {
-			[# RECEIVED_SLOTNUM = payloadArg(0).toInt() #]
-			println("$name | received reply with SLOTNUM=$RECEIVED_SLOTNUM")
-		}
-	} Goto waitMoveToIndoor if [# RECEIVED_SLOTNUM > 0 #] else noAvailableSlot
-	
-	State waitMoveToIndoor {
-		println("$name | client is waiting the idoor is free")
-	} Transition t
-		whenMsg canEnterCar -> moveTheCar
-	
-	State moveTheCar {
-		
-		//Simulate client is entering the car into the indoor
-		delay 5000
-		[# state.setIndoorState(`it.unibo.parkingstate`.DoorState.OCCUPIED) #]
-		println("$name | client has moved the car in the INDOOR")
-		
-		request parkingmanagerservice -m carenter : carenter($RECEIVED_SLOTNUM)
-		println("$name | client has press CARENTER")
-	} Transition t
-		whenReply token -> receivedToken
-	
-	State receivedToken {
-		printCurrentMessage
-		onMsg (token : token(TOKEN)) {
-			[# MY_TOKEN = payloadArg(0).toInt() #]
-			println("$name | received reply with TOKEN=$MY_TOKEN")
-		}
-	} Goto requestToPickUp
-	
-	State requestToPickUp {
-		delay 5000
-		request parkingmanagerservice -m pickup : pickup($MY_TOKEN)
-		println("$name | client has required to pickup the car")
-	} Transition t
-		whenReply canPickup -> waitPickupConfirm
-	
-	State waitPickupConfirm {
-		printCurrentMessage
-		println("$name | client is going to pick up his car")
-	} Goto pickup
-	
-	State pickup{
-		
-		//Simulate client have pick up his car from the outdoor-area
-		delay 5000
-		[# state.setOutdoorState(`it.unibo.parkingstate`.DoorState.FREE) #]
-		
-		println("$name | client has picked up his car")
-	}
-	
-	State noAvailableSlot {
-		println("$name | no slot available... i go elsewhere or retry later")
-	}
-} */
+ExternalQActor weightsensoractor context ctxweightsensor
 
 QActor parkingmanagerservice context ctxcarparking {
 	
 	[#  
 		it.unibo.parkmanagerservice.persistence.ParkingRepositories.createBasics(6)
-		val userRepo = it.unibo.parkmanagerservice.persistence.ParkingRepositories.getUserRepository()
-		val slotRepo = it.unibo.parkmanagerservice.persistence.ParkingRepositories.getParkingSlotRepository()
-		val state = it.unibo.parkingstate.MockState
-		var USER : it.unibo.parkmanagerservice.bean.User
-		var SLOT : it.unibo.parkmanagerservice.bean.ParkingSlot?
-		var SLOTNUM : Long = 0
+		val CONTROLLER = it.unibo.parkmanagerservice.controller.ControllerBuilder.createK(
+			it.unibo.parkmanagerservice.persistence.ParkingRepositories.getUserRepository()!!,
+			it.unibo.parkmanagerservice.persistence.ParkingRepositories.getParkingSlotRepository()!!,
+			it.unibo.parkmanagerservice.persistence.DoorQueues.getIndoorQueue(),
+			it.unibo.parkmanagerservice.persistence.DoorQueues.getOutdoorQueue(),
+			it.unibo.parkmanagerservice.bean.LocalDoorState.get()).get()
+			
+		
+		
 		val CHANNEL = it.unibo.parkmanagerservice.notification.NotificationChannel.channel
+		var JSON : String = ""
+		var USERERR : Pair<it.unibo.parkmanagerservice.bean.User?, it.unibo.parkmanagerservice.controller.ParkManagerError?>
+		var SLOTERR : Pair<it.unibo.parkmanagerservice.bean.ParkingSlot?, it.unibo.parkmanagerservice.controller.ParkManagerError?>
+		var USER : it.unibo.parkmanagerservice.bean.User?
+		var SLOTNUM : Long = 0
+		var INDOOR = it.unibo.parkmanagerservice.bean.DoorType.INDOOR
+		var OUTDOOR = it.unibo.parkmanagerservice.bean.DoorType.OUTDOOR
+		var NOTIFICATION : it.unibo.parkmanagerservice.notification.Notification
 	#]
 	
 	State s0 initial {
@@ -154,109 +92,138 @@ QActor parkingmanagerservice context ctxcarparking {
 		whenRequest enter -> handleEnter
 		whenRequest carenter -> handleCarEnter
 		whenRequest pickup -> handlePickup
+		whenEvent weighton -> handleSomeoneInIndoor
+		whenEvent weightoff -> handleIndoorReturnFree
+		whenEvent sonaron -> handleSomeoneInOutdoor
+		whenEvent sonaroff -> handleOutdoorReturnFree
 	
 	State handleEnter {
 		printCurrentMessage
 		[# SLOTNUM = 0 #]
 		onMsg (enter : enter(NAME,SURNAME,MAIL)) {
 			[#
-				USER = `it.unibo.parkmanagerservice`.bean.User(name = payloadArg(0), 
-						surname = payloadArg(1), mail = payloadArg(2),
-						state = `it.unibo.parkmanagerservice`.bean.UserState.INTERESTED,
-						time = java.sql.Timestamp(System.currentTimeMillis())
-				)
-				
-				SLOT = slotRepo?.getFirstFree()
-				if(SLOT != null) {
-					SLOT!!.slotstate = `it.unibo.parkmanagerservice`.bean.ParkingSlotState.RESERVED
-					SLOT!!.user = USER
-					SLOTNUM = SLOT!!.slotnum
-					userRepo?.create(USER)
-					slotRepo?.update(SLOT!!)
+				USER = CONTROLLER.createUser(payloadArg(0), payloadArg(1), payloadArg(2))
+				SLOTNUM = CONTROLLER.assignSlotToUser(USER!!)
+				if(SLOTNUM > 0) {
+					
+					if(CONTROLLER.reserveDoorForUserOrEnqueue(INDOOR, USER!!)) {
+						JSON = "{\"slotnum\":\"$SLOTNUM\",\"indoor\":\"FREE\"}"
+				#]
+						forward weightsensoractor -m dopolling : dopolling(ON)
+						forward itocccounter -m startItoccCounter : startItoccCounter(START)
+				[#
+					} else JSON = "{\"slotnum\":\"$SLOTNUM\",\"indoor\":\"OCCUPIED\"}"
 				}
 			#]
 		}
+		replyTo enter with slotnum : slotnum($JSON)
+		updateResource[# "slotnum(${JSON!!})" #]
+		println("$name | reply with slotnum(${JSON!!})")
 		
-		println("$name | replying enter request with [SLOTNUM = $SLOTNUM]")
-		replyTo enter with slotnum : slotnum($SLOTNUM)
-		
-		updateResource[# "reply with SLOTNUM=$SLOTNUM" #]
-		
-	} Goto checkIndoorFree if [# SLOTNUM > 0 #] else work
+	} Goto work
 	
-	State checkIndoorFree {
-		[# if(state.getIndoorState().equals(`it.unibo.parkingstate`.DoorState.FREE)) { 
-			state.setIndoorState(`it.unibo.parkingstate`.DoorState.OCCUPIED) #]
-			//forward parkingservicegui -m canEnterCar : canEnterCar(OK)
-			updateResource [# "canEnterCar(OK)" #]
-			forward itocccounter -m startItoccCounter : startItoccCounter(START)
-			
-		[# } else { #]
-			println("$name | indoor-Area is already engaged")
-			updateResource [# "canEnterCar(WAIT)" #]
-			//TODO: if indoor area is already engaged...
-		[# } #]
+	State handleSomeoneInIndoor {
+		forward itocccounter -m stopCount : stopCount(STOP)
+		[# 
+			USER = CONTROLLER.setSomeoneOnDoor(INDOOR)!!
+			SLOT = CONTROLLER.getSlotReservedForUser(USER!!)
+			SLOTNUM = SLOT.!!slotnum
+		#]
+		forward trolley -m parkcar : parkcar($SLOTNUM)
+		updateResource[# "INDOOR=OCCUPIED" #]
+	} Goto work
+	
+	State handleIndoorReturnFree {
+		[# 
+			USER = CONTROLLER.setCarOfUserAtIndoorParked()
+			NOTIFICATION = `it.unibo.parkmanagerservice`.notification.DefaultNotificationFactory.createForUser(
+						USER!!,
+						`it.unibo.parkmanagerservice`.notification.NotificationType.TOKEN,
+						arrayOf(USER!!.token!!))
+			CHANNEL.send(NOTIFICATION)
+		#]
+			forward notificationactor -m notifyuser : notifyuser(NOTIFY)
+			forward weightsensoractor -m stoppolling : stoppolling(STOP)
+	} Goto enterNext if [# (CONTROLLER.getDoorQueue(INDOOR).remaining()) > 0 #] else work
+	
+	State enterNext {
+		[# 
+			USER = CONTROLLER.reserveDoorForNextUser(INDOOR)
+			if(USER != null) {	
+				NOTIFICATION = `it.unibo.parkmanagerservice`.notification.DefaultNotificationFactory.createForUser(
+					USER!!,
+					`it.unibo.parkmanagerservice`.notification.NotificationType.SLOTNUM,
+					arrayOf(CONTROLLER.getSlotReservedForUser(USER!!)!!.slotnum.toString()))
+				CHANNEL.send(NOTIFICATION)
+		#]
+					forward notificationactor -m notifyuser : notifyuser(NOTIFY)
+					forward weightsensoractor -m dopolling : dopolling(ON)
+					forward itocccounter -m startItoccCounter : startItoccCounter(START)
+					
+		[# 	}
+		#]
 	} Goto work
 	
 	State handleCarEnter {
 		printCurrentMessage
-		onMsg(carenter : carenter(SLOTNUM)) {
-			[# 	if(state.getWeightFromSensor() <= 0) { 
+		onMsg(carenter : carenter(SLOTNUM,MAIL)) {
+			[# 	
+				USERERR = CONTROLLER.assignTokenToUserAtIndoor(payloadArg(0), payloadArg(1))
+				if(USERERR.first != null && USERERR.second == null) {
+					JSON = "{\"token\":\"${USERERR.first!!.token!!.toString()}\"}"
 			#]
-				println("$name | client has not moved the car into the indoor")
-				//TODO: see NotifyInterest alternative scenario
-				
-			[# } else {
-				var TOKEN = payloadArg(0).toInt()
-				state.getParkingSlotManager().occupySlot(TOKEN)	#]
-			forward itocccounter -m stopCount:stopCount(STOP)
-			println("$name | generated TOKEN=$TOKEN")
-			replyTo carenter with token:token($TOKEN)
-			updateResource[# "reply with TOKEN=$TOKEN" #]
-			
-			//Simulate trolley has take the car
-			println("$name | trolley will take the car")
-			
-			[# 	state.setIndoorState(`it.unibo.parkingstate`.DoorState.FREE) } 
-				state.setWeightOnSensor(0.0)
+							forward itocccounter -m stopCount:stopCount(STOP)
+							forward trolley -m parkcar : parkcar($SLOTNUM)
+			[#
+				} else JSON = "{\"err\":\"$USERERR!!.second.msg\"}"
 			#]
+			
+			println("$name | reply to CARENTER with $JSON")
+			replyTo carenter with token:token($JSON)
+			updateResource[# "reply to CARENTER with $JSON" #]
+			
 		}
 	} Goto work
 	
 	State handlePickup {
 		printCurrentMessage
-		onMsg(pickup : pickup(TOKEN)) {
-			[# 	var TOKEN = payloadArg(0) 
-				var slotnum_free = state.getParkingSlotManager().freeSlotByToken(TOKEN) 
-				 if(slotnum_free == -1) {
+		onMsg(pickup : pickup(TOKEN,MAIL)) {
+			[# 	
+				SLOTERR = CONTROLLER.analyzeToken(payloadArg(0), payloadArg(1))
+				if(SLOTERR.first != null && SLOTERR.second == null) {
+					SLOTNUM = SLOTERR.first!!.slotnum
+					if(CONTROLLER.reserveDoorForUserOrEnqueue(OUTDOOR, SLOTERR.first!!.user!!)) {
+						JSON = "{\"msg\":\"The transport trolley will transport your car to the outdoor: you will get a notification when your car is ready. Plase stay near the ourdoor\"}"
 			#]
-									
-					replyTo pickup with canPickup : canPickup(INVALIDTOK)
-					updateResource[# "canPickup(INVALIDTOK)"#]
-					//TODO: handle invalid token
-					
-			[# 	} else {
-					if(state.getOutdoorState().equals(`it.unibo.parkingstate`.DoorState.FREE)) { 
-					state.setOutdoorState(`it.unibo.parkingstate`.DoorState.OCCUPIED)
+						forward trolley -m pickup : pickup($SLOTNUM)
+						forward dtfreecounter -m startDtfreeCounter : startDtfreeCounter(START)
+			[#
+					} else
+						JSON = "{\"msg\":\"The outdoor is already engaged. When possible, the trolley will transport your car to the outdoor. You will be notified as soon.\"}"
+				} else
+					JSON = "{\"msg\":\"$SLOTERR.second!!\"}"
 			#]
-					println("$name | trolley will transport car in the outdoor")
-					replyTo pickup with canPickup : canPickup(OK)
-					println("$name | slot $slotnum_free is going to be free")
-					forward dtfreecounter -m startDtfreeCounter : startDtfreeCounter(START)
-					
-					updateResource[# "canPickup(OK)" #]
-				
-			[# 		} else { #]
-					println("$name | the outdoor is already engaged by another car... please wait")
-					replyTo pickup with canPickup : canPickup(WAIT)
-					updateResource[# "canPickup(WAIT)"#]
-					//TODO: if outdoor area is already engaged?
-				
-			[# 		}
-				}				
-			#]
+					replyTo pickup with canPickup : canPickup($JSON)
+					updateResource[# "canPickup($JSON)" #]
 		}
 	} Goto work
+	
+	State handleSomeoneInOutdoor {
+		[#
+			USER = CONTROLLER.freeSlotUsedByUserAtOutdoor()!!
+			NOTIFICATION = `it.unibo.parkmanagerservice`.notification.DefaultNotificationFactory.createForUser(
+					USER!!,
+					`it.unibo.parkmanagerservice`.notification.NotificationType.PICKUP,
+					arrayOf<String>()
+				)
+			CHANNEL.send(NOTIFICATION)
+		#]
+			forward notificationactor -m notifyuser : notifyuser(NOTIFY)
+	}
+	
+	State handleOutdoorReturnFree {
+		[# CONTROLLER.setFreeDoor(OUTDOOR) #]
+	}
 }
 
 
@@ -348,7 +315,7 @@ QActor parkingservicestatusgui context ctxcarparking {
 QActor notificationactor context ctxcarparking {
 	
 	[# 
-		val NOTIFIER = it.unibo.parkmanagerservice.notification.MailNotifier()
+		val NOTIFIER = it.unibo.parkmanagerservice.notification.SystemNotifier.get()
 		val CHANNEL = it.unibo.parkmanagerservice.notification.NotificationChannel.channel		
 	#]
 	
@@ -365,7 +332,7 @@ QActor notificationactor context ctxcarparking {
 		[# 
 			NOTIFIER.sendNotification(CHANNEL.receive())
 		#]
-	} Goto work
+	} Goto work if [# CHANNEL.isEmpty #] else handleNotificationToSend
 }
 
 QActor antifireactor context ctxcarparking {
@@ -400,5 +367,25 @@ QActor antifireactor context ctxcarparking {
 				}
 			#]
 		}
+	} Goto work
+}
+
+QActor trolley context ctxcarparking {
+	State s0 initial {
+		println("$name | started")
+	} Goto work
+	
+	State work {
+		println("$name | work")
+	} Transition t0
+		whenMsg parkcar -> handlePark
+		whenMsg pickup -> handlePickup
+		
+	State handlePark {
+		
+	} Goto work
+	
+	State handlePickup {
+		
 	} Goto work
 }
