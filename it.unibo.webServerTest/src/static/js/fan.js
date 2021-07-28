@@ -1,7 +1,5 @@
 
-var init_state = "OFF"
 var output_fan = document.getElementById("value_fan");
-output_fan.innerHTML = init_state;
 
 const fan_socket = new WebSocket(
     'ws://' +

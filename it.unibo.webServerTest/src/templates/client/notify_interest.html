@@ -1,0 +1,32 @@
+{% extends '../index.html' %}
+
+{% block content %}
+
+<form style="margin-top: 10px; margin-left: 10px;" action="/client/notifyinterest" method="post">
+    <div class="form-group">
+        {% csrf_token %}
+        {{ form }}
+    </div>
+    <input type="submit" value="Submit">
+</form>
+
+{% if error != None %}
+
+<p style="margin-top: 10px; margin-left: 10px;">{{error}}</p>
+
+
+{% elif slotnum == '0' %}
+
+<p style="margin-top: 10px; margin-left: 10px;">There aren't places availlable right now</p>
+
+{% else %}
+
+<p style="margin-top: 10px; margin-left: 10px;">Here you slotnum: {{slotnum}}</p>
+
+<p style="margin-top: 10px; margin-left: 10px;">{{indoor}}</p>
+
+<button style="margin-top: 10px; margin-left: 10px;" onclick="location.href = '/client/carenter'">CAR ENTER</button>
+
+{% endif %}
+
+{% endblock %}

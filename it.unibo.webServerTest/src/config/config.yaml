@@ -30,6 +30,10 @@ weightsensor:
     group_name: "weightsensor_group"
     init_value: '0'
 
+carparking:
+    port: 8010
+    ctx: "ctxcarparking"
+
 system:
     host: "localhost"
     port: 8000

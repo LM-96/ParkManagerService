@@ -1,37 +1,57 @@
 {% extends '../index.html' %}
+{% load static %}
+
 
 {% block content %}
 
-<div class="devices-div">
-    <h1>Thermometer</h1>
-    <p>Value: <span id="value_temp"></span> C°</p>
-    <input type="range" id='temp' min="-10.0" max="50.0"  step="0.5">
+<table style="text-align: center; " class="table table-bordered table-dark">
+    <tbody>
+        <tr>
+            <td scope="row">
+                
+                    <h1>Thermometer</h1>
+                    <p>Value: <span id="value_temp"></span> C°</p>
+                    <input type="range" class="form-range" id='temp' min="-10.0" max="50.0"  step="0.5">
 
 
-    <p>Message received from socket: <span id='msg_temp' ></span> C°</p>
-</div> 
-
-<div class="devices-div">
-    <h1>Weight Sensor</h1>
-    <p>Value: <span id="value_weight"></span> ton</p>
-    <input type="range" id='weight' min="0" max="10" step="0.1">
-
-
-    <p>Message received from socket: <span id='msg_weight'></span> ton</p>
-</div>
-
-<div class="devices-div">
-    <h1>Fan</h1>
-    <p>Value: <span id="value_fan"></span></p>
-</div>
-
-<div class="devices-div">
-    <h1>Sonar</h1>
-    <p>Value: <span id="value_sonar"></span> cm</p>
-    <input type="range" id='sonar' min="0" max="1000">
+                    <p>Message received from socket: </p>
+                    <span id='msg_temp' ></span> C°
+            </td>
+            <td scope="row">
+                    <h1>Weight Sensor</h1>
+                    <p>Value: <span id="value_weight"></span> ton</p>
+                    <input type="range" class="form-range" id='weight' min="0" max="10" step="0.1">
 
 
-    <p>Message received from socket: <span id='msg_sonar'></span> cm</p>
-</div> 
+                    <p>Message received from socket: </p>
+                    <span id='msg_weight'></span> ton
+            </td>
+        </tr>
+    </tbody>
+    <tbody>
+        <tr>
+            <td scope="row">
+                    <h1>Fan</h1>
+                    <p>Value: <span id="value_fan"></span></p>
+            </td>
+
+            <td scope="row">
+                    <h1>Sonar</h1>
+                    <p>Value: <span id="value_sonar"></span> cm</p>
+                    <input type="range" class="form-range" id='sonar' min="0" max="1000">
+
+
+                    <p>Message received from socket: </p>
+                    <span id='msg_sonar'></span> cm
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+<script src="{% static '/js/thermometer.js' %}"></script>
+<script src="{% static '/js/weightsensor.js' %}"></script>
+<script src="{% static '/js/fan.js' %}"></script>
+<script src="{% static '/js/sonar.js' %}"></script>
 
 {% endblock %}

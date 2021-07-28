@@ -1,0 +1,23 @@
+{% extends '../index.html' %}
+
+{% block content %}
+
+<form action="/client/carenter" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit">
+</form>
+
+{% if error != None %}
+
+<p>{{error}}</p>
+
+
+{% elif token != None %}
+
+<p>Here is your unique token! {{token}}</p>
+<p>Use it when you desire to pick up the car. We will also send you an email with this code!</p>
+
+{% endif %}
+
+{% endblock %}

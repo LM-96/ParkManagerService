@@ -1,0 +1,17 @@
+{% extends '../index.html' %}
+
+{% block content %}
+
+<form action="/client/pickup" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit">
+</form>
+
+{% if msg != None %}
+
+<p>{{msg}}</p>
+
+{% endif %}
+
+{% endblock %}

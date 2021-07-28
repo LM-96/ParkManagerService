@@ -10,15 +10,15 @@ import socket
 
 class Device:
 
-    def __init__(self, server, server_port, port_actor, context, actor, path_ws):
+    def __init__(self, server, server_port, port_actor, context, actor, name):
         self.server = server
         self.server_port = server_port
         self.port_actor = port_actor
         self.actor = actor
         self.context = context
-        self.path_ws = path_ws
+        self.name = name
 
-        self.ws = f'ws://{self.server}:{self.server_port}/ws/{self.path_ws}/'
+        self.ws = f'ws://{self.server}:{self.server_port}/ws/{self.name}/'
         self.coap = f'coap://{self.server}:{self.port_actor}/{self.context}/{self.actor}'
 
 with open("config/config.yaml", 'r') as yaml_file:
