@@ -52,13 +52,12 @@ def notify_interest(request):
 
             recv_msg = ""
             while True:
-                recv_msg += s.recv(1024)
+                recv_msg += s.recv(1024).decode("utf-8")
                 rec_end = recv_msg.find('\n')
                 if rec_end != -1:
                     break
-                
+
             s.close()
-            recv_msg = recv_msg.decode("utf-8")
             print(recv_msg)
             recv_json = get_json(recv_msg)
             if recv_json["err"] != None:
