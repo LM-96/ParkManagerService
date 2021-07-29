@@ -110,13 +110,14 @@ class KParkManagerServiceController(
         val queue = doorQueues.get(door)!!
         if(doors.getState(door) == DoorState.FREE && queue.remaining() > 0) {
             user = doorQueues.get(door)!!.getNextUser()
+            val expectedState = UserState.getByDoorWanted(door)
 
-            while(user!!.state != UserState.INTERESTED && queue.remaining() > 0)
+            while(user!!.state != expectedState && queue.remaining() > 0)
                 user = queue.getNextUser()!!
 
-            if(user!!.state == UserState.INTERESTED) {
+            if(user!!.state == expectedState) {
                 doors.reserveForUser(door, user!!)
-                user.state = UserState.INDOOR_RESERVED
+                user.state = UserState.getByDoorReservationState(door)
                 userRepo.update(user)
 
                 println("Controller | Reserved ${door.toString()} to user [${user.toString()}]")
