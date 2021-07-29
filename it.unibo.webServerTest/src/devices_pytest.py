@@ -61,7 +61,11 @@ async def test_thermometer():
 
             r = await pr.response
 
-            assert r.payload.decode("utf-8") == v
+            response = r.payload.decode("utf-8") 
+
+            jr = json.loads(response)    
+
+            assert jr["data"] == v
 
 
 
@@ -132,7 +136,7 @@ async def test_sonar():
 
             print(jr)       
 
-            assert jr['distance'] == v
+            assert jr['data'] == v
 
     msg = f'msg(stoppolling, dispatch, python, {config.sonar.actor}, stoppolling(STOP), 1)\n'
     byt=msg.encode()   
@@ -175,7 +179,7 @@ async def test_weightsensor():
 
             jr = json.loads(response)   
 
-            assert jr['weight'] == v
+            assert jr['data'] == v
 
     msg = f'msg(stoppolling, dispatch, python,  {config.weightsensor.actor}, stoppolling(STOP), 1)\n'
     byt=msg.encode()   

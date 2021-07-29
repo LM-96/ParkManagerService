@@ -7,6 +7,7 @@ from manage import config
 import socket
 import re
 import json
+from django.contrib import messages
 
 # Renders the webpage for the devices
 
@@ -19,27 +20,24 @@ def get_json(msg):
 
 def notify_interest(request):
 
-    context = {
-        'slotnum': None,
-        'error': None,
-        'indoor': None,
-        'form': None
-    }
+    
 
+    slotnum = None
+    error = None
+    indoor = None
+    form = SlotnumForm()
     email = None
 
-    if request.COOKIES.get('slotnum'):
-        context['slotnum'] = request.COOKIES['slotnum']
+    
 
-    # if this is a POST request we need to process the form data
     if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        context['form'] = SlotnumForm(request.POST)
-        # check whether it's valid:
-        if context['form'].is_valid():
-            name = context['form'].cleaned_data['name']
-            surname = context['form'].cleaned_data['surname']
-            email = context['form'].cleaned_data['email']
+
+        form = SlotnumForm(request.POST)
+
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            surname = form.cleaned_data['surname']
+            email = form.cleaned_data['email']
             #slotnum = 5
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.connect((config.system.host, config.carparking.port))
@@ -48,7 +46,6 @@ def notify_interest(request):
             byt=msg.encode()   
             s.send(byt)
 
-            #json  {'slotnum', 'err', 'indoor'} parse with regex
 
             recv_msg = ""
             while True:
@@ -61,16 +58,23 @@ def notify_interest(request):
             print(recv_msg)
             recv_json = get_json(recv_msg)
             if "err" in recv_json:
-                context['error'] = recv_json["err"]
+                messages.error(recv_json["err"])
             else:
                 flag = recv_json["indoor"].upper()
-                context['indoor'] = 'The indoor is free you can enter the car!' if  flag == 'FREE' \
+                indoor = 'The indoor is free you can enter the car!' if  flag == 'FREE' \
                         else 'The indoor is occupied.. an email will be sent to you when it is availlable!'
-                context['slotnum'] = recv_json["slotnum"]
-                    
-    # if a GET (or any other method) we'll create a blank form
+                slotnum = recv_json["slotnum"]
     else:
-        context['form'] = SlotnumForm()
+        if request.COOKIES.get('slotnum') != "None":
+            slotnum = request.COOKIES['slotnum']   
+
+
+    context = {
+        'slotnum': slotnum,
+        'error': error,
+        'indoor': indoor,
+        'form': form
+    }
 
     response = render(request, 'client/notify_interest.html', context)
     response.set_cookie('slotnum', context['slotnum'])
@@ -79,28 +83,18 @@ def notify_interest(request):
 
 def carenter(request):
 
-    context = {
-        'slotnum': None,
-        'email': None,
-        'token': None,
-        'error': None,
-        'form': None
-    }
-
-    if request.GET.get('slotnum') != None:
-        context['slotnum'] = request.GET.get('slotnum')
-        context['email'] = request.GET.get('email')
-
-    elif request.COOKIES.get('slotnum'):
-        context['slotnum'] = request.COOKIES['slotnum']
-        context['email'] = request.COOKIES['email']
+    slotnum = None
+    email = None
+    token = None
+    form = CarenterForm()
+    
 
     if request.method == 'POST':
-        context['form'] = CarenterForm(request.POST)
+        form = CarenterForm(request.POST)
         # check whether it's valid:
-        if context['form'].is_valid():
-            context['slotnum'] = context['form'].cleaned_data['slotnum']
-            context['email'] = context['form'].cleaned_data['email']
+        if form.is_valid():
+            slotnum = form.cleaned_data['slotnum']
+            email = form.cleaned_data['email']
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.connect( (config.system.host, config.carparking.port))
             msg = f'msg(carenter, request, python, {config.carparking.actor}, carenter("{context["slotnum"]}","{context["email"]}"), 1)\n'
@@ -108,7 +102,6 @@ def carenter(request):
             byt=msg.encode()   
             s.send(byt)
 
-            # json {'token', 'err'}
             
             recv_msg = ""
             while True:
@@ -120,45 +113,63 @@ def carenter(request):
             s.close()
             recv_json = get_json(recv_msg)
             if "err" in recv_json:
-                context['error'] = recv_json["err"]
+                messages.error(recv_json["err"])
             else:
-                context['token'] = recv_json["token"]
+                token = recv_json["token"]
+
                 
             
                     
     # if a GET (or any other method) we'll create a blank form
     else:
-        
-        if context['slotnum'] != None:
-            context['form'] = CarenterForm(initial={'slotnum': context['slotnum'], 'email': context['email']})
-        else:
-            context['form'] = CarenterForm()
+            if request.GET.get('slotnum') != "None":
+                slotnum = request.GET.get('slotnum')
+                email = request.GET.get('email')
+
+            elif request.COOKIES.get('slotnum') != "None":
+                slotnum = request.COOKIES['slotnum']
+                email = request.COOKIES['email']
+                
+            if slotnum != None and email != None:
+                form = CarenterForm(initial={'slotnum': slotnum, 'email': email})
+                    
+
+    context = {
+        'slotnum': slotnum,
+        'email': email,
+        'token': token,
+        'form': form
+    }
     
     response = render(request, 'client/carenter.html', context)
-    response.set_cookie('token', context['token'])
+    if token != None:
+        response.delete_cookie('slotnum')
+        response.delete_cookie('email')
+
+    response.set_cookie('token', token)
     
     return response
 
 
 def pickup(request):
+
+    token =  None
+    msg = None
+    form = PickupForm()
+    email = None
     
-    context = {
-        'token': None,
-        'msg': None,
-        'form': None,
-        'email': None
-    }
+
 
     
     if request.method == 'POST':
-        context['form'] = PickupForm(request.POST)
+        form = PickupForm(request.POST)
         # check whether it's valid:
-        if context['form'].is_valid():
-            context['token'] = context['form'].cleaned_data['token']
-            context['email'] = context['form'].cleaned_data['email']
+        if form.is_valid():
+            token = form.cleaned_data['token']
+            email = form.cleaned_data['email']
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.connect( (config.system.host, config.carparking.port))
-            msg = f'msg(pickup, request, python, {config.carparking.actor}, pickup("{context["token"]}","{context["email"]}"), 1)\n'
+            msg = f'msg(pickup, request, python, {config.carparking.actor}, pickup("{token}","{email}"), 1)\n'
             byt=msg.encode()   
             s.send(byt)
             
@@ -172,24 +183,28 @@ def pickup(request):
             s.close()
             print(recv_msg)
             recv_json = get_json(recv_msg)
-            context['msg'] = recv_json["msg"]
+            msg = recv_json["msg"]
             
                     
     # if a GET (or any other method) we'll create a blank form
     else:
 
-        if request.GET.get('token') != None:
-            context['token'] = request.GET.get('token')
-            context['email'] = request.GET.get('email')
-        elif request.COOKIES.get('token'):
-            context['token'] = request.COOKIES['token']
-            context['email'] = request.GET.get('email')
-
+        if request.GET.get('token') != "None":
+            token = request.GET.get('token')
+            email = request.GET.get('email')
+        elif request.COOKIES.get('token') != "None":
+            token = request.COOKIES['token']
+            email = request.GET.get('email')
         
-        if context['token'] != None:
-            context['form'] = PickupForm(initial={'token': context['token'],'email': context['email']})
-        else:
-            context['form'] = PickupForm()
+        if token != None and email != None:
+            form = PickupForm(initial={'token': token,'email': email})
+
+    context = {
+        'token': token,
+        'msg': msg,
+        'form': form,
+        'email': email
+    }
 
     return render(request, 'client/pickup.html', context)
 

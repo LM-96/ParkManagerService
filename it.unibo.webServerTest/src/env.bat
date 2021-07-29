@@ -1,0 +1,1 @@
+..\..\..\werServerTest\.venv\Scripts\activate

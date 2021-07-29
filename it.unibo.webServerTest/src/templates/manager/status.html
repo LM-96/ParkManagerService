@@ -1,3 +1,60 @@
+{% extends '../index.html' %}
 
-<span>Hello, {{request.user}}</span><br>
-<span><a href="{% url 'logout' %}">Logout</a></span>
+{% block content %}
+<style>
+    .navbar{
+      font-size: 18px;
+      color: #fff;
+      margin-right: 20px;
+    }
+
+    .info > p{
+        padding: 1em;
+        font-size:200%;
+    }
+
+    .info{
+        float: left;
+    }
+
+    .grid{
+        float: left;
+    }
+  </style>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+       <span class="navbar-toggler-icon"></span>
+     </button>
+     <div class="collapse navbar-collapse" id="navbarNav">
+       <ul class="navbar-nav">
+         <li class="nav-item active">
+            <span class="navbar">PARKING MANAGER SERVICE GUI</span>
+         </li>
+         
+       </ul>
+     </div>
+   
+     <span class="navbar">Hello, {{request.user}}</span>
+     <span ><a  class="hello-msg" href="{% url 'logout' %}">Logout</a></span>
+   
+   </nav>
+
+<div class="grid">
+{% for y in rows %}
+    <div class="nested">
+    {% for x in cols %}
+
+        <div id="{{x}}{{y}}">{{x}}{{y}}</div>
+
+    {% endfor %}   
+    </div> 
+{% endfor %}
+</div>
+<div class="info">
+    <p>STATUS FAN: <span id="status_fan"></span></p>
+    <p>STATUS TRANSPORT TROLLEY: <span id="status_robot"></span></p>
+    <p>STATUS INDOOR: <span id="status_indoor"></span></p>
+    <p>STATUS OUTDOOR: <span id="status_outdoor"></span></p>
+
+</div>
+{% endblock %}

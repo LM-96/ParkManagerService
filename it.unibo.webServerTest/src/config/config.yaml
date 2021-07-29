@@ -39,3 +39,11 @@ system:
     host: "localhost"
     port: 8000
 
+
+map:
+    rows: 5
+    cols: 7
+    parking_slots: [21,31,22,32,23,33]
+    home: '00'
+    indoor: '60'
+    outdoor: '64'
