@@ -28,6 +28,7 @@ class Thermometeractor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm(
 				var tempState = `it.unibo.basicthermometer`.TemperatureState.NORMAL
 				val POLLING_TIME = it.unibo.basicthermometer.Thermometer.getPollingMillis()
 				val CRITICAL_TEMP = it.unibo.basicthermometer.Thermometer.getCriticalTemp()
+				var JSON : String
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
@@ -39,6 +40,7 @@ class Thermometeractor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm(
 					action { //it:State
 						 
 									temp = thermometer.readTemperature()
+									JSON = "{\"data\":\"${temp}\"}"
 									if(temp >= CRITICAL_TEMP
 										&& tempState == `it.unibo.basicthermometer`.TemperatureState.NORMAL) {
 											tempState = `it.unibo.basicthermometer`.TemperatureState.CRITICAL		
@@ -48,7 +50,7 @@ class Thermometeractor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm(
 											tempState = `it.unibo.basicthermometer`.TemperatureState.NORMAL
 						emit("criticaltemp", "criticaltemp(NORMAL)" ) 
 						 }  
-						updateResourceRep( temp.toString()  
+						updateResourceRep( "$JSON"  
 						)
 						stateTimer = TimerActor("timer_work", 
 							scope, context!!, "local_tout_thermometeractor_work", POLLING_TIME )

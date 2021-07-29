@@ -17,8 +17,8 @@ class Itocccounter ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( nam
 	@kotlinx.coroutines.ExperimentalCoroutinesApi			
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		 	
-				val state : it.unibo.parkingstate.StateReader = it.unibo.parkingstate.MockState
-				val ITOCC = 2000L
+				val ITOCC = it.unibo.parkmanagerservice.bean.Timers.get().ITOCC
+				var REACHED = false
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
@@ -28,9 +28,15 @@ class Itocccounter ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( nam
 				}	 
 				state("work") { //this:State
 					action { //it:State
-						println("$name | working...")
+						 if(REACHED) {
+									REACHED = false
+						updateResourceRep( "reached" 
+						)
+						 } else {  
 						updateResourceRep( "work" 
 						)
+						 }  
+						println("$name | waiting for command")
 					}
 					 transition(edgeName="t7",targetState="count",cond=whenDispatch("startItoccCounter"))
 					transition(edgeName="t8",targetState="work",cond=whenDispatch("stopCount"))
@@ -49,11 +55,10 @@ class Itocccounter ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( nam
 				}	 
 				state("reached") { //this:State
 					action { //it:State
-						 if(state.getWeightFromSensor() <= 0) { 
-						updateResourceRep( "ITOCC" 
+						println("$name | ITOCC reached")
+						emit("itoccReached", "itoccReached(REACHED)" ) 
+						updateResourceRep( "reached"  
 						)
-						println("$name | ITOCC reached and indoor is free... Client should be notified")
-						 }  
 					}
 					 transition( edgeName="goto",targetState="work", cond=doswitch() )
 				}	 

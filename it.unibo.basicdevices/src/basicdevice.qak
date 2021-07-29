@@ -42,6 +42,7 @@ QActor thermometeractor context ctxthermometer {
 		var tempState = `it.unibo.basicthermometer`.TemperatureState.NORMAL
 		val POLLING_TIME = it.unibo.basicthermometer.Thermometer.getPollingMillis()
 		val CRITICAL_TEMP = it.unibo.basicthermometer.Thermometer.getCriticalTemp()
+		var JSON : String
 	#]
 	
 	State s0 initial {
@@ -51,6 +52,7 @@ QActor thermometeractor context ctxthermometer {
 	State work {
 		[# 
 			temp = thermometer.readTemperature()
+			JSON = "{\"data\":\"${temp}\"}"
 			if(temp >= CRITICAL_TEMP
 				&& tempState == `it.unibo.basicthermometer`.TemperatureState.NORMAL) {
 					tempState = `it.unibo.basicthermometer`.TemperatureState.CRITICAL		
@@ -62,7 +64,7 @@ QActor thermometeractor context ctxthermometer {
 		#]
 					emit criticaltemp : criticaltemp(NORMAL)				
 		[# } #]
-		updateResource[# temp.toString() #]
+		updateResource[# "$JSON" #]
 	} Transition t0
 		whenTimeVar POLLING_TIME -> work
 		whenMsg updatethermometerstate -> work
@@ -73,6 +75,7 @@ QActor fanactor context ctxfan {
 	[# 
 		val fan = it.unibo.basicdevices.DeviceManager.requestDevice("fan")
 		lateinit var STATE : it.unibo.basicfan.FanState
+		var JSON : String
 		
 		if(fan == null) {
 			println("$name | unable to use the fan")
@@ -91,6 +94,7 @@ QActor fanactor context ctxfan {
 	} Goto work
 	
 	State work {
+		[# JSON = "{\"data\":\"${STATE}\"}"#]
 		updateResource[# STATE.toString() #]
 		println("$name | fan state : ${STATE.toString()}")
 	} Transition t0
@@ -132,7 +136,7 @@ QActor sonaractor context ctxsonar {
 		if(DISTANCE > MIN_DISTANCE) STATE="off"
 		else STATE = "on"
 		
-		JSONSTATE = "{\"sonar\":\"$DISTANCE\",\"state\":\"$STATE\"}"
+		JSONSTATE = "{\"data\":\"$DISTANCE\",\"state\":\"$STATE\"}"
 	#]
 	
 	State s0 initial {
@@ -169,7 +173,7 @@ QActor sonaractor context ctxsonar {
 		[#
 			}
 			
-			JSONSTATE = "{\"distance\":\"$DISTANCE\",\"state\":\"$STATE\"}"
+			JSONSTATE = "{\"data\":\"$DISTANCE\",\"state\":\"$STATE\"}"
 		#]
 		updateResource[# JSONSTATE #]
 	} Transition t0
@@ -199,7 +203,7 @@ QActor weightsensoractor context ctxweightsensor {
 		WEIGHT = sensor.readWeight()
 		if(WEIGHT < MIN_WEIGHT)	STATE = "off"
 		else STATE = "on"
-		JSONSTATE = "{\"weight\":\"$WEIGHT\",\"state\":\"$STATE\"}"
+		JSONSTATE = "{\"data\":\"$WEIGHT\",\"state\":\"$STATE\"}"
 	#]
 	
 	State s0 initial {
@@ -236,7 +240,7 @@ QActor weightsensoractor context ctxweightsensor {
 		[#
 			}
 			
-			JSONSTATE = "{\"weight\":\"$WEIGHT\",\"state\":\"$STATE\"}"
+			JSONSTATE = "{\"data\":\"$WEIGHT\",\"state\":\"$STATE\"}"
 		#]
 		updateResource[# JSONSTATE #]
 	} Transition t0

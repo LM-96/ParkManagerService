@@ -20,7 +20,7 @@ interface ParkManagerServiceController {
     fun setCarOfUserAtOutdoorLeaved() : User?
     fun assignTokenToUserAtIndoor(slotnum : String, mail : String) : Pair<User?, ParkManagerError?>
     fun analyzeToken(token : String, mail : String) : Pair<ParkingSlot?, ParkManagerError?>
-    fun freeSlotUsedByUserAtOutdoor() : User?
+    fun freeSlotUsedByUserAtOutdoor() : Pair<User?, ParkingSlot?>
 
     fun getDoorsManager() : DoorsManager
     fun getDoorQueue(door: DoorType) : DoorQueue

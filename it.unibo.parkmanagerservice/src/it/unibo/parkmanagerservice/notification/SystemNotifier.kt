@@ -13,7 +13,7 @@ object SystemNotifier {
         if(SINGLETON == null) {
             var configFile = Paths.get(CONFIG_FILE)
             if(!Files.exists(configFile)) {
-                println("SystemNotifier | Unable to get notifier configuration. It will be used the FakeNotifier")
+                println("SystemNotifier | Unable to find notifier configuration file at ${configFile.toAbsolutePath().toString()}.\n\tIt will be used the FakeNotifier")
                 SINGLETON = FakeNotifier()
             }
 
@@ -24,7 +24,7 @@ object SystemNotifier {
                     "fake" -> SINGLETON = FakeNotifier()
                     "mail" -> SINGLETON = MailNotifier()
                 }
-                println("SystemNotifier | used notified $type")
+                println("SystemNotifier | used notifier $type from configuration file")
             } catch (e : Exception) {
                 println("SystemNotifier | Error reading notifier configuration file. It will be used the FakeNotifier")
                 SINGLETON = FakeNotifier()

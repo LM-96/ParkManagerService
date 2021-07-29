@@ -34,7 +34,7 @@ class Weightsensoractor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm
 				WEIGHT = sensor.readWeight()
 				if(WEIGHT < MIN_WEIGHT)	STATE = "off"
 				else STATE = "on"
-				JSONSTATE = "{\"weight\":\"$WEIGHT\",\"state\":\"$STATE\"}"
+				JSONSTATE = "{\"data\":\"$WEIGHT\",\"state\":\"$STATE\"}"
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
@@ -76,7 +76,7 @@ class Weightsensoractor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm
 						
 									}
 									
-									JSONSTATE = "{\"weight\":\"$WEIGHT\",\"state\":\"$STATE\"}"
+									JSONSTATE = "{\"data\":\"$WEIGHT\",\"state\":\"$STATE\"}"
 						updateResourceRep( JSONSTATE  
 						)
 						stateTimer = TimerActor("timer_polling", 

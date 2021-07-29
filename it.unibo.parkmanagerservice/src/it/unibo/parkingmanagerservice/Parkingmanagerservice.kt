@@ -31,6 +31,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 				var JSON : String = ""
 				var USERERR : Pair<it.unibo.parkmanagerservice.bean.User?, it.unibo.parkmanagerservice.controller.ParkManagerError?>
 				var SLOTERR : Pair<it.unibo.parkmanagerservice.bean.ParkingSlot?, it.unibo.parkmanagerservice.controller.ParkManagerError?>
+				var USERSLOT : Pair<it.unibo.parkmanagerservice.bean.User?,it.unibo.parkmanagerservice.bean.ParkingSlot?>
 				var USER : it.unibo.parkmanagerservice.bean.User?
 				var SLOTNUM : Long = 0
 				var INDOOR = it.unibo.parkmanagerservice.bean.DoorType.INDOOR
@@ -41,6 +42,10 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 				state("s0") { //this:State
 					action { //it:State
 						println("$name | started")
+						updateResourceRep( "{\"door\":\"indoor\",\"state\":\"FREE\"}"  
+						)
+						updateResourceRep( "{\"door\":\"outdoor\",\"state\":\"FREE\"}"  
+						)
 					}
 					 transition( edgeName="goto",targetState="work", cond=doswitch() )
 				}	 
@@ -71,6 +76,10 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 													
 													if(CONTROLLER.reserveDoorForUserOrEnqueue(INDOOR, USER!!)) {
 														JSON = "{\"slotnum\":\"$SLOTNUM\",\"indoor\":\"FREE\"}"
+								updateResourceRep( "{\"door\":\"indoor\",\"state\":\"RESERVED\"}"  
+								)
+								updateResourceRep( "{\"slot\":\"${SLOTNUM}\",\"user\":\"${USER!!.mail}\",\"state\":\"RESERVED\"}"  
+								)
 								forward("dopolling", "dopolling(1000)" ,"weightsensoractor" ) 
 								forward("startItoccCounter", "startItoccCounter(START)" ,"itocccounter" ) 
 								
@@ -79,8 +88,6 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 						}
 						println("$name | reply with slotnum(${JSON!!})")
 						answer("enter", "slotnum", "slotnum($JSON)"   )  
-						updateResourceRep( "slotnum(${JSON!!})"  
-						)
 					}
 					 transition( edgeName="goto",targetState="work", cond=doswitch() )
 				}	 
@@ -92,7 +99,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 									SLOT = CONTROLLER.getSlotReservedForUser(USER!!)
 									SLOTNUM = SLOT!!.slotnum
 						forward("parkcar", "parkcar($SLOTNUM)" ,"trolley" ) 
-						updateResourceRep( "INDOOR=OCCUPIED"  
+						updateResourceRep( "{\"door\":\"indoor\",\"state\":\"OCCUPIED\"}"  
 						)
 					}
 					 transition( edgeName="goto",targetState="work", cond=doswitch() )
@@ -108,6 +115,8 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 									CHANNEL.send(NOTIFICATION)
 						forward("notifyuser", "notifyuser(NOTIFY)" ,"notificationactor" ) 
 						forward("stoppolling", "stoppolling(STOP)" ,"weightsensoractor" ) 
+						updateResourceRep( "{\"door\":\"indoor\",\"state\":\"FREE\"}"  
+						)
 					}
 					 transition( edgeName="goto",targetState="enterNext", cond=doswitchGuarded({ (CONTROLLER.getDoorQueue(INDOOR).remaining()) > 0  
 					}) )
@@ -127,6 +136,10 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 						forward("notifyuser", "notifyuser(NOTIFY)" ,"notificationactor" ) 
 						forward("dopolling", "dopolling(1000)" ,"weightsensoractor" ) 
 						forward("startItoccCounter", "startItoccCounter(START)" ,"itocccounter" ) 
+						updateResourceRep( "{\"door\":\"indoor\",\"state\":\"RESERVED\"}"  
+						)
+						updateResourceRep( "{\"slot\":\"${SLOTNUM}\",\"user\":\"${USER!!.mail}\",\"state\":\"RESERVED\"}"  
+						)
 						 	}
 					}
 					 transition( edgeName="goto",targetState="work", cond=doswitch() )
@@ -142,6 +155,8 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 													JSON = "{\"token\":\"${USERERR.first!!.token!!.toString()}\"}"
 								forward("stopCount", "stopCount(STOP)" ,"itocccounter" ) 
 								forward("parkcar", "parkcar($SLOTNUM)" ,"trolley" ) 
+								updateResourceRep( "{\"slot\":\"${SLOTNUM}\",\"user\":\"${USERERR.first!!.mail}\",\"state\":\"OCCUPIED\"}"  
+								)
 								
 												} else JSON = "{\"err\":\"${USERERR!!.second!!.msg}\"}"
 								println("$name | reply to CARENTER with $JSON")
@@ -163,6 +178,8 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 													SLOTNUM = SLOTERR.first!!.slotnum
 													if(CONTROLLER.reserveDoorForUserOrEnqueue(OUTDOOR, SLOTERR.first!!.user!!)) {
 														JSON = "{\"msg\":\"The transport trolley will transport your car to the outdoor: you will get a notification when your car is ready. Plase stay near the ourdoor\"}"
+								updateResourceRep( "{\"slot\":\"${SLOTNUM}\",\"user\":\"${SLOTERR.first!!.user!!.mail}\",\"state\":\"ALMOST_FREE\"}"  
+								)
 								forward("pickup", "pickup($SLOTNUM)" ,"trolley" ) 
 								forward("startDtfreeCounter", "startDtfreeCounter(START)" ,"dtfreecounter" ) 
 								
@@ -181,14 +198,21 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 				state("handleSomeoneInOutdoor") { //this:State
 					action { //it:State
 						
-									USER = CONTROLLER.freeSlotUsedByUserAtOutdoor()!!
-									NOTIFICATION = `it.unibo.parkmanagerservice`.notification.DefaultNotificationFactory.createForUser(
-											USER!!,
-											`it.unibo.parkmanagerservice`.notification.NotificationType.PICKUP,
-											arrayOf<String>()
-										)
-									CHANNEL.send(NOTIFICATION)
+									USERSLOT = CONTROLLER.freeSlotUsedByUserAtOutdoor()
+									USER = USERSLOT.first
+									if(USER!! != null) {
+										NOTIFICATION = `it.unibo.parkmanagerservice`.notification.DefaultNotificationFactory.createForUser(
+												USER!!,
+												`it.unibo.parkmanagerservice`.notification.NotificationType.PICKUP,
+												arrayOf<String>()
+											)
+										CHANNEL.send(NOTIFICATION)
 						forward("notifyuser", "notifyuser(NOTIFY)" ,"notificationactor" ) 
+						updateResourceRep( "{\"door\":\"indoor\",\"state\":\"OCCUPIED\"}"  
+						)
+						updateResourceRep( "{\"slot\":\"${USERSLOT.second!!.slotnum}\",\"user\":\"${USER!!.mail}\",\"state\":\"RESERVED\"}"  
+						)
+						 }  
 					}
 				}	 
 				state("handleOutdoorReturnFree") { //this:State

@@ -24,6 +24,7 @@ class Notificationactor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm
 					action { //it:State
 						println("$name | started")
 					}
+					 transition( edgeName="goto",targetState="work", cond=doswitch() )
 				}	 
 				state("work") { //this:State
 					action { //it:State

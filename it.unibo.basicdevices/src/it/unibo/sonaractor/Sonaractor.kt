@@ -35,7 +35,7 @@ class Sonaractor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 				if(DISTANCE > MIN_DISTANCE) STATE="off"
 				else STATE = "on"
 				
-				JSONSTATE = "{\"sonar\":\"$DISTANCE\",\"state\":\"$STATE\"}"
+				JSONSTATE = "{\"data\":\"$DISTANCE\",\"state\":\"$STATE\"}"
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
@@ -77,7 +77,7 @@ class Sonaractor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 						
 									}
 									
-									JSONSTATE = "{\"distance\":\"$DISTANCE\",\"state\":\"$STATE\"}"
+									JSONSTATE = "{\"data\":\"$DISTANCE\",\"state\":\"$STATE\"}"
 						updateResourceRep( JSONSTATE  
 						)
 						stateTimer = TimerActor("timer_polling", 

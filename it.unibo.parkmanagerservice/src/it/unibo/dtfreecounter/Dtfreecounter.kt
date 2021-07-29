@@ -17,8 +17,8 @@ class Dtfreecounter ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( na
 	@kotlinx.coroutines.ExperimentalCoroutinesApi			
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		 	
-				val state : it.unibo.parkingstate.StateReader = it.unibo.parkingstate.MockState
-				val DTFREE = 2000L
+				val DTFREE = it.unibo.parkmanagerservice.bean.Timers.get().DTFREE
+				var REACHED = false
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
@@ -28,9 +28,15 @@ class Dtfreecounter ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( na
 				}	 
 				state("work") { //this:State
 					action { //it:State
-						println("$name | working...")
-						updateResourceRep( "work"  
+						 if(REACHED) {
+									REACHED = false
+						updateResourceRep( "reached" 
 						)
+						 } else {  
+						updateResourceRep( "work" 
+						)
+						 }  
+						println("$name | waiting for command")
 					}
 					 transition(edgeName="t12",targetState="count",cond=whenDispatch("startDtfreeCounter"))
 					transition(edgeName="t13",targetState="work",cond=whenDispatch("stopCount"))
@@ -49,11 +55,10 @@ class Dtfreecounter ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( na
 				}	 
 				state("reached") { //this:State
 					action { //it:State
-						 if(state.getDistanceFromSonar() >= 0) { 
-						updateResourceRep( "DTFREE" 
+						println("$name | DTFREE reached")
+						emit("dtfreeReached", "dtfreeReached(REACHED)" ) 
+						updateResourceRep( "reached"  
 						)
-						println("$name | DTFREE reached and outdoor is occupied... Manager has been notified")
-						 }  
 					}
 					 transition( edgeName="goto",targetState="work", cond=doswitch() )
 				}	 

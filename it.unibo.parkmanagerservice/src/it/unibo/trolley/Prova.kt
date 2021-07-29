@@ -1,4 +1,4 @@
-package it.unibo.trolley
+/*package it.unibo.trolley
 
 import it.unibo.parkimanagerservice.test.utils.TcpActorSpeaker
 import itunibo.planner.plannerUtil
@@ -36,4 +36,4 @@ fun main() {
 			plannerUtil.showMap()
 		}
 		
-	}
+	}*/

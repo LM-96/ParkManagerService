@@ -19,6 +19,7 @@ class Fanactor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, s
 		 
 				val fan = it.unibo.basicdevices.DeviceManager.requestDevice("fan")
 				lateinit var STATE : it.unibo.basicfan.FanState
+				var JSON : String
 				
 				if(fan == null) {
 					println("$name | unable to use the fan")
@@ -38,6 +39,7 @@ class Fanactor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, s
 				}	 
 				state("work") { //this:State
 					action { //it:State
+						 JSON = "{\"data\":\"${STATE}\"}" 
 						updateResourceRep( STATE.toString()  
 						)
 						println("$name | fan state : ${STATE.toString()}")

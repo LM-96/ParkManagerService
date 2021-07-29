@@ -218,23 +218,27 @@ class KParkManagerServiceController(
         return Pair(slot, null)
     }
 
-    override fun freeSlotUsedByUserAtOutdoor() : User? {
+    override fun freeSlotUsedByUserAtOutdoor() : Pair<User?, ParkingSlot?> {
         val user = doors.getUserAtDoor(DoorType.OUTDOOR)
         if(user == null) {
             println("Controller | Unable to free a parking slot: no user at the outdoor")
+            return Pair(null, null)
         } else {
-            val slotOpt = slotRepo.getReservedForUser(user!!.id)
+            val slotOpt =
+                slotRepo.getReservedForUser(user!!.id)
             if(slotOpt.isPresent) {
                 val slot = slotOpt.get()
                 slot.slotstate = ParkingSlotState.FREE
+                slot.user = null
                 slotRepo.update(slot)
 
                 println("Controller | Free slot[${slot.toString()}]")
+                return Pair(user, slot)
             } else {
                 println("Controller | Request to free slot not used")
+                return Pair(user, null)
             }
         }
-        return user;
     }
 
     override fun getDoorsManager(): DoorsManager {
