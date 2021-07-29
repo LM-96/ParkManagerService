@@ -48,7 +48,8 @@ def notify_interest(request):
                 'surname': {surname},
                 'email': {email}
             }
-            msg = f'msg(enter, request, python, {config.carparking.actor}, enter({json.dumps(msg_json)}), 1)\n'
+            msg_json = json.dumps(msg_json)
+            msg = f'msg(enter, request, python, {config.carparking.actor}, enter({msg_json}), 1)\n'
             print(msg)
             byt=msg.encode()   
             s.send(byt)
