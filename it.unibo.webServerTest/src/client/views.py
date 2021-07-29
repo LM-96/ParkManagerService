@@ -123,7 +123,7 @@ def carenter(request):
                 context['error'] = recv_json["err"]
             else:
                 context['token'] = recv_json["token"]
-                response.set_cookie('token', context['token'])
+                
             
                     
     # if a GET (or any other method) we'll create a blank form
@@ -133,8 +133,11 @@ def carenter(request):
             context['form'] = CarenterForm(initial={'slotnum': context['slotnum'], 'email': context['email']})
         else:
             context['form'] = CarenterForm()
-
-    return render(request, 'client/carenter.html', context)
+    
+    response = render(request, 'client/carenter.html', context)
+    response.set_cookie('token', context['token'])
+    
+    return response
 
 
 def pickup(request):
