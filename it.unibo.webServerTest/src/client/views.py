@@ -14,7 +14,7 @@ def client_view(request):
     return render(request, 'client/index.html')
 
 def get_json(msg):
-    jsn_str = re.search("\{(.*?)\}", msg)
+    jsn_str = re.search("\{(.*?)\}", msg).group(0)
     return json.loads(jsn_str)
 
 def notify_interest(request):
