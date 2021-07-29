@@ -36,6 +36,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 				var INDOOR = it.unibo.parkmanagerservice.bean.DoorType.INDOOR
 				var OUTDOOR = it.unibo.parkmanagerservice.bean.DoorType.OUTDOOR
 				var NOTIFICATION : it.unibo.parkmanagerservice.notification.Notification
+				var SLOT : it.unibo.parkmanagerservice.bean.ParkingSlot?
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
@@ -89,7 +90,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 						 
 									USER = CONTROLLER.setSomeoneOnDoor(INDOOR)!!
 									SLOT = CONTROLLER.getSlotReservedForUser(USER!!)
-									SLOTNUM = SLOT.!!slotnum
+									SLOTNUM = SLOT!!.slotnum
 						forward("parkcar", "parkcar($SLOTNUM)" ,"trolley" ) 
 						updateResourceRep( "INDOOR=OCCUPIED"  
 						)
