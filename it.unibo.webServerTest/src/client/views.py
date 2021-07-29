@@ -123,6 +123,7 @@ def carenter(request):
                 context['error'] = recv_json["err"]
             else:
                 context['token'] = recv_json["token"]
+                response.set_cookie('token', context['token'])
             
                     
     # if a GET (or any other method) we'll create a blank form
@@ -164,6 +165,7 @@ def pickup(request):
                     break
 
             s.close()
+            print(recv_msg)
             recv_json = get_json(recv_msg)
             context['msg'] = recv_json["msg"]
             
