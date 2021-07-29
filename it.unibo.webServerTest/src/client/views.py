@@ -60,7 +60,7 @@ def notify_interest(request):
             s.close()
             print(recv_msg)
             recv_json = get_json(recv_msg)
-            if recv_json["err"] != None:
+            if "err" in recv_json:
                 context['error'] = recv_json["err"]
             else:
                 flag = recv_json["indoor"]
