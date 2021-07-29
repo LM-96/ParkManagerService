@@ -43,13 +43,7 @@ def notify_interest(request):
             #slotnum = 5
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.connect((config.system.host, config.carparking.port))
-            msg_json = {
-                'name': name,
-                'surname': surname,
-                'email': email
-            }
-            msg_json = json.dumps(msg_json)
-            msg = f'msg(enter, request, python, {config.carparking.actor}, enter({msg_json}), 1)\n'
+            msg = f'msg(enter, request, python, {config.carparking.actor}, enter("{name}","{surname}","{email}"), 1)\n'
             print(msg)
             byt=msg.encode()   
             s.send(byt)
@@ -58,6 +52,7 @@ def notify_interest(request):
 
             recv_msg = s.recv(1024)
             s.close()
+            print(recv_msg)
             recv_json = get_json(recv_msg)
             if recv_json["err"] != None:
                 context['error'] = recv_json["err"]
