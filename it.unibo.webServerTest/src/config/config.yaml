@@ -33,7 +33,9 @@ weightsensor:
 carparking:
     port: 8010
     ctx: "ctxcarparking"
+    actor: "parkingmanagerservice"
 
 system:
     host: "localhost"
     port: 8000
+

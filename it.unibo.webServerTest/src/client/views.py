@@ -43,7 +43,7 @@ def notify_interest(request):
             #slotnum = 5
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.connect( (config.system.host, config.carparking.port))
-            msg = f'msg(enter, request, python, {config.carparking.ctx}, enter({name},{surname},{email}), 1)\n'
+            msg = f'msg(enter, request, python, {config.carparking.actor}, enter({name},{surname},{email}), 1)\n'
             print(msg)
             byt=msg.encode()   
             s.send(byt)
@@ -96,7 +96,7 @@ def carenter(request):
             context['email'] = context['form'].cleaned_data['email']
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.connect( (config.system.host, config.carparking.port))
-            msg = f'msg(carenter, request, python, {config.carparking.ctx}, carenter({context["slotnum"]}, {context["email"]}), 1)\n'
+            msg = f'msg(carenter, request, python, {config.carparking.actor}, carenter({context["slotnum"]}, {context["email"]}), 1)\n'
             byt=msg.encode()   
             s.send(byt)
 
@@ -138,7 +138,7 @@ def pickup(request):
             context['token'] = context['form'].cleaned_data['token']
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.connect( (config.system.host, config.carparking.port))
-            msg = f'msg(pickup, request, python, {config.carparking.ctx}, pickup({context["token"]}), 1)\n'
+            msg = f'msg(pickup, request, python, {config.carparking.actor}, pickup({context["token"]}), 1)\n'
             byt=msg.encode()   
             s.send(byt)
             
