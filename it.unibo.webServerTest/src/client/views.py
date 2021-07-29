@@ -42,8 +42,13 @@ def notify_interest(request):
             email = context['form'].cleaned_data['email']
             #slotnum = 5
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            s.connect( (config.system.host, config.carparking.port))
-            msg = f'msg(enter, request, python, {config.carparking.actor}, enter({name},{surname},{email}), 1)\n'
+            s.connect((config.system.host, config.carparking.port))
+            msg_json = {
+                'name': {name},
+                'surname': {surname},
+                'email': {email}
+            }
+            msg = f'msg(enter, request, python, {config.carparking.actor}, enter({json.dumps(msg_json)}), 1)\n'
             print(msg)
             byt=msg.encode()   
             s.send(byt)
