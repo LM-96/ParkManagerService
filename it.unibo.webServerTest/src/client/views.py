@@ -116,7 +116,7 @@ def carenter(request):
                 rec_end = recv_msg.find('\n')
                 if rec_end != -1:
                     break
-                
+
             s.close()
             recv_json = get_json(recv_msg)
             if "err" in recv_json:
@@ -152,11 +152,17 @@ def pickup(request):
             context['token'] = context['form'].cleaned_data['token']
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.connect( (config.system.host, config.carparking.port))
-            msg = f'msg(pickup, request, python, {config.carparking.actor}, pickup({context["token"]}), 1)\n'
+            msg = f'msg(pickup, request, python, {config.carparking.actor}, pickup("{context["token"]}"), 1)\n'
             byt=msg.encode()   
             s.send(byt)
             
-            recv_msg = s.recv(1024)
+            recv_msg = ""
+            while True:
+                recv_msg += s.recv(1024).decode("utf-8")
+                rec_end = recv_msg.find('\n')
+                if rec_end != -1:
+                    break
+
             s.close()
             recv_json = get_json(recv_msg)
             context['msg'] = recv_json["msg"]

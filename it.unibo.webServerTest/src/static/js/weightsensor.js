@@ -22,6 +22,4 @@ weight_socket.onmessage = function (e) {
     document.querySelector('#msg_weight').innerHTML = (data.data)
     document.querySelector("#weight").value = parseInt(data.data)
     document.querySelector("#value_weight").innerHTML = (data.data)
-
-
 }
