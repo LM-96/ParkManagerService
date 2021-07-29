@@ -79,6 +79,7 @@ QActor parkingmanagerservice context ctxcarparking {
 		var INDOOR = it.unibo.parkmanagerservice.bean.DoorType.INDOOR
 		var OUTDOOR = it.unibo.parkmanagerservice.bean.DoorType.OUTDOOR
 		var NOTIFICATION : it.unibo.parkmanagerservice.notification.Notification
+		var SLOT : it.unibo.parkmanagerservice.bean.ParkingSlot?
 	#]
 	
 	State s0 initial {
@@ -127,7 +128,7 @@ QActor parkingmanagerservice context ctxcarparking {
 		[# 
 			USER = CONTROLLER.setSomeoneOnDoor(INDOOR)!!
 			SLOT = CONTROLLER.getSlotReservedForUser(USER!!)
-			SLOTNUM = SLOT.!!slotnum
+			SLOTNUM = SLOT!!.slotnum
 		#]
 		forward trolley -m parkcar : parkcar($SLOTNUM)
 		updateResource[# "INDOOR=OCCUPIED" #]
