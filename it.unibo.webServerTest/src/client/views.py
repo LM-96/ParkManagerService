@@ -145,7 +145,8 @@ def pickup(request):
     context = {
         'token': None,
         'msg': None,
-        'form': None
+        'form': None,
+        'email': None
     }
 
     
@@ -154,9 +155,10 @@ def pickup(request):
         # check whether it's valid:
         if context['form'].is_valid():
             context['token'] = context['form'].cleaned_data['token']
+            context['email'] = context['form'].cleaned_data['email']
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.connect( (config.system.host, config.carparking.port))
-            msg = f'msg(pickup, request, python, {config.carparking.actor}, pickup("{context["token"]}"), 1)\n'
+            msg = f'msg(pickup, request, python, {config.carparking.actor}, pickup("{context["token"]}","{context["email"]}"), 1)\n'
             byt=msg.encode()   
             s.send(byt)
             
@@ -178,12 +180,14 @@ def pickup(request):
 
         if request.GET.get('token') != None:
             context['token'] = request.GET.get('token')
+            context['email'] = request.GET.get('email')
         elif request.COOKIES.get('token'):
             context['token'] = request.COOKIES['token']
+            context['email'] = request.GET.get('email')
 
         
         if context['token'] != None:
-            context['form'] = PickupForm(initial={'token': context['token']})
+            context['form'] = PickupForm(initial={'token': context['token'],'email': context['email']})
         else:
             context['form'] = PickupForm()
 

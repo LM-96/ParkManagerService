@@ -11,3 +11,4 @@ class CarenterForm(forms.Form):
 
 class PickupForm(forms.Form):
     token = forms.CharField(label='Token', max_length=100)
+    email = forms.EmailField(label='Email', max_length=100)
