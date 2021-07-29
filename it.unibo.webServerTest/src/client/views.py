@@ -52,6 +52,7 @@ def notify_interest(request):
 
             recv_msg = s.recv(1024)
             s.close()
+            recv_msg = recv_msg.decode("utf-8")
             print(recv_msg)
             recv_json = get_json(recv_msg)
             if recv_json["err"] != None:
