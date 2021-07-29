@@ -44,9 +44,9 @@ def notify_interest(request):
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.connect((config.system.host, config.carparking.port))
             msg_json = {
-                'name': {name},
-                'surname': {surname},
-                'email': {email}
+                'name': name,
+                'surname': surname,
+                'email': email
             }
             msg_json = json.dumps(msg_json)
             msg = f'msg(enter, request, python, {config.carparking.actor}, enter({msg_json}), 1)\n'
