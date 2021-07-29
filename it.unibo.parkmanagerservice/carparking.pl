@@ -8,6 +8,7 @@ context(ctxsonar, "192.168.1.100",  "TCP", "8003").
 context(ctxweightsensor, "192.168.1.100",  "TCP", "8004").
  qactor( fanactor, ctxfan, "external").
   qactor( weightsensoractor, ctxweightsensor, "external").
+  qactor( sonaractor, ctxsonar, "external").
   qactor( parkingmanagerservice, ctxcarparking, "it.unibo.parkingmanagerservice.Parkingmanagerservice").
   qactor( itocccounter, ctxcarparking, "it.unibo.itocccounter.Itocccounter").
   qactor( dtfreecounter, ctxcarparking, "it.unibo.dtfreecounter.Dtfreecounter").

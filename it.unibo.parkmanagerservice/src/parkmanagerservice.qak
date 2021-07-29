@@ -56,6 +56,7 @@ Context ctxweightsensor ip[host="192.168.1.100" port=8004]
 /* Actors for devices */
 ExternalQActor fanactor context ctxfan
 ExternalQActor weightsensoractor context ctxweightsensor
+ExternalQActor sonaractor context ctxsonar
 
 QActor parkingmanagerservice context ctxcarparking {
 	
@@ -81,6 +82,8 @@ QActor parkingmanagerservice context ctxcarparking {
 		var OUTDOOR = it.unibo.parkmanagerservice.bean.DoorType.OUTDOOR
 		var NOTIFICATION : it.unibo.parkmanagerservice.notification.Notification
 		var SLOT : it.unibo.parkmanagerservice.bean.ParkingSlot?
+		val INDOOR_POLLING = it.unibo.parkmanagerservice.bean.Timers.get().INDOOR_POLLING
+		val OUTDOOR_POLLING = it.unibo.parkmanagerservice.bean.Timers.get().OUTDOOR_POLLING
 	#]
 	
 	State s0 initial {
@@ -115,7 +118,7 @@ QActor parkingmanagerservice context ctxcarparking {
 				#]
 						updateResource[# "{\"door\":\"indoor\",\"state\":\"RESERVED\"}" #]
 						updateResource[# "{\"slot\":\"${SLOTNUM}\",\"user\":\"${USER!!.mail}\",\"state\":\"RESERVED\"}" #]
-						forward weightsensoractor -m dopolling : dopolling(1000)
+						forward weightsensoractor -m dopolling : dopolling($INDOOR_POLLING)
 						forward itocccounter -m startItoccCounter : startItoccCounter(START)
 				[#
 					} else JSON = "{\"slotnum\":\"$SLOTNUM\",\"indoor\":\"OCCUPIED\"}"
@@ -163,7 +166,7 @@ QActor parkingmanagerservice context ctxcarparking {
 				CHANNEL.send(NOTIFICATION)
 		#]
 					forward notificationactor -m notifyuser : notifyuser(NOTIFY)
-					forward weightsensoractor -m dopolling : dopolling(1000)
+					forward weightsensoractor -m dopolling : dopolling($INDOOR_POLLING)
 					forward itocccounter -m startItoccCounter : startItoccCounter(START)
 					updateResource[# "{\"door\":\"indoor\",\"state\":\"RESERVED\"}" #]
 					updateResource[# "{\"slot\":\"${SLOTNUM}\",\"user\":\"${USER!!.mail}\",\"state\":\"RESERVED\"}" #]
@@ -206,7 +209,7 @@ QActor parkingmanagerservice context ctxcarparking {
 			#]
 						updateResource[# "{\"slot\":\"${SLOTNUM}\",\"user\":\"${SLOTERR.first!!.user!!.mail}\",\"state\":\"ALMOST_FREE\"}" #]
 						forward trolley -m pickup : pickup($SLOTNUM)
-						forward dtfreecounter -m startDtfreeCounter : startDtfreeCounter(START)
+						forward dtfreecounter -m startDtfreeCounter : startDtfreeCounter($OUTDOOR_POLLING)
 			[#
 					} else
 						JSON = "{\"msg\":\"The outdoor is already engaged. When possible, the trolley will transport your car to the outdoor. You will be notified as soon.\"}"
@@ -232,14 +235,29 @@ QActor parkingmanagerservice context ctxcarparking {
 				CHANNEL.send(NOTIFICATION)
 		#]
 				forward notificationactor -m notifyuser : notifyuser(NOTIFY)
-				updateResource[# "{\"door\":\"indoor\",\"state\":\"OCCUPIED\"}" #]
-				updateResource[# "{\"slot\":\"${USERSLOT.second!!.slotnum}\",\"user\":\"${USER!!.mail}\",\"state\":\"RESERVED\"}" #]
+				updateResource[# "{\"door\":\"outdoor\",\"state\":\"OCCUPIED\"}" #]
+				updateResource[# "{\"slot\":\"${USERSLOT.second!!.slotnum}\",\"user\":\"${USER!!.mail}\",\"state\":\"FREE\"}" #]
 		[# } #]
-	}
+	} Goto work
 	
 	State handleOutdoorReturnFree {
 		[# CONTROLLER.setFreeDoor(OUTDOOR) #]
-	}
+		updateResource[# "{\"door\":\"outdoor\",\"state\":\"FREE\"}" #]
+	} Goto exitNext if [# (CONTROLLER.getDoorQueue(OUTDOOR).remaining()) > 0 #] else work
+	
+	State exitNext {
+		[# 
+			USER = CONTROLLER.reserveDoorForNextUser(INDOOR)
+			if(USER != null) {	
+		#]
+					forward  sonaractor -m dopolling : dopolling($OUTDOOR_POLLING)
+					forward dtfreecounter -m startDtfreeCounter : startDtfreeCounter(START)
+					updateResource[# "{\"door\":\"outdoor\",\"state\":\"RESERVED\"}" #]
+					updateResource[# "{\"slot\":\"${SLOTNUM}\",\"user\":\"${USER!!.mail}\",\"state\":\"ALMOST_FREE\"}" #]
+					
+		[# 	}
+		#]
+	} Goto work
 }
 
 

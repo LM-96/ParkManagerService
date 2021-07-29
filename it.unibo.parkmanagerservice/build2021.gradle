@@ -138,7 +138,7 @@ eclipse {
     }	
  }
  
-mainClassName = 'it.unibo.ctxbasicrobot.MainCtxbasicrobotKt'
+mainClassName = 'it.unibo.ctxcarparking.MainCtxcarparkingKt'
 
 jar {
     println("building jar")

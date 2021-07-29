@@ -38,6 +38,8 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 				var OUTDOOR = it.unibo.parkmanagerservice.bean.DoorType.OUTDOOR
 				var NOTIFICATION : it.unibo.parkmanagerservice.notification.Notification
 				var SLOT : it.unibo.parkmanagerservice.bean.ParkingSlot?
+				val INDOOR_POLLING = it.unibo.parkmanagerservice.bean.Timers.get().INDOOR_POLLING
+				val OUTDOOR_POLLING = it.unibo.parkmanagerservice.bean.Timers.get().OUTDOOR_POLLING
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
@@ -80,7 +82,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 								)
 								updateResourceRep( "{\"slot\":\"${SLOTNUM}\",\"user\":\"${USER!!.mail}\",\"state\":\"RESERVED\"}"  
 								)
-								forward("dopolling", "dopolling(1000)" ,"weightsensoractor" ) 
+								forward("dopolling", "dopolling($INDOOR_POLLING)" ,"weightsensoractor" ) 
 								forward("startItoccCounter", "startItoccCounter(START)" ,"itocccounter" ) 
 								
 													} else JSON = "{\"slotnum\":\"$SLOTNUM\",\"indoor\":\"OCCUPIED\"}"
@@ -134,7 +136,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 											arrayOf(CONTROLLER.getSlotReservedForUser(USER!!)!!.slotnum.toString()))
 										CHANNEL.send(NOTIFICATION)
 						forward("notifyuser", "notifyuser(NOTIFY)" ,"notificationactor" ) 
-						forward("dopolling", "dopolling(1000)" ,"weightsensoractor" ) 
+						forward("dopolling", "dopolling($INDOOR_POLLING)" ,"weightsensoractor" ) 
 						forward("startItoccCounter", "startItoccCounter(START)" ,"itocccounter" ) 
 						updateResourceRep( "{\"door\":\"indoor\",\"state\":\"RESERVED\"}"  
 						)
@@ -181,7 +183,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 								updateResourceRep( "{\"slot\":\"${SLOTNUM}\",\"user\":\"${SLOTERR.first!!.user!!.mail}\",\"state\":\"ALMOST_FREE\"}"  
 								)
 								forward("pickup", "pickup($SLOTNUM)" ,"trolley" ) 
-								forward("startDtfreeCounter", "startDtfreeCounter(START)" ,"dtfreecounter" ) 
+								forward("startDtfreeCounter", "startDtfreeCounter($OUTDOOR_POLLING)" ,"dtfreecounter" ) 
 								
 													} else
 														JSON = "{\"msg\":\"The outdoor is already engaged. When possible, the trolley will transport your car to the outdoor. You will be notified as soon.\"}"
@@ -208,17 +210,39 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 											)
 										CHANNEL.send(NOTIFICATION)
 						forward("notifyuser", "notifyuser(NOTIFY)" ,"notificationactor" ) 
-						updateResourceRep( "{\"door\":\"indoor\",\"state\":\"OCCUPIED\"}"  
+						updateResourceRep( "{\"door\":\"outdoor\",\"state\":\"OCCUPIED\"}"  
 						)
-						updateResourceRep( "{\"slot\":\"${USERSLOT.second!!.slotnum}\",\"user\":\"${USER!!.mail}\",\"state\":\"RESERVED\"}"  
+						updateResourceRep( "{\"slot\":\"${USERSLOT.second!!.slotnum}\",\"user\":\"${USER!!.mail}\",\"state\":\"FREE\"}"  
 						)
 						 }  
 					}
+					 transition( edgeName="goto",targetState="work", cond=doswitch() )
 				}	 
 				state("handleOutdoorReturnFree") { //this:State
 					action { //it:State
 						 CONTROLLER.setFreeDoor(OUTDOOR)  
+						updateResourceRep( "{\"door\":\"outdoor\",\"state\":\"FREE\"}"  
+						)
 					}
+					 transition( edgeName="goto",targetState="exitNext", cond=doswitchGuarded({ (CONTROLLER.getDoorQueue(OUTDOOR).remaining()) > 0  
+					}) )
+					transition( edgeName="goto",targetState="work", cond=doswitchGuarded({! ( (CONTROLLER.getDoorQueue(OUTDOOR).remaining()) > 0  
+					) }) )
+				}	 
+				state("exitNext") { //this:State
+					action { //it:State
+						 
+									USER = CONTROLLER.reserveDoorForNextUser(INDOOR)
+									if(USER != null) {	
+						forward("dopolling", "dopolling($OUTDOOR_POLLING)" ,"sonaractor" ) 
+						forward("startDtfreeCounter", "startDtfreeCounter(START)" ,"dtfreecounter" ) 
+						updateResourceRep( "{\"door\":\"outdoor\",\"state\":\"RESERVED\"}"  
+						)
+						updateResourceRep( "{\"slot\":\"${SLOTNUM}\",\"user\":\"${USER!!.mail}\",\"state\":\"ALMOST_FREE\"}"  
+						)
+						 	}
+					}
+					 transition( edgeName="goto",targetState="work", cond=doswitch() )
 				}	 
 			}
 		}
