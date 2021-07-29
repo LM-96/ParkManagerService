@@ -43,7 +43,7 @@ def notify_interest(request):
             #slotnum = 5
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.connect( (config.system.host, config.carparking.port))
-            msg = f'msg(enter, request, python, {config.carparking.ctx}, enter({name}, {surname}, {email}), 1)\n'
+            msg = f'msg(enter, request, python, {config.carparking.ctx}, enter({name},{surname},{email}), 1)\n'
             print(msg)
             byt=msg.encode()   
             s.send(byt)
