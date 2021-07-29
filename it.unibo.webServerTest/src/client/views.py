@@ -50,7 +50,13 @@ def notify_interest(request):
 
             #json  {'slotnum', 'err', 'indoor'} parse with regex
 
-            recv_msg = s.recv(1024)
+            recv_msg = ""
+            while True:
+                recv_msg += s.recv(1024)
+                rec_end = recv_msg.find('\n')
+                if rec_end != -1:
+                    break
+                
             s.close()
             recv_msg = recv_msg.decode("utf-8")
             print(recv_msg)
