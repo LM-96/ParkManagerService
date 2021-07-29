@@ -104,12 +104,19 @@ def carenter(request):
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.connect( (config.system.host, config.carparking.port))
             msg = f'msg(carenter, request, python, {config.carparking.actor}, carenter("{context["slotnum"]}","{context["email"]}"), 1)\n'
+            print(msg)
             byt=msg.encode()   
             s.send(byt)
 
             # json {'token', 'err'}
             
-            recv_msg = s.recv(1024)
+            recv_msg = ""
+            while True:
+                recv_msg += s.recv(1024).decode("utf-8")
+                rec_end = recv_msg.find('\n')
+                if rec_end != -1:
+                    break
+                
             s.close()
             recv_json = get_json(recv_msg)
             if "err" in recv_json:
