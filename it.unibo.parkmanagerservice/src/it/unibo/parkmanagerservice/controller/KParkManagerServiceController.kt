@@ -5,6 +5,7 @@ import it.unibo.parkmanagerservice.bean.*
 import it.unibo.parkmanagerservice.persistence.DoorQueue
 import it.unibo.parkmanagerservice.persistence.ParkingSlotRepository
 import it.unibo.parkmanagerservice.persistence.UserRepository
+import org.json.JSONObject
 
 class KParkManagerServiceController(
     userRepo : UserRepository,
@@ -20,6 +21,30 @@ class KParkManagerServiceController(
         mapOf(Pair<DoorType, DoorQueue>(DoorType.INDOOR, indoorQueue),
             Pair<DoorType, DoorQueue>(DoorType.OUTDOOR, outdoorQueue))
     private val doors = doors
+
+    override fun createUser(json : String) : Pair<User?, ParkManagerError?> {
+        println("Controller | createUser($json)")
+        val jsonobj = JSONObject(json)
+
+        if(!jsonobj.has("name"))
+            return Pair(null, ParkManagerError(ErrorType.NO_NAME, "You must insert a name"))
+
+        if(!jsonobj.has("surname"))
+            return Pair(null, ParkManagerError(ErrorType.NO_SURNAME, "You must insert a surname"))
+
+        if(!jsonobj.has("email"))
+            return Pair(null, ParkManagerError(ErrorType.NO_MAIL, "You must insert a name"))
+
+        val user = User(name = jsonobj.getString("name"),
+            surname = jsonobj.getString("surname"), mail = jsonobj.getString("mail"),
+            state = UserState.CREATED
+            )
+        userRepo.create(user)
+
+        println("Controller | Created user [${user.toString()}]")
+        return Pair(user, null)
+
+    }
 
     override fun createUser(name: String, surname: String, mail: String): User {
         var user = User(name = name, surname = surname, mail = mail, state = UserState.CREATED)

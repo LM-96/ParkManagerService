@@ -65,22 +65,22 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 						if( checkMsgContent( Term.createTerm("enter(NAME,SURNAME,MAIL)"), Term.createTerm("enter(NAME,SURNAME,MAIL)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								
-												USER = CONTROLLER.createUser(payloadArg(0), payloadArg(1), payloadArg(2))
+												USER = CONTROLLER.createUser(payloadArg(0),payloadArg(1),payloadArg(2))!!
 												SLOTNUM = CONTROLLER.assignSlotToUser(USER!!)
 												if(SLOTNUM > 0) {
 													
 													if(CONTROLLER.reserveDoorForUserOrEnqueue(INDOOR, USER!!)) {
 														JSON = "{\"slotnum\":\"$SLOTNUM\",\"indoor\":\"FREE\"}"
-								forward("dopolling", "dopolling(ON)" ,"weightsensoractor" ) 
+								forward("dopolling", "dopolling(1000)" ,"weightsensoractor" ) 
 								forward("startItoccCounter", "startItoccCounter(START)" ,"itocccounter" ) 
 								
 													} else JSON = "{\"slotnum\":\"$SLOTNUM\",\"indoor\":\"OCCUPIED\"}"
 												}
 						}
+						println("$name | reply with slotnum(${JSON!!})")
 						answer("enter", "slotnum", "slotnum($JSON)"   )  
 						updateResourceRep( "slotnum(${JSON!!})"  
 						)
-						println("$name | reply with slotnum(${JSON!!})")
 					}
 					 transition( edgeName="goto",targetState="work", cond=doswitch() )
 				}	 
@@ -125,7 +125,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 											arrayOf(CONTROLLER.getSlotReservedForUser(USER!!)!!.slotnum.toString()))
 										CHANNEL.send(NOTIFICATION)
 						forward("notifyuser", "notifyuser(NOTIFY)" ,"notificationactor" ) 
-						forward("dopolling", "dopolling(ON)" ,"weightsensoractor" ) 
+						forward("dopolling", "dopolling(1000)" ,"weightsensoractor" ) 
 						forward("startItoccCounter", "startItoccCounter(START)" ,"itocccounter" ) 
 						 	}
 					}
@@ -143,7 +143,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 								forward("stopCount", "stopCount(STOP)" ,"itocccounter" ) 
 								forward("parkcar", "parkcar($SLOTNUM)" ,"trolley" ) 
 								
-												} else JSON = "{\"err\":\"$USERERR!!.second.msg\"}"
+												} else JSON = "{\"err\":\"${USERERR!!.second!!.msg}\"}"
 								println("$name | reply to CARENTER with $JSON")
 								answer("carenter", "token", "token($JSON)"   )  
 								updateResourceRep( "reply to CARENTER with $JSON"  
@@ -170,6 +170,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 														JSON = "{\"msg\":\"The outdoor is already engaged. When possible, the trolley will transport your car to the outdoor. You will be notified as soon.\"}"
 												} else
 													JSON = "{\"msg\":\"$SLOTERR.second!!\"}"
+								println("$name | reply with canPickup(${JSON!!})")
 								answer("pickup", "canPickup", "canPickup($JSON)"   )  
 								updateResourceRep( "canPickup($JSON)"  
 								)

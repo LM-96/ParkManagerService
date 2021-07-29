@@ -1,11 +1,11 @@
 System carparking
 
 /*
- * Tabelle SQLITE
- * Utente(ID [PK], NAME, SURNAME, MAIL [UNIQUE], STATE, TIME)
- * 	STATE = "Interested", "Parked", "Pickup"
- * ParkingSlot(SLOTNUM [PK], SLOTSTATE, TOKEN, UID [FK])
- * 	SLOTSTATE = "Free", "Reserved", "Occupied"
+ * STATO COAP:
+ * - robot -> {"data":"x,y"}
+ * - devices -> {"data","value"}
+ * - door -> {"door":"indoor/outdoor","state":"FREE/OCCUPIED/RESERVED"}
+ * - slot -> {"slot":"1","state":"RESERVED","user":"mail"}
  * 
  */
 
@@ -103,23 +103,23 @@ QActor parkingmanagerservice context ctxcarparking {
 		[# SLOTNUM = 0 #]
 		onMsg (enter : enter(NAME,SURNAME,MAIL)) {
 			[#
-				USER = CONTROLLER.createUser(payloadArg(0), payloadArg(1), payloadArg(2))
+				USER = CONTROLLER.createUser(payloadArg(0),payloadArg(1),payloadArg(2))!!
 				SLOTNUM = CONTROLLER.assignSlotToUser(USER!!)
 				if(SLOTNUM > 0) {
 					
 					if(CONTROLLER.reserveDoorForUserOrEnqueue(INDOOR, USER!!)) {
 						JSON = "{\"slotnum\":\"$SLOTNUM\",\"indoor\":\"FREE\"}"
 				#]
-						forward weightsensoractor -m dopolling : dopolling(ON)
+						forward weightsensoractor -m dopolling : dopolling(1000)
 						forward itocccounter -m startItoccCounter : startItoccCounter(START)
 				[#
 					} else JSON = "{\"slotnum\":\"$SLOTNUM\",\"indoor\":\"OCCUPIED\"}"
 				}
 			#]
 		}
+		println("$name | reply with slotnum(${JSON!!})")
 		replyTo enter with slotnum : slotnum($JSON)
 		updateResource[# "slotnum(${JSON!!})" #]
-		println("$name | reply with slotnum(${JSON!!})")
 		
 	} Goto work
 	
@@ -158,7 +158,7 @@ QActor parkingmanagerservice context ctxcarparking {
 				CHANNEL.send(NOTIFICATION)
 		#]
 					forward notificationactor -m notifyuser : notifyuser(NOTIFY)
-					forward weightsensoractor -m dopolling : dopolling(ON)
+					forward weightsensoractor -m dopolling : dopolling(1000)
 					forward itocccounter -m startItoccCounter : startItoccCounter(START)
 					
 		[# 	}
@@ -176,7 +176,7 @@ QActor parkingmanagerservice context ctxcarparking {
 							forward itocccounter -m stopCount:stopCount(STOP)
 							forward trolley -m parkcar : parkcar($SLOTNUM)
 			[#
-				} else JSON = "{\"err\":\"$USERERR!!.second.msg\"}"
+				} else JSON = "{\"err\":\"${USERERR!!.second!!.msg}\"}"
 			#]
 			
 			println("$name | reply to CARENTER with $JSON")
@@ -204,6 +204,7 @@ QActor parkingmanagerservice context ctxcarparking {
 				} else
 					JSON = "{\"msg\":\"$SLOTERR.second!!\"}"
 			#]
+					println("$name | reply with canPickup(${JSON!!})")
 					replyTo pickup with canPickup : canPickup($JSON)
 					updateResource[# "canPickup($JSON)" #]
 		}
@@ -375,6 +376,8 @@ QActor trolley context ctxcarparking {
 	State s0 initial {
 		println("$name | started")
 	} Goto work
+	
+	//{"data":"0"}
 	
 	State work {
 		println("$name | work")

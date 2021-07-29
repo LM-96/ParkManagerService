@@ -24,6 +24,7 @@ object SystemNotifier {
                     "fake" -> SINGLETON = FakeNotifier()
                     "mail" -> SINGLETON = MailNotifier()
                 }
+                println("SystemNotifier | used notified $type")
             } catch (e : Exception) {
                 println("SystemNotifier | Error reading notifier configuration file. It will be used the FakeNotifier")
                 SINGLETON = FakeNotifier()

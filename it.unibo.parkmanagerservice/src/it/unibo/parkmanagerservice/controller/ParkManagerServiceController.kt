@@ -8,6 +8,7 @@ import it.unibo.parkmanagerservice.persistence.UserRepository
 
 interface ParkManagerServiceController {
 
+    fun createUser(json : String) : Pair<User?, ParkManagerError?>
     fun createUser(name : String, surname : String, mail : String) : User
     fun destroyUser(user : User)
     fun assignSlotToUser(user : User) : Long
