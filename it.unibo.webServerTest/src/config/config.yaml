@@ -1,37 +1,47 @@
 thermometer:
+    ws_manager: "ws://localhost:8000/manager/thermometer/"
     ctx: "ctxthermometer"
     actor: "thermometeractor"
     port: 8001
+    port_manager: 5001
     name: "thermometer"
     group_name: "thermometer_group"
     init_value: '0'
 
 fan:
+    ws_manager: "ws://localhost:8000/manager/fan/"
     ctx: "ctxfan"
     actor: "fanactor"
     port: 8002
+    port_manager: 5002
     name: "fan"
     group_name: "fan_group"
     init_value: 'OFF'
 
 sonar:
+    ws_manager: "ws://localhost:8000/manager/sonar/"
     ctx: "ctxsonar"
     actor: "sonaractor"
     port: 8003
+    port_manager: 5003
     name: "sonar"
     group_name: "sonar_group"
     init_value: '1000'
 
 weightsensor:
+    ws_manager: "ws://localhost:8000/manager/weightsensor/"
     ctx: "ctxweightsensor"
     actor: "weightsensoractor"
     port: 8004
+    port_manager: 5004
     name: "weightsensor"
     group_name: "weightsensor_group"
     init_value: '0'
 
 carparking:
+    ws_manager: "ws://localhost:8000/manager/carparking/"
     port: 8010
+    port_manager: 50010
     ctx: "ctxcarparking"
     actor: "parkingmanagerservice"
 

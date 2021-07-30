@@ -49,9 +49,13 @@
 </table>
 
 
-<script src="{% static '/js/thermometer.js' %}"></script>
-<script src="{% static '/js/weightsensor.js' %}"></script>
-<script src="{% static '/js/fan.js' %}"></script>
-<script src="{% static '/js/sonar.js' %}"></script>
-
+<script src="{% static '/js/devices/thermometer.js' %}"></script>
+<script src="{% static '/js/devices/weightsensor.js' %}"></script>
+<script src="{% static '/js/devices/fan.js' %}"></script>
+<script src="{% static '/js/devices/sonar.js' %}"></script>
+<script>
+    $(window).on("load",function(){
+			$(".loader-wrapper").fadeOut("slow");
+		});
+</script>
 {% endblock %}

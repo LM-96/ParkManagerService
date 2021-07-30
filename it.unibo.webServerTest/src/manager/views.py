@@ -1,21 +1,11 @@
-import asyncio
 from collections import namedtuple
-import threading
 from aiocoap import *
-from aiocoap.message import Message
-from aiocoap.protocol import Context
-from django import forms
 from django.shortcuts import render, redirect
-#from coapthon.client.helperclient import HelperClient
-from six import print_
-
-from manager.thread_coap import ThreadCoap, ThreadFarm
 from .forms import ManagerRegistrationForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from manage import config
-from asgiref.sync import async_to_sync
 # Create your views here.
 
 
@@ -49,7 +39,6 @@ def login_view(request):
 
             if manager is not None:
                 login(request, manager)
-                ThreadFarm([config.thermometer,config.fan,config.weightsensor,config.sonar], config.system).start_all()
                 return redirect('status')
             else:
                 messages.info(request, 'Username or Password is incorrect')
@@ -58,7 +47,6 @@ def login_view(request):
         return render(request, 'manager/login.html')
 
 def logout_view(request):
-    ThreadFarm([config.thermometer,config.fan,config.weightsensor,config.sonar], config.system).stop_all()
     logout(request)
     return redirect('login')
 

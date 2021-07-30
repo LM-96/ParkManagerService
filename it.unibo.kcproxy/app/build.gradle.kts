@@ -55,6 +55,11 @@ dependencies {
     // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-slf4j-impl
     implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.14.1")
 
+    // https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp
+    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.2")
+
+
+
 }
 
 application {
