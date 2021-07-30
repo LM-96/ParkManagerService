@@ -30,13 +30,12 @@ class ManagerConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         msg_json = json.loads(text_data)
-        data = msg_json['data']
-        print(data)
+        print(msg_json)
         await self.channel_layer.group_send(
             self.group_name,
             {
                 'type': 'data_message',
-                'data': data,
+                'data': msg_json,
             }
         ) 
 
