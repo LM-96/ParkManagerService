@@ -58,7 +58,7 @@ def notify_interest(request):
             print(recv_msg)
             recv_json = get_json(recv_msg)
             if "err" in recv_json:
-                messages.error(recv_json["err"])
+                messages.error(request, recv_json["err"])
             else:
                 flag = recv_json["indoor"].upper()
                 indoor = 'The indoor is free you can enter the car!' if  flag == 'FREE' \
@@ -114,7 +114,7 @@ def carenter(request):
             s.close()
             recv_json = get_json(recv_msg)
             if "err" in recv_json:
-                messages.error(recv_json["err"])
+                messages.error(request, recv_json["err"])
             else:
                 token = recv_json["token"]
 
