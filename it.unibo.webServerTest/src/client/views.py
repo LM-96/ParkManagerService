@@ -78,8 +78,10 @@ def notify_interest(request):
     }
 
     response = render(request, 'client/notify_interest.html', context)
-    response.set_cookie('slotnum', context['slotnum'])
-    response.set_cookie('email', email)
+    if slotnum != None:
+        response.set_cookie('slotnum', slotnum)
+        response.set_cookie('email', email)
+    
     return response
 
 def carenter(request):
