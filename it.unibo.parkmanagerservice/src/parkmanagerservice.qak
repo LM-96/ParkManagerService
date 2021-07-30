@@ -84,6 +84,8 @@ QActor parkingmanagerservice context ctxcarparking {
 		var SLOT : it.unibo.parkmanagerservice.bean.ParkingSlot?
 		val INDOOR_POLLING = it.unibo.parkmanagerservice.bean.Timers.get().INDOOR_POLLING
 		val OUTDOOR_POLLING = it.unibo.parkmanagerservice.bean.Timers.get().OUTDOOR_POLLING
+		val ITOCC = it.unibo.parkmanagerservice.bean.Timers.get().ITOCC
+		val DTFREE = it.unibo.parkmanagerservice.bean.Timers.get().DTFREE
 	#]
 	
 	State s0 initial {
@@ -114,7 +116,7 @@ QActor parkingmanagerservice context ctxcarparking {
 				if(SLOTNUM > 0) {
 					
 					if(CONTROLLER.reserveDoorForUserOrEnqueue(INDOOR, USER!!)) {
-						JSON = "{\"slotnum\":\"$SLOTNUM\",\"indoor\":\"FREE\"}"
+						JSON = "{\"slotnum\":\"$SLOTNUM\",\"indoor\":\"FREE\",\"time\":\"${ITOCC}\"}"
 				#]
 						updateResource[# "{\"door\":\"indoor\",\"state\":\"RESERVED\"}" #]
 						updateResource[# "{\"slot\":\"${SLOTNUM}\",\"user\":\"${USER!!.mail}\",\"state\":\"RESERVED\"}" #]
@@ -162,7 +164,7 @@ QActor parkingmanagerservice context ctxcarparking {
 				NOTIFICATION = `it.unibo.parkmanagerservice`.notification.DefaultNotificationFactory.createForUser(
 					USER!!,
 					`it.unibo.parkmanagerservice`.notification.NotificationType.SLOTNUM,
-					arrayOf(CONTROLLER.getSlotReservedForUser(USER!!)!!.slotnum.toString()))
+					arrayOf(CONTROLLER.getSlotReservedForUser(USER!!)!!.slotnum.toString(), ITOCC.toString()))
 				CHANNEL.send(NOTIFICATION)
 		#]
 					forward notificationactor -m notifyuser : notifyuser(NOTIFY)
@@ -230,7 +232,7 @@ QActor parkingmanagerservice context ctxcarparking {
 				NOTIFICATION = `it.unibo.parkmanagerservice`.notification.DefaultNotificationFactory.createForUser(
 						USER!!,
 						`it.unibo.parkmanagerservice`.notification.NotificationType.PICKUP,
-						arrayOf<String>()
+						arrayOf<String>(DTFREE.toString())
 					)
 				CHANNEL.send(NOTIFICATION)
 		#]
