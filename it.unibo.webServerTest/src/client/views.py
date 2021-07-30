@@ -65,7 +65,8 @@ def notify_interest(request):
                         else 'The indoor is occupied.. an email will be sent to you when it is availlable!'
                 slotnum = recv_json["slotnum"]
     else:
-        if request.COOKIES.get('slotnum') != "None":
+       
+        if request.COOKIES.get('slotnum') != None:
             slotnum = request.COOKIES['slotnum']   
 
 
