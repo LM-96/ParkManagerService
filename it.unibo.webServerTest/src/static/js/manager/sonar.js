@@ -7,6 +7,7 @@ const sonar_socket = new WebSocket(
 );
 
 sonar_socket.onmessage = function (e) {
+    console.log(e)
     const data = JSON.parse(e.data);
     console.log(data)
     status_outdoor.innerHTML = data;
