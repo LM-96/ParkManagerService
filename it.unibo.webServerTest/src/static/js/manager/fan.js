@@ -8,9 +8,9 @@ const fan_socket = new WebSocket(
 
 
 fan_socket.onmessage = function (e) {
-    console.log(e)
-    const data = JSON.parse(e.data);
-    console.log(data)
-    status_fan.innerHTML = data
+    const json_data = JSON.parse(e.data);
+    console.log(json_data.data)
+    const data = json_data.data
+    status_fan.innerHTML = data;
 }
 
