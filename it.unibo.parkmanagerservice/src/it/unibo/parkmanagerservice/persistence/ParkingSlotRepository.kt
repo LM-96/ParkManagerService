@@ -17,4 +17,5 @@ interface ParkingSlotRepository {
     fun getFirstFree() : Optional<ParkingSlot>
     fun getReservedForUser(userId : Long) : Optional<ParkingSlot>
     fun getReservedForUserByToken(token : String) : Optional<ParkingSlot>
+    fun getAll() : Collection<ParkingSlot>
 }
