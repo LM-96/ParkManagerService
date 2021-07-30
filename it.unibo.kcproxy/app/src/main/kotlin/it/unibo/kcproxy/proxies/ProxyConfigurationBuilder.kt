@@ -1,6 +1,7 @@
 package it.unibo.kcproxy.proxies
 
 import it.unibo.kcproxy.configuration.ConfigEntry
+import it.unibo.kcproxy.proxiesS.WsCoroutinedProxy
 
 object ProxyConfigurationBuilder {
 
@@ -11,10 +12,18 @@ object ProxyConfigurationBuilder {
                 "tcp" -> {
                     when(it.proxytype) {
                         "coroutined" -> {
-                            proxies.add(CoroutinedTcpCoapProxy(it.coapUrl, it.fwport))
-                            println("ProxyConfigurationBuilder | Builded proxy by configutation $it")
+                            proxies.add(TcpCoroutinedCoapProxy(it.coapUrl, it.fwport!!))
+                            println("ProxyConfigurationBuilder | Builded TCP-coroutined proxy by configutation $it")
                         }
                         else -> println("ProxyConfigurationBuilder | Detected unsupported configuration $it")
+                    }
+                }
+                "ws" -> {
+                    when(it.proxytype) {
+                        "coroutined" -> {
+                            proxies.add(WsCoroutinedProxy(it.coapUrl, it.fwwsurl!!))
+                            println("ProxyConfigurationBuilder | Builded WS-coroutined proxy by configutation $it")
+                        }
                     }
                 }
                 else -> println("ProxyConfigurationBuilder| Detected unsupported configuration $it")
