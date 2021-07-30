@@ -1,0 +1,363 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+<style type="text/css">
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+	font-size: 93%;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+	border-radius: 10px;
+	padding: 5px;
+}
+
+top {
+	width: 100%;
+}
+
+
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 90%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #abe876;
+    color: #1632cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 90%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+ks{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #0000CD	;
+	font-size: 90%;
+}
+kc{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #008000	;
+	font-size: 90%;
+}
+pre{
+	font-family: "Consolas";
+	font-size: 85%;
+	background-color: #f5f5f5;
+	border: 1.5px solid silver;
+	padding: 5px;
+}
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+	 
+    font-size: 18px;
+}
+k{
+    color: #990000;
+	font-weight: bold;
+	font-size: 90%;
+}
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+	padding: 10px;
+}
+
+h2 {
+    background-color: #9ed8ff;
+    font-size: 130%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 100%;
+}
+h4 {
+    background-color: #ccffcc;
+    font-size: 100%;
+	width: 95%;
+	border-radius: 5px;
+	padding: 2px;
+}
+h5 {
+    background-color: #d5ffb0;
+    font-size: 100%;
+
+}
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}
+div.remark{
+	background-color: #E3F2FD;
+    border: 1.5px solid #d5f2ed;
+    padding: 15px;
+    margin: 10px;
+	border-radius: 25px;
+}
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+ol, ul, li {
+  margin: 0;
+  margin-left: 10px;
+  padding: 0;
+  padding-bottom: 5px;
+}
+
+table, th, td {
+	border: 1px solid black;
+}
+
+img {
+	border: 1.5px solid #d5f2ed
+
+}
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+div.wrapdesc{
+	width: 90%;
+	margin: auto;
+}
+
+div.imagedesc{
+	width: 85%;
+	margin: auto;
+}
+</style>
+    
+<head>
+   
+<title>WebServer-Sprint</title></head>
+    
+<body>
+<div id="top">
+<h1>LABORATORIO DI INGEGNERIA DEI SISTEMI SOFTWARE <font size="5"></font> </h1>
+</div>  
+
+<div class="body"> 
+<h2>WebServer Sprint</h2>
+
+<div class="remark">
+    To make interoperabily between client, manager and system possible, it was necessary implement a WebServer
+    capable of allowing communication and interface management to interact with the services. 
+    Thanks to the use of QAKActor and Coap it was possible for us to decouple the services and this allowed us to choose between 
+    many different solutions for our WebServer.
+    After a close research about the best programming languace and framework to use we decided to implement our 
+    WebServer in Python using Django.
+    <h3>Django</h3>
+
+    Django is a high-level Python Web framework that encourages rapid development and clean, pragmatic design.
+    
+    <h4>Why Django</h4>
+    The reasons that led us to choose are:
+    <ul>
+        <li>it has many different libraries availlable for authentication, security which make a lot of tasks really immediate.</li>
+        <li>it allows the programmer to automaticalli create the main project and the different applications
+            ,that will handle the different Restful-APIs, while maintaing a clean and organized structure allowing a better programming approach.</li>
+        <li>it has a built-in database backends which makes saving data a easy task.</li>
+        <li>thanks to the django templates, the interaction between html, jscript and the view method af the API is smooth and allow an easy management of the information.</li>
+        <li>it gives as admin API to manage database and superusers (This will come really helpful for handling the manager)</li>
+    </ul>
+    
+    <h3>Django Project</h3>
+    Django is a Python framework so it is easilly downloadable through "pip install". 
+    As the previous paragraph mentioned Django allow an organized project setup with the minimum effort.
+    <br>
+    The steps to take are literally a couple:
+    First the overall webServer is built:
+    <pre><span></span><span class="gp">$ </span>django-admin startproject webServer
+    </pre>
+
+    This wil automatically create the main part of our server with the following structure:
+
+    <pre><span></span><span class="n">src</span><span class="o">/</span>
+        <span class="n">manage</span><span class="o">.</span><span class="n">py</span>
+        <span class="n">webServer</span><span class="o">/</span>
+            <span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>
+            <span class="n">settings</span><span class="o">.</span><span class="n">py</span>
+            <span class="n">urls</span><span class="o">.</span><span class="n">py</span>
+            <span class="n">asgi</span><span class="o">.</span><span class="n">py</span>
+            <span class="n">wsgi</span><span class="o">.</span><span class="n">py</span>
+    </pre>
+
+    <ul>
+        <li><b>Urls</b>: URL declarations for the Django project; a “table of contents” of the Django-powered site.;</li>
+        <li><b>Settings</b>: settings/configuration for the Django project;</li>
+        <li><b>Manage</b>: command-line utility that lets you interact with this Django project in various ways;</li>
+        <li><b>Asgi</b>: entry-point for ASGI-compatible web servers to serve the project</li>
+        <li><b>Wsgi</b>: entry-point for WSGI-compatible web servers to serve your project</li>
+    </ul>
+
+    Each application we write in Django consists of a Python package that follows a certain convention. Django comes with a utility 
+    that automatically generates the basic directory structure of an app, so we can focus on writing code rather than creating directories.
+    To create an app we do the following:
+
+    <pre><span></span><span class="gp">$ </span>django-admin startapp app
+    </pre>
+
+    <pre><span></span><span class="n">app</span><span class="o">/</span>
+        <span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>
+        <span class="n">admin</span><span class="o">.</span><span class="n">py</span>
+        <span class="n">apps</span><span class="o">.</span><span class="n">py</span>
+        <span class="n">migrations</span><span class="o">/</span>
+            <span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>
+        <span class="n">models</span><span class="o">.</span><span class="n">py</span>
+        <span class="n">tests</span><span class="o">.</span><span class="n">py</span>
+        <span class="n">views</span><span class="o">.</span><span class="n">py</span>
+    </pre>
+
+    This setup allow us to separate each service creating an application for each user inside the/outside the system.
+
+    <h3>Django Applications</h3>
+
+    Thanks to the requirement analysis dividing the server in different application came immediate.
+    <br>
+    The web server needs to manage two subjects: every client that wants to use the service and a manager that need to monitor the entire system.
+
+    So we decided to create two main applications to handle them. Also because the devices need to be simulated for testing we created another application for them.
+
+    By using the commands underlined befor for creating application we end up with this struncture.
+    <pre><span></span><span class="n">src</span><span class="o">/</span>
+            <span class="n">manage</span><span class="o">.</span><span class="n">py</span>
+            <span class="n">webServer</span><span class="o">/</span>
+                <span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>
+                <span class="n">settings</span><span class="o">.</span><span class="n">py</span>
+                <span class="n">urls</span><span class="o">.</span><span class="n">py</span>
+                <span class="n">asgi</span><span class="o">.</span><span class="n">py</span>
+                <span class="n">wsgi</span><span class="o">.</span><span class="n">py</span>
+            <span></span><span class="n">client</span><span class="o">/</span>
+                <span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>
+                <span class="n">admin</span><span class="o">.</span><span class="n">py</span>
+                <span class="n">urls</span><span class="o">.</span><span class="n">py</span>
+
+                <span class="n">apps</span><span class="o">.</span><span class="n">py</span>
+                <span class="n">migrations</span><span class="o">/</span>
+                    <span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>
+                <span class="n">models</span><span class="o">.</span><span class="n">py</span>
+                <span class="n">tests</span><span class="o">.</span><span class="n">py</span>
+                <span class="n">views</span><span class="o">.</span><span class="n">py</span>
+            <span></span><span class="n">manager</span><span class="o">/</span>
+                <span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>
+                <span class="n">admin</span><span class="o">.</span><span class="n">py</span>
+                <span class="n">urls</span><span class="o">.</span><span class="n">py</span>
+
+                <span class="n">apps</span><span class="o">.</span><span class="n">py</span>
+                <span class="n">migrations</span><span class="o">/</span>
+                    <span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>
+                <span class="n">models</span><span class="o">.</span><span class="n">py</span>
+                <span class="n">tests</span><span class="o">.</span><span class="n">py</span>
+                <span class="n">views</span><span class="o">.</span><span class="n">py</span>
+            <span></span><span class="n">devices</span><span class="o">/</span>
+                <span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>
+                <span class="n">admin</span><span class="o">.</span><span class="n">py</span>
+                <span class="n">urls</span><span class="o">.</span><span class="n">py</span>
+
+                <span class="n">apps</span><span class="o">.</span><span class="n">py</span>
+                <span class="n">migrations</span><span class="o">/</span>
+                    <span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>
+                <span class="n">models</span><span class="o">.</span><span class="n">py</span>
+                <span class="n">tests</span><span class="o">.</span><span class="n">py</span>
+                <span class="n">views</span><span class="o">.</span><span class="n">py</span>
+            </pre>
+
+        <h3>Django utilities</h3>
+        Django thanks to the settings file make possible to separate static files and html template files for the APIs in order to
+        better organize the structure and keep the same file type in a common folder so we know where to look when bugs come to roost.        .
+        We took advantage of this and we created: 
+        <ul>
+            <li>a templates folder where Django will look for al the html rendered by the APIs;</li>
+            <li>a static folder for jscript files and css files;</li>
+            <li>a media folder for video, audio or immages for the server;</li>
+        </ul> 
+
+        <h3>Django configuration</h3>
+        We want the system to be as organized, maintainable and configurable as possible, so we created a configuration file in yaml, which is a data serialization language.
+        This file will be filled up with all the static information that will not change along the developing phase and that are the most recurrent one. This would allow
+        us to just modify the yaml file if something changes.
+        A "munch" library will allow us to use the file as an object and accessing the values as they are properties of the object.
+</div>
+
+
+
+ 
+<!-- USEFUL
+<table style="width:100%" border="1">
+<tr>
+<td style="width:50%">
+</td>
+<td></td>
+</tr>
+</table>
+-->
+	      	
+<br/><br/> 	
+</div>  
+
+<div style="background-color:rgba(86, 56, 253, 0.9); width:60%;text-align:left;color:white">
+By studentName email: student@studio.unibo.it  
+<img src="./img/emiglio.png" alt="mbot" width="15%" height="15%">
+</div> 
+</body>
+</html>
