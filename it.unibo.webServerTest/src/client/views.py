@@ -125,11 +125,7 @@ def carenter(request):
                     
     # if a GET (or any other method) we'll create a blank form
     else:
-            if request.GET.get('slotnum') != "None":
-                slotnum = request.GET.get('slotnum')
-                email = request.GET.get('email')
-
-            elif request.COOKIES.get('slotnum') != "None":
+            if request.COOKIES.get('slotnum') != None and request.COOKIES.get('email') != None:
                 slotnum = request.COOKIES['slotnum']
                 email = request.COOKIES['email']
                 
@@ -192,12 +188,10 @@ def pickup(request):
     # if a GET (or any other method) we'll create a blank form
     else:
 
-        if request.GET.get('token') != "None":
+        if request.GET.get('token') != None:
             token = request.GET.get('token')
-            email = request.GET.get('email')
-        elif request.COOKIES.get('token') != "None":
+        elif request.COOKIES.get('token') != None:
             token = request.COOKIES['token']
-            email = request.GET.get('email')
         
         if token != None and email != None:
             form = PickupForm(initial={'token': token,'email': email})
