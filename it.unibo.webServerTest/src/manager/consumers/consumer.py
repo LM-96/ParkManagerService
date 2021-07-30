@@ -36,7 +36,7 @@ class ManagerConsumer(AsyncWebsocketConsumer):
             self.group_name,
             {
                 'type': 'data_message',
-                'data': text_data,
+                'data': str(text_data),
             }
         ) 
 
