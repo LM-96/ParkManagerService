@@ -42,5 +42,9 @@ class BasicParkingSlotRepository : ParkingSlotRepository {
         return Optional.ofNullable(slots.values.find { it.user?.token?.equals(token) ?: false })
     }
 
+    override fun getAll(): Collection<ParkingSlot> {
+        return Collections.unmodifiableCollection(slots.values)
+    }
+
 
 }
