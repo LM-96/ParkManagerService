@@ -40,6 +40,8 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 				var SLOT : it.unibo.parkmanagerservice.bean.ParkingSlot?
 				val INDOOR_POLLING = it.unibo.parkmanagerservice.bean.Timers.get().INDOOR_POLLING
 				val OUTDOOR_POLLING = it.unibo.parkmanagerservice.bean.Timers.get().OUTDOOR_POLLING
+				val ITOCC = it.unibo.parkmanagerservice.bean.Timers.get().ITOCC
+				val DTFREE = it.unibo.parkmanagerservice.bean.Timers.get().DTFREE
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
@@ -77,7 +79,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 												if(SLOTNUM > 0) {
 													
 													if(CONTROLLER.reserveDoorForUserOrEnqueue(INDOOR, USER!!)) {
-														JSON = "{\"slotnum\":\"$SLOTNUM\",\"indoor\":\"FREE\"}"
+														JSON = "{\"slotnum\":\"$SLOTNUM\",\"indoor\":\"FREE\",\"time\":\"${ITOCC}\"}"
 								updateResourceRep( "{\"door\":\"indoor\",\"state\":\"RESERVED\"}"  
 								)
 								updateResourceRep( "{\"slot\":\"${SLOTNUM}\",\"user\":\"${USER!!.mail}\",\"state\":\"RESERVED\"}"  
@@ -133,7 +135,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 										NOTIFICATION = `it.unibo.parkmanagerservice`.notification.DefaultNotificationFactory.createForUser(
 											USER!!,
 											`it.unibo.parkmanagerservice`.notification.NotificationType.SLOTNUM,
-											arrayOf(CONTROLLER.getSlotReservedForUser(USER!!)!!.slotnum.toString()))
+											arrayOf(CONTROLLER.getSlotReservedForUser(USER!!)!!.slotnum.toString(), ITOCC.toString()))
 										CHANNEL.send(NOTIFICATION)
 						forward("notifyuser", "notifyuser(NOTIFY)" ,"notificationactor" ) 
 						forward("dopolling", "dopolling($INDOOR_POLLING)" ,"weightsensoractor" ) 
@@ -206,7 +208,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 										NOTIFICATION = `it.unibo.parkmanagerservice`.notification.DefaultNotificationFactory.createForUser(
 												USER!!,
 												`it.unibo.parkmanagerservice`.notification.NotificationType.PICKUP,
-												arrayOf<String>()
+												arrayOf<String>(DTFREE.toString())
 											)
 										CHANNEL.send(NOTIFICATION)
 						forward("notifyuser", "notifyuser(NOTIFY)" ,"notificationactor" ) 

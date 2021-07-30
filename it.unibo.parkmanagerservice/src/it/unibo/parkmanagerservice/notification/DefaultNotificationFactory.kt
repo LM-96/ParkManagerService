@@ -73,6 +73,7 @@ object DefaultNotificationFactory {
                 NotificationType.SLOTNUM -> {
                     res.content = "${res.content
                         .replace("${'$'}SLOTNUM", args[0])
+                        .replace("${'$'}SEC", args[1])
                         .replace("${'$'}BTNAME", "Vai a CARENTER")
                         .replace("${'$'}NAME", user.name)
                         .replace("${'$'}SURNAME", user.surname)
@@ -89,6 +90,23 @@ object DefaultNotificationFactory {
                 }
 
                 NotificationType.PICKUP -> {
+                    res.content = "${res.content
+                        .replace("${'$'}SEC", args[0])
+                        .replace("${'$'}BTNAME", "ParkManagerService")
+                        .replace("${'$'}NAME", user.name)
+                        .replace("${'$'}SURNAME", user.surname)
+                    }"
+                }
+
+                NotificationType.LOSEN_RIGHT -> {
+                    res.content = "${res.content
+                        .replace("${'$'}BTNAME", "ParkManagerService")
+                        .replace("${'$'}NAME", user.name)
+                        .replace("${'$'}SURNAME", user.surname)
+                    }"
+                }
+
+                NotificationType.ADMIN_DTFREE_REACHED -> {
                     res.content = "${res.content
                         .replace("${'$'}BTNAME", "ParkManagerService")
                         .replace("${'$'}NAME", user.name)
