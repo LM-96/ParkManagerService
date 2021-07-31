@@ -10,7 +10,10 @@ class State(metaclass=Singleton):
     def __init__(self):
         self.thermometer_state = '18'
         self.robot_coords = {
-            "position": "0,0",
+            "position": {
+                "x": "0",
+                "y": "0"
+            },
             "state": "OCCUPIED"
         }
         self.sonar_state = '1000'
@@ -46,31 +49,32 @@ class State(metaclass=Singleton):
         }
 
     def set(self, name, value):
-        if name == "fan_group":
+        if name == "fan_group_manager":
             self.fan_state = value
-        elif name == "weightsensor_group":
+        elif name == "weightsensor_group_manager":
             self.weightsensor_state = value
-        elif name == "sonar_group":
+        elif name == "sonar_group_manager":
             self.sonar_state = value
-        elif name == "thermometer_group":
+        elif name == "thermometer_group_manager":
             self.thermometer_state = value
-        elif name == "carparking_group":
-            pass
-        elif name == "robot_group":
+        elif name == "carparking_group_manager":
+            print("WWWWWWEEEEEEEEIIIII")
+            print(value)
+        elif name == "robot_group_manager":
             self.robot_coords = value
 
     def get(self, name):
-        if name == "fan_group":
+        if name == "fan_group_manager":
             return self.fan_state
-        elif name == "weightsensor_group":
+        elif name == "weightsensor_group_manager":
             return self.weightsensor_state
         elif name == "sonar_group":
             return self.sonar_state
-        elif name == "thermometer_group":
+        elif name == "thermometer_group_manager":
             return self.thermometer_state
-        elif name == "carparking_group":
+        elif name == "carparking_group_manager":
             return self.carparking
-        elif name == "robot_group":
+        elif name == "robot_group_manager":
             return self.robot_coords
 
         return None

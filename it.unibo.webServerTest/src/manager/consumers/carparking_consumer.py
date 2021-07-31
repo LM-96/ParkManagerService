@@ -5,6 +5,6 @@ class CarparkingConsumerManager(ManagerConsumer):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.group_name = 'carparking_group'
+        self.group_name = 'carparking_group_manager'
         
         

@@ -6,5 +6,5 @@ class WeightSensorConsumerManager(ManagerConsumer):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.group_name = 'weightsensor_group'
+        self.group_name = 'weightsensor_group_manager'
 

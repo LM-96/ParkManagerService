@@ -11,7 +11,7 @@
 
     .info > p{
         padding: 1em;
-        font-size:150%;
+        font-size:100%;
     }
 
     .info{
@@ -45,7 +45,10 @@
     <div class="nested">
     {% for x in cols %}
 
-        <div id="{{x}}{{y}}">{{x}}{{y}}</div>
+        <div id="{{x}}{{y}}">
+          {{x}}{{y}}
+          <p id="user-{{x}}{{y}}"></p>
+        </div>
 
     {% endfor %}   
     </div> 
@@ -53,6 +56,8 @@
 </div>
 <div class="info">
     <p>TEMPERATURE: <span id="status_thermometer"></span></p>
+    <p>WEIGHT SENSOR: <span id="status_weightsensor"></span></p>
+    <p>SONAR: <span id="status_sonar"></span></p>
     <p>STATUS FAN: <span id="status_fan"></span></p>
     <p>STATUS ROBOT: <span id="status_robot"></span></p>
     <p>STATUS INDOOR: <span id="status_indoor"></span></p>

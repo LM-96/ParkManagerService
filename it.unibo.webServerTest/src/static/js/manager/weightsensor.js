@@ -1,4 +1,4 @@
-var status_indoor = document.getElementById("status_indoor");
+var status_indoor = document.getElementById("status_weightsensor");
 
 const weight_socket = new WebSocket(
     'ws://' +

@@ -1,4 +1,4 @@
-var status_outdoor = document.getElementById("status_outdoor");
+var status_outdoor = document.getElementById("status_sonar");
 
 const sonar_socket = new WebSocket(
     'ws://' +
@@ -13,4 +13,5 @@ sonar_socket.onmessage = function (e) {
     console.log(json_data)
 
     status_outdoor.innerHTML = json_data;
+    
 }
