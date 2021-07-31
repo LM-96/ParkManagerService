@@ -35,11 +35,11 @@ class WsCoroutinedProxy(coapUrl : String, fwwsurl: String) : AbstractCoroutinedC
             }
         }
 
-        if(received!! != 'c') {
+        if(received!! != 's') {
             println("WsCoroutinedProx | Error during connection with websocket")
         }
 
-        CoroutineWsWriter(getScope(), newCoapReceiveChannel(), ws!!)
+        CoroutineWsWriter(getScope(), newCoapReceiveChannel(), ws!!).start()
     }
 
     override fun implStopProxy2() {
@@ -50,8 +50,8 @@ class WsCoroutinedProxy(coapUrl : String, fwwsurl: String) : AbstractCoroutinedC
         return "Type: Coroutine, Protocol: WS, Port: $fwwsurl"
     }
 
-    override fun getForwardPort(): Int {
-        return 0
+    override fun getForwardUrl(): String {
+        return fwwsurl
     }
 }
 
@@ -61,6 +61,7 @@ private class CouroutinedWsListener(confirmationChan : Channel<Char>) : WebSocke
 
     override fun onOpen(webSocket: WebSocket, response: Response) {
         super.onOpen(webSocket, response)
+        println("CouroutinedWsListener | Connected ws $webSocket")
 
         runBlocking {
             confirmationChan.send('s')
@@ -86,7 +87,7 @@ private class CoroutineWsWriter(scope : CoroutineScope, channel : ReceiveChannel
             var string : String
             while(!channel!!.isClosedForReceive) {
                 string = channel!!.receive()
-                ws.send(string + "\n")
+                ws.send(string)
             }
         }
     }

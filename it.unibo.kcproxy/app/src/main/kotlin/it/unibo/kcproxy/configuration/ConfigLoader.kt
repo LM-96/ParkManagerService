@@ -1,5 +1,7 @@
 package it.unibo.kcproxy.configuration
 
+import com.diogonunes.jcolor.AnsiFormat
+import com.diogonunes.jcolor.Attribute
 import com.google.gson.Gson
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -11,13 +13,15 @@ object ConfigLoader {
 
     @JvmStatic private val configs = mutableMapOf<String, ConfigEntry>()
     @JvmStatic private val CONFIG_FILE = "configs/config.json"
+    @JvmStatic private val cyan = AnsiFormat(Attribute.CYAN_TEXT())
+    @JvmStatic private val red = AnsiFormat(Attribute.RED_TEXT())
 
     @JvmStatic fun load() : ConfigLoader {
         configs.clear()
 
         var configFile = Paths.get(CONFIG_FILE)
         if(!Files.exists(configFile)) {
-            println("ConfigLoader | Unable to find configuration file at ${configFile.toAbsolutePath()}")
+            println(red.format("ConfigLoader | Unable to find configuration file at ${configFile.toAbsolutePath()}"))
             System.exit(-1)
         }
 
@@ -27,9 +31,10 @@ object ConfigLoader {
                 .map { gson.fromJson<ConfigEntry>(it, ConfigEntry::class.java) }
                 .forEach {
                     configs.put(it.resource, it)
+                    println(cyan.format("ConfigLoader | Loaded configuration entry [$it]"))
                 }
         } catch (e : Exception) {
-            println("ConfigLoader | Error while reading configuration file at ${configFile.toAbsolutePath()}")
+            println(red.format("ConfigLoader | Error while reading configuration file at ${configFile.toAbsolutePath()}"))
             e.printStackTrace()
             System.exit(-1)
         }

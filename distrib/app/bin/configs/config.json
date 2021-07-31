@@ -1,5 +1,0 @@
-{"resource": "thermometer","coapUrl": "coap://localhost:8001/ctxthermometer/thermometeractor","fwport": "5001","fwprotocol": "tcp", "proxytype": "coroutined"}
-{"resource": "fan","coapUrl": "coap://localhost:8002/ctxfan/fanactor","fwport": "5002","fwprotocol": "tcp", "proxytype": "coroutined"}
-{"resource": "sonar","coapUrl": "coap://localhost:8003/ctxsonar/sonaractor","fwport": "5003","fwprotocol": "tcp", "proxytype": "coroutined"}
-{"resource": "weightsensor","coapUrl": "coap://localhost:8004/ctxweightsensor/weightsensoractor","fwport": "5004","fwprotocol": "tcp", "proxytype": "coroutined"}
-{"resource": "parkingmanager","coapUrl": "coap://localhost:8004/ctxcarparking/parkingmanagerservice","fwport": "5010","fwprotocol": "tcp", "proxytype": "coroutined"}

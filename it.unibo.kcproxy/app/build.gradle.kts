@@ -58,11 +58,11 @@ dependencies {
     // https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.2")
 
-
-
+    // https://mvnrepository.com/artifact/com.diogonunes/JColor
+    implementation("com.diogonunes:JColor:5.0.1")
 }
 
 application {
     // Define the main class for the application.
-    mainClass.set("it.unibo.kcproxy.AppKt")
+    mainClass.set("it.unibo.kcproxy.KCProxyKt")
 }

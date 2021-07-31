@@ -4,8 +4,7 @@ System carparking
  * STATO COAP:
  * - robot -> {"data":"x,y"}
  * - devices -> {"data","value"}
- * - door -> {"door":"indoor/outdoor","state":"FREE/OCCUPIED/RESERVED"}
- * - slot -> {"slot":"1","state":"RESERVED","user":"mail"}
+ * - door -> {"door":"indoor/outdoor","state_door":"FREE/OCCUPIED/RESERVED","state_slot":"1","state":"RESERVED","user":"mail"}
  * 
  */
 

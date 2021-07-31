@@ -7,6 +7,7 @@ import kotlinx.coroutines.launch
 import java.io.BufferedWriter
 import java.io.IOException
 import java.io.OutputStreamWriter
+import java.net.InetAddress
 import java.net.ServerSocket
 import java.net.Socket
 import java.net.SocketException
@@ -37,8 +38,8 @@ class TcpCoroutinedCoapProxy(coapUrl : String, fwport : Int) : AbstractCoroutine
         return "Type: Coroutine, Protocol: TCP, Port: $fwport"
     }
 
-    override fun getForwardPort(): Int {
-        return fwport
+    override fun getForwardUrl(): String {
+        return "${InetAddress.getLocalHost().hostAddress}/$fwport"
     }
 
 }

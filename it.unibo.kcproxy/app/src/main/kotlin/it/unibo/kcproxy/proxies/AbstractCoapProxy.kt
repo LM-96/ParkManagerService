@@ -1,19 +1,13 @@
 package it.unibo.kcproxy.proxies
 
-import kotlinx.coroutines.*
-import kotlinx.coroutines.channels.BroadcastChannel
-import kotlinx.coroutines.channels.ReceiveChannel
+import com.diogonunes.jcolor.AnsiFormat
+import com.diogonunes.jcolor.Attribute
 import org.eclipse.californium.core.CoapClient
 import org.eclipse.californium.core.CoapHandler
 import org.eclipse.californium.core.CoapResponse
-import java.io.BufferedWriter
 import java.io.IOException
-import java.io.OutputStreamWriter
-import java.net.ServerSocket
-import java.net.Socket
-import java.net.SocketException
 import java.util.concurrent.atomic.AtomicBoolean
-import kotlin.coroutines.EmptyCoroutineContext
+
 import kotlin.jvm.Throws
 
 abstract class AbstractCoapProxy(coapUrl : String) : CoapProxy {
@@ -27,6 +21,9 @@ abstract class AbstractCoapProxy(coapUrl : String) : CoapProxy {
     protected abstract fun getProxyDescription() : String
     protected abstract fun implStopProxy()
 
+    private val red = AnsiFormat(Attribute.RED_TEXT())
+    private val violet = AnsiFormat(Attribute.TEXT_COLOR(150, 90, 150))
+
     @Throws(IllegalStateException::class, IOException::class)
     override fun startProxy() {
         if(started.compareAndSet(false, true)) {
@@ -34,11 +31,11 @@ abstract class AbstractCoapProxy(coapUrl : String) : CoapProxy {
             coapClient!!.setURI(coapUrl)
 
             implStartProxy()
-            CoapListener(coapClient!!, this::onCoap)
+            CoapListener(coapClient!!, this::onCoap).start()
 
-            println("CoroutinedTcpCoapProxy[$coapUrl] | Started Proxy [${getProxyDescription()}]")
+            println(violet.format("AbstractCoapProxy[$coapUrl] | Started Proxy [${getProxyDescription()}]"))
         } else
-            throw java.lang.IllegalStateException("CoroutinedTcpCoapProxy[$coapUrl] | The proxy is already started")
+            throw java.lang.IllegalStateException("AbstractCoapProxy[$coapUrl] | The proxy is already started")
     }
 
     @Throws(IllegalStateException::class)
@@ -48,40 +45,41 @@ abstract class AbstractCoapProxy(coapUrl : String) : CoapProxy {
             implStopProxy()
             coapClient?.shutdown()
 
-            println("CoroutinedTcpCoapProxy[$coapUrl] | Terminated Proxy [${getProxyDescription()}]")
+            println(violet.format("AbstractCoapProxy[$coapUrl] | Terminated Proxy [${getProxyDescription()}]"))
         } else
-            throw IllegalStateException("CoroutinedTcpCoapProxy[$coapUrl] | The proxy is not started")
+            throw IllegalStateException("AbstractCoapProxy[$coapUrl] | The proxy is not started")
     }
 
     override fun getCoapUrl(): String {
         return coapUrl
     }
 
-    fun isStarted() : Boolean {
+    override fun isStarted() : Boolean {
         return started.get()
     }
 
     private class CoapListener(client : CoapClient, onCoap : ((String) -> (Unit))) {
         private val client = client
         private var onCoap = onCoap
+        private val yellow = AnsiFormat(Attribute.YELLOW_TEXT())
+        private val red = AnsiFormat(Attribute.RED_TEXT())
 
         fun start() {
             client.observe(object : CoapHandler {
                 override fun onLoad(response: CoapResponse?) {
                     if(response?.responseText != null) {
                         onCoap.invoke(response.responseText)
-                        println("CoapListener[${client.uri}] | Received update: \'${response?.responseText}\'")
+                        println(yellow.format("CoapListener[${client.uri}] | Received update: \'${response?.responseText}\'"))
                     }
                 }
 
                 override fun onError() {
                     onCoap.invoke("Coap Error")
-                    println("CoapListener[${client.uri}] | Coap error")
+                    println(red.format("CoapListener[${client.uri}] | Coap error"))
                 }
 
             })
         }
     }
-
 
 }
