@@ -728,3 +728,498 @@
 2021-07-30 09:19:09 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:50258, recv buf = 65536, send buf = 65536, recv packet size = 2048
 2021-07-30 09:19:09 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:50258
 2021-07-30 09:19:09 INFO  EndpointManager:140 - created implicit endpoint coap://0.0.0.0:50258 for coap
+2021-07-30 13:25:08 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 13:25:08 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 13:25:08 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 13:25:08 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 13:25:08 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 13:25:08 INFO  CoapServer:207 - Starting server
+2021-07-30 13:25:08 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 13:25:08 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 13:25:08 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 13:27:00 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 13:27:00 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 13:27:00 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 13:27:00 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 13:27:00 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 13:27:00 INFO  CoapServer:207 - Starting server
+2021-07-30 13:27:00 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 13:27:00 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 13:27:00 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 13:29:01 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 13:29:02 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 13:29:02 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 13:29:02 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 13:29:02 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 13:29:02 INFO  CoapServer:207 - Starting server
+2021-07-30 13:29:02 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 13:29:02 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 13:29:02 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 13:29:44 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 13:29:45 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 13:29:45 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 13:29:45 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 13:29:45 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 13:29:45 INFO  CoapServer:207 - Starting server
+2021-07-30 13:29:45 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 13:29:45 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 13:29:45 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 13:29:54 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 13:29:54 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 13:29:54 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 13:29:54 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 13:29:54 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 13:29:54 INFO  CoapServer:207 - Starting server
+2021-07-30 13:29:54 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 13:29:54 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 13:29:54 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 13:30:52 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 13:30:52 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 13:30:52 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 13:30:52 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 13:30:52 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 13:30:52 INFO  CoapServer:207 - Starting server
+2021-07-30 13:30:52 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 13:30:52 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 13:30:52 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 13:31:18 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 13:31:19 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 13:31:19 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 13:31:19 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 13:31:19 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 13:31:19 INFO  CoapServer:207 - Starting server
+2021-07-30 13:31:19 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 13:31:19 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 13:31:19 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 14:01:43 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 14:01:43 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 14:01:43 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 14:01:43 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 14:01:43 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 14:01:43 INFO  CoapServer:207 - Starting server
+2021-07-30 14:01:43 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 14:01:43 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 14:01:43 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 14:01:50 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 14:01:50 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 14:01:50 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 14:01:50 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 14:01:50 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 14:01:50 INFO  CoapServer:207 - Starting server
+2021-07-30 14:01:50 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 14:01:50 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 14:01:50 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 14:03:24 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 14:03:24 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 14:03:24 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 14:03:24 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 14:03:24 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 14:03:24 INFO  CoapServer:207 - Starting server
+2021-07-30 14:03:24 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 14:03:24 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 14:03:24 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 14:06:05 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 14:06:05 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 14:06:05 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 14:06:05 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 14:06:05 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 14:06:05 INFO  CoapServer:207 - Starting server
+2021-07-30 14:06:05 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 14:06:05 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 14:06:05 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 14:08:51 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 14:08:51 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 14:08:51 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 14:08:51 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 14:08:51 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 14:08:51 INFO  CoapServer:207 - Starting server
+2021-07-30 14:08:51 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 14:08:51 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 14:08:51 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 14:11:39 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 14:11:39 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 14:11:39 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 14:11:39 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 14:11:39 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 14:11:39 INFO  CoapServer:207 - Starting server
+2021-07-30 14:11:39 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 14:11:39 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 14:11:39 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 14:12:54 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 14:12:54 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 14:12:54 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 14:12:54 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 14:12:54 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 14:12:54 INFO  CoapServer:207 - Starting server
+2021-07-30 14:12:54 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 14:12:54 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 14:12:54 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 14:59:39 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 14:59:39 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 14:59:39 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 14:59:39 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 14:59:39 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 14:59:39 INFO  CoapServer:207 - Starting server
+2021-07-30 14:59:39 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 14:59:39 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 14:59:39 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 15:00:14 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 15:00:14 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 15:00:14 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 15:00:14 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 15:00:14 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 15:00:14 INFO  CoapServer:207 - Starting server
+2021-07-30 15:00:14 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 15:00:14 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 15:00:14 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 15:02:19 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 15:02:19 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 15:02:19 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 15:02:19 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 15:02:19 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 15:02:19 INFO  CoapServer:207 - Starting server
+2021-07-30 15:02:19 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 15:02:19 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 15:02:19 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 15:04:07 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 15:04:08 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 15:04:08 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 15:04:08 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 15:04:08 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 15:04:08 INFO  CoapServer:207 - Starting server
+2021-07-30 15:04:08 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 15:04:08 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 15:04:08 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 15:18:02 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 15:18:02 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 15:18:02 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 15:18:02 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 15:18:02 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 15:18:02 INFO  CoapServer:207 - Starting server
+2021-07-30 15:18:02 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 15:18:02 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 15:18:02 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 15:21:38 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 15:21:39 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 15:21:39 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 15:21:39 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 15:21:39 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 15:21:39 INFO  CoapServer:207 - Starting server
+2021-07-30 15:21:39 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 15:21:39 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 15:21:39 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 15:26:25 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 15:26:26 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 15:26:26 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 15:26:26 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 15:26:26 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 15:26:26 INFO  CoapServer:207 - Starting server
+2021-07-30 15:26:26 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 15:26:26 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 15:26:26 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 15:35:40 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 15:35:40 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 15:35:40 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 15:35:40 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 15:35:40 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 15:35:40 INFO  CoapServer:207 - Starting server
+2021-07-30 15:35:40 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 15:35:40 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 15:35:40 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 15:40:09 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 15:40:09 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 15:40:09 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 15:40:09 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 15:40:09 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 15:40:09 INFO  CoapServer:207 - Starting server
+2021-07-30 15:40:09 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 15:40:09 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 15:40:09 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 15:40:22 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 15:40:22 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 15:40:22 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 15:40:22 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 15:40:22 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 15:40:22 INFO  CoapServer:207 - Starting server
+2021-07-30 15:40:22 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 15:40:22 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 15:40:22 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 15:44:36 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 15:44:36 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 15:44:36 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 15:44:36 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 15:44:36 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 15:44:36 INFO  CoapServer:207 - Starting server
+2021-07-30 15:44:36 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 15:44:36 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 15:44:36 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 15:45:25 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 15:45:25 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 15:45:25 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 15:45:25 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 15:45:25 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 15:45:25 INFO  CoapServer:207 - Starting server
+2021-07-30 15:45:25 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 15:45:25 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 15:45:25 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 15:46:23 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 15:46:23 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 15:46:23 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 15:46:23 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 15:46:23 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 15:46:23 INFO  CoapServer:207 - Starting server
+2021-07-30 15:46:23 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 15:46:23 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 15:46:23 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 15:48:39 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 15:48:39 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 15:48:39 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 15:48:39 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 15:48:39 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 15:48:39 INFO  CoapServer:207 - Starting server
+2021-07-30 15:48:39 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 15:48:39 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 15:48:39 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 15:50:21 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 15:50:21 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 15:50:21 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 15:50:21 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 15:50:21 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 15:50:21 INFO  CoapServer:207 - Starting server
+2021-07-30 15:50:21 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 15:50:21 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 15:50:21 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 15:51:08 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 15:51:08 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 15:51:08 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 15:51:08 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 15:51:08 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 15:51:08 INFO  CoapServer:207 - Starting server
+2021-07-30 15:51:08 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 15:51:08 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 15:51:08 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 15:51:54 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 15:51:54 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 15:51:54 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 15:51:54 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 15:51:54 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 15:51:54 INFO  CoapServer:207 - Starting server
+2021-07-30 15:51:54 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 15:51:54 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 15:51:54 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 15:53:18 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 15:53:18 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 15:53:18 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 15:53:18 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 15:53:18 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 15:53:18 INFO  CoapServer:207 - Starting server
+2021-07-30 15:53:18 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 15:53:18 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 15:53:18 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 15:54:28 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 15:54:28 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 15:54:28 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 15:54:28 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 15:54:28 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 15:54:28 INFO  CoapServer:207 - Starting server
+2021-07-30 15:54:28 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 15:54:28 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 15:54:28 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 15:55:57 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 15:55:58 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 15:55:58 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 15:55:58 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 15:55:58 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 15:55:58 INFO  CoapServer:207 - Starting server
+2021-07-30 15:55:58 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 15:55:58 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 15:55:58 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 16:52:15 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 16:52:15 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 16:52:15 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 16:52:15 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 16:52:15 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 16:52:15 INFO  CoapServer:207 - Starting server
+2021-07-30 16:52:15 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 16:52:15 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 16:52:15 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 16:53:38 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 16:53:38 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 16:53:38 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 16:53:38 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 16:53:38 INFO  CoapEndpoint:452 - Endpoint [coap://0.0.0.0:0] requires an executor to start, using default single-threaded daemon executor
+2021-07-30 16:53:38 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 16:53:38 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:58189, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 16:53:38 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:58189
+2021-07-30 16:53:38 INFO  EndpointManager:140 - created implicit endpoint coap://0.0.0.0:58189 for coap
+2021-07-30 16:55:44 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 16:55:45 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 16:55:45 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 16:55:45 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 16:55:45 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 16:55:45 INFO  CoapServer:207 - Starting server
+2021-07-30 16:55:45 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 16:55:45 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 16:55:45 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 16:56:28 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 16:56:28 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 16:56:28 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 16:56:28 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 16:56:28 INFO  CoapEndpoint:452 - Endpoint [coap://0.0.0.0:0] requires an executor to start, using default single-threaded daemon executor
+2021-07-30 16:56:28 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 16:56:28 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:54192, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 16:56:28 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:54192
+2021-07-30 16:56:28 INFO  EndpointManager:140 - created implicit endpoint coap://0.0.0.0:54192 for coap
+2021-07-30 16:57:11 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 16:57:11 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 16:57:11 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 16:57:11 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 16:57:11 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 16:57:11 INFO  CoapServer:207 - Starting server
+2021-07-30 16:57:11 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 16:57:11 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 16:57:11 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 16:57:24 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 16:57:24 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 16:57:24 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 16:57:24 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 16:57:24 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 16:57:24 INFO  CoapServer:207 - Starting server
+2021-07-30 16:57:24 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 16:57:24 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 16:57:24 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 16:58:12 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 16:58:12 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 16:58:12 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 16:58:12 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 16:58:12 INFO  CoapEndpoint:452 - Endpoint [coap://0.0.0.0:0] requires an executor to start, using default single-threaded daemon executor
+2021-07-30 16:58:12 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 16:58:12 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:58764, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 16:58:12 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:58764
+2021-07-30 16:58:12 INFO  EndpointManager:140 - created implicit endpoint coap://0.0.0.0:58764 for coap
+2021-07-30 17:01:23 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 17:01:23 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 17:01:23 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 17:01:23 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 17:01:23 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 17:01:23 INFO  CoapServer:207 - Starting server
+2021-07-30 17:01:23 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 17:01:23 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 17:01:23 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 17:01:45 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 17:01:45 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 17:01:45 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 17:01:45 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 17:01:45 INFO  CoapEndpoint:452 - Endpoint [coap://0.0.0.0:0] requires an executor to start, using default single-threaded daemon executor
+2021-07-30 17:01:45 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 17:01:45 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:55232, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 17:01:46 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:55232
+2021-07-30 17:01:46 INFO  EndpointManager:140 - created implicit endpoint coap://0.0.0.0:55232 for coap
+2021-07-30 17:05:43 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-30 17:05:43 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 17:05:43 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 17:05:43 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 17:05:43 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 17:05:43 INFO  CoapServer:207 - Starting server
+2021-07-30 17:05:43 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 17:05:43 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 17:05:43 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-30 17:06:58 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-30 17:06:58 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-30 17:06:58 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-30 17:06:58 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-30 17:06:58 INFO  CoapEndpoint:452 - Endpoint [coap://0.0.0.0:0] requires an executor to start, using default single-threaded daemon executor
+2021-07-30 17:06:58 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-30 17:06:58 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:64919, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-30 17:06:58 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:64919
+2021-07-30 17:06:58 INFO  EndpointManager:140 - created implicit endpoint coap://0.0.0.0:64919 for coap
+2021-07-31 08:21:30 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-31 08:21:31 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-31 08:21:31 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-31 08:21:31 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-31 08:21:31 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-31 08:21:31 INFO  CoapServer:207 - Starting server
+2021-07-31 08:21:31 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-31 08:21:31 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-31 08:21:31 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-31 08:22:02 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-31 08:22:03 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-31 08:22:03 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-31 08:22:03 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-31 08:22:03 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-31 08:22:03 INFO  CoapServer:207 - Starting server
+2021-07-31 08:22:03 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-31 08:22:03 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-31 08:22:03 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-31 08:24:31 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-31 08:24:31 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-31 08:24:31 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-31 08:24:31 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-31 08:24:31 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-31 08:24:31 INFO  CoapServer:207 - Starting server
+2021-07-31 08:24:31 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-31 08:24:31 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-31 08:24:31 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-31 08:27:39 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-31 08:27:39 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-31 08:27:39 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-31 08:27:39 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-31 08:27:39 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-31 08:27:39 INFO  CoapServer:207 - Starting server
+2021-07-31 08:27:39 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-31 08:27:39 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-31 08:27:39 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-31 08:27:55 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-31 08:27:55 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-31 08:27:55 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-31 08:27:55 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-31 08:27:55 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-31 08:27:55 INFO  CoapServer:207 - Starting server
+2021-07-31 08:27:55 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-31 08:27:55 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-31 08:27:55 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-31 08:29:35 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-31 08:29:35 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-31 08:29:35 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-31 08:29:35 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-31 08:29:35 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-31 08:29:35 INFO  CoapServer:207 - Starting server
+2021-07-31 08:29:35 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-31 08:29:35 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-31 08:29:35 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-31 08:30:45 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-31 08:30:45 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-31 08:30:45 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-31 08:30:45 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-31 08:30:45 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-31 08:30:45 INFO  CoapServer:207 - Starting server
+2021-07-31 08:30:45 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-31 08:30:45 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-31 08:30:45 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-31 08:32:20 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-31 08:32:20 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-31 08:32:20 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-31 08:32:20 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-31 08:32:20 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-31 08:32:20 INFO  CoapServer:207 - Starting server
+2021-07-31 08:32:20 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-31 08:32:20 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-31 08:32:20 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-31 08:33:06 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-31 08:33:06 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-31 08:33:06 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-31 08:33:06 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-31 08:33:06 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-31 08:33:06 INFO  CoapServer:207 - Starting server
+2021-07-31 08:33:07 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-31 08:33:07 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-31 08:33:07 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
+2021-07-31 08:33:39 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-07-31 08:33:39 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-07-31 08:33:39 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-07-31 08:33:39 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-07-31 08:33:39 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-07-31 08:33:39 INFO  CoapServer:207 - Starting server
+2021-07-31 08:33:39 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-07-31 08:33:39 INFO  UDPConnector:187 - UDPConnector listening on 0.0.0.0/0.0.0.0:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-07-31 08:33:39 INFO  CoapEndpoint:485 - Started endpoint at coap://0.0.0.0:8010
