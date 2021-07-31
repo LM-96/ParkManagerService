@@ -9,9 +9,9 @@ const thermometer_socket = new WebSocket(
 thermometer_socket.onmessage = function (e) {
     console.log(e)
 
-    const json_data = JSON.parse(e.data);
-    console.log(json_data)
+    const json_data = JSON.parse(e);
+    console.log(json_data.data)
 
-    status_thermometer.innerHTML = json_data;
+    status_thermometer.innerHTML = json_data.data;
 }
 

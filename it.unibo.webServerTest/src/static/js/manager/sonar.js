@@ -10,8 +10,8 @@ sonar_socket.onmessage = function (e) {
     console.log(e)
 
     const json_data = JSON.parse(e.data);
-    console.log(json_data)
+    console.log(json_data.data)
 
-    status_outdoor.innerHTML = json_data;
+    status_outdoor.innerHTML = json_data.data;
     
 }
