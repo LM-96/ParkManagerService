@@ -39,6 +39,7 @@ class ManagerConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         print(text_data)
+        self.state.set(self.group_name, text_data)
         await self.channel_layer.group_send(
             self.group_name,
             {

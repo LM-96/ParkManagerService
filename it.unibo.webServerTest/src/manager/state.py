@@ -1,3 +1,6 @@
+import json
+
+
 class Singleton(type):
     _instances = {}
     def __call__(cls, *args, **kwargs):
@@ -48,27 +51,31 @@ class State(metaclass=Singleton):
             },
         }
 
-    def set(self, name, value):
+    def set(self, name, data):
         if name == "fan_group_manager":
-            self.fan_state = value
+            self.fan_state = data
         elif name == "weightsensor_group_manager":
-            self.weightsensor_state = value
+            self.weightsensor_state = data
         elif name == "sonar_group_manager":
-            self.sonar_state = value
+            self.sonar_state = data
         elif name == "thermometer_group_manager":
-            self.thermometer_state = value
+            self.thermometer_state = data
         elif name == "carparking_group_manager":
-            print("WWWWWWEEEEEEEEIIIII")
-            print(value)
+            print("WEEEEEEEEEEEEEEEEEE")
+            print(type(data))
+            json_data = json.loads(data)
+            for key, value in json_data.items():
+                self.carparking[key] = value
+            
         elif name == "robot_group_manager":
-            self.robot_coords = value
+            self.robot_coords = data
 
     def get(self, name):
         if name == "fan_group_manager":
             return self.fan_state
         elif name == "weightsensor_group_manager":
             return self.weightsensor_state
-        elif name == "sonar_group":
+        elif name == "sonar_group_manager":
             return self.sonar_state
         elif name == "thermometer_group_manager":
             return self.thermometer_state
