@@ -4,7 +4,9 @@ interface CoapProxy {
 
     fun startProxy()
     fun stopProxy()
-    fun getForwardPort() : Int
+    fun getForwardUrl() : String
     fun getCoapUrl() : String
+
+    fun isStarted() : Boolean
 
 }

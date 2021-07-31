@@ -9,3 +9,4 @@
 
 rootProject.name = "it.unibo.kcproxy"
 include("app")
+include("config")

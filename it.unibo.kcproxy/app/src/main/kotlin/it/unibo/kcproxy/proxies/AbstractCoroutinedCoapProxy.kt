@@ -1,5 +1,7 @@
 package it.unibo.kcproxy.proxies
 
+import com.diogonunes.jcolor.AnsiFormat
+import com.diogonunes.jcolor.Attribute
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.ReceiveChannel
@@ -21,8 +23,9 @@ import kotlin.jvm.Throws
 abstract class AbstractCoroutinedCoapProxy(coapUrl : String) : AbstractCoapProxy(coapUrl) {
 
     private val scope = CoroutineScope(EmptyCoroutineContext + CoroutineName("proxy[$coapUrl]"))
-    private var channel : BroadcastChannel<String> = BroadcastChannel(10)
-    private var queue = ArrayBlockingQueue<String>(10)
+    private var channel : BroadcastChannel<String> = BroadcastChannel(20)
+
+    private val violet = AnsiFormat(Attribute.TEXT_COLOR(150, 90, 150))
 
     protected abstract fun implStartProxy2()
     protected abstract fun implStopProxy2()
@@ -36,41 +39,21 @@ abstract class AbstractCoroutinedCoapProxy(coapUrl : String) : AbstractCoapProxy
     }
 
     init {
-        println("AbstractCoroutinedCoapProxy[$coapUrl] | Created coroutine scope $scope")
+        println(violet.format("AbstractCoroutinedCoapProxy[$coapUrl] | Created coroutine scope $scope"))
     }
 
     override fun implStartProxy() {
         channel = BroadcastChannel(10)
-        startChannelWriter()
-
         implStartProxy2()
     }
 
     override fun implStopProxy() {
-        stopChannelWriter()
         scope.cancel()
 
         implStopProxy2()
     }
 
     override fun onCoap(msg: String) {
-        queue.put(msg)
-    }
-
-    private fun startChannelWriter() {
-        scope.launch {
-            while(true) {
-                channel?.send(queue.take())
-            }
-        }
-    }
-
-    private fun stopChannelWriter() {
-        runBlocking {
-            var closing = scope.launch {
-                channel?.close()
-            }
-            closing.join()
-        }
+        scope.launch { channel.send(msg) }
     }
 }
