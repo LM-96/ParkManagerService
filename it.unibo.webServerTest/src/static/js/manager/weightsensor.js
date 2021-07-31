@@ -7,8 +7,8 @@ const weight_socket = new WebSocket(
 );
 
 weight_socket.onmessage = function (e) {
+    console.log(e)
     const json_data = JSON.parse(e.data);
-    console.log(json_data.data)
-    const data = json_data.data
-    status_indoor.innerHTML = data;
+    console.log(json_data)
+    status_indoor.innerHTML = json_data;
 }

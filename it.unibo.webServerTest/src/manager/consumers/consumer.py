@@ -1,7 +1,7 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
 
-from devices.state import State
+from manager.state import State
 
 # Base consumer class. It handles messages from/to the socket 
 
@@ -19,6 +19,15 @@ class ManagerConsumer(AsyncWebsocketConsumer):
         )
         
         await self.accept()
+        
+
+        await self.channel_layer.group_send(
+            self.group_name,
+            {
+                'type': 'data_message',
+                'data': self.state.get(self.group_name), #### Inserisci aggiornamento stato dal singleton
+            }
+        ) 
 
 
     async def disconnect(self, code):
@@ -30,8 +39,6 @@ class ManagerConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         print(text_data)
-        #msg_json = json.loads(text_data)
-        #print(msg_json)
         await self.channel_layer.group_send(
             self.group_name,
             {
@@ -43,5 +50,10 @@ class ManagerConsumer(AsyncWebsocketConsumer):
     async def data_message(self, event):
         print(event)
         data = event['data']
-        await self.send(data)
+        print(data)
+        if data != None:
+            if type(data) == dict:
+                print(type(data))
+                data = json.dumps(data)
+            await self.send(data)
 
