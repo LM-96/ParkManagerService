@@ -68,7 +68,7 @@ class State(metaclass=Singleton):
             return self.fan_state
         elif name == "weightsensor_group_manager":
             return self.weightsensor_state
-        elif name == "sonar_group":
+        elif name == "sonar_group_manager":
             return self.sonar_state
         elif name == "thermometer_group_manager":
             return self.thermometer_state
