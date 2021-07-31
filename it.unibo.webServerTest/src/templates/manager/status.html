@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block content %}
+
 <style>
     .navbar{
       font-size: 18px;
@@ -9,7 +10,7 @@
       margin-right: 20px;
     }
 
-    .info > p{
+    .info > p, button{
         padding: 1em;
         font-size:100%;
     }
@@ -57,8 +58,10 @@
 <div class="info">
     <p>TEMPERATURE: <span id="status_thermometer"></span></p>
     <p>WEIGHT SENSOR: <span id="status_weightsensor"></span></p>
-    <p>SONAR: <span id="status_sonar"></span></p>
+    <p>SONAR: <span id="status_sonar"></span></p> 
+    
     <p>STATUS FAN: <span id="status_fan"></span></p>
+    <button id="fan_control">SWITCH</button>
     <p>STATUS ROBOT: <span id="status_robot"></span></p>
     <p>STATUS INDOOR: <span id="status_indoor"></span></p>
     <p>STATUS OUTDOOR: <span id="status_outdoor"></span></p>

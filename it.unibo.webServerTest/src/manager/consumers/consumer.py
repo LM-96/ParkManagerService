@@ -1,5 +1,7 @@
+import socket
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
+from manage import config
 
 from manager.state import State
 
@@ -38,8 +40,25 @@ class ManagerConsumer(AsyncWebsocketConsumer):
 
 
     async def receive(self, text_data):
-        print(text_data)
-        self.state.set(self.group_name, text_data)
+        
+
+        if self.group_name == "fancontrol_group_manager":
+            socket_fan = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            socket_fan.connect( (config.system.host, config.fan.port))
+            print("WEWEWEEEWEWEWE")
+            print(text_data)
+            text_json = json.loads(text_data)
+            print(text_json)
+            msg_type = 'fanon' if text_json['data'] == "ON" else 'fanoff'
+            msg = f'msg({msg_type}, dispatch, python, fanactor, {msg_type}(ON), 1)\n'
+            
+            byt=msg.encode()   
+            socket_fan.send(byt)
+            socket_fan.close()
+        else:
+            print(text_data)
+            self.state.set(self.group_name, text_data)
+
         await self.channel_layer.group_send(
             self.group_name,
             {

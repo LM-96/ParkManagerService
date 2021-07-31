@@ -23,8 +23,14 @@ class State(metaclass=Singleton):
         self.weightsensor_state = {"data": "0"}
         self.fan_state = 'OFF'
         self.carparking = {
-            "indoor": "FREE",
-            "outdoor": "FREE",
+            "indoor": {
+                "state": "FREE",
+                "user": ""
+            },
+            "outdoor": {
+                "state": "FREE",
+                "user": ""
+            },
             "1": {
                 "state": "FREE",
                 "user": ""

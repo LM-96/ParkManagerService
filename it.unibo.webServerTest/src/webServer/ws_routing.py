@@ -10,6 +10,8 @@ from manager.consumers.timer_dtfree_consumer import TimerDTFREEConsumerManager
 from manager.consumers.weightsensor_consumer import WeightSensorConsumerManager
 from manager.consumers.fan_consumer import FanConsumerManager
 from manager.consumers.sonar_consumer import SonarConsumerManager
+from manager.consumers.fancontrol_consumer import FancontrolConsumerManager
+
 
 # Websockets assigned to the relative consumer
 websocket_urlpatterns = [
@@ -24,6 +26,7 @@ websocket_urlpatterns = [
     re_path(r'manager/carparking/$', CarparkingConsumerManager.as_asgi()),
     re_path(r'manager/timerdtfree/$', TimerDTFREEConsumerManager.as_asgi()),
     re_path(r'manager/robot/$', RobotConsumerManager.as_asgi()),
+    re_path(r'manager/fancontrol/$', FancontrolConsumerManager.as_asgi()),
 ]
 
 

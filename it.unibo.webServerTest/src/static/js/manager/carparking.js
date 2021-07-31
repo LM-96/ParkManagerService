@@ -62,15 +62,16 @@ function colorDoor(name, coord, info){
 
     
     var door = document.getElementById(coord);
-    if(info == "FREE"){
+    if(info.state == "FREE"){
         door.style.backgroundColor = "#40FF33"
-    }else if(info == "OCCUPIED"){
+    }else if(info.state == "OCCUPIED"){
         door.style.backgroundColor = "#FF2525"
-    }else if(info == "RESERVED"){
+    }else if(info.state == "RESERVED"){
         door.style.backgroundColor = "#F2FF25"
     }
 
-    document.getElementById("status_".concat(name)).innerHTML = info
+    document.getElementById("status_".concat(name)).innerHTML = info.state
+    document.getElementById("user-".concat(coord)).innerHTML = info.user
 
     
 }
