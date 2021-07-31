@@ -8,7 +8,7 @@ class Singleton(type):
 
 class State(metaclass=Singleton):
     def __init__(self):
-        self.thermometer_state = '18'
+        self.thermometer_state = {"data": "18"}
         self.robot_coords = {
             "position": {
                 "x": "0",
@@ -16,8 +16,8 @@ class State(metaclass=Singleton):
             },
             "state": "OCCUPIED"
         }
-        self.sonar_state = '1000'
-        self.weightsensor_state = '0'
+        self.sonar_state = {"data": "1000"}
+        self.weightsensor_state = {"data": "0"}
         self.fan_state = 'OFF'
         self.carparking = {
             "indoor": "FREE",
