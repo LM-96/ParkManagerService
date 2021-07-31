@@ -9,9 +9,10 @@ from manage import config
 # Create your views here.
 
 
-login_required(login_url='login')
 def status_view(request):
-    
+    if not request.user.is_authenticated:
+        return redirect('login')
+
     rows = ""
     for i in range(0,int(config.map.rows)):
         rows += str(i)
