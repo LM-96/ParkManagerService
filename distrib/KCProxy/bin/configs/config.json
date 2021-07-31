@@ -1,0 +1,6 @@
+{"resource": "thermometer","coapUrl": "coap://localhost:8001/ctxthermometer/thermometeractor","fwport": "0","fwwsurl":"ws://localhost:8000/manager/thermometer/","fwprotocol": "ws", "proxytype": "coroutined"}
+{"resource": "fan","coapUrl": "coap://localhost:8002/ctxfan/fanactor","fwport": "0","fwwsurl":"ws://localhost:8000/manager/fan/","fwprotocol": "ws", "proxytype": "coroutined"}
+{"resource": "sonar","coapUrl": "coap://localhost:8003/ctxsonar/sonaractor","fwport": "0","fwwsurl":"ws://localhost:8000/manager/sonar/","fwprotocol": "ws", "proxytype": "coroutined"}
+{"resource": "weightsensor","coapUrl": "coap://localhost:8004/ctxweightsensor/weightsensoractor","fwport": "0","fwwsurl":"ws://localhost:8000/manager/weightsensor/","fwprotocol": "ws", "proxytype": "coroutined"}
+{"resource": "parkingmanager","coapUrl": "coap://localhost:8010/ctxcarparking/parkingmanagerservice","fwport": "0","fwwsurl":"ws://localhost:8000/manager/carparking/","fwprotocol": "ws", "proxytype": "coroutined"}
+{"resource": "trolley","coapUrl": "coap://localhost:8010/ctxcarparking/trolley","fwport": "0","fwwsurl":"ws://localhost:8000/manager/trolley/","fwprotocol": "ws", "proxytype": "coroutined"}
