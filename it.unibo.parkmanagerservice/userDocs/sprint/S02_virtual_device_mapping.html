@@ -1,0 +1,303 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+<style type="text/css">
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+	font-size: 93%;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+	border-radius: 10px;
+	padding: 5px;
+}
+
+top {
+	width: 100%;
+}
+
+
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 90%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #abe876;
+    color: #1632cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 90%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+ks{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #0000CD	;
+	font-size: 90%;
+}
+kc{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #008000	;
+	font-size: 90%;
+}
+pre{
+	font-family: "Consolas";
+	font-size: 85%;
+	background-color: #f5f5f5;
+	border: 1.5px solid silver;
+	padding: 5px;
+}
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+	 
+    font-size: 18px;
+}
+k{
+    color: #990000;
+	font-weight: bold;
+	font-size: 90%;
+}
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+	padding: 10px;
+}
+
+h2 {
+    background-color: #9ed8ff;
+    font-size: 130%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 100%;
+}
+h4 {
+    background-color: #ccffcc;
+    font-size: 100%;
+	width: 95%;
+	border-radius: 5px;
+	padding: 2px;
+}
+h5 {
+    background-color: #d5ffb0;
+    font-size: 100%;
+
+}
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}
+div.remark{
+	background-color: #E3F2FD;
+    border: 1.5px solid #d5f2ed;
+    padding: 15px;
+    margin: 10px;
+	border-radius: 25px;
+}
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+ol, ul, li {
+  margin: 0;
+  margin-left: 10px;
+  padding: 0;
+  padding-bottom: 5px;
+}
+
+table, th, td {
+	border: 1px solid black;
+}
+
+img {
+	border: 1.5px solid #d5f2ed
+
+}
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+div.wrapdesc{
+	width: 90%;
+	margin: auto;
+}
+
+div.imagedesc{
+	width: 85%;
+	margin: auto;
+}
+</style>
+    
+<head>
+   
+<title>SPRINT 2: Device Mapping</title></head>
+    
+<body>
+<div id="top">
+<h1>SPRINT 2: Device Mapping (<em>basicdevices</em> System) <font size="5"></font> </h1>
+</div>  
+
+<div class="body"> 
+<ol>
+	<li><a href="#lastarch">Last Architecture and aim of this sprint</a></li>
+	<li><a href="#intro">Introduction</a></li>
+	<li>
+		<a href="#devicesmapping">Devices Mapping</a>
+		<ul>
+			<li><a href="commonclass">Common class for devices</a></li>
+			<li><a href="#thermometer">Thermometer</a></li>
+			<li><a href="#fan">Fan</a></li>
+			<li><a href="#outsonar">Outdoor Sonar</a></li>
+			<li><a href="#inweightsensor">Indoor Weight Sensor</a></li>
+		</ul>
+	</li>
+	<li><a href="#testing">Testing</a></li>
+	
+</ol>
+
+<h2 id="lastarch">Last Architecture and aim of this sprint</h2>
+<div class="remark">
+	<table>
+		<tr><td width="60%"><h3><b>Logical Architecture</b></h3></td><td width="40%"><h3><b>Resources</b></h3></td></tr>
+		<tr>
+			<td width="60%"><center style="padding:10px 10px 10px 10px"><img src="img/logical_arch_0.png" style="max-width:100%;padding:2px 2px 2px 2px" /></center></td>
+			<td>
+				<h4>Executable QAK Model</h4>
+				<a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.parkmanagerservice/src/parkmanagerservice_2.1.qako" target="code"><em>parkmanagerservice_2.1.qak</em></a><br/><br/>
+				<h4>Test Files</h4>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/FirstTestPlan.java" target="code"><em>FirstTestPlan.java</em></a>
+				
+			</td>
+		</tr>
+	</table><br/>
+	
+	In this sprint, we will go to zoom into the undefined entity <em>Parking-Area</em> that will contains everything is needed to manage the devices specified into the requirement analysis. The devices treated in this sprint are all those discussed in the analysis with the exception of the robot that is given by the consumer as seen.
+</div>
+
+<h2 id="intro">Introduction</h2>
+<div class="remark">
+	In the analysis phase, the analysts showed the role of all devices. Since we have choosen to use the QAK system, it is needed to map all devices into the <k>Actor World</k>.<br><br>
+	<table>
+	<tr><td width="70%" style="padding:10px 10px 10px 10px">
+		In order to do this, every device in the system will have:<br><br>
+		<ol>
+			<li><ks>a dedicated actor</ks> (<em>DeviceActor</em>): that make the device able to be managed using the QAK-interaction (request, dispatch, event mechanism);</li>
+			<li><ks>a POJO interface</ks> (<em>POJOInterface</em>): that make the actor able to use the device in the Object World (a support used by the actor to directly manage the device).</li>
+		</ol>
+	</td><td>
+		<center style="padding: 10px 10px 10px 10px"><img src="img/dev_repr.png" style="max-width:100%"/></center>
+	</td></tr>
+	</table><br>
+	
+	In this way, every device has <k>two abstraction level</k>:
+	<ol>
+		<li>one thanks to the actor, that make the device managable in the actor world, then also into the <a href="https://it.wikipedia.org/w/index.php?title=Internet_of_things&redirect=yes" target="web"><ks>IoT</ks></a>, thanks to the TCP infrastructure of the QAK-Context;</li>
+		<li>the other abstraction represented by interface, that make the actor independent of the physical devices (for using a certain physical device, it is only needed to implement this interface with the API given by the device manufacturer or developers).</li>
+	</ol>
+	In addition to this, to make the device easily usable in the IoT, we decided to use <a href="https://en.wikipedia.org/wiki/Constrained_Application_Protocol" target="web"><em>CoAP</em></a> in order to make them observable in the network.
+	These choices will be clearer soon.
+</div>
+
+<h2>Device Mapping</h2>
+<center><h4>The code for the devices is stored in <a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.basicdevices" target="web"><em>it.unibo.basicdevice</em></a> project.</h4></center>
+
+<div id="commonclass" class="remark">
+	<h3>Common class for devices</h3>
+	<h4>Package <a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.basicdevices/src/it/unibo/basicdevices" target="web"><em>it.unibo.basicdevices</em></a></h4>
+	First of all, we introduce a common class used by all components of the devices.
+	<center style="padding:10px 10px 10px 10px"><img src="img/device_UML.png" style="max-width:100%"/></center>
+	
+	<table>
+	<tr>
+		<td style="padding-left:10px" width="50%">
+			<h4 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicdevices/AbstractDevice.kt" target="code">AbstractDevices.kt</a></h4>
+			An abstract class that represents a <em>device</em>. Every device of the system must implements this class in order to be <i>identificable</i>. Then, all of them must have a <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicdevices/DeviceType.kt" target="code"><em>type</em></a> and also an <ks>id</ks>. In addition to this, the <span style="font-family:Couriet New, Courier;">equals</span> method is very convient for the other class <em>Device Manager</em>.
+		</td>
+		<td style="padding-left:10px">
+			<h4 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicdevices/DeviceManager.kt" target="code">DeviceManager.kt</a></h4>
+			The class that will be used by all actors to get the utility class for managing the relative device. Device Manager also parse all device from a configuration file <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/configs/devices.conf" target="code">devices.conf</a> formatted in <a href="https://en.wikipedia.org/wiki/JSON" target="web">JSON</a>. In addition to this, this class is a <a href="https://en.wikipedia.org/wiki/Singleton_pattern" target="web">singleton</a>, so the constructor is private and has the work to parse the configuration file in order to create the object relative to every device. Notice that the Singleton Pattern can be easily made in Kotlin with the declaration <a href="https://kotlinlang.org/docs/object-declarations.html" target="web"><ks>object</ks></a>.
+			
+		</td>
+	</tr>
+	</table>
+</div>
+
+<div id="thermometer" class="remark">
+	<h3>Thermometer</h3>
+	<h4>Package <a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.basicdevices/src/it/unibo/basicthermometer" target="web"><em>it.unibo.basicthermometer</em></a></h4>
+	From the analysis, the thermometer is a device used to keep under control the themperature of the parking area.
+</div>
+
+
+
+<div style="background-color:rgba(86, 56, 253, 0.9); width:60%;text-align:center;color:white; margin: auto">
+<br>
+<p>By students</br>
+    Names: Simone Mattioli , Luca Marchegiani</br>
+    Email: <a href= "mailto:simone.mattioli6@studio.unibo.it" target="mail" style="color:white;">simone.mattioli6@studio.unibo.it</a> , <a href="mailto:luca.marchegiani3@studio.unibo.it" target="mail" style="color:white">luca.marchegiani3@studio.unibo.it</a></br>
+    Git Repo:  <a href="https://github.com/LM-96/ParkManagerService" target="web" style="color:white">https://github.com/LM-96/ParkManagerService</a></p>
+<!--<img src="./img/profile_2.png" alt="mbot" width="40%" height="40%">-->
+<br>
+</div>  
+</div>
+</body>
+</html>

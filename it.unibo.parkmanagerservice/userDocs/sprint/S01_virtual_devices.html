@@ -189,23 +189,41 @@ div.imagedesc{
     
 <head>
    
-<title>TemplateToFill</title></head>
+<title>SPRINT 1: Virtual Devices Environment</title></head>
     
 <body>
 <div id="top">
-<h1>LABORATORIO DI INGEGNERIA DEI SISTEMI SOFTWARE <font size="5"></font> </h1>
-</div>  
+<h1>SPRINT 1: Virtual Devices Environment <font size="5"></font> </h1>
+</div> 
 
-<div class="body"> 
-<h2>SPRINT 1: Virtual Devices Environment</h2>
+<ol>
+	<li><a href="#intro">Introduction</a></li>
+	<li><a href="#interface">Interface</a></li>
+	<li><a href="#guicomponents">Gui Componentes</a></li>
+	<li>
+		<a href="#interaction">Interaction</a>
+		<ul>
+			<li><a href="#interactionfromserver">from server side</a></li>
+			<li><a href="#interactionfromview">from view side</a></li>
+		</ul>
+	</li>
+	<li><a href="#state">State</a></li>
+	<li><a href="#results">Final Result</a></li>
+	<li><a href="#testing">Testing</a></li>
+</ol>
+
+<div class="body">
+
+<h2 id="intro">Introduction</h2>
 <div class="remark">
-
-    We decided first to implement the system part used for virtual devices. 
+	We decided first to implement the system part used for virtual devices. 
     This sprint aims to create a web application that allow to virtually modify the values of
     all the devices except for the fan, that from requirement can only be modified by the system when the temperature
     excedes a limit or by the manager.
+</div>
 
-    <h3>Interface</h3>
+<h2 id="interface">Interface</h2>
+<div class="remark">
     The GUI interface must be simple and have all the information and components needed to read and modify the values of 
     the devices. 
     By analizing the requirement analisis we can get the different devices and how their values will be in order to have the best
@@ -257,37 +275,46 @@ div.imagedesc{
             </td>
         </tr>
         </table>
+</div>
 
-        <h3>GUI components</h3>
+<h2 id="guicomponents">GUI components</h2>
+<div class="remark">
 
         We need components that is able to map the value of the devices. 
         We decided to go for a <ks>slider</ks> component instead of wrtiting the value in a textbox in order to simulate the costant increasing and decreasing of the information 
         read by the devices if they were not virtual.
+</div>
 
-        <h3>Interaction</h3>
+<h2 id="interaction">Interaction</h2>
+<div class="remark">
 
         Websockets have been used to create a virtual environment where the devices are able to send/receive information to/from whoever is subscribed to the
         websocket group.
         <br>
-        <h5>From server side</h5>
+        <h3 id="interactionfromserver">From server side</h3>
         Django allow us to create a python module to automatically handle websocket creation and management, to handle messages 
         we created one <a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.webServerTest/src/devices/consumers" target="code"><ks>consumer</ks></a> for device. This class is the medium between the sender and the receivers. Each consumer handle messages
         coming from on websocket group and manage to send it to the others connected to that websocket.
-        <h5>From view side</h5>
+        <h3 id="interactionfromview">From view side</h3>
         <a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.webServerTest/src/static/js" target="code">Javascript</a> will handle the connection to the websocket and will send/receive the deta and update the relative view.
         Each time a slider is moved the script relative to the slider will write in the websocket and each time a message is received the script reads it and updates the slider value and a text box with the correct value.
+</div>
 
-        <h3>State</h3>
+<h2 id="state">State</h2>
+<div class="remark">
         In order to maintain a consistent value during all the usages of the devices virtual environment we created a singleton class that keeps track of the 
         current value for the four devices. The consuemr will send the current value of the relative device to the websocket each time someone connect to it so who connects will be updated about the last changes.
         The state is updated by the consumer each time a message is sent to the websocket.
         Before the value is updated is parsed in order to read only the interested value that we decided to send with key "data".
+</div>
 
-        <h3>Final Result</h3>
-
+<h2 id="results">Final Result</h2>
+<div class="remark">
         <center><img src="../img/devices.png" style="max-width:100%" alt="devicesGUI" /></center>
+</div>
 
-        <h3>Testing</h3>
+<h2 id="testing">Testing</h2>
+<div class="remark">
         For testing we used Pytest a full-featured Python testing tool. 
         This test was build in order to verify using the virtual devuces the correct functioning of the QAKActors. 
         Four random value, chosed within the upper and lower bownd, are sent to a websocket and after few seconds a value is read 
@@ -312,9 +339,14 @@ div.imagedesc{
 <br/><br/> 	
 </div>  
 
-<div style="background-color:rgba(86, 56, 253, 0.9); width:60%;text-align:left;color:white">
-By studentName email: student@studio.unibo.it  
-<img src="./img/emiglio.png" alt="mbot" width="15%" height="15%">
+<div style="background-color:rgba(86, 56, 253, 0.9); width:60%;text-align:center;color:white; margin: auto">
+<br>
+<p>By students</br>
+    Names: Simone Mattioli , Luca Marchegiani</br>
+    Email: <a href= "mailto:simone.mattioli6@studio.unibo.it" target="mail" style="color:white;">simone.mattioli6@studio.unibo.it</a> , <a href="mailto:luca.marchegiani3@studio.unibo.it" target="mail" style="color:white">luca.marchegiani3@studio.unibo.it</a></br>
+    Git Repo:  <a href="https://github.com/LM-96/ParkManagerService" target="web" style="color:white">https://github.com/LM-96/ParkManagerService</a></p>
+<!--<img src="./img/profile_2.png" alt="mbot" width="40%" height="40%">-->
+<br>
 </div> 
 </body>
 </html>
