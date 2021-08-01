@@ -6,30 +6,9 @@ import it.unibo.kcproxy.proxiesS.WsCoroutinedProxy
 object ProxyConfigurationBuilder {
 
     @JvmStatic fun buildProxies(configEntries : Collection<ConfigEntry>) : Collection<CoapProxy> {
-        val proxies = mutableListOf<CoapProxy>()
-        configEntries.forEach() {
-            when(it.fwprotocol) {
-                "tcp" -> {
-                    when(it.proxytype) {
-                        "coroutined" -> {
-                            proxies.add(TcpCoroutinedCoapProxy(it.coapUrl, it.fwport!!))
-                            println("ProxyConfigurationBuilder | Builded TCP-coroutined proxy by configutation $it")
-                        }
-                        else -> println("ProxyConfigurationBuilder | Detected unsupported configuration $it")
-                    }
-                }
-                "ws" -> {
-                    when(it.proxytype) {
-                        "coroutined" -> {
-                            proxies.add(WsCoroutinedProxy(it.coapUrl, it.fwwsurl!!))
-                            println("ProxyConfigurationBuilder | Builded WS-coroutined proxy by configutation $it")
-                        }
-                    }
-                }
-                else -> println("ProxyConfigurationBuilder| Detected unsupported configuration $it")
-            }
-        }
-
-        return proxies
+        return configEntries
+            .map { ProxyFactory.create(it.fwprotocol, it.proxytype, it.coapUrl, it.fwwsurl, it.fwport) }
+            .filterNotNull()
+            .toList()
     }
 }
