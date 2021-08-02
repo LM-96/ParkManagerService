@@ -268,23 +268,266 @@ div.imagedesc{
 	
 	<table>
 	<tr>
-		<td style="padding-left:10px" width="50%">
-			<h4 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicdevices/AbstractDevice.kt" target="code">AbstractDevices.kt</a></h4>
+		<td style="padding:10px 10px 10px 10px">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicdevices/AbstractDevice.kt" target="code">AbstractDevices.kt</a></h5>
 			An abstract class that represents a <em>device</em>. Every device of the system must implements this class in order to be <i>identificable</i>. Then, all of them must have a <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicdevices/DeviceType.kt" target="code"><em>type</em></a> and also an <ks>id</ks>. In addition to this, the <span style="font-family:Couriet New, Courier;">equals</span> method is very convient for the other class <em>Device Manager</em>.
 		</td>
-		<td style="padding-left:10px">
-			<h4 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicdevices/DeviceManager.kt" target="code">DeviceManager.kt</a></h4>
-			The class that will be used by all actors to get the utility class for managing the relative device. Device Manager also parse all device from a configuration file <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/configs/devices.conf" target="code">devices.conf</a> formatted in <a href="https://en.wikipedia.org/wiki/JSON" target="web">JSON</a>. In addition to this, this class is a <a href="https://en.wikipedia.org/wiki/Singleton_pattern" target="web">singleton</a>, so the constructor is private and has the work to parse the configuration file in order to create the object relative to every device. Notice that the Singleton Pattern can be easily made in Kotlin with the declaration <a href="https://kotlinlang.org/docs/object-declarations.html" target="web"><ks>object</ks></a>.
-			
+		<td style="padding:10px 10px 10px 10px">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicdevices/DeviceManager.kt" target="code">DeviceManager.kt</a></h5>
+			The class that will be used by all actors to get the utility class for managing the relative device. Device Manager also parse all device from a configuration file <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/configs/devices.conf" target="code">devices.conf</a> in which every line is a <a href="https://en.wikipedia.org/wiki/JSON" target="web">JSON</a> object. In addition, this class is a <a href="https://en.wikipedia.org/wiki/Singleton_pattern" target="web">singleton</a>, so the constructor is private and has the work to parse the configuration file in order to create the object relative to every device. Notice that the Singleton Pattern can be easily made in Kotlin with the declaration <a href="https://kotlinlang.org/docs/object-declarations.html" target="web"><ks>object</ks></a>.
 		</td>
 	</tr>
 	</table>
+	About the configuration file, assuming to have only virtual devices, it must contains these line:
+	<pre style="white-space: pre-wrap;">
+{"device":"fan", "id":"fan", "type":"virtual", "address":"ws://localhost:8000/ws/fan/"}
+{"device":"thermometer", "id":"thermometer", "type":"virtual", "address":"ws://localhost:8000/ws/thermometer/"}
+{"device":"sonar", "id":"outsonar", "type":"virtual", "address":"ws://localhost:8000/ws/sonar/"}
+{"device":"weight_sensor", "id":"indoor sensor", "type":"virtual", "address":"ws://localhost:8000/ws/weightsensor/"}
+	</pre>
+	Then, every line is a JSON entry containing a device (see <a href="https://www.baeldung.com/java-org-json" target="web">https://www.baeldung.com/java-org-json</a> fast tutorial for JSON parsing in Java with <em>org.json</em>).
+	Notice that the two keys <ks>device</ks> and <ks>id</ks> must always be present, otherwhise the constructor of the <em>DeviceManager</em> class will launchs an error and <k>closes the entire system</k>. Obviously, the allowed value for the key <ks>device</ks> are <k>sonar</k>, <k>thermometer</k>, <k>fan</k> and <k>weight_sensor</k>, while for <ks>type</ks> key is only allowed <k>virtual</k> at this moment.<br/>
+	For now, in order to simulate the system and do testing, we will use the <a href="http://htmlpreview.github.io/?https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/userDocs/sprint/S01_virtual_devices.html" target="code"><em>Virtual Device</em></a> environment but in a following sprint we can configure this system in order to use the real devices. Then, the <ks>address</ks> key contains the value of the address of the websocket open by the virtual device server, as describer in the SPRINT 1.<br/><br/>
+	
+	<h4>Package <a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.basicdevices/src/it/unibo/basicdevices/supports" target="web"><em>it.unibo.basicdevices.support</em></a></h4>
+	<center style="padding:10px 10px 10px 10px"><img src="img/supports_UML.png" style="max-width:100%"/></center>
+	
+	<table>
+	<tr>
+		<td style="padding:10px 10px 10px 10px" width="50%">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicdevices/supports/LockableValue.kt" target="code">LockableValue.kt</a></h5>
+			This class represents a value that can be used in safe way in a concurrent environment. It esponses the two methods <span style="font-family:Courier New, Courier">safeGet()</span> and <span style="font-family:Courier New, Courier">safeSet()</span> that can be used to atomically obtain or set the value of the object encapsulated in this class.
+		</td>
+		<td style="padding-left:10px">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicdevices/supports/ValueUpdater.kt" target="code">ValueUpdater.kt</a> and <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicdevices/supports/ValueUpdater.kt" target="code">AsbtractValueUpdater.kt</a></h5>
+			This interface and this abstract class define the behavior of a component that continuously update a value when availlable. Thanks to the method <span style="font-family:Courier New, Courier">getActual()</span> it is possible to get the current updated value of the observed resource.
+		</td>
+	</tr>
+	<tr>
+		<td style="padding:10px 10px 10px 10px" width="50%">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicdevices/supports/WebSocketValueUpdater.kt" target="code">WebSocketValueUpdater.kt</a></h5>
+			This class extends the <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicdevices/supports/ValueUpdater.kt" target="code">AsbtractValueUpdater.kt</a> class in order to update a value from a <a href="https://en.wikipedia.org/wiki/WebSocket" target="web">WebSocket</a> using the <a href="https://square.github.io/okhttp/" target="web">OkHttp</a> library. Notice that the constructor wants an argument <span style="font-family:Courier New, Courier">(String) -> T</span> that is a <a href="https://kotlinlang.org/docs/lambdas.html" target="web">lambda</a> function that it is used to convert the text received from the WebSocket as a String to the type of the object observed by the updater.<br/>
+			Notice that this class also contains a method <span style="font-family:Courier New, Courier">say()</span> that let to easily send message on the WebSocket (for example to control a device, like the fan).
+		</td>
+		<td style="padding-left:10px">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicdevices/supports/WebSocketValueUpdater.kt" target="code">WebSocketValueUpdater.kt</a> private class <em>ValueWebSocketListener</em></h5>
+			A private class used by <em>WebSocketValueUpdater</em> as a <a href="https://square.github.io/okhttp/4.x/okhttp/okhttp3/-web-socket-listener/">WebSocketListener</a>. This class effectively use the lambda <span style="font-family:Courier New, Courier">(String) -> T</span> in ordet to convert all strings received from the WebSocket to a <span style="font-family:Courier New, Courier">T</span> object.
+			Then, when a message is received on the WebSocket, this class <i>receives</i> it and convert the received data in order to update the relative <em>LockableValue</em>.
+		</td>
+	</tr>
+	</table><br/><br/>
+	To use the virtual devices, ad specified into <a href="http://htmlpreview.github.io/?https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/userDocs/sprint/S01_virtual_devices.html" target="code"><em>SPRINT 1: Virtual Devices</em></a>, it is possible to use a <em>WebSocketValueUpdater</em> per device. Every WebSocket received data in JSON format, as specified in the description of the virtual environment.
+	
 </div>
 
 <div id="thermometer" class="remark">
 	<h3>Thermometer</h3>
 	<h4>Package <a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.basicdevices/src/it/unibo/basicthermometer" target="web"><em>it.unibo.basicthermometer</em></a></h4>
-	From the analysis, the thermometer is a device used to keep under control the themperature of the parking area.
+	From the analysis, the thermometer is a device used to keep under control the themperature of the parking area. First of all, we need some classes to manage the physical device (or virtual):
+	<center style="padding:10px 10px 10px 10px"><img src="img/thermometer_UML.png" style="max-width:100%"/></center>
+	<table>
+	<tr>
+		<td style="padding:10px 10px 10px 10px" width="50%">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicthermometer/Thermometer.kt" target="code">Thermometer.kt</a></h5>
+			This abstract class defines the behavior of a thermometer. In the <i>low-level view</i>, thermometer is a device to which to make synchronous requests, then this is the reason of the abstract method <span style="font-family:Courier New, Courier">readTemperature()</span>. The implementation of this method depends by the realization and the API of the physical thermometer.<br/>
+			However, from the requirements it is necessary to monitorate the themperature <i>continuosly</i>, so it is needed an entity that use the thermometer doing <a href="https://en.wikipedia.org/wiki/Polling_(computer_science)">polling</a>. Then, the two attributes <span style="font-family:Courier New, Courier">CRITICAL_TEMP</span> and <span style="font-family:Courier New, Courier">POLLING_MSEC</span> are mantained in order to establish a theshold for the temperature and the polling time that will be used by the entity that has the thermometer.
+		</td>
+		<td style="padding-left:10px">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicthermometer/TemperatureState.kt" target="code">TemperatureState.kt</a> and <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicthermometer/ThermometerType.kt" target="code">ThermometerType.kt</a></h5>
+			These two enum represent:
+			<ul>
+				<li>the <k>state of the temperature</k>, as indicated in the analysis; the state <span style="font-family:Courier New, Courier">CRITICAL</span> will be used when the measured value from the thermometer is greater than the <span style="font-family:Courier New, Courier">CRITICAL_TEMP</span>; otherwhise it must be set to <span style="font-family:Courier New, Courier">NORMAL</span></li>
+				<li>the <k>type of the thermometer</k> that will be used by a factory interface; as said before, at the moment only virtual thermometer is allowed.</li>
+			</ul>
+		</td>
+	</tr>
+	<tr>
+		<td style="padding:10px 10px 10px 10px" width="50%">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicthermometer/WsThermometer.kt" target="code">WsThermometer.kt</a></h5>
+			The implementation of the abstract class <em>Thermometer</em> for the virtual thermometer. As specified in the first sprint, the virtual server sends JSON messages over the WebSocket like:
+			<pre>{"data":"30.0"}</pre>
+			Then, the lambda passed to the <em>WebSocketValueUpdater</em> must parse this JSON and obtain a Double value:
+			<pre>{s : String -> JSONObject(s).getDouble("data")}</pre>
+		</td>
+		<td style="padding-left:10px">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicthermometer/ThermometerFactory.kt" target="code">ThermometerFactory.kt</a> </h5>
+			A <a href="https://en.wikipedia.org/wiki/Factory_(object-oriented_programming)" target="web">Factory Interface</a> for the thermometer that let the <em>DeviceManager</em> to quickly obtain an instance of a <em>Thermometer</em> type.
+			The <span style="font-family:Courier New, Courier">create()</span> method has three parameter:
+			<ul>
+				<li>the <ks>id</ks> of the device;</li>
+				<li>the <ks>type</ks> of the thermometer (only <span style="font-family:Courier New, Courier">VIRTUAL</span> at the moment);</li>
+				<li>the <ks>address</ks> for the virtual thermometer.</li>
+			</ul>
+		</td>
+	</tr>
+	</table><br/><br/>
+	Like the <em>DeviceManager</em> configuration, also the thermometer has is own configuration file located at <i>configs/thermometer.conf</i> that contains the informations about the critical themperature and the polling milliseconds. Only the first line on this file is readed by the <em>Thermometer</em> class, and is format is:
+	<pre>{"critical_temperature":"25","polling_msec":"2000"}</pre>
+	A goodly advantage of these pattern is that, if necessary, <k>is quickly possible to add the support for a new thermometer</k> device by:
+	<ol>
+		<li>adding a new enum in <em>ThermometerType</em>;</li>
+		<li>implementing a new class that extends <em>Thermometer</em> and use the API of the new device;</li>
+		<li>adding the needed configuration key into the json file and the relative parameter in the <span style="font-family:Courier New, Courier">create()</span> method of the <em>ThermometerFactory</em>.</li>
+	</ol><br/><br/>
+	This package is used by the actor <em>thermometeractor</em> in order to make the thermometer an <ks>IoT device</ks> callable via TCP by the QAK-Actor interaction mechanisms.
+	<center style="padding:10px 10px 10px 10px"><img src="img/thermometer_actor.png" style="max-width:100%"/></center>
+	As we can see from the image, the <em>thermometeractor</em>:
+	<ul>
+		<li>has an object <em>Thermometer</em> obtained by the <em>ThermometerFactory</em> interface when the actor is initialized;</li>
+		<li>has a variable <em>TemperatureState</em> in order to mantain the state of the temperature.</li>
+	</ul>
+	To obtain the thermometer of the system, the actor must call:
+	<pre>it.unibo.basicdevices.DeviceManager.requestDevice("thermometer")</pre>
+	(keep in mind that the configuration file of the device manager must has an entry with <k>"id":"thermometer"</k>)<br/>
+	Then , in the state <em>work</em>, the actor read the temperature by using the proper method of the class <em>Thermometer</em> and then emits an event <ks>criticaltemp : criticaltemp(CRITICAL)</ks> if the temperature pass to a critical state or an event <ks>criticaltemp : criticaltemp(NORMAL)</ks> if temperature is back to normal. However, in this state <k>the actor updates his state</k> writing on the new themperature. Polling is realized using the <ks>whenTimeVar</ks> transition that let the actor to newly go in the state <em>work</em> after a period of time defined by a variable.<br/><br/>
+	
+	From the analysis, it is clear that the thermometer should be an observable reasource using the <a href="https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern" target="web">publish/subscribe</a> model.<br/>
+	The QAK system has embedded two technologies that realize this model:
+	
+	<ul>
+		<li><a href="https://en.wikipedia.org/wiki/Constrained_Application_Protocol" target="web">CoAP</a></li>
+		<li><a href="https://en.wikipedia.org/wiki/MQTT" target="web">MQTT</a></li>
+	</ul>
+	We <k>decide to use CoAP to make all devices observable via network</k> because: "Multicast, low overhead, and simplicity are extremely important for Internet of Things (IoT) and Machine-to-Machine (M2M) devices, which tend to be deeply embedded and have much less memory and power supply than traditional internet devices have. Therefore, efficiency is very important. CoAP can run on most devices that support UDP or a UDP analogue." (from <a href="https://en.wikipedia.org/wiki/Constrained_Application_Protocol" target="web">Wikipedia</a>).<br/>
+	Then, <ks>every device has associated a CoAP resource</ks>, so the relative actor simply update its state using the primitive <em>updateResource</em> availlable from the QAK-System, writing on the state of the device. The state is written as <ks>a JSON string</ks>.<br/>
+	For the thermometer, the string has this pattern:
+	<pre>{"data":"value"}</pre>
+	in which <em>values</em> is a floating point number that indicates the temperature in Celsius degrees.<br/>
+	See <a href="http://htmlpreview.github.io/?https://github.com/anatali/issLab2021/blob/main/it.unibo.qakactor/userDocs/LabQakIntro2021.html#actorasresource" target="web">LabQakIntro2021.html</a> for more details about the use of CoAP in QAK.
+	
+</div>
+
+<div id="fan" class="remark">
+	<h3>Fan</h3>
+	<h4>Package <a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.basicdevices/src/it/unibo/basicfan" target="web"><em>it.unibo.basicfan</em></a></h4>
+	From the analysis, the fan is a device that can be powered on or powered off. First of all, we need some classes to manage the physical device (or virtual):
+	<center style="padding:10px 10px 10px 10px"><img src="img/fan_UML.png" style="max-width:100%"/></center>
+	<table>
+	<tr>
+		<td style="padding:10px 10px 10px 10px" width="50%">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicfan/Fan.kt" target="code">Fan.kt</a></h5>
+			This abstract class defines the behavior of a fan. In the <i>low-level view</i>, fan is a device that can be activated or turned off, then this is the reason of the abstract methods <span style="font-family:Courier New, Courier">powerOn()</span> or <span style="font-family:Courier New, Courier">powerOff()</span> and also <span style="font-family:Courier New, Courier">set()</span>. The implementation of this method depends by the realization and the API of the physical fan.<br/>
+		</td>
+		<td style="padding-left:10px">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicfan/FanState.kt" target="code">FanState.kt</a> and <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicfan/FanType.kt" target="code">FanType.kt</a></h5>
+			These two enum represent:
+			<ul>
+				<li>the possible <k>state of the fan</k>, as indicated in the analysis; 
+				<li>the <k>type of the fan</k> that will be used by a factory interface; as said before, at the moment only virtual fan is allowed.</li>
+			</ul>
+		</td>
+	</tr>
+	<tr>
+		<td style="padding:10px 10px 10px 10px" width="50%">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicfan/WsFan.kt" target="code">WsFan.kt</a></h5>
+			The implementation of the abstract class <em>Fan</em> for the virtual fan. As specified in the first sprint, the virtual server receives JSON messages over the WebSocket like:
+			<pre>{"data":"ON"}</pre>
+			or
+			<pre>{"data":"OFF"}</pre>
+			in order to power on or off the fan.
+		</td>
+		<td style="padding-left:10px">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicfan/FanFactory.kt" target="code">FanFactory.kt</a> </h5>
+			A <a href="https://en.wikipedia.org/wiki/Factory_(object-oriented_programming)" target="web">Factory Interface</a> for the fan that let the <em>DeviceManager</em> to quickly obtain an instance of a <em>Fan</em> type.
+			The <span style="font-family:Courier New, Courier">create()</span> method has three parameter:
+			<ul>
+				<li>the <ks>id</ks> of the device;</li>
+				<li>the <ks>type</ks> of the fan (only <span style="font-family:Courier New, Courier">VIRTUAL</span> at the moment);</li>
+				<li>the <ks>address</ks> for the virtual fan.</li>
+			</ul>
+		</td>
+	</tr>
+	</table><br/><br/>
+	This package is used by the actor <em>fanactor</em> in order to make the fan an <ks>IoT device</ks> callable via TCP by the QAK-Actor interaction mechanisms.
+	<center style="padding:10px 10px 10px 10px"><img src="img/fan_actor.png" style="max-width:100%"/></center>
+	As we can see from the image, the <em>fanactor</em>:
+	<ul>
+		<li>has an object <em>Fan</em> obtained by the <em>FanFactory</em> interface when the actor is initialized;</li>
+		<li>has a variable <em>FanState</em> in order to mantain the state of the fan.</li>
+	</ul>
+	Then , in the state <em>work</em>, the actor saves the current state of the fan using the <em>CoAP</em> protocol embedded in the QAK-System, like the thermomether. The state is saved as a JSON string like:
+	<pre>{"data":"ON"}</pre>
+	or
+	<pre>{"data":"OFF"}</pre>
+	So, the <k>the fan can be powered on or off simply sending messages to the fanactor</k> that, according to the message, transits into <em>poweron</em> or <em>poweroff</em> states. Both of these states send the relevant command to the physical device and then the actor returns to <em>work</em> state, in which the CoAP fan resource is updated.
+	
+</div>
+
+<div id="fan" class="remark">
+	<h3>Sonar</h3>
+	<h4>Package <a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.basicdevices/src/it/unibo/basicsonar" target="web"><em>it.unibo.basicsonar</em></a></h4>
+	From the analysis, the sonar is a device that can be used to check the presence of a car into the outdoor area. First of all, we need some classes to manage the physical device (or virtual):
+	<center style="padding:10px 10px 10px 10px"><img src="img/sonar_UML.png" style="max-width:100%"/></center>
+	<table>
+	<tr>
+		<td style="padding:10px 10px 10px 10px" width="50%">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicsonar/Sonar.kt" target="code">Sonar.kt</a></h5>
+			This abstract class defines the behavior of a sonar. In the <i>low-level view</i>, the sonar is a device to make a request to measure the distance, then this is the reason of the abstract methods <span style="font-family:Courier New, Courier">readDistance()</span>. The implementation of this method depends by the realization and the API of the physical sonar.<br/>
+			Like the thermometer, also this device as his own configuration file located at <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/configs/sonar.conf" target="code"><i>config/sonar.conf</i></a> in JSON format that contains the value of <span style="font-family:Courier New, Courier">THESHOLD_DISTANCE</span>: <k>if the sonar read a distance less that this, it means that the outdoor area is occupied</k>.
+		</td>
+		<td style="padding-left:10px">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicsonar/SonarType.kt" target="code">SonarType.kt</a></h5>
+			This enum represents the <k>type of the sonar</k> that will be used by a factory interface; for this device is provided not only the virtual type, but also a Raspberry and Arduino support, thanks to the software shown in the analysis and given by the consumer.
+		</td>
+	</tr>
+	<tr>
+		<td style="padding:10px 10px 10px 10px" width="50%">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicsonar/ArduinoSonar.kt" target="code">ArduinoSonar.kt</a></h5>
+			The implementation of the abstract class <em>Sonar</em> for the physical sonar connected to Arduino. Arduino must also be connected to a computer or a Raspberry, then this Kotlin class communicate with him thanks to the <a href="https://www.arduino.cc/reference/en/language/functions/communication/serial/" target="web">Arduino Serial</a> and the C program <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/resources/ArduinoSonarAlone.c" target="code"><em>ArduinoSonarAlone.c</em></a>, that must be compilated and executed on Arduino: the C program and the Kotlin class can communicate thanks to the Serial Port.
+			In order to use this type of sonar, the file <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/configs/devices.conf" target="code"><i>config/devices.conf</i></a> must have only this entry for sonar:
+			<pre style="white-space: pre-wrap;">{"device":"sonar", "id":"outsonar", "type":"sp_arduino", "address":"/dev/ttyUSB0", "echo":"17", "trig":"27"}</pre>in which:
+			<ul>
+				<li><ks>address</ks> must contain the address of the serial port;</li>
+				<li><ks>echo</ks> is the echo pin of the sonar, relative to the Arduino Board;</li>
+				<li><ks>trig</ks> is the trig pin of the sonar, relative to the Arduino Board.</li>
+			</ul>
+		</td>
+		<td style="padding-left:10px">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicsonar/CPiSonar.kt" target="code">CPiSonar.kt</a></h5>
+			The implementation of the abstract class <em>Sonar</em> for the physical sonar connected to Raspberry. This Kotlin class can <i>directly</i>be in execution on Raspberry and communicate with the sonar thanks to the C program <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/resources/PiSonarAlone.c" target="code">PiSonarAlone.c</a>. There is no needed to previously execute the PiSonarAlone: the Kotlin class automatically start the executable and cooperate with it.
+			In order to have a better efficiency, the original SonarAlone given by the consumer has been modified with some shrewdness, using the Unix Signal, as said into the analysis.
+			In order to use this type of sonar, the file <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/configs/devices.conf" target="code"><i>config/devices.conf</i></a> must have only this entry for sonar:
+			<pre style="white-space: pre-wrap;">{"device":"sonar", "id":"outsonar", "type":"c_pi", "echo":"17", "trig":"27"}</pre>in which:
+			<ul>
+				<li><ks>echo</ks> is the echo pin of the sonar, relative to the Raspberry Board (WiringPi numeration);</li>
+				<li><ks>trig</ks> is the trig pin of the sonar, relative to the Raspberry Board (WiringPi numeration).</li>
+			</ul>
+		</td>
+	</tr>
+	<tr>
+		<td style="padding:10px 10px 10px 10px" width="50%">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicsonar/WsSonar.kt" target="code">WsSonar.kt</a></h5>
+			The implementation of the abstract class <em>Sonar</em> for the virtual sonar. As specified in the first sprint, the virtual server sends JSON messages over the WebSocket like:
+			<pre>{"data":"25"}</pre>
+			in order to give the distance measured by the virtual device.
+		</td>
+		<td style="padding-left:10px">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicsonar/SonarFactory.kt" target="code">SonarFactory.kt</a> </h5>
+			A <a href="https://en.wikipedia.org/wiki/Factory_(object-oriented_programming)" target="web">Factory Interface</a> for the sonar that let the <em>DeviceManager</em> to quickly obtain an instance of a <em>Sonar</em> type.
+			The <span style="font-family:Courier New, Courier">create()</span> method has five parameter:
+			<ul>
+				<li>the <ks>id</ks> of the device;</li>
+				<li>the <ks>type</ks> of the sonar (permitted <span style="font-family:Courier New, Courier">VIRTUAL</span>, <span style="font-family:Courier New, Courier">C_PI</span> - for Raspberry - and <span style="font-family:Courier New, Courier">SP_ARDUINO</span> - for Arduino - at the moment);</li>
+				<li>the <ks>address</ks> for the virtual sonar or of the serial port for Arduino;</li>
+				<li>the <ks>echo pin</ks> for Raspberry or Arduino sonar;</li>
+				<li>the <ks>trigger pin</ks> for Raspberry or Arduino sonar.</li>
+			</ul>
+			Notice that if the configured sonar is a <span style="font-family:Courier New, Courier">C_PI</span>, the Factory <k>automatically search and compile the executable</k> of PiSonarAlone.
+		</td>
+	</tr>
+	</table><br/><br/>
+	This package is used by the actor <em>sonaractor</em> in order to make the sonar an <ks>IoT device</ks> callable via TCP by the QAK-Actor interaction mechanisms.
+	<center style="padding:10px 10px 10px 10px"><img src="img/sonar_actor.png" style="max-width:100%"/></center>
+	As we can see from the image, the <em>fanactor</em>:
+	<ul>
+		<li>has an object <em>Sonar</em> obtained by the <em>FanFactory</em> interface when the actor is initialized;</li>
+	</ul>
+	Then , in the state <em>work</em>, the actor saves the current state of the fan using the <em>CoAP</em> protocol embedded in the QAK-System, like the thermomether. The state is saved as a JSON string like:
+	<pre>{"data":"ON"}</pre>
+	or
+	<pre>{"data":"OFF"}</pre>
+	So, the <k>the fan can be powered on or off simply sending messages to the fanactor</k> that, according to the message, transits into <em>poweron</em> or <em>poweroff</em> states. Both of these states send the relevant command to the physical device and then the actor returns to <em>work</em> state, in which the CoAP fan resource is updated.
+	
 </div>
 
 

@@ -21,6 +21,15 @@ import java.io.File
 import java.util.concurrent.locks.ReentrantLock
 import org.json.JSONException
 
+/**
+ * A singleton class used by the others entities to obtain a certain device.
+ * This class is thread-safe.
+ *
+ * The constructor of this singleton parses the JSON configuration file and builds all presented devices.
+ * The file must be located in 'configs/devices.conf' and every line contains a
+ * JSON entry that represents the device.
+ * All entry must have the two keys <b>device</b> and <b>id</b>.
+ */
 object DeviceManager {
 	
 	@JvmStatic val CONFIG_FILE = "configs/devices.conf"
@@ -82,7 +91,15 @@ object DeviceManager {
 			println("DeviceManager | All devices has been loaded")
 		} finally {lock.unlock()}
 	}
-	
+
+	/**
+	 * This function can be used by the other entities to obtain a certain device from its [id].
+	 * Obviously, the requested device must be present in the configuration file with the correct
+	 * sintax.
+	 * @param id the id of the requested device
+	 * @return the requested device if present correctly in the configuration file,
+	 * null otherwise
+	 */
 	fun requestDevice(id : String) : AbstractDevice? {
 		lock.lock()
 		try {

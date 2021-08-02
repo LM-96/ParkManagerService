@@ -21,7 +21,7 @@ class Sonaractor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 				var STATE : String
 				var JSONSTATE : String
 				var POLLING_TIME : Long = 1000
-				var MIN_DISTANCE = 300
+				var THESHOLD_DISTANCE = it.unibo.basicsonar.Sonar.getThesholdDistance()
 				val sonar = it.unibo.basicdevices.DeviceManager.requestDevice("outsonar")
 				
 				if(sonar == null) {
@@ -32,7 +32,7 @@ class Sonaractor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 				sonar as it.unibo.basicsonar.Sonar
 				
 				DISTANCE = sonar.readDistance()
-				if(DISTANCE > MIN_DISTANCE) STATE="off"
+				if(DISTANCE > THESHOLD_DISTANCE) STATE="off"
 				else STATE = "on"
 				
 				JSONSTATE = "{\"data\":\"$DISTANCE\",\"state\":\"$STATE\"}"
@@ -66,11 +66,11 @@ class Sonaractor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 						 
 									DISTANCE = sonar.readDistance()
 									
-									if(STATE.equals("off") && DISTANCE < MIN_DISTANCE) {
+									if(STATE.equals("off") && DISTANCE < THESHOLD_DISTANCE) {
 										STATE = "on"
 						emit("sonaron", "sonaron(ON)" ) 
 						
-									} else if(STATE.equals("on") && DISTANCE > MIN_DISTANCE) {
+									} else if(STATE.equals("on") && DISTANCE > THESHOLD_DISTANCE) {
 										STATE = "off"
 										
 						emit("sonaroff", "sonaroff(OFF)" ) 

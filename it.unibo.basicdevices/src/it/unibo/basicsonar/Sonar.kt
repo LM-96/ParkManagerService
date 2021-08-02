@@ -10,7 +10,7 @@ abstract class Sonar(id : String) : AbstractDevice(DeviceType.SONAR, id) {
 	
 	companion object {
 		@JvmStatic private val CONFIG_FILE = "configs/sonar.conf"
-		@JvmStatic private var MIN_DISTANCE = 1000
+		@JvmStatic private var THESHOLD_DISTANCE = 100
 		
 		init {
 			val configFilePath = Paths.get(CONFIG_FILE)
@@ -25,11 +25,15 @@ abstract class Sonar(id : String) : AbstractDevice(DeviceType.SONAR, id) {
 			println("Sonar | Config file opened")
 			
 			val json = JSONObject(reader.readLine())
-			if(json.has("mindist")) {
-				MIN_DISTANCE = json.getInt("mindist")
-				println("Sonar | Found configuration for min distance [$MIN_DISTANCE]")
+			if(json.has("thesholddist")) {
+				THESHOLD_DISTANCE = json.getInt("thesholddist")
+				println("Sonar | Found configuration for max distance [$THESHOLD_DISTANCE]")
 			}
-			else println("Sonar | No configuration for min distance: using default value [$MIN_DISTANCE]")
+			else println("Sonar | No configuration for min distance: using default value [$THESHOLD_DISTANCE]")
+		}
+		
+		fun getThesholdDistance() : Int {
+			return THESHOLD_DISTANCE
 		}
 	}
 	
