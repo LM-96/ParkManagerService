@@ -211,6 +211,7 @@ div.imagedesc{
 		</ul>
 	</li>
 	<li><a href="#testing">Testing</a></li>
+	<li><a href="#deployment">Deployment</a></li>
 	
 </ol>
 
@@ -373,7 +374,7 @@ div.imagedesc{
 	<center style="padding:10px 10px 10px 10px"><img src="img/thermometer_actor.png" style="max-width:100%"/></center>
 	As we can see from the image, the <em>thermometeractor</em>:
 	<ul>
-		<li>has an object <em>Thermometer</em> obtained by the <em>ThermometerFactory</em> interface when the actor is initialized;</li>
+		<li>has an object <em>Thermometer</em> obtained by the <em>DeviceManager</em> interface when the actor is initialized;</li>
 		<li>has a variable <em>TemperatureState</em> in order to mantain the state of the temperature.</li>
 	</ul>
 	To obtain the thermometer of the system, the actor must call:
@@ -442,7 +443,7 @@ div.imagedesc{
 	<center style="padding:10px 10px 10px 10px"><img src="img/fan_actor.png" style="max-width:100%"/></center>
 	As we can see from the image, the <em>fanactor</em>:
 	<ul>
-		<li>has an object <em>Fan</em> obtained by the <em>FanFactory</em> interface when the actor is initialized;</li>
+		<li>has an object <em>Fan</em> obtained by the <em>DeviceManager</em> interface when the actor is initialized;</li>
 		<li>has a variable <em>FanState</em> in order to mantain the state of the fan.</li>
 	</ul>
 	Then , in the state <em>work</em>, the actor saves the current state of the fan using the <em>CoAP</em> protocol embedded in the QAK-System, like the thermomether. The state is saved as a JSON string like:
@@ -453,7 +454,7 @@ div.imagedesc{
 	
 </div>
 
-<div id="fan" class="remark">
+<div id="outsonar" class="remark">
 	<h3>Sonar</h3>
 	<h4>Package <a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.basicdevices/src/it/unibo/basicsonar" target="web"><em>it.unibo.basicsonar</em></a></h4>
 	From the analysis, the sonar is a device that can be used to check the presence of a car into the outdoor area. First of all, we need some classes to manage the physical device (or virtual):
@@ -463,7 +464,7 @@ div.imagedesc{
 		<td style="padding:10px 10px 10px 10px" width="50%">
 			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicsonar/Sonar.kt" target="code">Sonar.kt</a></h5>
 			This abstract class defines the behavior of a sonar. In the <i>low-level view</i>, the sonar is a device to make a request to measure the distance, then this is the reason of the abstract methods <span style="font-family:Courier New, Courier">readDistance()</span>. The implementation of this method depends by the realization and the API of the physical sonar.<br/>
-			Like the thermometer, also this device as his own configuration file located at <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/configs/sonar.conf" target="code"><i>config/sonar.conf</i></a> in JSON format that contains the value of <span style="font-family:Courier New, Courier">THESHOLD_DISTANCE</span>: <k>if the sonar read a distance less that this, it means that the outdoor area is occupied</k>.
+			Like the thermometer, also this device as his own configuration file located at <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/configs/sonar.conf" target="code"><i>config/sonar.conf</i></a> in JSON format that contains the value of <span style="font-family:Courier New, Courier">THESHOLD_DISTANCE</span>: <k>if the sonar read a distance less than this, it means that the outdoor area is occupied</k>.
 		</td>
 		<td style="padding-left:10px">
 			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicsonar/SonarType.kt" target="code">SonarType.kt</a></h5>
@@ -482,7 +483,7 @@ div.imagedesc{
 				<li><ks>trig</ks> is the trig pin of the sonar, relative to the Arduino Board.</li>
 			</ul>
 		</td>
-		<td style="padding-left:10px">
+		<td style="padding:10px 10px 10px 10px">
 			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicsonar/CPiSonar.kt" target="code">CPiSonar.kt</a></h5>
 			The implementation of the abstract class <em>Sonar</em> for the physical sonar connected to Raspberry. This Kotlin class can <i>directly</i>be in execution on Raspberry and communicate with the sonar thanks to the C program <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/resources/PiSonarAlone.c" target="code">PiSonarAlone.c</a>. There is no needed to previously execute the PiSonarAlone: the Kotlin class automatically start the executable and cooperate with it.
 			In order to have a better efficiency, the original SonarAlone given by the consumer has been modified with some shrewdness, using the Unix Signal, as said into the analysis.
@@ -499,9 +500,9 @@ div.imagedesc{
 			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicsonar/WsSonar.kt" target="code">WsSonar.kt</a></h5>
 			The implementation of the abstract class <em>Sonar</em> for the virtual sonar. As specified in the first sprint, the virtual server sends JSON messages over the WebSocket like:
 			<pre>{"data":"25"}</pre>
-			in order to give the distance measured by the virtual device.
+			in order to give the distance measured by the virtual device in centimeters.
 		</td>
-		<td style="padding-left:10px">
+		<td style="padding:10px 10px 10px 10px">
 			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicsonar/SonarFactory.kt" target="code">SonarFactory.kt</a> </h5>
 			A <a href="https://en.wikipedia.org/wiki/Factory_(object-oriented_programming)" target="web">Factory Interface</a> for the sonar that let the <em>DeviceManager</em> to quickly obtain an instance of a <em>Sonar</em> type.
 			The <span style="font-family:Courier New, Courier">create()</span> method has five parameter:
@@ -520,16 +521,145 @@ div.imagedesc{
 	<center style="padding:10px 10px 10px 10px"><img src="img/sonar_actor.png" style="max-width:100%"/></center>
 	As we can see from the image, the <em>fanactor</em>:
 	<ul>
-		<li>has an object <em>Sonar</em> obtained by the <em>FanFactory</em> interface when the actor is initialized;</li>
+		<li>has an object <em>Sonar</em> obtained by the <em>DeviceManager</em> interface when the actor is initialized;</li>
 	</ul>
-	Then , in the state <em>work</em>, the actor saves the current state of the fan using the <em>CoAP</em> protocol embedded in the QAK-System, like the thermomether. The state is saved as a JSON string like:
-	<pre>{"data":"ON"}</pre>
-	or
-	<pre>{"data":"OFF"}</pre>
-	So, the <k>the fan can be powered on or off simply sending messages to the fanactor</k> that, according to the message, transits into <em>poweron</em> or <em>poweroff</em> states. Both of these states send the relevant command to the physical device and then the actor returns to <em>work</em> state, in which the CoAP fan resource is updated.
+	About the QAK-interaction, instead:
+	<table>
+	<tr>
+		<td style="padding:10px 10px 10px 10px" width="50%">
+			<h5 style="padding-left:10px">dopolling : dopolling(POLLING_TIME)</h5>
+			This message can be used from the other actors in order to <ks>activate the polling</ks> on the sonar. When the <em>sonaractor</em> receives this message, he transit first into <em>setpolling</em> state, in which he parse the <span style="font-family:Courier New, Courier">POLLING_TIME</span> argument received from the dopolling message, then he go to <em>polling</em> state in which he read the distance from the sonar and update his CoAP state. In this state, the actor can also emits the two events <em>sonaron</em> and <em>sonaroff</em>
+		</td>
+		<td style="padding-left:10px">
+			<h5 style="padding-left:10px">stoppolling : stoppolling(X)</h5>
+			This message can be used from the other actors to <ks>disable the polling</ks> on the sonar.
+		</td>
+	</tr>
+	<tr>
+		<td style="padding:10px 10px 10px 10px" width="50%">
+			<h5 style="padding-left:10px">sonaron : sonaron(ON)</h5>
+			This event can be emitted by the <em>sonaractor</em> when he is in the state <em>polling</em>. When it is emitted, it means that the sonar has detected the presence of someone (then, a measured distance less than theshold).
+			The use of the event instead of message is very helpful to decuple as possibile the actor from who is interested to handle this event. In addition to this, the events can be handled from more than one actor then, who is interested, can simply manage the event.
+		</td>
+		<td style="padding:10px 10px 10px 10px">
+			<h5 style="padding-left:10px">sonaroff : sonaroff(OFF)</h5>
+			This event can be emitted by the <em>sonaractor</em> when he is in the state <em>polling</em>. When it is emitted, it means that there is no one left over the sonar (then, a measured distance greater than theshold).
+		</td>
+	</tr>
+	</table><br/><br/>
+	This <i>enable/disable polling</i> mechanism is very efficient because of <k>it is not necessary that the actor continuously do polling on the sonar</k> but it is only needed to do only in certain periods of time (for example, in the outdoor, when an user has requested to pickup the car).
+	
+	Then , in the state <em>polling</em>, the actor saves the current state of the sonar using the <em>CoAP</em> protocol embedded in the QAK-System, like the thermomether. The state is saved as a JSON string like:
+	<pre>{"data":"100", "state":"on"}</pre>
+	in which <ks>data</ks> is the measured distance (cm) and <ks>state</ks> indicate if the sonar detects the presence of someone (on) or not (off).
 	
 </div>
 
+<div id="inweightsensor" class="remark">
+	<h3>Weight Sensor</h3>
+	<h4>Package <a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.basicdevices/src/it/unibo/basicweightsensor" target="web"><em>it.unibo.basicweightsensor</em></a></h4>
+	From the analysis, the weight sensor is a device that can be used to check the presence of a car into the indoor area. First of all, we need some classes to manage the physical device (or virtual):
+	<center style="padding:10px 10px 10px 10px"><img src="img/weightsensor_UML.png" style="max-width:100%"/></center>
+	<table>
+	<tr>
+		<td style="padding:10px 10px 10px 10px" width="50%">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicweightsensor/WeightSensor.kt" target="code">WeightSensor.kt</a></h5>
+			This abstract class defines the behavior of a weight sensor. In the <i>low-level view</i>, the weight is a device to make a request to measure the weight on, then this is the reason of the abstract methods <span style="font-family:Courier New, Courier">readWeight()</span>. The implementation of this method depends by the realization and the API of the physical weight sensor.<br/>
+			Like the thermometer, also this device as his own configuration file located at <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/configs/weightsensor.conf" target="code"><i>config/weightsensor.conf</i></a> in JSON format that contains the value of <span style="font-family:Courier New, Courier">MIN_WEIGHT</span>: <k>if the sensor read a weight greater than this, it means that the indoor area is occupied</k>.
+		</td>
+		<td style="padding-left:10px">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicweightsensor/WeightSensorType.kt" target="code">WeightSensorType.kt</a></h5>
+			This enum represents the <k>type of the weight sensor</k> that will be used by a factory interface; for this device is provided not only the virtual type, but also a <i>fake sonar</i> type, which is a sonar that emulates a weight sensor.
+		</td>
+	</tr>
+	<tr>
+		<td style="padding:10px 10px 10px 10px" width="50%">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicweightsensor/WsWeightSensor.kt" target="code">WsWeightSensor.kt</a></h5>
+			The implementation of the abstract class <em>WeightSensor</em> for the virtual weight sensor. As specified in the first sprint, the virtual server sends JSON messages over the WebSocket like:
+			<pre>{"data":"5"}</pre>
+			in order to give the weight measured by the virtual device in tons.
+		</td>
+		<td style="padding:10px 10px 10px 10px">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicweightsensor/SonarFakeWeightSensor.kt" target="code">SonarFakeWeightSensor.kt</a></h5>
+			The implementation of the abstract class <em>WeightSensor</em> for the physical sonar that emulates a weight sensor. This class let to use a sonar instead of a real weight sensor: <span style="font-family:Courier New, Courier">EXTIMATED_CAR_WEIGHT</span> is the weight returned by this fake sensor when the sonar detects a distance less than threashold (it means that someone is over the sensor).
+			In order to use this type of weight sensor, the file <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/configs/weightsensor.conf" target="code"><i>config/weightsensor.conf</i></a> must have only this entry for weight sensor:
+			<pre style="white-space: pre-wrap;">{"device":"weight_sensor", "id":"indoor sensor", "type":"sonar_fake_ws", "sonar":{"device":"sonar", "id":"fake_ws", "type":"virtual", "address":"ws://localhost:8000/ws/sonar/"}, "treshold":"100"}</pre>in which:
+			<ul>
+				<li><ks>sonar</ks> is the sonar used as a fake weight-sensor; this JSON object must has the same sintax used by the previous sonars;</li>
+			</ul>
+		</td>
+	</tr>
+	<tr>
+		<td style="padding:10px 10px 10px 10px" colspan="2">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/it/unibo/basicweightsensor/WeightSensorFactory.kt" target="code">WeightSensorFactory.kt</a> </h5>
+			A <a href="https://en.wikipedia.org/wiki/Factory_(object-oriented_programming)" target="web">Factory Interface</a> for the weight sensor that let the <em>DeviceManager</em> to quickly obtain an instance of a <em>Weight Sensor</em> type.
+			The <span style="font-family:Courier New, Courier">create()</span> method has five parameter:
+			<ul>
+				<li>the <ks>id</ks> of the device;</li>
+				<li>the <ks>type</ks> of the weight sensor (permitted <span style="font-family:Courier New, Courier">VIRTUAL</span>, <span style="font-family:Courier New, Courier">SONAR_FAKE_WS</span> at the moment);</li>
+				<li>the <ks>address</ks> for the virtual weight sensor;</li>
+				<li>the <ks>sonar</ks> for the sonar fake weight sensor;</li>
+				<li>the <ks>theshold</ks> for the distance of the sonar fake weight sensor.</li>
+			</ul>
+		</td>
+	</tr>
+	</table><br/><br/>
+	This package is used by the actor <em>weightsensoractor</em> in order to make the weight sensor an <ks>IoT device</ks> callable via TCP by the QAK-Actor interaction mechanisms.
+	<center style="padding:10px 10px 10px 10px"><img src="img/weightsensor_actor.png" style="max-width:100%"/></center>
+	As we can see from the image, the <em>weightsensoractor</em>:
+	<ul>
+		<li>has an object <em>WeightSensor</em> obtained by the <em>DeviceManager</em> interface when the actor is initialized;</li>
+	</ul>
+	About the QAK-interaction, instead, the protocol is the same of the sonar: the messages type <em>dopolling(POLLING_TIME)</em> and <em>stoppolling(X)</em> can be used to activate/deactivate the polling while the events <em>weighton(X)</em> and <em>weightoff(X)</em> were emitted by the actor when the sensor detects the presence or not of someone over the sensor while he is in the <em>polling</em> state (see <a href="#outsonar">Sonar</a>).
+	
+	Then , in the state <em>polling</em>, the actor saves the current state of the weight sensor using the <em>CoAP</em> protocol embedded in the QAK-System, like the thermomether. The state is saved as a JSON string like:
+	<pre>{"data":"1", "state":"on"}</pre>
+	in which <ks>data</ks> is the measured weight (ton) and <ks>state</ks> indicate if the weight sensor detects the presence of someone (on) or not (off).
+	
+</div>
+
+<h2 id="testing">Testing</h2>
+<div class="remark">
+In order to test this device environment, we decided to exploit the distributed architecture of the QAK, then we will use the virtual devices, CoAP and Python to test the system.
+The procedure is the same for all devices:
+<pre>
+let STATE = &#60 a certain possible state for the resource &#62 ;
+inject STATE to the virtual device by sending it with proper format on the relative Websocket;
+send proper message to the actor;
+request the state to the actor via CoAP request;
+let JR = the state received by CoAP;
+assert JR == STATE;
+</pre>
+<h4><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.webServerTest/src/devices_pytest.py" target="code">devices_pytest.py</a></h4>
+</div>
+
+<h2 id="deployment">Deployment</h2>
+<div class="remark">
+We decide to deploy the device system by simply using <em>gradle distZip</em> command. Then, the result of the deployment is a <ks>zip file</ks> <a href="https://github.com/LM-96/ParkManagerService/blob/main/distrib/it.unibo.basicdevices-1.0.zip" target="web"><em>it.unibo.basicdevices-1.0.zip</em></a> that contains a <ks>bin</ks> directory with the executables.
+To start the system:
+<ul>
+	<li><ks>Windows</ks>: open a Command Prompt, set working directory to <em>bin</em>, run <em>it.unibo.basicdevices.bat</em>;</li>
+	<li><ks>Unix</ks>: open a Bash Shell, set working directory to <em>bin</em>, run <em>bash it.unibo.basicdevices</em>.</li>
+</ul>
+Notice that the default configuration is made with the virtual device, so it is necessary to previously start the virtual server.
+</div>
+
+<h2>Final results of this sprint</h2>
+<div class="remark">
+	<table>
+		<tr><td width="60%"><h3><b>Logical Architecture</b></h3></td><td><h3><b>Resources</b></h3></td></tr>
+		<tr>
+			<td width="60%"><center style="padding:10px 10px 10px 10px"><img src="img/logical_arch_0.png" style="max-width:100%;padding:2px 2px 2px 2px" /></center></td>
+			<td>
+				<h4>Executable QAK Model</h4>
+				<a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.parkmanagerservice/src/parkmanagerservice_2.1.qako" target="code"><em>parkmanagerservice_2.1.qak</em></a><br/><br/>
+				<h4>Test Files</h4>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/FirstTestPlan.java" target="code"><em>FirstTestPlan.java</em></a>
+				
+			</td>
+		</tr>
+	</table>
+</div>
 
 
 <div style="background-color:rgba(86, 56, 253, 0.9); width:60%;text-align:center;color:white; margin: auto">

@@ -143,7 +143,7 @@ object DeviceManager {
 		val res = WeightSensorFactory.create(json.getString("id"),
 				WeightSensorType.valueOf(json.getString("type").toUpperCase()),
 				if(json.has("address")) json.getString("address") else null, sonar,
-				if(json.has("treshold")) json.getInt("treshold") else null)
+				if(json.has("teshold")) json.getInt("teshold") else null)
 		
 		if(res != null) println("   -> Weight Sensor correcty loaded")
 		else println("   -> unable to load Weight Sensor [config=${json.toString()}]")

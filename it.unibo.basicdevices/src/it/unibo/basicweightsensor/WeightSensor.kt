@@ -31,6 +31,10 @@ abstract class WeightSensor(id : String) : AbstractDevice(DeviceType.WEIGHT_SENS
 			}
 			else println("WeightSensor | No configuration for weight sensor: using default value [$MIN_WEIGHT]")
 		}
+		
+		fun getMinWeight() : Double {
+			return MIN_WEIGHT
+		}
 	}
 	
 	abstract fun readWeight() : Double

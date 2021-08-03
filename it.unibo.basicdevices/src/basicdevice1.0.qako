@@ -1,0 +1,249 @@
+System basicdevices
+
+//MESSAGES DEFINITION ****************************************************/
+//-Thermometer
+Dispatch updatethermometerstate : updatethermometerstate(X)
+Event criticaltemp : criticaltemp(X)
+//-Fan
+Dispatch fanon : fanon(X)
+Dispatch fanoff : fanoff(X)
+//Sonar
+Event sonaron : sonaron(X)
+Event sonaroff : sonaroff(X)
+//WeightSensor
+Event weighton : weighton(X)
+Event weightoff : weightoff(X)
+
+
+Dispatch dopolling : dopolling(TIME)
+Dispatch stoppolling : stoppolling(X)
+
+//CONTEXTS ***************************************************************/
+Context ctxthermometer ip[host="localhost" port=8001]
+Context ctxfan ip[host="localhost" port=8002]
+Context ctxsonar ip[host="localhost" port=8003]
+Context ctxweightsensor ip[host="localhost" port=8004]
+
+QActor thermometeractor context ctxthermometer {
+	
+	//Aggiungere lancio evento quando raggiunta temperatura
+	
+	[# 	val thermometer = it.unibo.basicdevices.DeviceManager.requestDevice("thermometer")
+		
+		if(thermometer == null) {
+			println("$name | unable to use the thermometer")
+			System.exit(-1)
+		}
+		
+		thermometer as it.unibo.basicthermometer.Thermometer
+		var temp = 0.0
+		var tempState = `it.unibo.basicthermometer`.TemperatureState.NORMAL
+		val POLLING_TIME = it.unibo.basicthermometer.Thermometer.getPollingMillis()
+		val CRITICAL_TEMP = it.unibo.basicthermometer.Thermometer.getCriticalTemp()
+		var JSON : String
+	#]
+	
+	State s0 initial {
+		println("$name | started")
+	} Goto work
+	
+	State work {
+		[# 
+			temp = thermometer.readTemperature()
+			JSON = "{\"data\":\"${temp}\"}"
+			if(temp >= CRITICAL_TEMP
+				&& tempState == `it.unibo.basicthermometer`.TemperatureState.NORMAL) {
+					tempState = `it.unibo.basicthermometer`.TemperatureState.CRITICAL		
+		#]
+					emit criticaltemp : criticaltemp(CRITICAL)
+		[# } else if(temp < CRITICAL_TEMP
+				&& tempState == `it.unibo.basicthermometer`.TemperatureState.CRITICAL) {
+					tempState = `it.unibo.basicthermometer`.TemperatureState.NORMAL
+		#]
+					emit criticaltemp : criticaltemp(NORMAL)				
+		[# } #]
+		updateResource[# "$JSON" #]
+	} Transition t0
+		whenTimeVar POLLING_TIME -> work
+		whenMsg updatethermometerstate -> work
+}
+
+QActor fanactor context ctxfan {
+	
+	[# 
+		val fan = it.unibo.basicdevices.DeviceManager.requestDevice("fan")
+		lateinit var STATE : it.unibo.basicfan.FanState
+		var JSON : String
+		
+		if(fan == null) {
+			println("$name | unable to use the fan")
+			System.exit(-1)
+		}
+		
+		fan as it.unibo.basicfan.Fan
+	#]
+	
+	State s0 initial {
+		println("$name | started")
+		[# 
+			fan.powerOff() 
+			STATE = `it.unibo.basicfan`.FanState.OFF
+		#]
+	} Goto work
+	
+	State work {
+		[# JSON = "{\"data\":\"${STATE}\"}"#]
+		updateResource[# STATE.toString() #]
+		println("$name | fan state : ${STATE.toString()}")
+	} Transition t0
+		whenMsg fanon -> poweron
+		whenMsg fanoff -> poweroff
+	
+	State poweron {
+		[# 	fan.powerOn() 
+			STATE = `it.unibo.basicfan`.FanState.ON
+		#]
+	} Goto work
+	
+	State poweroff {
+		[# 	fan.powerOff()
+			STATE = `it.unibo.basicfan`.FanState.OFF
+		#]
+	} Goto work
+	
+}
+
+QActor sonaractor context ctxsonar {
+	
+	[# 
+		var DISTANCE : Int
+		var STATE : String
+		var JSONSTATE : String
+		var POLLING_TIME : Long = 1000
+		var THESHOLD_DISTANCE = it.unibo.basicsonar.Sonar.getThesholdDistance()
+		val sonar = it.unibo.basicdevices.DeviceManager.requestDevice("outsonar")
+		
+		if(sonar == null) {
+			println("$name | unable to use the sonar")
+			System.exit(-1)
+		}
+		
+		sonar as it.unibo.basicsonar.Sonar
+		
+		DISTANCE = sonar.readDistance()
+		if(DISTANCE > THESHOLD_DISTANCE) STATE="off"
+		else STATE = "on"
+		
+		JSONSTATE = "{\"data\":\"$DISTANCE\",\"state\":\"$STATE\"}"
+	#]
+	
+	State s0 initial {
+		println("$name | started")
+		updateResource[# JSONSTATE #]
+	} Goto work
+	
+	State work {
+		println("$name | last state : ${JSONSTATE}")
+	} Transition t0
+		whenMsg dopolling -> setpolling
+		
+	State setpolling {
+		onMsg(dopolling : dopolling(X)) {
+			[# POLLING_TIME = payloadArg(0).toLong() #]
+		}
+		println("$name | started polling with time $POLLING_TIME")
+	} Goto polling
+	
+	State polling {
+		[# 
+			DISTANCE = sonar.readDistance()
+			
+			if(STATE.equals("off") && DISTANCE < THESHOLD_DISTANCE) {
+				STATE = "on"
+		#]
+				emit sonaron : sonaron(ON)
+		[#
+			} else if(STATE.equals("on") && DISTANCE > THESHOLD_DISTANCE) {
+				STATE = "off"
+				
+		#]
+				emit sonaroff : sonaroff(OFF)
+		[#
+			}
+			
+			JSONSTATE = "{\"data\":\"$DISTANCE\",\"state\":\"$STATE\"}"
+		#]
+		updateResource[# JSONSTATE #]
+	} Transition t0
+		whenTimeVar POLLING_TIME -> polling
+		whenMsg stoppolling -> work
+		whenMsg dopolling -> setpolling
+	
+}
+
+QActor weightsensoractor context ctxweightsensor {
+	
+	[# 
+		val sensor = it.unibo.basicdevices.DeviceManager.requestDevice("indoor sensor")
+		var WEIGHT : Double
+		var STATE = ""
+		var JSONSTATE = ""
+		var POLLING_TIME : Long = 1000
+		val MIN_WEIGHT = 0.1
+		
+		if(sensor == null) {
+			println("$name | unable to use the weight sensor")
+			System.exit(-1)
+		}
+		
+		sensor as it.unibo.basicweightsensor.WeightSensor
+		
+		WEIGHT = sensor.readWeight()
+		if(WEIGHT < MIN_WEIGHT)	STATE = "off"
+		else STATE = "on"
+		JSONSTATE = "{\"data\":\"$WEIGHT\",\"state\":\"$STATE\"}"
+	#]
+	
+	State s0 initial {
+		println("$name | started")
+		updateResource[# JSONSTATE #]
+	} Goto work
+	
+	State work {
+		println("$name | last state : ${JSONSTATE}")
+	} Transition t0
+		whenMsg dopolling -> setpolling
+		
+	State setpolling {
+		onMsg(dopolling : dopolling(X)) {
+			[# POLLING_TIME = payloadArg(0).toLong() #]
+		}
+		println("$name | started polling with time $POLLING_TIME")
+	}  Goto polling
+		
+	State polling {
+		[# 
+			WEIGHT = sensor.readWeight() 
+			
+			if(STATE.equals("off") && WEIGHT > MIN_WEIGHT) {
+				STATE = "on"
+		#]
+				emit weighton : weighton(ON)
+		[#
+			} else if(STATE.equals("on") && WEIGHT < MIN_WEIGHT) {
+				STATE = "off"
+				
+		#]
+				emit weightoff : weightoff(OFF)
+		[#
+			}
+			
+			JSONSTATE = "{\"data\":\"$WEIGHT\",\"state\":\"$STATE\"}"
+		#]
+		updateResource[# JSONSTATE #]
+	} Transition t0
+		whenTimeVar POLLING_TIME -> polling
+		whenMsg stoppolling -> work
+		whenMsg dopolling -> setpolling
+	
+}
