@@ -17,7 +17,7 @@ import it.unibo.parkimanagerservice.test.utils.TcpActorSpeaker;
 import it.unibo.parkingslot.ParkingSlotManager;
 import it.unibo.parkingslot.ParkingSlotState;
 import it.unibo.parkingslot.SimpleParkingSlotManager;
-import it.unibo.parkingstate.DoorState;
+import it.unibo.parkmanagerservice.bean.DoorState;
 import it.unibo.parkingstate.MockState;
 
 public class FirstTestPlan {

@@ -212,6 +212,7 @@ div.imagedesc{
 	</li>
 	<li><a href="#testing">Testing</a></li>
 	<li><a href="#deployment">Deployment</a></li>
+	<li><a href="#results">Final results of this sprint</a></li>
 	
 </ol>
 
@@ -630,7 +631,7 @@ request the state to the actor via CoAP request;
 let JR = the state received by CoAP;
 assert JR == STATE;
 </pre>
-<h4><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.webServerTest/src/devices_pytest.py" target="code">devices_pytest.py</a></h4>
+<h4><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.webServerTest/src/devices_pytest.py" target="code"><em>devices_pytest.py</em></a></h4>
 </div>
 
 <h2 id="deployment">Deployment</h2>
@@ -644,21 +645,26 @@ To start the system:
 Notice that the default configuration is made with the virtual device, so it is necessary to previously start the virtual server.
 </div>
 
-<h2>Final results of this sprint</h2>
+<h2 id="results">Final results of this sprint</h2>
 <div class="remark">
 	<table>
 		<tr><td width="60%"><h3><b>Logical Architecture</b></h3></td><td><h3><b>Resources</b></h3></td></tr>
 		<tr>
-			<td width="60%"><center style="padding:10px 10px 10px 10px"><img src="img/logical_arch_0.png" style="max-width:100%;padding:2px 2px 2px 2px" /></center></td>
-			<td>
+			<td width="60%"><center style="padding:10px 10px 10px 10px"><img src="img/logical_arch_2.png" style="max-width:100%;padding:2px 2px 2px 2px" /></center></td>
+			<td  style="padding:10px 10px 10px 10px">
 				<h4>Executable QAK Model</h4>
 				<a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.parkmanagerservice/src/parkmanagerservice_2.1.qako" target="code"><em>parkmanagerservice_2.1.qak</em></a><br/><br/>
 				<h4>Test Files</h4>
 				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/FirstTestPlan.java" target="code"><em>FirstTestPlan.java</em></a>
+				<h4>Basicdevice QAK Model</h4>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/basicdevice1.0.qako" target="code"><em>basicdevice1.0.qako</em></a><br/><br/>
+				<h4>Basicdevice Test Files</h4>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.webServerTest/src/devices_pytest.py" target="code"><em>devices_pytest.py</em></a>
 				
 			</td>
 		</tr>
-	</table>
+	</table><br/><br/>
+	We decide that the <em>trolley</em> will be mapped in a future sprint, maybe in the same context of the server. Then, <em>basicrobot</em>, is almost the equivalent of the actors of the device presented in the sprint for the robot, but he lives in his context.
 </div>
 
 

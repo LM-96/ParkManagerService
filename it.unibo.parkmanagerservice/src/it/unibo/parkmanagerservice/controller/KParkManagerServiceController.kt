@@ -1,6 +1,6 @@
 package it.unibo.parkmanagerservice.controller
 
-import it.unibo.parkingstate.DoorState
+import it.unibo.parkmanagerservice.bean.DoorState
 import it.unibo.parkmanagerservice.bean.*
 import it.unibo.parkmanagerservice.persistence.DoorQueue
 import it.unibo.parkmanagerservice.persistence.ParkingSlotRepository
@@ -109,11 +109,11 @@ class KParkManagerServiceController(
         var user : User? = null
         val queue = doorQueues.get(door)!!
         if(doors.getState(door) == DoorState.FREE && queue.remaining() > 0) {
-            user = doorQueues.get(door)!!.getNextUser()
+            user = doorQueues.get(door)!!.pullNextUser()
             val expectedState = UserState.getByDoorWanted(door)
 
             while(user!!.state != expectedState && queue.remaining() > 0)
-                user = queue.getNextUser()!!
+                user = queue.pullNextUser()!!
 
             if(user!!.state == expectedState) {
                 doors.reserveForUser(door, user!!)

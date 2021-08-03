@@ -1,5 +1,7 @@
 package it.unibo.parkingstate
 
+import it.unibo.parkmanagerservice.bean.DoorState
+
 interface StateReader {
 	
 	fun getOutdoorState() : DoorState

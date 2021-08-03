@@ -1,0 +1,497 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+<style type="text/css">
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+	font-size: 93%;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+	border-radius: 10px;
+	padding: 5px;
+}
+
+top {
+	width: 100%;
+}
+
+
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 90%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #abe876;
+    color: #1632cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 90%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+ks{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #0000CD	;
+	font-size: 90%;
+}
+kc{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #008000	;
+	font-size: 90%;
+}
+pre{
+	font-family: "Consolas";
+	font-size: 85%;
+	background-color: #f5f5f5;
+	border: 1.5px solid silver;
+	padding: 5px;
+}
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+	 
+    font-size: 18px;
+}
+k{
+    color: #990000;
+	font-weight: bold;
+	font-size: 90%;
+}
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+	padding: 10px;
+}
+
+h2 {
+    background-color: #9ed8ff;
+    font-size: 130%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 100%;
+}
+h4 {
+    background-color: #ccffcc;
+    font-size: 100%;
+	width: 95%;
+	border-radius: 5px;
+	padding: 2px;
+}
+h5 {
+    background-color: #d5ffb0;
+    font-size: 100%;
+
+}
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}
+div.remark{
+	background-color: #E3F2FD;
+    border: 1.5px solid #d5f2ed;
+    padding: 15px;
+    margin: 10px;
+	border-radius: 25px;
+}
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+ol, ul, li {
+  margin: 0;
+  margin-left: 10px;
+  padding: 0;
+  padding-bottom: 5px;
+}
+
+table, th, td {
+	border: 1px solid black;
+}
+
+img {
+	border: 1.5px solid #d5f2ed
+
+}
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+div.wrapdesc{
+	width: 90%;
+	margin: auto;
+}
+
+div.imagedesc{
+	width: 85%;
+	margin: auto;
+}
+</style>
+    
+<head>
+   
+<title>SPRINT 3: State Maintenance</title></head>
+    
+<body>
+<div id="top">
+<h1>SPRINT 3: State Maintenance (<em>it.unibo.parkmanagerservice.persistence</em> Package) <font size="5"></font> </h1>
+</div>  
+
+<div class="body"> 
+<ol>
+	<li><a href="#lastarch">Last Architecture and aim of this sprint</a></li>
+	<li><a href="#intro">Introduction</a></li>
+	<li><a href="#bean">Bean classes</a></li>
+	<li><a href="#persistence">Persistence classes</a></li>
+	<li><a href="#testing">Testing</a></li>
+	<li><a href="#results">Final results of this sprint</a></li>
+	
+</ol>
+
+<h2 id="lastarch">Last Architecture and aim of this sprint</h2>
+<div class="remark">
+	<table>
+		<tr><td width="60%"><h3><b>Logical Architecture</b></h3></td><td><h3><b>Resources</b></h3></td></tr>
+		<tr>
+			<td width="60%"><center style="padding:10px 10px 10px 10px"><img src="img/logical_arch_2.png" style="max-width:100%;padding:2px 2px 2px 2px" /></center></td>
+			<td  style="padding:10px 10px 10px 10px">
+				<h4>Executable QAK Model</h4>
+				<a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.parkmanagerservice/src/parkmanagerservice_2.1.qako" target="code"><em>parkmanagerservice_2.1.qak</em></a><br/><br/>
+				<h4>Test Files</h4>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/FirstTestPlan.java" target="code"><em>FirstTestPlan.java</em></a>
+				<h4>Basicdevice QAK Model</h4>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/basicdevice1.0.qako" target="code"><em>basicdevice1.0.qako</em></a><br/><br/>
+				<h4>Basicdevice Test Files</h4>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.webServerTest/src/devices_pytest.py" target="code"><em>devices_pytest.py</em></a>
+				
+			</td>
+		</tr>
+	</table><br/>
+	
+	In this sprint, we will go to zoom into the undefined entity <em>Status</em> that will contains everything is needed to maintain the state of the system.
+</div>
+
+<h2 id="intro">Introduction</h2>
+<div class="remark">
+	From the analysis, it is clear that the main server that realizes the application logic must have a way to maintain the state of the entire system. In order to do this, in this sprint we are going to project a set of <em>persistence classes</em> that can be used by the <em>APP-SERVER</em>.
+	To meet the requirements <ks>it is not necessary to have a complex persistence structure</ks> because all data to maintain are:
+	<ul>
+		<li>the state of the doors (indoor and outdoor);</li>
+		<li>the user that are using the system;</li>
+		<li>the state of all parking slot.</li>
+	</ul>
+	At this moment, the consumer requires to have only <k>six slot</k> and, in addition to this, he has no claims about the registration of the user. So, in this first developement, we decide to use <ks>shared variable</ks> to save the state.
+	Notice that <ks>it is strongly discouraged</ks> because of if the system takes demage then it can loss all data, but it is the fastest method to easily have a working prototipe. Then, if the classes will be designed with strong extensibility, so will be easy to save the state on another better support.
+</div>
+
+<h2 id="bean">Bean classes</h2>
+<h4><center>Package <a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/bean">it.unibo.parkmanagerservice.bean</a></center></h4>
+<div class="remark">
+	The <k>model</k> of the entire application is composed of <a href="https://en.wikipedia.org/wiki/JavaBeans" target="web">Java Bean</a>, which are Java classes with a particular convention that allow to map persistent entities of the system in the Object World.<br/>
+	Since we are using QAK-System, and then Kotlin, instead of the classic Java Beans, we will use the Kotlin <a href="https://kotlinlang.org/docs/data-classes.html" target="web"><em>Data Classes</em></a> which are specific for persistence. These classes will be easily reusable in future developements also with the use with a database (see the tutorial <a href="https://spring.io/guides/tutorials/spring-boot-kotlin/#_persistence_with_jpa" target="web">Building web applications with Spring Boot and Kotlin</a>).<br/><br/>
+	
+	The two domain entities that require a Kotlin Data Class:
+	<ul>
+		<li><ks>User</ks>: <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/bean/User.kt" target="code"><em>User.kt</em></a></li>
+		<li><ks>Slot</ks>: <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/bean/ParkingSlot.kt" target="code"><em>ParkingSlot.kt</em></a></li>
+	</ul>
+	In addition to this two entities, also the doors state deserves a data class:
+	<ul>
+		<li><ks>Door State</ks>: <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/bean/LocalDoorState.kt" target="code"><em>LocalDoorState.kt</em></a></li>
+	</ul>
+	The UML diagram of the package <a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/bean">it.unibo.parkmanagerservice.bean</a> is:
+	<center><img src="img/bean_UML.png" style="max-width:100%; padding: 10px 10px 10px 10px" /></center>
+	<table>
+	<tr>
+		<td style="padding:10px 10px 10px 10px" width="50%">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/bean/User.kt" target="code"><em>User.kt</em></a></h5>
+			This data class maintains the information about an user. Every user <k>must</k> have:
+			<ul>
+				<li>an <ks>id</ks> that must be univoque and generated by the system;</li>
+				<li>a <ks>name</ks> and a <ks>surname</ks> that can be directly given by the user;</li>
+				<li>a <ks>mail</ks> that must be univoque and given by the user;</li>
+				<li>a <ks>state</ks> that can be modified while the user is in the system.</li>
+			</ul>
+			About <ks>timestamp</ks>, this property is inserted because of the user can be inserted into some queue, so it is very useful to calculate the queue time for the relative user. It also allow to realize <i>policies</i> for entering and exiting the queue. This attribute is not needed if the state is maintained into local variables but is necessary for use with a database or other complex structure that have no built in queue.
+		</td>
+		<td style="padding:10px 10px 10px 10px">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/bean/UserState.kt" target="code"><em>UserState.kt</em></a></h5>
+			This enum class represents the state that a user can have:
+			<ul>
+				<li><ks>CREATED</ks>: the user has correctly been created and inserter into the data structure;</li>
+				<li><ks>INTERESTED</ks>: the user has notified the interest to park car, but the indoor is not free so he is waiting for it;</li>
+				<li><ks>INDOOR_RESERVED</ks>: the user has obtained the access to the indoor that has been reserved for him;</li>
+				<li><ks>PARKED</ks>: the car of the user has correctly been parked into the parking area;</li>
+				<li><ks>WANTS_TO_GO</ks>: the user has notified that he wants to pick up his car but the outdoor is not free so he is waiting for it;</li>
+				<li><ks>OUTDOOR_RESERVER</ks>: the user has obtained the access to the outdoor that has been reserved for him;</li>
+				<li><ks>PICKED_UP</ks>: the user has picked up his car and exited the system; this state has been inserted only for future development, if the consumer requires a sort of registration for users or he is interested to maintain some datas about users.</li>
+			</ul>
+			
+		</td>
+	</tr>
+	<tr>
+		<td style="padding:10px 10px 10px 10px" width="50%">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/bean/ParkingSlot.kt" target="code"><em>ParkingSlot.kt</em></a></h5>
+			This class maintains the information about a parking slot. Every slot <k>must</k> have:
+			<ul>
+				<li>a <ks>slotnum</ks> that is univoque and cannot change during the execution of the server application;</li>
+				<li>a <ks>slotstate</ks> that can evolve.</li>
+			</ul>
+			In addition, this class map the <k>One To One</k> relationship between users and parking slot: indeed, a slot can be reserved or used by a certain user so the property <ks>user</ks> let the system to get who is the user releated to the slot. If no user is using the slot, then this property must be setted to null.
+			The user property can also be used to retrieve the slot by a given user token (<span style="font-family:Couriet New, Courier;">TOKEN</span>) simply by checking
+			<pre>slot.user.token == TOKEN</pre>
+			
+		</td>
+		<td style="padding:10px 10px 10px 10px">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/bean/ParkingSlotState.kt" target="code"><em>ParkingSlotState.kt</em></a></h5>
+			This enum class represents the state that a slot can have:
+			<ul>
+				<li><ks>FREE</ks>: the slot is free and can be reserved for an user;</li>
+				<li><ks>OCCUPIED</ks>: the slot is occupied by a car of an user;</li>
+				<li><ks>ALMOST_FREE</ks>: the user associated with the slot has requested to pick up the car, but it still is on the slot;</li>
+				<li><ks>RESERVED</ks>: the slot is reserved for a certain user.</li>
+			</ul>
+			Notice that in the states <span style="font-family:Couriet New, Courier;">RESERVED</span> or <span style="font-family:Couriet New, Courier;">OCCUPIED</span>, the slot must have setted the <span style="font-family:Couriet New, Courier;">slot.user</span> property with the user that is using the slot. Otherwise, for the <span style="font-family:Couriet New, Courier;">FREE</span> state, the property must be null.
+		</td>
+	</tr>
+	<tr>
+		<td style="padding:10px 10px 10px 10px" width="50%">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/bean/LocalDoorState.kt" target="code"><em>LocalDoorState.kt</em></a></h5>
+			This class maintains the informations about the two door:
+			<ul>
+				<li>the <ks>state of the indoor</ks> with the <ks>user</ks> that is using it, that is null if the door is free;</li>
+				<li>the <ks>state of the outdoor</ks> with the <ks>user</ks> that is using it, that is null if the door is free;</li>
+			</ul>
+			Notice that this class implements <em>DoorsManager</em> in order to be more reusable in the hypotesis to use a database.
+			
+		</td>
+		<td style="padding:10px 10px 10px 10px">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/bean/DoorState.kt" target="code"><em>DoorState.kt</em></a></h5>
+			This enum class represents the state that a door can have:
+			<ul>
+				<li><ks>FREE</ks>: the door is free and can be used by the system;</li>
+				<li><ks>OCCUPIED</ks>: the door is occupied by the car of a user that is over it;</li>
+				<li><ks>RESERVED</ks>: the door is reserved to an user so the car is going to be on it.</li>
+			</ul>
+			As said, in the state <span style="font-family:Couriet New, Courier;">RESERVED</span> or <span style="font-family:Couriet New, Courier;">OCCUPIED</span>, the user related to the door <k>must not be null</k> and specularly, with the <span style="font-family:Couriet New, Courier;">FREE</span> state, the user should be null.
+		</td>
+	</tr>
+	<tr>
+		<td style="padding:10px 10px 10px 10px" colspan="2">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/bean/DoorsManager.kt" target="code"><em>DoorsManager.kt</em></a></h5>
+			This interface defines the behavior of a <i>Door Manager</i> then has a lots of utility methods to set the state of a door:
+			<ul>
+				<li><ks>getState()</ks> and <ks>setState()</ks> are the getter and setter for the state of the port;</li>
+				<li><ks>getUserAtDoor()</ks> and <ks>setUserAtDoor()</ks> are the getter and setter for the user related to the doors;</li>
+				<li><ks>reserveForUser()</ks> is the utility method to reserve a door to a certain user;</li>
+				<li><ks>setFreeWithNoUser()</ks> is the utility method to free a door and the user associated to it.</li>
+			</ul>
+			The operation that that system can perform using manager are:
+<pre>
+val USER = ...
+//...
+manager.reserveForUser(DOOR, USER)
+//The door DOOR is now reserved to the user USER
+//...
+manager.setState(DOOR, LocalDoorState.OCCUPIED)
+//The door DOOR is now occupied by the user USER
+//...
+manager.setFreeWithNoUser(DOOR)
+//The door DOOR has been set to free and relative
+//user is null
+</pre>
+		</td>
+	</tr>
+	</table>
+	
+</div>
+
+<h2 id="persistence">Persistence classes</h2>
+
+<h4><center>Package <a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/persistence">it.unibo.parkmanagerservice.persistence</a></center></h4>
+
+<div class="remark">
+	The class in this package realize the concept of <a href="https://en.wikipedia.org/wiki/Content_repository" target="web"><ks>repository</ks></a>; so, every class of the bean package, must have an own repository that implements the <a href="https://en.wikipedia.org/wiki/Create,_read,_update_and_delete" target="web"><em>CRUD</em></a> operations over the data structure.
+	<center><img src="img/persistence_UML.png" style="max-width:100%; padding: 10px 10px 10px 10px" /></center>
+	
+	<table>
+	<tr>
+		<td style="padding:10px 10px 10px 10px" width="50%">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/persistence/UserRepository.kt" target="code"><em>UserRepository.kt</em></a></h5>
+			This interface defines the behavior of a repository for the bean <em>User</em>.
+			Besides the <k>CRUD</k> methods, it defines some useful operation to retrieve the users with a certain condition (by the state, by the mail or by token). These methods return null or <span style="font-family:Couriet New, Courier;">Optional.empty</span> if no user is found. Notice the method <ks>getFirstInState()</ks> that must search the first user that is transited to the passed state: this method can be used from another entity in order to realize <ks>queues</ks> of priority.
+			
+		</td>
+		<td style="padding:10px 10px 10px 10px">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/persistence/BasicUserRepository.kt" target="code"><em>BasicUserRepository.kt</em></a></h5>
+			The implementation of <em>UserRepository</em> using local memory. All users are saved into a Map.
+			Notice that the method <ks>create()</ks> also set the id of the user using the <ks>idgen</ks> generator. In addition, this method could throw an 
+			<a href="https://docs.oracle.com/javase/8/docs/api/java/sql/SQLException.html" target="web"><em>SQLException</em></a> if the user to store has a mail already used.
+		</td>
+	</tr>
+	<tr>
+		<td style="padding:10px 10px 10px 10px" width="50%">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/repository/ParkingSlotRepository.kt" target="code"><em>ParkingSlotRepository.kt</em></a></h5>
+			This interdace defines the behavior of a repository for the bean <em>ParkingSlot</em>.
+			Besides the <k>CRUD</k> methods, it defines some useful operation to retrieve the slots with a certain condition (by the state, by the token of the relative user, by the relative user the slot is reserved or used for).
+			In order to obtain the first free slot, the system can invoke the method <ks>getFirstFree()</ks> on the implementation object.
+			
+		</td>
+		<td style="padding:10px 10px 10px 10px">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/repository/BasicParkingSlotRepository.kt" target="code"><em>BasicParkingSlotRepository.kt</em></a></h5>
+			The implementation of <em>ParkingSlotRepository</em> using local memory. All slots are saved into a Map.
+		</td>
+	</tr>
+	<tr>
+		<td style="padding:10px 10px 10px 10px" width="50%">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/persistence/DoorQueue.kt" target="code"><em>DoorQueue.kt</em></a></h5>
+			This interface is an abstraction for realizing the concept of <ks>door queue</ks>. Infact, it is very frequently that more that one user is competing for accessing a door. The operations exposed by this interface are the classic ones of a queue:
+			<ul>
+				<li>the <ks>insertion</ks> of an element (<span style="font-family:Couriet New, Courier;">addUser()</span> method);</li>
+				<li>the <ks>extraction</ks> of an element from the queue (<span style="font-family:Couriet New, Courier;">pollNextUser()</span> method);</li>
+				<li>the get for the current <ks>length</ks> of the queue (<span style="font-family:Couriet New, Courier;">remaining()</span> method)</li>
+			</ul>
+			This interface could also be implemented in order to <k>use a database</k> to realize queue.
+		</td>
+		<td style="padding:10px 10px 10px 10px">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/persistence/LocalDoorQueue.kt" target="code"><em>LocalDoorQueue.kt</em></a></h5>
+			The implementation of the interface <em>DoorQueue</em> that use a Kotlin <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-array-deque/" target="web"><em>ArrayDeque</em></a>.
+			
+		</td>
+	</tr>
+	<tr>
+		<td style="padding:10px 10px 10px 10px" width="50%">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/persistence/DoorQueues.kt" target="code"><em>DoorQueues.kt</em></a></h5>
+			An utility class that is sort of <i>double singleton</i>. This class is a point of global access for the two door queues of the system, then istantiatiating and maintaining the unique queues associated to the doors.
+			In order to access the queue, the system must perform:
+<pre>
+DoorQueues.getIndoorQueue()
+//Return the indoor queue
+
+DoorQueues.getOutdoorQueue()
+//Return the outdoor queue
+</pre>
+			
+		</td>
+		<td style="padding:10px 10px 10px 10px">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/persistence/ParkingRepositories.kt" target="code"><em>ParkingRepositories.kt</em></a></h5>
+			An utility class that is sort of <i>double singleton</i>. This class is a point of global access for the two repositories of the system (user and slots), then istantiatiating and maintaining them.
+			In order to acces the repositories, the system must perform:
+<pre>
+ParkingRepositories.createBasics()
+//Create the two repositories in their basic version
+
+ParkingRepositories.getUserRepository()
+//Return the unique user repository
+
+ParkingRepositories.getParkingSlotRepository()
+//Return the unique slot repository
+</pre>
+		</td>
+	</tr>
+	</table><br/><br/>
+	Pay attention beacause <k>these implementation of repository can not be used in a concurrent environment</k>, so it is not safe to access repositories bot in writing and reading way from more than one actor. If you want to share them with more than one actor, so there are needed others <k>coroutine-safe</k> implementations.<br/>
+	In addition, in a future development, it is possible to set the system to use a database or another data structure by:
+	<ul>
+		<li><ks>implementing a new classes</ks> for <em>UserRepository</em>, <em>ParkingSlotRepository</em> and <em>LocalDoorQueue</em>;</li>
+		<li><ks>modify the methods</ks> contained into <em>ParkingRepositories</em> and <em>DoorQueues</em> in order to use the new classes.</li>
+	</ul>
+	
+</div>
+
+
+
+<h2 id="results">Final results of this sprint</h2>
+<div class="remark">
+	<table>
+		<tr><td width="60%"><h3><b>Logical Architecture</b></h3></td><td><h3><b>Resources</b></h3></td></tr>
+		<tr>
+			<td width="60%"><center style="padding:10px 10px 10px 10px"><img src="img/logical_arch_3.png" style="max-width:100%;padding:2px 2px 2px 2px" /></center></td>
+			<td  style="padding:10px 10px 10px 10px">
+				<h4>Executable QAK Model</h4>
+				<a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.parkmanagerservice/src/parkmanagerservice_2.1.qako" target="code"><em>parkmanagerservice_2.1.qak</em></a><br/><br/>
+				<h4>Test Files</h4>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/FirstTestPlan.java" target="code"><em>FirstTestPlan.java</em></a>
+				<h4>Basicdevice QAK Model</h4>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/basicdevice1.0.qako" target="code"><em>basicdevice1.0.qako</em></a><br/><br/>
+				<h4>Basicdevice Test Files</h4>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.webServerTest/src/devices_pytest.py" target="code"><em>devices_pytest.py</em></a>
+				
+			</td>
+		</tr>
+	</table><br/><br/>
+	We decide that the <em>trolley</em> will be mapped in a future sprint, maybe in the same context of the server. Then, <em>basicrobot</em>, is almost the equivalent of the actors of the device presented in the sprint for the robot, but he lives in his context.
+</div>
+
+
+<div style="background-color:rgba(86, 56, 253, 0.9); width:60%;text-align:center;color:white; margin: auto">
+<br>
+<p>By students</br>
+    Names: Simone Mattioli , Luca Marchegiani</br>
+    Email: <a href= "mailto:simone.mattioli6@studio.unibo.it" target="mail" style="color:white;">simone.mattioli6@studio.unibo.it</a> , <a href="mailto:luca.marchegiani3@studio.unibo.it" target="mail" style="color:white">luca.marchegiani3@studio.unibo.it</a></br>
+    Git Repo:  <a href="https://github.com/LM-96/ParkManagerService" target="web" style="color:white">https://github.com/LM-96/ParkManagerService</a></p>
+<!--<img src="./img/profile_2.png" alt="mbot" width="40%" height="40%">-->
+<br>
+</div>  
+</div>
+</body>
+</html>

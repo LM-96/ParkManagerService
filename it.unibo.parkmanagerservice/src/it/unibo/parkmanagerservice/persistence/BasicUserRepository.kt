@@ -6,6 +6,7 @@ import it.unibo.parkmanagerservice.bean.UserState
 import java.sql.SQLException
 import java.util.*
 import java.util.concurrent.atomic.AtomicLong
+import kotlin.jvm.Throws
 
 class BasicUserRepository : UserRepository {
 
@@ -13,6 +14,7 @@ class BasicUserRepository : UserRepository {
     private val idgen = AtomicLong(0)
     private val localState = LocalDoorState.get()
 
+    @Throws(SQLException::class)
     override fun create(user: User) {
         user.id = idgen.getAndIncrement()
         if(users.values.find { it.mail.equals(user.mail) } != null) {

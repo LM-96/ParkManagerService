@@ -1,7 +1,5 @@
 package it.unibo.parkmanagerservice.bean
 
-import it.unibo.parkingstate.DoorState
-
 data class LocalDoorState (
 
     var indoor: DoorState = DoorState.FREE,
@@ -9,7 +7,7 @@ data class LocalDoorState (
     var outdoor: DoorState = DoorState.FREE,
     var userOutdoor : User? = null,
 
-) : DoorsManager {
+    ) : DoorsManager {
     companion object {
         @JvmStatic private var SINGLETON : LocalDoorState? = null
         @JvmStatic fun get() : LocalDoorState {

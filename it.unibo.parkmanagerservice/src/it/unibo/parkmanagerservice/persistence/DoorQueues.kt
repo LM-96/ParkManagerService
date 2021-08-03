@@ -1,5 +1,7 @@
 package it.unibo.parkmanagerservice.persistence
 
+import it.unibo.parkmanagerservice.bean.DoorType
+
 object DoorQueues {
 
     @JvmStatic private var indoorQueue : DoorQueue? = null
@@ -17,6 +19,13 @@ object DoorQueues {
             outdoorQueue = LocalDoorQueue()
 
         return outdoorQueue!!
+    }
+
+    @JvmStatic fun getQueue(door : DoorType) : DoorQueue {
+        when(door) {
+            DoorType.INDOOR -> return getIndoorQueue()
+            DoorType.OUTDOOR -> return getOutdoorQueue()
+        }
     }
 
 }

@@ -1,7 +1,5 @@
 package it.unibo.parkmanagerservice.bean
 
-import it.unibo.parkingstate.DoorState
-
 interface DoorsManager {
 
     fun getState(doorType: DoorType) : DoorState

@@ -5,7 +5,7 @@ import it.unibo.parkmanagerservice.bean.User
 interface DoorQueue {
 
     fun addUser(user : User)
-    fun getNextUser() : User?
+    fun pullNextUser() : User?
     fun remaining() : Int
 
 }

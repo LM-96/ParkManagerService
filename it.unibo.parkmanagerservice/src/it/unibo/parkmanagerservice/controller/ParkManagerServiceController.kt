@@ -1,10 +1,7 @@
 package it.unibo.parkmanagerservice.controller
 
-import it.unibo.parkingstate.DoorState
 import it.unibo.parkmanagerservice.bean.*
-import it.unibo.parkmanagerservice.notification.Notification
 import it.unibo.parkmanagerservice.persistence.DoorQueue
-import it.unibo.parkmanagerservice.persistence.UserRepository
 
 interface ParkManagerServiceController {
 

@@ -10,7 +10,7 @@ class LocalDoorQueue : DoorQueue {
         queue.add(user)
     }
 
-    override fun getNextUser(): User? {
+    override fun pullNextUser(): User? {
         return queue.firstOrNull()
     }
 

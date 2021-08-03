@@ -2,6 +2,7 @@ package it.unibo.parkingstate
 
 import it.unibo.parkingslot.SimpleParkingSlotManager
 import it.unibo.parkingslot.ParkingSlotManager
+import it.unibo.parkmanagerservice.bean.DoorState
 
 object MockState : StateReader {
 	
