@@ -458,6 +458,21 @@ ParkingRepositories.getParkingSlotRepository()
 	
 </div>
 
+<h2 id="testing">Testing</h2>
+<div class="remark">
+In order to test the classes contained into this package, we decided to make a JUnit test case in pure Java.
+The procedure is similar for all operation exposed by the repository and door manager classes:
+<pre>
+let REPOSITORY = &#60 retrieve the reporitory to test &#62
+let ELEMENT = &#60 a certain element for REPOSITORY &#62 ;
+do something on ELEMENT
+REPOSITORY.operation(ELEMENT)
+let RETRIEVED = REPOSITORY.retrieve(&#60 ELEMENT identifier &#62)
+assert RETRIEVED == ELEMENT;
+</pre>
+<h4><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/PersistenceTest.java" target="code"><em>PersistenceTest.java</em></a></h4>
+</div>
+
 
 
 <h2 id="results">Final results of this sprint</h2>
@@ -471,6 +486,7 @@ ParkingRepositories.getParkingSlotRepository()
 				<a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.parkmanagerservice/src/parkmanagerservice_2.1.qako" target="code"><em>parkmanagerservice_2.1.qak</em></a><br/><br/>
 				<h4>Test Files</h4>
 				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/FirstTestPlan.java" target="code"><em>FirstTestPlan.java</em></a>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/PersistenceTest.java" target="code"><em>PersistenceTest.java</em></a>
 				<h4>Basicdevice QAK Model</h4>
 				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/basicdevice1.0.qako" target="code"><em>basicdevice1.0.qako</em></a><br/><br/>
 				<h4>Basicdevice Test Files</h4>
