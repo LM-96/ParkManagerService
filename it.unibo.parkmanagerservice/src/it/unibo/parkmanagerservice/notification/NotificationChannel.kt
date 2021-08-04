@@ -5,6 +5,6 @@ import kotlinx.coroutines.channels.Channel
 
 object NotificationChannel {
 
-    @JvmStatic val channel = Channel<Notification>()
+    @JvmStatic val CHANNEL = Channel<Notification>()
 
 }

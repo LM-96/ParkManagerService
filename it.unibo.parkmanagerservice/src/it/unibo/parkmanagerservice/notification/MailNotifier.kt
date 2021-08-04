@@ -85,7 +85,7 @@ class MailNotifier : Notifier {
             msg.setContent(notification.content, notification.contentType)
         Transport.send(msg)
 
-        println("MailNotifier | Sended notification ${notification.toString()}")
+        println("MailNotifier | Sended notification ${notification.type} to ${notification.destination}")
     }
 
     override fun sendNotificationToUserWithDefaultContent(user: User, type: NotificationType, args : Array<String>) {

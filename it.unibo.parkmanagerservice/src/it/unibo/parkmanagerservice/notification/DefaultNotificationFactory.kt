@@ -113,6 +113,21 @@ object DefaultNotificationFactory {
                         .replace("${'$'}SURNAME", user.surname)
                     }"
                 }
+
+                NotificationType.USER_DTFREE_REACHED-> {
+                    res.content = "${res.content
+                        .replace("${'$'}BTNAME", "ParkManagerService")
+                        .replace("${'$'}NAME", user.name)
+                        .replace("${'$'}SURNAME", user.surname)
+                    }"
+                }
+
+                NotificationType.GENERAL -> {
+                    res.content = "${res.content
+                        .replace("${'$'}BTNAME", "ParkManagerService")
+                        .replace("${'$'}TEXT", args[0])
+                    }"
+                }
             }
         }
 

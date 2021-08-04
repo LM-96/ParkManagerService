@@ -70,7 +70,7 @@ QActor parkingmanagerservice context ctxcarparking {
 			
 		
 		
-		val CHANNEL = it.unibo.parkmanagerservice.notification.NotificationChannel.channel
+		val CHANNEL = it.unibo.parkmanagerservice.notification.NotificationChannel.CHANNEL
 		var JSON : String = ""
 		var USERERR : Pair<it.unibo.parkmanagerservice.bean.User?, it.unibo.parkmanagerservice.controller.ParkManagerError?>
 		var SLOTERR : Pair<it.unibo.parkmanagerservice.bean.ParkingSlot?, it.unibo.parkmanagerservice.controller.ParkManagerError?>
@@ -358,7 +358,7 @@ QActor notificationactor context ctxcarparking {
 	
 	[# 
 		val NOTIFIER = it.unibo.parkmanagerservice.notification.SystemNotifier.get()
-		val CHANNEL = it.unibo.parkmanagerservice.notification.NotificationChannel.channel		
+		val CHANNEL = it.unibo.parkmanagerservice.notification.NotificationChannel.CHANNEL	
 	#]
 	
 	State s0 initial {

@@ -1,0 +1,405 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+<style type="text/css">
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+	font-size: 93%;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+	border-radius: 10px;
+	padding: 5px;
+}
+
+top {
+	width: 100%;
+}
+
+
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 90%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #abe876;
+    color: #1632cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 90%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+ks{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #0000CD	;
+	font-size: 90%;
+}
+kc{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #008000	;
+	font-size: 90%;
+}
+pre{
+	font-family: "Consolas";
+	font-size: 85%;
+	background-color: #f5f5f5;
+	border: 1.5px solid silver;
+	padding: 5px;
+}
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+	 
+    font-size: 18px;
+}
+k{
+    color: #990000;
+	font-weight: bold;
+	font-size: 90%;
+}
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+	padding: 10px;
+}
+
+h2 {
+    background-color: #9ed8ff;
+    font-size: 130%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 100%;
+}
+h4 {
+    background-color: #ccffcc;
+    font-size: 100%;
+	width: 95%;
+	border-radius: 5px;
+	padding: 2px;
+}
+h5 {
+    background-color: #d5ffb0;
+    font-size: 100%;
+
+}
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}
+div.remark{
+	background-color: #E3F2FD;
+    border: 1.5px solid #d5f2ed;
+    padding: 15px;
+    margin: 10px;
+	border-radius: 25px;
+}
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+ol, ul, li {
+  margin: 0;
+  margin-left: 10px;
+  padding: 0;
+  padding-bottom: 5px;
+}
+
+table, th, td {
+	border: 1px solid black;
+}
+
+img {
+	border: 1.5px solid #d5f2ed
+
+}
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+div.wrapdesc{
+	width: 90%;
+	margin: auto;
+}
+
+div.imagedesc{
+	width: 85%;
+	margin: auto;
+}
+</style>
+    
+<head>
+   
+<title>SPRINT 4: Notification</title></head>
+    
+<body>
+<div id="top">
+<h1>SPRINT 4: Notification (<em>it.unibo.parkmanagerservice.notification</em> Package) <font size="5"></font> </h1>
+</div>  
+
+<div class="body"> 
+<ol>
+	<li><a href="#lastarch">Last Architecture and aim of this sprint</a></li>
+	<li><a href="#intro">Introduction</a></li>
+	<li><a href="#notification">Notification Layer</a></li>
+	<li><a href="#format">Mail format and customization</a></li>
+	<li><a href="#testing">Testing</a></li>
+	<li><a href="#results">Final results of this sprint</a></li>
+	
+</ol>
+
+<h2 id="lastarch">Last Architecture and aim of this sprint</h2>
+<div class="remark">
+	<table>
+		<tr><td width="60%"><h3><b>Logical Architecture</b></h3></td><td><h3><b>Resources</b></h3></td></tr>
+		<tr>
+			<td width="60%"><center style="padding:10px 10px 10px 10px"><img src="img/logical_arch_3.png" style="max-width:100%;padding:2px 2px 2px 2px" /></center></td>
+			<td  style="padding:10px 10px 10px 10px">
+				<h4>Executable QAK Model</h4>
+				<a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.parkmanagerservice/src/parkmanagerservice_2.1.qako" target="code"><em>parkmanagerservice_2.1.qak</em></a><br/><br/>
+				<h4>Test Files</h4>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/FirstTestPlan.java" target="code"><em>FirstTestPlan.java</em></a>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/PersistenceTest.java" target="code"><em>PersistenceTest.java</em></a>
+				<h4>Basicdevice QAK Model</h4>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/basicdevice1.0.qako" target="code"><em>basicdevice1.0.qako</em></a><br/><br/>
+				<h4>Basicdevice Test Files</h4>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.webServerTest/src/devices_pytest.py" target="code"><em>devices_pytest.py</em></a>
+				
+			</td>
+		</tr>
+	</table><br/>
+	In this sprint, we will go to zoom into the <em>notification system</em> in order to meet the requirement of notification to the user and the manager more efficienly. 
+</div>
+
+<h2 id="intro">Introduction</h2>
+<div class="remark">
+	In the two analysis, it is only said that <i>client and manager</i> must be notificated in their GUI. However, if the GUI are a web or mobile application, it is very likely that the user or the manager close the view or the application: anyway, the system must have a way to send <ks>asynchronous and non-volatile notification</ks> regardless of the GUI, such as an SMS or a mail.<br/>
+	From the analysis, the main situation that require a <i>strong notification</i> are:
+	<ul>
+		<li>when the <k>user</k> does not move the car at the indoor after <k>ITOCC is reached</k>;</li>
+		<li>when the <k>user</k> does not take out the car from the outdoor afret <k>DTFREE is reached</k>;</li>
+		<li>when <k>DTFREE is reached</k>, the <k>manager</k> must be notified.</li>
+	</ul>
+	In addition to these situation, that came from the requirement, it would be good if:
+	<ul>
+		<li>the client is notified with the slotnum;</li>
+		<li>the client is notified with the token;</li>
+		<li>the client is notified when the car is into the outdoor.</li>
+	</ul>
+	
+	<k>We decide to use a notification based on the mail</k>. Then, when the system need, it has the possibility to simply send a mail to the interested user.<br/>
+	Like the previous sprint, also this component must be designed in such way that it is easily extendable.
+</div>
+
+<h2 id="notification">Notification Layer</h2>
+<h4><center>Package <a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/notification">it.unibo.parkmanagerservice.notification</a></center></h4>
+<div class="remark">
+	In order to send notification via mail in Java, we will use the library <a href="https://javaee.github.io/javamail/" target="web"><em>JavaMail</em></a>. Obviously, <k>it is necessary to have an email provider with a valid account</k> and configure the JavaMail API with the <a href="https://it.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol" target="web">SMTP</a> or <a href="https://it.wikipedia.org/wiki/Post_Office_Protocol" target="web">POP</a> configuration given by the provider.
+	
+	<center><img src="img/notification_UML.png" style="max-width:100%; padding: 10px 10px 10px 10px" /></center>
+	
+	<table>
+	<tr>
+		<td style="padding:10px 10px 10px 10px" width="50%">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/notification/Notification.kt" target="code"><em>Notification.kt</em></a></h5>
+			This data class represents a <ks>notification</ks>. It contains all attribute that all notification should have (such as destination, content, subject, ecc...).
+			
+		</td>
+		<td style="padding:10px 10px 10px 10px">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/notification/NotificationType.kt" target="code"><em>NotificationType.kt</em></a></h5>
+			This enumeration defines all possible type of notification intended as the situation that requires it.
+			Then:
+			<ul>
+				<li><ks>SLOTNUM</ks>: notification that will be sent that contains the slotnum reserved to the user;</li>
+				<li><ks>TOKEN</ks>: notification that contains the token of the user and that will be sent after he has moved the car to the indoor;</li>
+				<li><ks>PICKUP</ks>: notification that will be sent when the user car is positioned at the outdoor then the user can take it;</li>
+				<li><ks>LOSEN_RIGHT</ks>: notification that will be sent if the user has <i>losen the right</i> to park because of ITOCC is reached;</li>
+				<li><ks>ADMIN_DTFREE_REACHED</ks>: notification that will be sent to the manager when a DTFREE is reached;</li>
+				<li><ks>USER_DTFREE_REACHED</ks>: notification that will be sent to the user when his DTFREE is reached and he has not taken his car.</li>
+			</ul>
+			
+		</td>
+	</tr>
+	<tr>
+		<td style="padding:10px 10px 10px 10px" width="50%">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/notification/Notifier.kt" target="code"><em>Notifier.kt</em></a> and <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/notification/FakeNotifier.kt" target="code"><em>FakeNotifier.kt</em></a></h5>
+			The <em>Notifier</em> interface defines the behavior of a component dedicated to send notification. The <em>FakeNotifier</em> implements this interface using an empty <span style="font-family:Courier New, Courier">sendNotification()</span> method that only print the notification to the standard output.
+			
+		</td>
+		<td style="padding:10px 10px 10px 10px">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/repository/notification/MailNotifier.kt" target="code"><em>MailNotifier.kt</em></a></h5>
+			An implementation of <em>Notifier</em> interface that use JavaMail to send notification via mail. This component is designed in order to be configurable with a file located at <i>configs/mail.json</i> that contains the information about the SMPT connection to the provider (such as username, password, host, ecc...). The constructor of this object read <k>the first line</k> of this configuration that is a JSON entry with the format:
+			<pre style="white-space: pre-wrap;">
+{"mail":"xxx@xxx.xxx", "pass":"xxxx", "host":"xxx.xxx.xx", "port": "00", "ssl-enabled": "true/false", "auth": "true/false"}
+</pre>
+			
+		</td>
+	</tr>
+	<tr>
+		<td style="padding:10px 10px 10px 10px" width="50%">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/notification/DefaultNotificationFactory.kt" target="code"><em>DefaultNotificationFactory.kt</em></a></h5>
+			This <a href="https://en.wikipedia.org/wiki/Factory_(object-oriented_programming)" target="web">Factory Interface</a> allow to easily create notification with default content. In the next section we will describe how the content is formatted but for now we specified that this class has a configuration file located at <i>configs/notification.json</i>
+			
+		</td>
+		<td style="padding:10px 10px 10px 10px">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/notification/SystemNotifier.kt" target="code"><em>SystemNotifier.kt</em></a></h5>
+			A global point access for the unique <em>Notifier</em> of the system. It build the <em>Notifier</em> using a configuration file located at <i>configs/notifier.json</i> formatted as:
+			<pre">{"type":"mail"}</pre>
+			At the moment only two value are allowed for the key <ks>type</ks>: fake and mail, relative to the two implementation of the <em>Notifier</em> interface.
+		</td>
+	</tr>
+	</table><br/><br/>
+	
+	Then, these POJO will be used by a dedicated actor that can be inserted into the same context of the <em>APP-SERVER</em>:
+	<center style="max-width:100%"><img src="img/notification_actor.png" style="max-width:90%; padding: 10px 10px 10px 10px" /></center>
+	<table>
+	<tr>
+		<td style="padding:10px 10px 10px 10px">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/notification/NotificationChannel.kt" target="code"><em>NotificationChannel.kt</em></a></h5>
+			In order to correctly user this mechanism, it is need to pass the notification to send to the <em>notifieractor</em>. To do this, there are several possibilities:
+			<ul>
+				<li>defining a message <em>notifyuser</em> with all arguments of the notification; then the actor create the <em>Notification</em> object using the factory and send it with the <em>Notifier</em> object; &rArr; <k>if the content of the notification is too long, so the message can be very heavy</k></li>
+				<li>building a notification from the actor who wants to send it and serialize in order to encapsulate it in the message <em>notifyuser</em> that, in this case, as only one argument (the serialized notification) &rArr; <k>the serialization could be a little bit difficult and the format of the QAK message can prevent the sending</k></li>
+				<li>building a notification from the actor who waints to send it and pass it to the <em>notifieractor</em> by using shared memory or a structure embedded in Java/Kotlin.</li>
+			</ul>
+			Then, we have choosen to use the last possibility, so we have defined the class <em>NotificationChannel.kt</em> that is a <k>singleton for accessing a</k> <a href="https://kotlinlang.org/docs/channels.html" targer="web"><k>channel</k></a> in which are putted the notification to send: the <em>notifieractor</em> read the notification from the channel and send it using the system notifier.
+			<k>This choice makes the</k> <em>notifieractor</em> <k>usable only in the context he is</k>, but is very efficient and easily implementable. In fact, every QAK actor is a coroutine, so it is strongly advised to use the Kotlin structure for coroutine.
+			So, if a QAK actor in the same context of the notifier wants to send a notification, could use:
+<pre>
+[# 
+	NOTIFICATION = DefaultNotificationFactory.createForUser(...) 
+	NotificationChannel.CHANNEL.send(NOTIFICATION)
+#]
+	<k>forward</k> notificationactor <k>-m</k> notifyuser : notifyuser(NOTIFY)
+</pre>
+		</td>
+			
+	</tr>
+	</table><br/><br/>
+	
+	Summing up, we have introduced a new entity, the <em>notifieractor</em>, that is a QAK actor able to receive the request to notify a certain user. In this way, the other actors can delegate the notifications to this entity and can not block themself to send notification.
+	Notice that is a good practise <k>first to write the notification inside the channel</k> (such as in the previous one code), and only after to send the <em>notifyuser</em> messagge to the notifier actor.
+	
+</div>
+
+<h2 id="formar">Mail format and customization</h2>
+<div class="remark">
+In order to customize the mail, a great graphic has created a logo for the application:
+<center style="max-width:100%"><img src="img/logo150px.png" style="max-width:90%; padding: 10px 10px 10px 10px" /></center>
+This logo has been used into all notification mail in order to customize the layout of them.<br/>
+To customize the mail layout, we choose to use <a href="https://webdesign.tutsplus.com/it/articles/build-an-html-email-template-from-scratch--webdesign-12770" target="web">HTML Mail</a>.
+</div>
+
+
+<h2 id="testing">Testing</h2>
+<div class="remark">
+In order to test the classes contained into this package, we decided to make a JUnit test case in pure Java.
+The procedure is similar for all operation exposed by the repository and door manager classes:
+<pre>
+let REPOSITORY = &#60 retrieve the reporitory to test &#62
+let ELEMENT = &#60 a certain element for REPOSITORY &#62 ;
+do something on ELEMENT
+REPOSITORY.operation(ELEMENT)
+let RETRIEVED = REPOSITORY.retrieve(&#60 ELEMENT identifier &#62)
+assert RETRIEVED == ELEMENT;
+</pre>
+<h4><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/PersistenceTest.java" target="code"><em>PersistenceTest.java</em></a></h4>
+</div>
+
+
+
+<h2 id="results">Final results of this sprint</h2>
+<div class="remark">
+	<table>
+		<tr><td width="60%"><h3><b>Logical Architecture</b></h3></td><td><h3><b>Resources</b></h3></td></tr>
+		<tr>
+			<td width="60%"><center style="padding:10px 10px 10px 10px"><img src="img/logical_arch_3.png" style="max-width:100%;padding:2px 2px 2px 2px" /></center></td>
+			<td  style="padding:10px 10px 10px 10px">
+				<h4>Executable QAK Model</h4>
+				<a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.parkmanagerservice/src/parkmanagerservice_2.1.qako" target="code"><em>parkmanagerservice_2.1.qak</em></a><br/><br/>
+				<h4>Test Files</h4>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/FirstTestPlan.java" target="code"><em>FirstTestPlan.java</em></a>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/PersistenceTest.java" target="code"><em>PersistenceTest.java</em></a>
+				<h4>Basicdevice QAK Model</h4>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/basicdevice1.0.qako" target="code"><em>basicdevice1.0.qako</em></a><br/><br/>
+				<h4>Basicdevice Test Files</h4>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.webServerTest/src/devices_pytest.py" target="code"><em>devices_pytest.py</em></a>
+				
+			</td>
+		</tr>
+	</table><br/><br/>
+	We decide that the <em>trolley</em> will be mapped in a future sprint, maybe in the same context of the server. Then, <em>basicrobot</em>, is almost the equivalent of the actors of the device presented in the sprint for the robot, but he lives in his context.
+</div>
+
+
+<div style="background-color:rgba(86, 56, 253, 0.9); width:60%;text-align:center;color:white; margin: auto">
+<br>
+<p>By students</br>
+    Names: Simone Mattioli , Luca Marchegiani</br>
+    Email: <a href= "mailto:simone.mattioli6@studio.unibo.it" target="mail" style="color:white;">simone.mattioli6@studio.unibo.it</a> , <a href="mailto:luca.marchegiani3@studio.unibo.it" target="mail" style="color:white">luca.marchegiani3@studio.unibo.it</a></br>
+    Git Repo:  <a href="https://github.com/LM-96/ParkManagerService" target="web" style="color:white">https://github.com/LM-96/ParkManagerService</a></p>
+<!--<img src="./img/profile_2.png" alt="mbot" width="40%" height="40%">-->
+<br>
+</div>  
+</div>
+</body>
+</html>

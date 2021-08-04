@@ -18,7 +18,7 @@ class Notificationactor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		 
 				val NOTIFIER = it.unibo.parkmanagerservice.notification.SystemNotifier.get()
-				val CHANNEL = it.unibo.parkmanagerservice.notification.NotificationChannel.channel		
+				val CHANNEL = it.unibo.parkmanagerservice.notification.NotificationChannel.CHANNEL	
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State

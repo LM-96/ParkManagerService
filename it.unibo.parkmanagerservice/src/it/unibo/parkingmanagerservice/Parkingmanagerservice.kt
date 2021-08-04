@@ -27,7 +27,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 					
 				
 				
-				val CHANNEL = it.unibo.parkmanagerservice.notification.NotificationChannel.channel
+				val CHANNEL = it.unibo.parkmanagerservice.notification.NotificationChannel.CHANNEL
 				var JSON : String = ""
 				var USERERR : Pair<it.unibo.parkmanagerservice.bean.User?, it.unibo.parkmanagerservice.controller.ParkManagerError?>
 				var SLOTERR : Pair<it.unibo.parkmanagerservice.bean.ParkingSlot?, it.unibo.parkmanagerservice.controller.ParkManagerError?>

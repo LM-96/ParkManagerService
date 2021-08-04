@@ -5,7 +5,7 @@ import java.util.stream.Collectors
 
 class FakeNotifier : Notifier {
     override fun sendNotification(notification: Notification) {
-        println("FakeNotifier | Sended notification ${notification.toString()}")
+        println("FakeNotifier | Sent notification ${notification.toString()}")
     }
 
     override fun sendNotificationToUserWithDefaultContent(user: User, type: NotificationType, args: Array<String>) {
