@@ -12,7 +12,7 @@ public class TestMailNotifier {
 	@SuppressWarnings("incomplete-switch")
 	public static void main(String[] args) {
 		Notifier notifier = SystemNotifier.get();
-		User user = new User(0, "Luca", "Marchegiani", "luca.marchegiani.96@gmail.com", UserState.CREATED, null, null);
+		User user = new User(0, "Luca", "Marchegiani", "luca.marchegiani3@studio.unibo.it", UserState.CREATED, null, null);
 		NotificationType[] types = NotificationType.values();
 		String[] not_args = new String[2];
 	

@@ -111,6 +111,7 @@ object DefaultNotificationFactory {
                         .replace("${'$'}BTNAME", "ParkManagerService")
                         .replace("${'$'}NAME", user.name)
                         .replace("${'$'}SURNAME", user.surname)
+                        .replace("${'$'}MAIL", user.mail)
                     }"
                 }
 

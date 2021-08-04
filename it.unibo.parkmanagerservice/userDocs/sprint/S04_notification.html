@@ -337,7 +337,11 @@ div.imagedesc{
 	</table><br/><br/>
 	
 	Summing up, we have introduced a new entity, the <em>notifieractor</em>, that is a QAK actor able to receive the request to notify a certain user. In this way, the other actors can delegate the notifications to this entity and can not block themself to send notification.
-	Notice that is a good practise <k>first to write the notification inside the channel</k> (such as in the previous one code), and only after to send the <em>notifyuser</em> messagge to the notifier actor.
+	Notice that is a good practise <k>first to write the notification inside the channel</k> (such as in the previous one code), and only after to send the <em>notifyuser</em> messagge to the notifier actor.<br/><br/>
+	Regardings the <ks>mail provider</ks>, we have created a free domain on <a href="https://www.register.it/index.html" targer="web">register.it</a> that can let us to send mail using this custom demain (but we have only 3 mailbox with 50 mail/mailbox, just for test).
+	The domain of the application is:
+	<center><h4><em>parkmanagersl.it</em></h4></center>
+	
 	
 </div>
 
@@ -346,21 +350,45 @@ div.imagedesc{
 In order to customize the mail, a great graphic has created a logo for the application:
 <center style="max-width:100%"><img src="img/logo150px.png" style="max-width:90%; padding: 10px 10px 10px 10px" /></center>
 This logo has been used into all notification mail in order to customize the layout of them.<br/>
-To customize the mail layout, we choose to use <a href="https://webdesign.tutsplus.com/it/articles/build-an-html-email-template-from-scratch--webdesign-12770" target="web">HTML Mail</a>.
+To customize the mail layout, we choose to use <a href="https://webdesign.tutsplus.com/it/articles/build-an-html-email-template-from-scratch--webdesign-12770" target="web">HTML Mail</a>. So, we have created a <i>template</i> for all notification type:
+<ul>
+	<li><ks>SLOTNUM</ks>: <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/resources/slotnum_mail.html" target="code">slotnum_mail.html</a> (see <a href="http://htmlpreview.github.io/?https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/resources/slotnum_mail.html" target="web">preview</a>)</li>
+	<li><ks>TOKEN</ks>: <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/resources/token_mail.html" target="code">token_mail.html</a> (see <a href="http://htmlpreview.github.io/?https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/resources/token_mail.html" target="web">preview</a>)</li>
+	<li><ks>PICKUP</ks>: <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/resources/pickup_mail.html" target="code">pickup_mail.html</a> (see <a href="http://htmlpreview.github.io/?https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/resources/pickup_mail.html" target="web">preview</a>)</li>
+	<li><ks>LOSEN_RIGHT</ks>: <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/resources/losen_right.html" target="code">losen_right.html</a> (see <a href="http://htmlpreview.github.io/?https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/resources/losen_right.html" target="web">preview</a>)</li>
+	<li><ks>ADMIN_DTFREE_REACHED</ks>: <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/resources/admin_dtfree_reached.html" target="code">admin_dtfree_reached.html</a> (see <a href="http://htmlpreview.github.io/?https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/resources/admin_dtfree_reached.html" target="web">preview</a>)</li>
+	<li><ks>USER_DTFREE_REACHED</ks>: <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/resources/user_dtfree_reached.html" target="code">user_dtfree_reached.html</a> (see <a href="http://htmlpreview.github.io/?https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/resources/user_dtfree_reached.html" target="web">preview</a>)</li>
+	<li><ks>GENERAL</ks>: <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/resources/general.html" target="code">general.html</a> (see <a href="http://htmlpreview.github.io/?https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/resources/general.html" target="web">preview</a>)</li>
+	These preview <k>are used by the</k> <em>DefaultNotificationFactory</em> in order to create a sort of <i>notification template</i>. Indeed, these html contains some field that start with '$': the factory replaces this fields with the correct values depending on the notification type (see the method <span style="font-family:Courier New, Courier">createForUser()</span> of <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/notification/DefaultNotificationFactory.kt" target="code"><em>DefaultNotificationFactory.kt</em></a> for more details).<br/>
+	In addition to this, in general every notification has an html with a logo and a button inside. In order to make this layer more flexible, is designed a configuration file in JSON used by the factory at the location <i>configs/notification.json</i>.
+	An entry of this file is similar to:
+	<pre style="white-space: pre-wrap;">
+{"type":"SLOTNUM", "subject":"Invio SLOTNUM [ParkManagerService]", "content-type": "text/html", "html":"resources/slotnum_mail.html", "linkpattern": "http://localhost:8080/carenter?slotnum=$SLOTNUM&usermail=$USERMAIL"}
+</pre>
+This line configure the <span style="font-family:Courier New, Courier">SLOTNUM</span> notification with the subject, the content-type (at the moment only <i>text</i> or <i>html/text</i> are allowed), the html location, and the pattern for the link associated to the button.
+In addition to this line (one for any notification type), this configuration file has also the two lines:
+<pre style="white-space: pre-wrap;">
+{"button":"resources/button.html"}
+{"logo":"resources/logo.html"}
+</pre>
+that respectly indicate the location of the html of the button and the path of the logo file.
+	
+</ul>
 </div>
 
 
 <h2 id="testing">Testing</h2>
 <div class="remark">
-In order to test the classes contained into this package, we decided to make a JUnit test case in pure Java.
-The procedure is similar for all operation exposed by the repository and door manager classes:
-<pre>
-let REPOSITORY = &#60 retrieve the reporitory to test &#62
-let ELEMENT = &#60 a certain element for REPOSITORY &#62 ;
-do something on ELEMENT
-REPOSITORY.operation(ELEMENT)
-let RETRIEVED = REPOSITORY.retrieve(&#60 ELEMENT identifier &#62)
-assert RETRIEVED == ELEMENT;
+The test of the mail notification system is not easy and is hardly automatizable (but not impossible).
+However, in order to do a simple test, it is possible to send test mail of all type to a real address, checking if the mail are received.
+Then, the pattern for this simple test is:
+<pre style="white-space: pre-wrap;">
+let TYPES = &#60 array containing all NotificationType enum &#62
+let USER =  &#60 test user with real existing mail &#62
+for T in TYPES do
+	let NOTIFICATION = &#60 create T notification from DefaultNotificationFactory  &#62
+	&#60 send NOTIFICATION using MailNotifier  &#62
+end
 </pre>
 <h4><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/PersistenceTest.java" target="code"><em>PersistenceTest.java</em></a></h4>
 </div>
