@@ -47,10 +47,10 @@ Dispatch pickup : pickup(SLOTNUM)
 Context ctxcarparking ip[host="localhost" port=8010]
 
 /* Context for devices */
-Context ctxthermometer ip[host="192.168.1.100" port=8001]
-Context ctxfan ip[host="192.168.1.100" port=8002]
-Context ctxsonar ip[host="192.168.1.100" port=8003]
-Context ctxweightsensor ip[host="192.168.1.100" port=8004]
+Context ctxthermometer ip[host="127.0.0.1" port=8001]
+Context ctxfan ip[host="127.0.0.1" port=8002]
+Context ctxsonar ip[host="127.0.0.1" port=8003]
+Context ctxweightsensor ip[host="127.0.0.1" port=8004]
 
 /* Actors for devices */
 ExternalQActor fanactor context ctxfan
