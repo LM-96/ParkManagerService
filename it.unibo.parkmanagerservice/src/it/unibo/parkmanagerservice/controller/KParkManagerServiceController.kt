@@ -7,6 +7,10 @@ import it.unibo.parkmanagerservice.persistence.ParkingSlotRepository
 import it.unibo.parkmanagerservice.persistence.UserRepository
 import org.json.JSONObject
 
+/**
+ * The implementation of [ParkManagerServiceController] that uses [UserRepository],
+ * [ParkingSlotRepository], [DoorQueue] and [DoorsManager].
+ */
 class KParkManagerServiceController(
     userRepo : UserRepository,
     slotRepo : ParkingSlotRepository,
@@ -21,8 +25,9 @@ class KParkManagerServiceController(
         mapOf(Pair<DoorType, DoorQueue>(DoorType.INDOOR, indoorQueue),
             Pair<DoorType, DoorQueue>(DoorType.OUTDOOR, outdoorQueue))
     private val doors = doors
+    private val tokgen = TokenGenerator.get()
 
-    override fun createUser(json : String) : Pair<User?, ParkManagerError?> {
+    /*override fun createUser(json : String) : Pair<User?, ParkManagerError?> {
         println("Controller | createUser($json)")
         val jsonobj = JSONObject(json)
 
@@ -44,7 +49,7 @@ class KParkManagerServiceController(
         println("Controller | Created user [${user.toString()}]")
         return Pair(user, null)
 
-    }
+    }*/
 
     override fun createUser(name: String, surname: String, mail: String): User {
         var user = User(name = name, surname = surname, mail = mail, state = UserState.CREATED)
@@ -157,7 +162,19 @@ class KParkManagerServiceController(
     }
 
     override fun setCarOfUserAtOutdoorLeaved(): User? {
-        TODO("Not yet implemented")
+        val user = doors.getUserAtDoor(DoorType.OUTDOOR)
+
+        if(doors.getState(DoorType.OUTDOOR) == DoorState.OCCUPIED &&
+            user != null) {
+            doors.setFreeWithNoUser(DoorType.OUTDOOR)
+            user.state = UserState.PICKEDUP
+            userRepo.update(user)
+
+            println("Controller | Registered parked car for user [${user.toString()}]")
+            return user
+        }
+
+        return null
     }
 
     override fun assignTokenToUserAtIndoor(slotnum : String, mail : String): Pair<User?, ParkManagerError?>{
@@ -181,7 +198,8 @@ class KParkManagerServiceController(
         if(doors.getState(DoorType.INDOOR) == DoorState.OCCUPIED) {
             if(user.mail.equals(mail) && slot.get().slotnum == slotnum.toLong()) {
 
-                user.token = "#${user.id}S${slot.get().slotnum}"
+                user.token = tokgen.generateToken(user, slot.get())
+                userRepo.update(user)
                 println("Controller | assigned token=${user.token} to user [${user.toString()}]")
                 return Pair(user, null)
 

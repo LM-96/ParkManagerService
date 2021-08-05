@@ -1,0 +1,28 @@
+$dokka.format:javadoc-v1
+$dokka.linkExtension:html
+$dokka.location:it.unibo.parkmanagerservice.actorchat/ActorChatter.Companion///PointingToDeclaration/it/unibo/parkmanagerservice/actorchat/ActorChatter.Companion.html
+$dokka.location:it.unibo.parkmanagerservice.bean/LocalDoorState.Companion///PointingToDeclaration/it/unibo/parkmanagerservice/bean/LocalDoorState.Companion.html
+$dokka.location:it.unibo.parkmanagerservice.bean/Timers.Companion///PointingToDeclaration/it/unibo/parkmanagerservice/bean/Timers.Companion.html
+$dokka.location:it.unibo.parkmanagerservice.bean/UserState.Companion///PointingToDeclaration/it/unibo/parkmanagerservice/bean/UserState.Companion.html
+$dokka.location:it.unibo.parkmanagerservice.controller/TokenGenerator.Companion///PointingToDeclaration/it/unibo/parkmanagerservice/controller/TokenGenerator.Companion.html
+it.unibo.antifireactor
+it.unibo.ctxcarparking
+it.unibo.ctxfan
+it.unibo.ctxsonar
+it.unibo.ctxthermometer
+it.unibo.ctxweightsensor
+it.unibo.dtfreecounter
+it.unibo.itocccounter
+it.unibo.notificationactor
+it.unibo.parkingmanagerservice
+it.unibo.parkingservicegui
+it.unibo.parkingservicestatusgui
+it.unibo.parkingslot
+it.unibo.parkingstate
+it.unibo.parkmanagerservice.actorchat
+it.unibo.parkmanagerservice.bean
+it.unibo.parkmanagerservice.controller
+it.unibo.parkmanagerservice.notification
+it.unibo.parkmanagerservice.persistence
+it.unibo.trolley
+
