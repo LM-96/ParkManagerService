@@ -321,12 +321,27 @@ ParkingRepository.createBasics(&#60 number of required slot &#62)
 	
 </div>
 
+<div class="remark">
+	<h3 id="tokengen">Token Generation</h3>
+	
+	From the analysis nothing emerges about the token and his format: the consumer has specified nothing concerning this.
+	However, from the analysis, is clear that the token is <k>a unique string associated to the user</k> after he has parked a car: the user must use this token in order to pickup his car.
+	
+	<center><img src="img/tokgen_UML.png" style="max-width:100%; padding: 10px 10px 10px 10px" /></center>
+	
+	The interface <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/controller/TokenGenerator.kt" target="code"><em>TokenGenerator</em></a> defines the method <ks>generateToken()</ks> that can be used from the controller in his method <ks>assignTokenToUserAtIndoor()</ks> in order to generate the token.
+	Because of the association between <em>User</em> and <em>ParkingSlot</em> is unique, the class <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/controller/SimpleTokenGenerator.kt" target="code"><em>SimpleTokenGenerator.kt</em></a> is an implementation of the generator interface the use this relationship to produce surely univocal tokens. We also remeber that every generated token is associated to the user at the token property of the bean <em>User</em> and then saved into the data structures of the system thanks to an update invoked on the <em>UserRepository</em>.
+	
+</div>
+
 
 <h2 id="testing">Testing</h2>
 <div class="remark">
 The test of the <em>ParkManagerServiceController</em> is very delicate and need to test almost all methods of this class because it realizes the main business logic. To do testing, we have created this Junit Test Case:
 
 <h4><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/ControllerTest.java" target="code"><em>ControllerTest.java</em></a></h4>
+
+Notice that in this test case is inserted a <i>special test</i>, <em>testOnlyOneUserCompleteCicle()</em> that shows the sequence of the calls of the controller methods for a <i>normal</i> interation user-service with no interferences.
 
 </div>
 
@@ -337,7 +352,7 @@ The test of the <em>ParkManagerServiceController</em> is very delicate and need 
 	<table>
 		<tr><td width="60%"><h3><b>Logical Architecture</b></h3></td><td><h3><b>Resources</b></h3></td></tr>
 		<tr>
-			<td width="60%"><center style="padding:10px 10px 10px 10px"><img src="img/logical_arch_4.png" style="max-width:100%;padding:2px 2px 2px 2px" /></center></td>
+			<td width="60%"><center style="padding:10px 10px 10px 10px"><img src="img/logical_arch_5.png" style="max-width:100%;padding:2px 2px 2px 2px" /></center></td>
 			<td  style="padding:10px 10px 10px 10px">
 				<h4>Executable QAK Model</h4>
 				<a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.parkmanagerservice/src/parkmanagerservice_2.2.qako" target="code"><em>parkmanagerservice_2.2.qak</em></a><br/><br/>
@@ -345,6 +360,7 @@ The test of the <em>ParkManagerServiceController</em> is very delicate and need 
 				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/FirstTestPlan.java" target="code"><em>FirstTestPlan.java</em></a>
 				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/PersistenceTest.java" target="code"><em>PersistenceTest.java</em></a>
 				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/TestMailNotifier.java" target="code"><em>TestMailNotifier.java</em></a>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/ControllerTest.java" target="code"><em>ControllerTest.java</em></a>
 				<h4>Basicdevice QAK Model</h4>
 				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/basicdevice1.0.qako" target="code"><em>basicdevice1.0.qako</em></a><br/><br/>
 				<h4>Basicdevice Test Files</h4>
