@@ -11,7 +11,7 @@ class LocalDoorQueue : DoorQueue {
     }
 
     override fun pullNextUser(): User? {
-        return queue.firstOrNull()
+        return queue.removeFirstOrNull()
     }
 
     override fun remaining(): Int {

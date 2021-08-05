@@ -74,12 +74,13 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 						if( checkMsgContent( Term.createTerm("enter(NAME,SURNAME,MAIL)"), Term.createTerm("enter(NAME,SURNAME,MAIL)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								
-												USER = CONTROLLER.createUser(payloadArg(0),payloadArg(1),payloadArg(2))!!
-												SLOTNUM = CONTROLLER.assignSlotToUser(USER!!)
-												if(SLOTNUM > 0) {
-													
-													if(CONTROLLER.reserveDoorForUserOrEnqueue(INDOOR, USER!!)) {
-														JSON = "{\"slotnum\":\"$SLOTNUM\",\"indoor\":\"FREE\",\"time\":\"${ITOCC}\"}"
+												try {
+													USER = CONTROLLER.createUser(payloadArg(0), payloadArg(1), payloadArg(2))
+													SLOTNUM = CONTROLLER.assignSlotToUser(USER!!)
+													if(SLOTNUM > 0) {
+														
+														if(CONTROLLER.reserveDoorForUserOrEnqueue(INDOOR, USER!!)) {
+															JSON = "{\"slotnum\":\"$SLOTNUM\",\"indoor\":\"FREE\",\"time\":\"${ITOCC}\"}"
 								updateResourceRep( "{\"door\":\"indoor\",\"state\":\"RESERVED\"}"  
 								)
 								updateResourceRep( "{\"slot\":\"${SLOTNUM}\",\"user\":\"${USER!!.mail}\",\"state\":\"RESERVED\"}"  
@@ -87,7 +88,10 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 								forward("dopolling", "dopolling($INDOOR_POLLING)" ,"weightsensoractor" ) 
 								forward("startItoccCounter", "startItoccCounter(START)" ,"itocccounter" ) 
 								
-													} else JSON = "{\"slotnum\":\"$SLOTNUM\",\"indoor\":\"OCCUPIED\"}"
+														} else JSON = "{\"slotnum\":\"$SLOTNUM\",\"indoor\":\"OCCUPIED\"}"
+													}
+												} catch(e : java.sql.SQLException) {
+													JSON = "{\"err\":\"${e.getLocalizedMessage()}\"}"
 												}
 						}
 						println("$name | reply with slotnum(${JSON!!})")
@@ -100,9 +104,6 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 						forward("stopCount", "stopCount(STOP)" ,"itocccounter" ) 
 						 
 									USER = CONTROLLER.setSomeoneOnDoor(INDOOR)!!
-									SLOT = CONTROLLER.getSlotReservedForUser(USER!!)
-									SLOTNUM = SLOT!!.slotnum
-						forward("parkcar", "parkcar($SLOTNUM)" ,"trolley" ) 
 						updateResourceRep( "{\"door\":\"indoor\",\"state\":\"OCCUPIED\"}"  
 						)
 					}

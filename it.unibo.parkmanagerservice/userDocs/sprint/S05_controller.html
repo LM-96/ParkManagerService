@@ -204,6 +204,7 @@ div.imagedesc{
 		<ul>
 			<li><a href="#generalview">General view of the controller package</a></li>
 			<li><a href="#controllerzoom">Zooming into the controller</a></li>
+			<li><a href="#tokengen">Token generation</a></li>
 		</ul>
 	</li>
 	<li><a href="#testing">Testing</a></li>
@@ -306,153 +307,16 @@ ParkingRepository.createBasics(&#60 number of required slot &#62)
 	
 </div>
 
-<h2 id="lastarch">Last Architecture and aim of this sprint</h2>
-<div class="remark">
-	<table>
-		<tr><td width="60%"><h3><b>Logical Architecture</b></h3></td><td><h3><b>Resources</b></h3></td></tr>
-		<tr>
-			<td width="60%"><center style="padding:10px 10px 10px 10px"><img src="img/logical_arch_4.png" style="max-width:100%;padding:2px 2px 2px 2px" /></center></td>
-			<td  style="padding:10px 10px 10px 10px">
-				<h4>Executable QAK Model</h4>
-				<a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.parkmanagerservice/src/parkmanagerservice_2.2.qako" target="code"><em>parkmanagerservice_2.2.qak</em></a><br/><br/>
-				<h4>Test Files</h4>
-				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/FirstTestPlan.java" target="code"><em>FirstTestPlan.java</em></a>
-				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/PersistenceTest.java" target="code"><em>PersistenceTest.java</em></a>
-				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/TestMailNotifier.java" target="code"><em>TestMailNotifier.java</em></a>
-				<h4>Basicdevice QAK Model</h4>
-				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/basicdevice1.0.qako" target="code"><em>basicdevice1.0.qako</em></a><br/><br/>
-				<h4>Basicdevice Test Files</h4>
-				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.webServerTest/src/devices_pytest.py" target="code"><em>devices_pytest.py</em></a>
-				
-			</td>
-		</tr>
-	</table><br/><br/>
-	In this sprint we are going to design a <a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller" target="web"><em>Controller</em></a> that realizes the <a href="https://en.wikipedia.org/wiki/Business_logic" target="web"><ks>business logic</ks></a> of the <em>APP-SERVER</em>. This controller can be used by the actor os the actors present in the APP-SERVER in order to drastically reduce the code of their states, but it also introduce another abstraction layer that make the code a little bit more reusable and extensible.
-</div>
-
-<h2 id="intro">Introduction</h2>
-<div class="remark">
-	The controller that we are going to design realizes the <ks>business logic</ks> of the main server of the system.
-	Then, the <em>APP-SERVER</em> is one actor (or more that one) that can use this controller: we have introduced a sort of revisitation of the <a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller" target="web">MVC</a> design pattern (in distributed version) that we should call <em>MVAC</em> (Model-view-actor-controller): the main actor can receive all request from the GUI, then invoke the operation on the controller depending on the request. So, the the controller operate over the model that we have described in the <a href="http://htmlpreview.github.io/?https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/userDocs/sprint/S03_state_maintenance.html#bean" target="web">SPRINT 3</a>.
-	
-	<center style="padding:10px 10px 10px 10px"><img src="img/mvac.png" /></center>
-	As we said, in our case, <ks>the GUI is realized by a web server</ks>, then it consists in a set of web pages and other web entities. We will define better how the gui is composed in a future sprint. However, the web server communicates with the main server thanks to the QAK interation methods (TCP, in this case). The APP-SERVER receives the request, then transit in the state designed for the relative type of request, and uses the controller to operate. The controller, in turn, operates on the Java Bean and the State Structure also using the Persistence Repository to persist the changes done.
-	We will also zoom into the APP-SERVER in the next sprint.
-</div>
-
-<h2 id="controller">Controller classes</h2>
-<h4><center>Package <a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/controller">it.unibo.parkmanagerservice.controller</a></center></h4>
-<div class="remark">
-
-	<h3 id="generalview">General view of the controller package</h3>
-	
-	<center><img src="img/controller_UML.png" style="max-width:100%; padding: 10px 10px 10px 10px" /></center>
-	
-	<table>
-	<tr>
-		<td style="padding:10px 10px 10px 10px" width="50%">
-			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/controller/ParkManagerServiceController.kt" target="code"><em>ParkManagerServiceController.kt</em></a> and <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/controller/KParkManagerServiceController.kt" target="code"><em>KParkManagerServiceController.kt</em></a></h5>
-			The <em>ParkManagerServiceController</em> is the main interface that defines the methods that the controller implementation <k>must have</k> in order to realize the business logic. This interface has only one implementation, <em>KParkManagerServiceController</em>, that uses the classes seen in the previous sprints (bean, repository, doors management).
-			All methods of this classes will be discussed soon.
-			
-			
-		</td>
-		<td style="padding:10px 10px 10px 10px">
-			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/controller/ParkManagerError.kt" target="code"><em>ErrorType</em></a> (inside <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/controller/ParkManagerError.kt" target="code"><em>ParkManagerError.kt</em></a>)</h5>
-			This enumeration defines a possible error returned by some method of the controller.
-			Then:
-			<ul>
-				<li><ks>INVALID_SLOTNUM</ks>, <ks>INVALID_TOKEN</ks>, <ks>INVALID_MAIL</ks>: errors thrown when slotnum ot token or mail are not valid;</li>
-				<li><ks>NO_USER_AT_DOOR</ks>: errors throws when there is no user at the door (but he is expected by the caller);</li>
-				<li><ks>DOOR_NOT_RESERVED</ks>: error returned when the door is not reserved (but it is expected by the caller);</li>
-				<li><ks>NO_RESERVATION_FOR_USER</ks>: error throws when there is no reservation for the user passed as argument;</li>
-				<li><ks>NO_NAME</ks>, <ks>NO_SURNAME</ks>, <ks>NO_MAIL</ks>: error returned when is missing some data;</li>
-			</ul>
-			
-		</td>
-	</tr>
-	<tr>
-		<td style="padding:10px 10px 10px 10px" width="50%">
-			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/controller/ControllerBuilder.kt" target="code"><em>ControllerBuilder.kt</em></a></h5>
-			A simple <a href="https://en.wikipedia.org/wiki/Builder_pattern" target="web">Builder</a> class in order to build and get the controller of the system. Obviously, this controller is also a <k>Singleton</k> then, only one creation is permitted: if the controller has been already built, then the invocation of the methods <span style="font-family:Courier New, Courier">createK()</span> or <span style="font-family:Courier New, Courier">inject()</span> has no effect.
-			To build and get the controller using basic repositories and local door state, the <em>APP-SERVER</em> must do:
-<pre style="white-space: pre-wrap;">
-ParkingRepository.createBasics(&#60 number of required slot &#62)
-<k>val</k> CONTROLLER = ControllerBuilder.createK(
-	ParkingRepository.getUserRepository(),
-	ParkingRepository.getParkingSlotRepository(),
-	DoorQueues.getIndoorQueue(),
-	DoorQueues.getOutdoorQueue(),
-	LocalDoorState.get()
-).get()
-</pre>
-			
-		</td>
-		<td style="padding:10px 10px 10px 10px">
-			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/controller/ParkManagerError.kt" target="code"><em>ParkManagerError.kt</em></a></h5>
-			A simple data class used for returning error after a method invocation.
-			This class might not even be designed and exception could have been used instad, but Kotlin is a little bit difference from Java concerning exception (see <a href="https://kotlinlang.org/docs/exceptions.html#checked-exceptions" target="web">Checked Expression</a>). Then we decide to <k>force the programmer</k> to check if there was some error during the method invocation by an appropriate class for error.
-			General, every controller method that can produce error returns an object <span style="font-family:Courier New, Courier">Pair &#60 T?, ParkManagerError? &#62</span>, in which <span style="font-family:Courier New, Courier">T</span> is the type return ofthe method: then, if the error is not null, it means that during the method execution there was an error.
-			
-		</td>
-	</tr>
-	</table><br/><br/>
-	
-	
-</div>
-
 <div class="remark">
 	<h3 id="controllerzoom">Zooming into the controller</h3>
 	
-	<table>
-	<tr>
-		<td style="padding:10px 10px 10px 10px" width="50%">
-			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/controller/ParkManagerServiceController.kt" target="code"><em>ParkManagerServiceController.kt</em></a> and <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/controller/KParkManagerServiceController.kt" target="code"><em>KParkManagerServiceController.kt</em></a></h5>
-			The <em>ParkManagerServiceController</em> is the main interface that defines the methods that the controller implementation <k>must have</k> in order to realize the business logic. This interface has only one implementation, <em>KParkManagerServiceController</em>, that uses the classes seen in the previous sprints (bean, repository, doors management).
-			All methods of this classes will be discussed soon.
-			
-			
-		</td>
-		<td style="padding:10px 10px 10px 10px">
-			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/controller/ParkManagerError.kt" target="code"><em>ErrorType</em></a> (inside <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/controller/ParkManagerError.kt" target="code"><em>ParkManagerError.kt</em></a>)</h5>
-			This enumeration defines a possible error returned by some method of the controller.
-			Then:
-			<ul>
-				<li><ks>INVALID_SLOTNUM</ks>, <ks>INVALID_TOKEN</ks>, <ks>INVALID_MAIL</ks>: errors thrown when slotnum ot token or mail are not valid;</li>
-				<li><ks>NO_USER_AT_DOOR</ks>: errors throws when there is no user at the door (but he is expected by the caller);</li>
-				<li><ks>DOOR_NOT_RESERVED</ks>: error returned when the door is not reserved (but it is expected by the caller);</li>
-				<li><ks>NO_RESERVATION_FOR_USER</ks>: error throws when there is no reservation for the user passed as argument;</li>
-				<li><ks>NO_NAME</ks>, <ks>NO_SURNAME</ks>, <ks>NO_MAIL</ks>: error returned when is missing some data;</li>
-			</ul>
-			
-		</td>
-	</tr>
-	<tr>
-		<td style="padding:10px 10px 10px 10px" width="50%">
-			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/controller/ControllerBuilder.kt" target="code"><em>ControllerBuilder.kt</em></a></h5>
-			A simple <a href="https://en.wikipedia.org/wiki/Builder_pattern" target="web">Builder</a> class in order to build and get the controller of the system. Obviously, this controller is also a <k>Singleton</k> then, only one creation is permitted: if the controller has been already built, then the invocation of the methods <span style="font-family:Courier New, Courier">createK()</span> or <span style="font-family:Courier New, Courier">inject()</span> has no effect.
-			To build and get the controller using basic repositories and local door state, the <em>APP-SERVER</em> must do:
-<pre style="white-space: pre-wrap;">
-ParkingRepository.createBasics(&#60 number of required slot &#62)
-<k>val</k> CONTROLLER = ControllerBuilder.createK(
-	ParkingRepository.getUserRepository(),
-	ParkingRepository.getParkingSlotRepository(),
-	DoorQueues.getIndoorQueue(),
-	DoorQueues.getOutdoorQueue(),
-	LocalDoorState.get()
-).get()
-</pre>
-			
-		</td>
-		<td style="padding:10px 10px 10px 10px">
-			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/controller/ParkManagerError.kt" target="code"><em>ParkManagerError.kt</em></a></h5>
-			A simple data class used for returning error after a method invocation.
-			This class might not even be designed and exception could have been used instad, but Kotlin is a little bit difference from Java concerning exception (see <a href="https://kotlinlang.org/docs/exceptions.html#checked-exceptions" target="web">Checked Expression</a>). Then we decide to <k>force the programmer</k> to check if there was some error during the method invocation by an appropriate class for error.
-			General, every controller method that can produce error returns an object <span style="font-family:Courier New, Courier">Pair &#60 T?, ParkManagerError? &#62</span>, in which <span style="font-family:Courier New, Courier">T</span> is the type return ofthe method: then, if the error is not null, it means that during the method execution there was an error.
-			
-		</td>
-	</tr>
-	</table><br/><br/>
+	In order to make a zoom into the controller strongly describing it, we decide to produce the <ks>KDoc</ks> for all classes contained into the controller package. All controller methods have been fully described in this KDoc, produced by using <a href="https://kotlinlang.org/docs/kotlin-doc.html" target="web">Dokka</a>.<br/><br/>
+	
+	Go to the KDoc related to the package <em>it.unibo.parkmanagerservice.controller</em>: <a href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/LM-96/ParkManagerService/main/it.unibo.parkmanagerservice/userDocs/sprint/kdocs/it.unibo.parkmanagerservice.controller/it/unibo/parkmanagerservice/controller/package-summary.html" target="web">KDoc</a><br/><br/>
+	
+	Go to the KDoc related to the class <em>it.unibo.parkmanager.controller.ParkManagerServiceController</em>: <a href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/LM-96/ParkManagerService/main/it.unibo.parkmanagerservice/userDocs/sprint/kdocs/it.unibo.parkmanagerservice.controller/it/unibo/parkmanagerservice/controller/ParkManagerServiceController.html" target="web">KDoc</a><br/><br/>
+	
+	The usages of the controller methods and his relation with the states of the <em>APP-SERVER</em> will be clarified in the next sprint.
 	
 	
 </div>
@@ -460,29 +324,10 @@ ParkingRepository.createBasics(&#60 number of required slot &#62)
 
 <h2 id="testing">Testing</h2>
 <div class="remark">
-The test of the mail notification system is not easy and is hardly automatizable (but not impossible).
-However, in order to do a simple and a fast test, it is possible to send test mail of all type to a real address, checking if the mail are received.
-Then, the pattern for this simple test is:
-<pre style="white-space: pre-wrap;">
-let TYPES = &#60 array containing all NotificationType enum &#62
-let USER =  &#60 test user with real existing mail &#62
-for T in TYPES do
-	let NOTIFICATION = &#60 create T notification from DefaultNotificationFactory  &#62
-	&#60 send NOTIFICATION using MailNotifier  &#62
-end
-</pre>
-<h4><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/TestMailNotifier.java" target="code"><em>TestMailNotifier.java</em></a></h4>
+The test of the <em>ParkManagerServiceController</em> is very delicate and need to test almost all methods of this class because it realizes the main business logic. To do testing, we have created this Junit Test Case:
 
-After the execution of this test, the received mail are (in Outlook format):
-<ul>
-	<li><a href="https://github.com/LM-96/ParkManagerService/raw/main/it.unibo.parkmanagerservice/userDocs/sprint/msg/slotnum.msg" target="web">slotnum.msg</a></li>
-	<li><a href="https://github.com/LM-96/ParkManagerService/raw/main/it.unibo.parkmanagerservice/userDocs/sprint/msg/token.msg" target="web">token.msg</a></li>
-	<li><a href="https://github.com/LM-96/ParkManagerService/raw/main/it.unibo.parkmanagerservice/userDocs/sprint/msg/pickup.msg" target="web">pickup.msg</a></li>
-	<li><a href="https://github.com/LM-96/ParkManagerService/raw/main/it.unibo.parkmanagerservice/userDocs/sprint/msg/losen_right.msg" target="web">losen_right.msg</a></li>
-	<li><a href="https://github.com/LM-96/ParkManagerService/raw/main/it.unibo.parkmanagerservice/userDocs/sprint/msg/admin_dtfree.msg" target="web">admin_dtfree.msg</a></li>
-	<li><a href="https://github.com/LM-96/ParkManagerService/raw/main/it.unibo.parkmanagerservice/userDocs/sprint/msg/user_dtfree.msg" target="web">user_dtfree.msg</a></li>
-	<li><a href="https://github.com/LM-96/ParkManagerService/raw/main/it.unibo.parkmanagerservice/userDocs/sprint/msg/general.msg" target="web">general.msg</a></li>
-</ul>
+<h4><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/ControllerTest.java" target="code"><em>ControllerTest.java</em></a></h4>
+
 </div>
 
 

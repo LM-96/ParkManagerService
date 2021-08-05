@@ -110,19 +110,23 @@ QActor parkingmanagerservice context ctxcarparking {
 		[# SLOTNUM = 0 #]
 		onMsg (enter : enter(NAME,SURNAME,MAIL)) {
 			[#
-				USER = CONTROLLER.createUser(payloadArg(0),payloadArg(1),payloadArg(2))!!
-				SLOTNUM = CONTROLLER.assignSlotToUser(USER!!)
-				if(SLOTNUM > 0) {
-					
-					if(CONTROLLER.reserveDoorForUserOrEnqueue(INDOOR, USER!!)) {
-						JSON = "{\"slotnum\":\"$SLOTNUM\",\"indoor\":\"FREE\",\"time\":\"${ITOCC}\"}"
-				#]
-						updateResource[# "{\"door\":\"indoor\",\"state\":\"RESERVED\"}" #]
-						updateResource[# "{\"slot\":\"${SLOTNUM}\",\"user\":\"${USER!!.mail}\",\"state\":\"RESERVED\"}" #]
-						forward weightsensoractor -m dopolling : dopolling($INDOOR_POLLING)
-						forward itocccounter -m startItoccCounter : startItoccCounter(START)
-				[#
-					} else JSON = "{\"slotnum\":\"$SLOTNUM\",\"indoor\":\"OCCUPIED\"}"
+				try {
+					USER = CONTROLLER.createUser(payloadArg(0), payloadArg(1), payloadArg(2))
+					SLOTNUM = CONTROLLER.assignSlotToUser(USER!!)
+					if(SLOTNUM > 0) {
+						
+						if(CONTROLLER.reserveDoorForUserOrEnqueue(INDOOR, USER!!)) {
+							JSON = "{\"slotnum\":\"$SLOTNUM\",\"indoor\":\"FREE\",\"time\":\"${ITOCC}\"}"
+					#]
+							updateResource[# "{\"door\":\"indoor\",\"state\":\"RESERVED\"}" #]
+							updateResource[# "{\"slot\":\"${SLOTNUM}\",\"user\":\"${USER!!.mail}\",\"state\":\"RESERVED\"}" #]
+							forward weightsensoractor -m dopolling : dopolling($INDOOR_POLLING)
+							forward itocccounter -m startItoccCounter : startItoccCounter(START)
+					[#
+						} else JSON = "{\"slotnum\":\"$SLOTNUM\",\"indoor\":\"OCCUPIED\"}"
+					}
+				} catch(e : java.sql.SQLException) {
+					JSON = "{\"err\":\"${e.getLocalizedMessage()}\"}"
 				}
 			#]
 		}
@@ -135,10 +139,7 @@ QActor parkingmanagerservice context ctxcarparking {
 		forward itocccounter -m stopCount : stopCount(STOP)
 		[# 
 			USER = CONTROLLER.setSomeoneOnDoor(INDOOR)!!
-			SLOT = CONTROLLER.getSlotReservedForUser(USER!!)
-			SLOTNUM = SLOT!!.slotnum
 		#]
-		forward trolley -m parkcar : parkcar($SLOTNUM)
 		updateResource[# "{\"door\":\"indoor\",\"state\":\"OCCUPIED\"}" #]
 	} Goto work
 	

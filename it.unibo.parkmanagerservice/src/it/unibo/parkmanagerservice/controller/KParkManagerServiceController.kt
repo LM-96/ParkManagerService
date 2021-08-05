@@ -6,6 +6,8 @@ import it.unibo.parkmanagerservice.persistence.DoorQueue
 import it.unibo.parkmanagerservice.persistence.ParkingSlotRepository
 import it.unibo.parkmanagerservice.persistence.UserRepository
 import org.json.JSONObject
+import java.sql.SQLException
+import kotlin.jvm.Throws
 
 /**
  * The implementation of [ParkManagerServiceController] that uses [UserRepository],
@@ -51,6 +53,7 @@ class KParkManagerServiceController(
 
     }*/
 
+     @Throws(SQLException::class)
     override fun createUser(name: String, surname: String, mail: String): User {
         var user = User(name = name, surname = surname, mail = mail, state = UserState.CREATED)
         userRepo.create(user)
@@ -138,7 +141,7 @@ class KParkManagerServiceController(
     }
 
     override fun setFreeDoor(door: DoorType) {
-        doors.setState(door, DoorState.FREE)
+        doors.setFreeWithNoUser(door)
     }
 
     override fun setCarOfUserAtIndoorParked(): User? {
