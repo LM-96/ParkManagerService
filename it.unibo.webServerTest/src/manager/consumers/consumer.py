@@ -47,7 +47,18 @@ class ManagerConsumer(AsyncWebsocketConsumer):
             socket_fan.connect( (config.system.host, config.fan.port))
             text_json = json.loads(text_data)
             msg_type = 'fanon' if text_json['data'] == "ON" else 'fanoff'
-            msg = f'msg({msg_type}, dispatch, python, fanactor, {msg_type}(ON), 1)\n'
+            msg = f'msg({msg_type}, dispatch, python, {config.fan.actor}, {msg_type}(ON), 1)\n'
+            
+            byt=msg.encode()   
+            socket_fan.send(byt)
+            print("MESSAGE SENT FROM WS")
+            socket_fan.close()
+        elif self.group_name == "trolleycontrol_group_manager":
+            socket_fan = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            socket_fan.connect((config.system.host, config.trolley.port))
+            text_json = json.loads(text_data)
+            msg_type = 'fanon' if text_json['data'] == "ON" else 'fanoff'
+            msg = f'msg({msg_type}, dispatch, python, {config.trolley.actor}, {msg_type}(ON), 1)\n'
             
             byt=msg.encode()   
             socket_fan.send(byt)

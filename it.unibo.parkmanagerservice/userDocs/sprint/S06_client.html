@@ -1,0 +1,425 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+<style type="text/css">
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+	font-size: 93%;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+	border-radius: 10px;
+	padding: 5px;
+}
+
+top {
+	width: 100%;
+}
+
+
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 90%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #abe876;
+    color: #1632cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 90%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+ks{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #0000CD	;
+	font-size: 90%;
+}
+kc{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #008000	;
+	font-size: 90%;
+}
+pre{
+	font-family: "Consolas";
+	font-size: 85%;
+	background-color: #f5f5f5;
+	border: 1.5px solid silver;
+	padding: 5px;
+}
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+	 
+    font-size: 18px;
+}
+k{
+    color: #990000;
+	font-weight: bold;
+	font-size: 90%;
+}
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+	padding: 10px;
+}
+
+h2 {
+    background-color: #9ed8ff;
+    font-size: 130%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 100%;
+}
+h4 {
+    background-color: #ccffcc;
+    font-size: 100%;
+	width: 95%;
+	border-radius: 5px;
+	padding: 2px;
+}
+h5 {
+    background-color: #d5ffb0;
+    font-size: 100%;
+
+}
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}
+div.remark{
+	background-color: #E3F2FD;
+    border: 1.5px solid #d5f2ed;
+    padding: 15px;
+    margin: 10px;
+	border-radius: 25px;
+}
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+ol, ul, li {
+  margin: 0;
+  margin-left: 10px;
+  padding: 0;
+  padding-bottom: 5px;
+}
+
+table, th, td {
+	border: 1px solid black;
+}
+
+img {
+	border: 1.5px solid #d5f2ed
+
+}
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+div.wrapdesc{
+	width: 90%;
+	margin: auto;
+}
+
+div.imagedesc{
+	width: 85%;
+	margin: auto;
+}
+</style>
+    
+<head>
+   
+<title>ParkingServiceGUI</title></head>
+    
+<body>
+<div id="top">
+<h1>LABORATORIO DI INGEGNERIA DEI SISTEMI SOFTWARE <font size="5"></font> </h1>
+</div>  
+
+<div class="body"> 
+<h2>ParkingServiceGUI</h2>
+
+The ParkingServiceGUI is the user interacting component that allow the client to manifest the 
+interest of entering the car into the parking-area, call the trolley to park the car and call the trolley to pickup the car at the outdoor-area.
+
+<h3>App creation</h3>
+<div class="remark">
+    To add the ParkingServiceGUI to the Django webServer it is needed to create a Django application that will handle it.
+    <pre><span></span><span class="gp">$ </span>django-admin startapp client
+    </pre>
+
+    <pre><span></span><span class="n">client</span><span class="o">/</span>
+        <span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>
+        <span class="n">admin</span><span class="o">.</span><span class="n">py</span>
+        <span class="n">apps</span><span class="o">.</span><span class="n">py</span>
+        <span class="n">migrations</span><span class="o">/</span>
+            <span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>
+        <span class="n">models</span><span class="o">.</span><span class="n">py</span>
+        <span class="n">tests</span><span class="o">.</span><span class="n">py</span>
+        <span class="n">urls</span><span class="o">.</span><span class="n">py</span>
+        <span class="n">views</span><span class="o">.</span><span class="n">py</span>
+    </pre>
+
+    This will create all the Python scripts to handle the interactions between the user and the Django webServer. 
+
+</div>
+
+<h3>APIs</h3>
+<div class="remark">
+    The client has three main activities that need to be handled:<br>
+    the client must be able to ...
+    <ol>
+        <li>notify the interest of entering the parking-area;</li>
+        <li>call the trolley in order to park the car in the parking-slot;</li>
+        <li>call the trolley to pick up the car at the outdoor-area;</li>
+    </ol>
+    As analized in the requirement analysis we will call this APIs respectivelly: <br>
+    <ks>notify interest</ks>, <ks>car enter</ks>, <ks>pick up</ks>. <br>
+    This APIs will be mapped on the Django main URL preceded by <ks>"/client"</ks> in order to separate the different application access points.
+</div>
+
+<h3>Notify Interest</h3>
+<div class="remark">
+    From the requirement analysis this API will handle the first interaction between the user and the webServer.
+    
+    Inside the urls.py script we need specify the url and the relative method that will handle the http requests on that url.
+
+    <pre>
+    urlpatterns = [
+        path('notifyinterest', notify_interest),
+    ]
+    </pre>
+
+    This will allow Django to handle GET and POST requests on the url 'notifyinterest' using the 'notify_interest' method.
+
+    <h4>View</h4>
+
+    The view must allow to user to have access to a html page in order to enter the personal information needed, which are <ks>name</ks>, <ks>surname</ks>, <ks>email</ks>,
+    and see the slotnum in response or other notifications.<br>
+
+
+    <table style="width:100%" border="1">
+        <tr>
+            <td>
+                <h5 style="padding-left:10px"><a name="GET" style="text-decoration:none;"><ks>GET</ks></a></h5>
+                <ol>
+                    <li>Renders the html page "notify_interest.html";</li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h5 style="padding-left:10px"><a name="POST" style="text-decoration:none;"><ks>POST</ks></a></h5>
+                <ol>
+                    <li>Valids the form submitted by the user;</li>
+                    <li>Opens a socket to the actor responsible for sending the slotnum;</li>
+                    <li>Build a TCP message with the request for the slotnum and incorporate the form's data;
+                    </li>
+                    <pre>
+                        msg = f'msg(enter, request, python, {config.carparking.actor}, enter("{name}","{surname}","{email}"), 1)\n'
+                    </pre>
+                    <li>Waits for a response;</li>
+                    <li>Parse the message received in order to get only the useful data inside the TCP message;</li>
+
+                    <li>Renders the html page "notify_interest.html" adding the slotnum or the eventual notification;</li>
+                </ol>
+            </td>
+        </tr>
+    </table>
+    
+
+</div>
+
+<h3>Car Enter</h3>
+<div class="remark">
+    From the requirement analysis this API will handle the request from the user to enter the car inside the parking slot.
+
+    Inside the urls.py script we specify the url and the relative method that will handle the http requests on that url.
+
+    <pre>
+    urlpatterns = [
+        path('notifyinterest', notify_interest),
+        path('carenter', carenter),
+    ]
+    </pre>
+
+    This will allow Django to handle GET and POST requests to the url 'carenter' using the 'carenter' method.
+
+    <h4>View</h4>
+
+    The view must allow to user to have access to a html page in order to enter the slotnum previously received and the email, and see the token in response or other notifications.<br>
+
+    <table style="width:100%" border="1">
+        <tr>
+            <td>
+                <h5 style="padding-left:10px"><a name="GET" style="text-decoration:none;"><ks>GET</ks></a></h5>
+                <ol>
+                    <li>Renders the html page "carenter.html";</li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h5 style="padding-left:10px"><a name="POST" style="text-decoration:none;"><ks>POST</ks></a></h5>
+                <ol>
+                    <li>Valids the form submitted by the user;</li>
+                    <li>Opens a socket to the actor responsible for sending the token;</li>
+                    <li>Build a TCP message with the request for the token and incorporate the form's data;
+                    </li>
+                    <pre>
+                        msg = f'msg(carenter, request, python, {config.carparking.actor}, carenter("{slotnum}","{email}"), 1)\n'                    </pre>
+                    <li>Waits for a response;</li>
+                    <li>Parse the message received in order to get only the useful data inside the TCP message;</li>
+
+                    <li>Renders the html page "carenter.html" adding the token or the eventual notification;</li>
+                </ol>
+            </td>
+        </tr>
+    </table>
+    
+
+</div>
+
+
+<h3>Pick up</h3>
+<div class="remark">
+    From the requirement analysis this API will handle the request from the user to pick up the car from the outdoor-area.
+
+    Inside the urls.py script we specify the url and the relative method that will handle the http requests on that url.
+
+    <pre>
+    urlpatterns = [
+        path('notifyinterest', notify_interest),
+        path('carenter', carenter),
+        path('pickup', pickup),
+    </pre>
+
+    This will allow Django to handle GET and POST requests to the url 'pickup' using the 'pickup' method.
+
+    <h4>View</h4>
+
+    The view must allow to user to have access to a html page in order to enter the token previously received and the email, and receive a notification from the service.<br>
+
+
+
+    <table style="width:100%" border="1">
+        <tr>
+            <td>
+                <h5 style="padding-left:10px"><a name="GET" style="text-decoration:none;"><ks>GET</ks></a></h5>
+                <ol>
+                    <li>Renders the html page "pickup.html";</li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h5 style="padding-left:10px"><a name="POST" style="text-decoration:none;"><ks>POST</ks></a></h5>
+                <ol>
+                    <li>Valids the form submitted by the user;</li>
+                    <li>Opens a socket to the actor responsible for telling the trolley to park a car in the outdoor-area;</li>
+                    <li>Build a TCP message with the request and incorporate the form's data;
+                    </li>
+                    <pre>
+                        msg = f'msg(pickup, request, python, {config.carparking.actor}, pickup("{token}","{email}"), 1)\n'                  </pre>
+                    <li>Waits for a response;</li>
+                    <li>Parse the message received in order to get only the useful data inside the TCP message;</li>
+
+                    <li>Renders the html page "pickup.html" adding the notification sent by the service;</li>
+                </ol>
+            </td>
+        </tr>
+    </table>
+    
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+ 
+<!-- USEFUL
+<table style="width:100%" border="1">
+<tr>
+<td style="width:50%">
+</td>
+<td></td>
+</tr>
+</table>
+-->
+	      	
+<br/><br/> 	
+</div>  
+
+<div style="background-color:rgba(86, 56, 253, 0.9); width:60%;text-align:left;color:white">
+By studentName email: student@studio.unibo.it  
+<img src="./img/emiglio.png" alt="mbot" width="15%" height="15%">
+</div> 
+</body>
+</html>

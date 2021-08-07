@@ -8,6 +8,22 @@ const trolley_socket = new WebSocket(
     '/manager/trolley/'
 );
 
+const trolleycontrol_socket = new WebSocket(
+    'ws://' +
+    window.location.host +
+    '/manager/trolleycontrol/'
+);
+
+
+document.getElementById("trolley_control").onclick =function () {
+    var status = document.getElementById("status_trolley").innerHTML
+    if(status == "ON"){
+        fancontrol_socket.send("{\"data\": \"OFF\"}")
+    }else if(status == "OFF"){
+        fancontrol_socket.send("{\"data\": \"ON\"}")
+    }
+}
+
 
 trolley_socket.onmessage = function (e) {
     console.log(e)
