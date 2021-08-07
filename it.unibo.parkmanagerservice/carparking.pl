@@ -2,17 +2,6 @@
 % carparking description   
 %====================================================================================
 context(ctxcarparking, "localhost",  "TCP", "8010").
-context(ctxthermometer, "127.0.0.1",  "TCP", "8001").
-context(ctxfan, "127.0.0.1",  "TCP", "8002").
-context(ctxsonar, "127.0.0.1",  "TCP", "8003").
-context(ctxweightsensor, "127.0.0.1",  "TCP", "8004").
- qactor( fanactor, ctxfan, "external").
-  qactor( weightsensoractor, ctxweightsensor, "external").
-  qactor( sonaractor, ctxsonar, "external").
-  qactor( parkingmanagerservice, ctxcarparking, "it.unibo.parkingmanagerservice.Parkingmanagerservice").
-  qactor( itocccounter, ctxcarparking, "it.unibo.itocccounter.Itocccounter").
-  qactor( dtfreecounter, ctxcarparking, "it.unibo.dtfreecounter.Dtfreecounter").
-  qactor( parkingservicestatusgui, ctxcarparking, "it.unibo.parkingservicestatusgui.Parkingservicestatusgui").
-  qactor( notificationactor, ctxcarparking, "it.unibo.notificationactor.Notificationactor").
-  qactor( antifireactor, ctxcarparking, "it.unibo.antifireactor.Antifireactor").
+context(ctxbasicrobot, "127.0.0.1",  "TCP", "8020").
   qactor( trolley, ctxcarparking, "it.unibo.trolley.Trolley").
+  qactor( basicrobot, ctxbasicrobot, "external").

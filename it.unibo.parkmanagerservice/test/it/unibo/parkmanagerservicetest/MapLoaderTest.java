@@ -10,8 +10,7 @@ import java.util.stream.Collectors;
 
 import org.junit.Test;
 
-import it.unibo.trolley.MapLoaderKt;
-import itunibo.planner.plannerUtil;
+import it.unibo.parkmanagerservice.trolley.MapLoader;
 import mapRoomKotlin.mapUtil;
 
 public class MapLoaderTest {
@@ -24,7 +23,7 @@ public class MapLoaderTest {
 		assertTrue(Files.exists(file));
 		
 		String content = Files.lines(file).collect(Collectors.joining("\n"));
-		MapLoaderKt.loadMapFromTxt(MAP_FILE);
+		MapLoader.INSTANCE.loadMapFromTxt(MAP_FILE);
 		
 		assertEquals(mapUtil.INSTANCE.getMap().toString().trim(), content.trim());
 	}

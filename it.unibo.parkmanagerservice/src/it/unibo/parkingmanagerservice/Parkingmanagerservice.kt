@@ -185,7 +185,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 														JSON = "{\"msg\":\"The transport trolley will transport your car to the outdoor: you will get a notification when your car is ready. Plase stay near the ourdoor\"}"
 								updateResourceRep( "{\"slot\":\"${SLOTNUM}\",\"user\":\"${SLOTERR.first!!.user!!.mail}\",\"state\":\"ALMOST_FREE\"}"  
 								)
-								forward("pickup", "pickup($SLOTNUM)" ,"trolley" ) 
+								forward("pickupcar", "pickupcar($SLOTNUM)" ,"trolley" ) 
 								forward("startDtfreeCounter", "startDtfreeCounter($OUTDOOR_POLLING)" ,"dtfreecounter" ) 
 								
 													} else

@@ -16,29 +16,236 @@ class Trolley ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 	@kotlinx.coroutines.ObsoleteCoroutinesApi
 	@kotlinx.coroutines.ExperimentalCoroutinesApi			
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
+		
+				it.unibo.parkmanagerservice.trolley.MapLoader.loadMapFromTxt("resources/parking_map.txt")
+				val PLANNER = itunibo.planner.plannerUtil
+				val STEP_TIME = "340"
+				val SLOTMAP = it.unibo.parkmanagerservice.trolley.SlotMap
+				var DEST : Pair<Int, Int>? = null
+				val TRIPBUILDER = it.unibo.parkmanagerservice.trolley.CompleteTripBuilder(6, 1, 6, 3)
+				var TTRIP : kotlin.collections.Iterator<it.unibo.parkmanagerservice.trolley.TripStage>? = null
+				var PLAN : kotlin.collections.Iterator<aima.core.agent.Action>? = null
+				var ACTION : aima.core.agent.Action? = null
+				var CURRSTAGE : it.unibo.parkmanagerservice.trolley.TripStage? = null
+				var CANGO = false
+				var STATE = it.unibo.parkmanagerservice.trolley.TrolleyState.IDLE
+				var INTERRUPTIBLE = false
+				var JSON = ""
+				PLANNER.initAI()
+				
+				PLANNER.showMap()
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
 						println("$name | started")
 					}
-					 transition( edgeName="goto",targetState="work", cond=doswitch() )
+					 transition( edgeName="goto",targetState="home", cond=doswitch() )
 				}	 
-				state("work") { //this:State
+				state("home") { //this:State
 					action { //it:State
 						println("$name | work")
+						 
+									STATE = `it.unibo.parkmanagerservice.trolley`.TrolleyState.IDLE
+									TTRIP = null
+									CURRSTAGE = null
+									PLAN = null
+									PLANNER.showMap()
+									JSON = "{\"state\":\"${STATE}\",\"action\":\"${CURRSTAGE?.type}\",\"position\":{\"x\":\"${PLANNER.getPosX()}\",\"y\":\"${PLANNER.getPosY()}\"}}"
+						updateResourceRep( JSON  
+						)
 					}
-					 transition(edgeName="t020",targetState="handlePark",cond=whenDispatch("parkcar"))
-					transition(edgeName="t021",targetState="handlePickup",cond=whenDispatch("pickup"))
+					 transition(edgeName="t020",targetState="handle",cond=whenDispatch("parkcar"))
+					transition(edgeName="t021",targetState="handle",cond=whenDispatch("pickupcar"))
+					transition(edgeName="t022",targetState="stopped",cond=whenDispatch("stoptrolley"))
 				}	 
-				state("handlePark") { //this:State
+				state("handle") { //this:State
+					action { //it:State
+						 
+									STATE = `it.unibo.parkmanagerservice.trolley`.TrolleyState.WORKING
+									JSON = "{\"state\":\"${STATE}\",\"action\":\"${CURRSTAGE?.type}\",\"position\":{\"x\":\"${PLANNER.getPosX()}\",\"y\":\"${PLANNER.getPosY()}\"}}"
+									TRIPBUILDER.clear()
+						updateResourceRep( JSON  
+						)
+						if( checkMsgContent( Term.createTerm("parkcar(SLOTNUM)"), Term.createTerm("parkcar(SLOTNUM)"), 
+						                        currentMsg.msgContent()) ) { //set msgArgList
+								println("$name | Received request to park the car at the indoor to the slot ${payloadArg(0)}")
+								 
+												DEST = SLOTMAP.getAdiacentAllowedPositionFromSlot(payloadArg(0))
+												println("$name | Found slot at coordinates $DEST")
+												if(DEST != null) {
+													TTRIP = TRIPBUILDER.addParkTrip(DEST!!.first, DEST!!.second).build()
+												} else
+													println("$name | Unable to find a plan to go to the slot ${payloadArg(0)}")
+						}
+						if( checkMsgContent( Term.createTerm("pickupcar(SLOTNUM)"), Term.createTerm("pickupcar(SLOTNUM)"), 
+						                        currentMsg.msgContent()) ) { //set msgArgList
+								println("$name | Received request to pickup the car at the slot ${payloadArg(0)}")
+								 
+												DEST = SLOTMAP.getAdiacentAllowedPositionFromSlot(payloadArg(0))
+												println("$name | Found slot at coordinates $DEST")
+												if(DEST != null) {	
+													TTRIP = TRIPBUILDER.addPickupTrip(DEST!!.first, DEST!!.second).build()
+												} else
+													println("$name | Unable to find a plan to go to the slot ${payloadArg(0)}")
+						}
+					}
+					 transition( edgeName="goto",targetState="nextStage", cond=doswitchGuarded({ DEST != null  
+					}) )
+					transition( edgeName="goto",targetState="home", cond=doswitchGuarded({! ( DEST != null  
+					) }) )
+				}	 
+				state("nextStage") { //this:State
+					action { //it:State
+						 
+									CANGO = false
+									if(TTRIP != null) {
+										while(TTRIP!!.hasNext() && !CANGO) {
+											CURRSTAGE = TTRIP!!.next()
+											println("$name ! CURRSTAGE = ${CURRSTAGE}")
+											INTERRUPTIBLE = false
+											
+											when(CURRSTAGE!!.type) {
+												`it.unibo.parkmanagerservice.trolley`.TripStageType.LOAD_CAR -> {
+													CANGO = true
+												}
+												`it.unibo.parkmanagerservice.trolley`.TripStageType.UNLOAD_CAR -> {
+													CANGO = true
+												}
+												else -> {
+													PLANNER.setGoal(CURRSTAGE!!.destination.first, CURRSTAGE!!.destination.second)
+													PLAN = PLANNER.doPlan()?.iterator()
+													if(PLAN != null) {
+														CANGO = true
+													}
+													if(CURRSTAGE!!.type == `it.unibo.parkmanagerservice.trolley`.TripStageType.MOVING_TO_HOME) {
+														INTERRUPTIBLE = true
+													} else {
+														INTERRUPTIBLE = false
+													}
+												}
+											}
+										}	
+									}
+					}
+					 transition( edgeName="goto",targetState="checkStage", cond=doswitchGuarded({ CANGO  
+					}) )
+					transition( edgeName="goto",targetState="home", cond=doswitchGuarded({! ( CANGO  
+					) }) )
+				}	 
+				state("checkStage") { //this:State
 					action { //it:State
 					}
-					 transition( edgeName="goto",targetState="work", cond=doswitch() )
+					 transition( edgeName="goto",targetState="elevator", cond=doswitchGuarded({ CURRSTAGE!!.type ==  `it.unibo.parkmanagerservice.trolley`.TripStageType.LOAD_CAR ||
+								CURRSTAGE!!.type ==  `it.unibo.parkmanagerservice.trolley`.TripStageType.UNLOAD_CAR  
+					}) )
+					transition( edgeName="goto",targetState="nextAction", cond=doswitchGuarded({! ( CURRSTAGE!!.type ==  `it.unibo.parkmanagerservice.trolley`.TripStageType.LOAD_CAR ||
+								CURRSTAGE!!.type ==  `it.unibo.parkmanagerservice.trolley`.TripStageType.UNLOAD_CAR  
+					) }) )
 				}	 
-				state("handlePickup") { //this:State
+				state("elevator") { //this:State
+					action { //it:State
+						 
+									when(CURRSTAGE!!.type) {
+										`it.unibo.parkmanagerservice.trolley`.TripStageType.LOAD_CAR -> {
+											println("$name | I will load the car")
+											PLANNER.showMap()
+											PLANNER.resetActions()
+											JSON = "{\"state\":\"${STATE}\",\"action\":\"${CURRSTAGE!!.type}\",\"position\":{\"x\":\"${PLANNER.getPosX()}\",\"y\":\"${PLANNER.getPosY()}\"}}"
+						updateResourceRep( JSON  
+						)
+						delay(3000) 
+						
+											println("$name | I have loaded the car")
+										}
+										`it.unibo.parkmanagerservice.trolley`.TripStageType.UNLOAD_CAR -> {
+											println("$name | I will unload the car")
+											PLANNER.showMap()
+											PLANNER.resetActions()
+											JSON = "{\"state\":\"${STATE}\",\"action\":\"${CURRSTAGE!!.type}\",\"position\":{\"x\":\"${PLANNER.getPosX()}\",\"y\":\"${PLANNER.getPosY()}\"}}"
+						updateResourceRep( JSON  
+						)
+						delay(3000) 
+						
+											println("$name | I have unloaded the car")
+										}
+										else -> {}
+										}
+					}
+					 transition( edgeName="goto",targetState="nextStage", cond=doswitch() )
+				}	 
+				state("nextAction") { //this:State
+					action { //it:State
+						 
+									CANGO = false
+									if(TTRIP != null) {
+										if(PLAN!!.hasNext()) {
+											ACTION = PLAN!!.next()
+											if(ACTION != null) {
+												if(!ACTION!!.isNoOp) {
+													CANGO = true
+												}
+											}
+										}
+									}
+					}
+					 transition( edgeName="goto",targetState="doAction", cond=doswitchGuarded({ CANGO  
+					}) )
+					transition( edgeName="goto",targetState="nextStage", cond=doswitchGuarded({! ( CANGO  
+					) }) )
+				}	 
+				state("doAction") { //this:State
+					action { //it:State
+						 
+									CANGO = false
+									if(ACTION.toString().equals("w")) {
+						request("step", "step($STEP_TIME)" ,"basicrobot" )  
+						
+										CANGO = true
+									} else {
+						forward("cmd", "cmd($ACTION)" ,"basicrobot" ) 
+						delay(500) 
+						
+											PLANNER!!.doMove(ACTION.toString())
+											JSON = "{\"state\":\"${STATE}\",\"action\":\"${CURRSTAGE!!.type}\",\"position\":{\"x\":\"${PLANNER.getPosX()}\",\"y\":\"${PLANNER.getPosY()}\"}}"
+						updateResourceRep( JSON  
+						)
+						
+									}
+					}
+					 transition( edgeName="goto",targetState="waitStepDone", cond=doswitchGuarded({ CANGO  
+					}) )
+					transition( edgeName="goto",targetState="nextAction", cond=doswitchGuarded({! ( CANGO  
+					) }) )
+				}	 
+				state("waitStepDone") { //this:State
 					action { //it:State
 					}
-					 transition( edgeName="goto",targetState="work", cond=doswitch() )
+					 transition(edgeName="t23",targetState="handleStepDone",cond=whenReply("stepdone"))
+					transition(edgeName="t24",targetState="stopped",cond=whenDispatch("stoptrolley"))
+					transition(edgeName="t25",targetState="handle",cond=whenDispatchGuarded("parkcar",{ INTERRUPTIBLE  
+					}))
+					transition(edgeName="t26",targetState="handle",cond=whenDispatchGuarded("pickupcar",{ INTERRUPTIBLE  
+					}))
+				}	 
+				state("handleStepDone") { //this:State
+					action { //it:State
+						 
+									PLANNER!!.doMove(ACTION.toString()) 
+									JSON = "{\"state\":\"${STATE}\",\"action\":\"${CURRSTAGE!!.type}\",\"position\":{\"x\":\"${PLANNER.getPosX()}\",\"y\":\"${PLANNER.getPosY()}\"}}"
+						updateResourceRep( JSON  
+						)
+					}
+					 transition( edgeName="goto",targetState="nextAction", cond=doswitch() )
+				}	 
+				state("stopped") { //this:State
+					action { //it:State
+						 
+									STATE = `it.unibo.parkmanagerservice.trolley`.TrolleyState.STOPPED 
+									JSON = "{\"state\":\"${STATE}\",\"action\":\"${CURRSTAGE?.type}\",\"position\":{\"x\":\"${PLANNER.getPosX()}\",\"y\":\"${PLANNER.getPosY()}\"}}"
+						updateResourceRep( JSON  
+						)
+					}
+					 transition(edgeName="t27",targetState="nextAction",cond=whenDispatch("resumetrolley"))
 				}	 
 			}
 		}

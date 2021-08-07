@@ -41,7 +41,14 @@ Dispatch notifyuser : notifyuser(NOTIFICATION)
 
 /* Messages to trolley */
 Dispatch parkcar : parkcar(SLOTNUM)
-Dispatch pickup : pickup(SLOTNUM)
+Dispatch pickupcar : pickupcar(SLOTNUM)
+Dispatch stoptrolley : stoptrolley(X)
+Dispatch resumetrolley : resumetrolley(X)
+
+/* Messages for basicrobot */
+Dispatch cmd        : cmd(MOVE) 
+Request step       : step( TIME )	
+Reply   stepdone   : stepdone(V) 
 
 /* Main context */
 Context ctxcarparking ip[host="localhost" port=8010]
@@ -52,10 +59,16 @@ Context ctxfan ip[host="127.0.0.1" port=8002]
 Context ctxsonar ip[host="127.0.0.1" port=8003]
 Context ctxweightsensor ip[host="127.0.0.1" port=8004]
 
+/* Context for basicrobot */
+Context ctxbasicrobot ip[host="127.0.0.1" port=8020]
+
 /* Actors for devices */
 ExternalQActor fanactor context ctxfan
 ExternalQActor weightsensoractor context ctxweightsensor
 ExternalQActor sonaractor context ctxsonar
+
+/* Actor for basicrobot */
+ExternalQActor basicrobot context ctxbasicrobot
 
 QActor parkingmanagerservice context ctxcarparking {
 	
@@ -210,7 +223,7 @@ QActor parkingmanagerservice context ctxcarparking {
 						JSON = "{\"msg\":\"The transport trolley will transport your car to the outdoor: you will get a notification when your car is ready. Plase stay near the ourdoor\"}"
 			#]
 						updateResource[# "{\"slot\":\"${SLOTNUM}\",\"user\":\"${SLOTERR.first!!.user!!.mail}\",\"state\":\"ALMOST_FREE\"}" #]
-						forward trolley -m pickup : pickup($SLOTNUM)
+						forward trolley -m pickupcar : pickupcar($SLOTNUM)
 						forward dtfreecounter -m startDtfreeCounter : startDtfreeCounter($OUTDOOR_POLLING)
 			[#
 					} else
@@ -414,23 +427,206 @@ QActor antifireactor context ctxcarparking {
 }
 
 QActor trolley context ctxcarparking {
+	
+	[#
+		it.unibo.parkmanagerservice.trolley.MapLoader.loadMapFromTxt("resources/parking_map.txt")
+		val PLANNER = itunibo.planner.plannerUtil
+		val STEP_TIME = "340"
+		val SLOTMAP = it.unibo.parkmanagerservice.trolley.SlotMap
+		var DEST : Pair<Int, Int>? = null
+		val TRIPBUILDER = it.unibo.parkmanagerservice.trolley.CompleteTripBuilder(6, 1, 6, 3)
+		var TTRIP : kotlin.collections.Iterator<it.unibo.parkmanagerservice.trolley.TripStage>? = null
+		var PLAN : kotlin.collections.Iterator<aima.core.agent.Action>? = null
+		var ACTION : aima.core.agent.Action? = null
+		var CURRSTAGE : it.unibo.parkmanagerservice.trolley.TripStage? = null
+		var CANGO = false
+		var STATE = it.unibo.parkmanagerservice.trolley.TrolleyState.IDLE
+		var INTERRUPTIBLE = false
+		var JSON = ""
+		PLANNER.initAI()
+		
+		PLANNER.showMap()
+	#]
+	
 	State s0 initial {
 		println("$name | started")
-	} Goto work
+	} Goto home
 	
 	//{"data":"0"}
 	
-	State work {
+	State home {
 		println("$name | work")
+		[# 
+			STATE = `it.unibo.parkmanagerservice.trolley`.TrolleyState.IDLE
+			TTRIP = null
+			CURRSTAGE = null
+			PLAN = null
+			PLANNER.showMap()
+			JSON = "{\"state\":\"${STATE}\",\"action\":\"${CURRSTAGE?.type}\",\"position\":{\"x\":\"${PLANNER.getPosX()}\",\"y\":\"${PLANNER.getPosY()}\"}}"
+		#]
+		updateResource[# JSON #]
 	} Transition t0
-		whenMsg parkcar -> handlePark
-		whenMsg pickup -> handlePickup
+		whenMsg parkcar -> handle
+		whenMsg pickupcar -> handle
+		whenMsg stoptrolley -> stopped
 		
-	State handlePark {
 		
-	} Goto work
+	State handle {
+		[# 
+			STATE = `it.unibo.parkmanagerservice.trolley`.TrolleyState.WORKING
+			JSON = "{\"state\":\"${STATE}\",\"action\":\"${CURRSTAGE?.type}\",\"position\":{\"x\":\"${PLANNER.getPosX()}\",\"y\":\"${PLANNER.getPosY()}\"}}"
+			TRIPBUILDER.clear()
+		#]
+			updateResource[# JSON #]
+		onMsg (parkcar : parkcar(SLOTNUM)) {
+			println("$name | Received request to park the car at the indoor to the slot ${payloadArg(0)}")
+			[# 
+				DEST = SLOTMAP.getAdiacentAllowedPositionFromSlot(payloadArg(0))
+				println("$name | Found slot at coordinates $DEST")
+				if(DEST != null) {
+					TTRIP = TRIPBUILDER.addParkTrip(DEST!!.first, DEST!!.second).build()
+				} else
+					println("$name | Unable to find a plan to go to the slot ${payloadArg(0)}")
+			#]
+		}
+		onMsg (pickupcar : pickupcar(SLOTNUM)) {
+			println("$name | Received request to pickup the car at the slot ${payloadArg(0)}")
+			[# 
+				DEST = SLOTMAP.getAdiacentAllowedPositionFromSlot(payloadArg(0))
+				println("$name | Found slot at coordinates $DEST")
+				if(DEST != null) {	
+					TTRIP = TRIPBUILDER.addPickupTrip(DEST!!.first, DEST!!.second).build()
+				} else
+					println("$name | Unable to find a plan to go to the slot ${payloadArg(0)}")
+			#]
+		}
+	} Goto nextStage if [# DEST != null #] else home
 	
-	State handlePickup {
+	State nextStage {
+		[# 
+			CANGO = false
+			if(TTRIP != null) {
+				while(TTRIP!!.hasNext() && !CANGO) {
+					CURRSTAGE = TTRIP!!.next()
+					println("$name ! CURRSTAGE = ${CURRSTAGE}")
+					INTERRUPTIBLE = false
+					
+					when(CURRSTAGE!!.type) {
+						`it.unibo.parkmanagerservice.trolley`.TripStageType.LOAD_CAR -> {
+							CANGO = true
+						}
+						`it.unibo.parkmanagerservice.trolley`.TripStageType.UNLOAD_CAR -> {
+							CANGO = true
+						}
+						else -> {
+							PLANNER.setGoal(CURRSTAGE!!.destination.first, CURRSTAGE!!.destination.second)
+							PLAN = PLANNER.doPlan()?.iterator()
+							if(PLAN != null) {
+								CANGO = true
+							}
+							if(CURRSTAGE!!.type == `it.unibo.parkmanagerservice.trolley`.TripStageType.MOVING_TO_HOME) {
+								INTERRUPTIBLE = true
+							} else {
+								INTERRUPTIBLE = false
+							}
+						}
+					}
+				}	
+			}
+		#]
+	} Goto checkStage if [# CANGO #] else home
+	
+	State checkStage {
+	} Goto elevator if [# CURRSTAGE!!.type ==  `it.unibo.parkmanagerservice.trolley`.TripStageType.LOAD_CAR ||
+			CURRSTAGE!!.type ==  `it.unibo.parkmanagerservice.trolley`.TripStageType.UNLOAD_CAR #] else nextAction
+	
+	State elevator {
+		[# 
+			when(CURRSTAGE!!.type) {
+				`it.unibo.parkmanagerservice.trolley`.TripStageType.LOAD_CAR -> {
+					println("$name | I will load the car")
+					PLANNER.showMap()
+					PLANNER.resetActions()
+					JSON = "{\"state\":\"${STATE}\",\"action\":\"${CURRSTAGE!!.type}\",\"position\":{\"x\":\"${PLANNER.getPosX()}\",\"y\":\"${PLANNER.getPosY()}\"}}"
+					#] 
+						updateResource[# JSON #]
+						delay 3000
+					[#
+					println("$name | I have loaded the car")
+				}
+				`it.unibo.parkmanagerservice.trolley`.TripStageType.UNLOAD_CAR -> {
+					println("$name | I will unload the car")
+					PLANNER.showMap()
+					PLANNER.resetActions()
+					JSON = "{\"state\":\"${STATE}\",\"action\":\"${CURRSTAGE!!.type}\",\"position\":{\"x\":\"${PLANNER.getPosX()}\",\"y\":\"${PLANNER.getPosY()}\"}}"
+					#] 
+						updateResource[# JSON #]
+						delay 3000
+					[#
+					println("$name | I have unloaded the car")
+				}
+				else -> {}
+				}
+		#]
+	} Goto nextStage
+	
+	State nextAction {
+		[# 
+			CANGO = false
+			if(TTRIP != null) {
+				if(PLAN!!.hasNext()) {
+					ACTION = PLAN!!.next()
+					if(ACTION != null) {
+						if(!ACTION!!.isNoOp) {
+							CANGO = true
+						}
+					}
+				}
+			}
+		#]
 		
-	} Goto work
+	} Goto doAction if [# CANGO #] else nextStage
+	
+	State doAction {
+		[# 
+			CANGO = false
+			if(ACTION.toString().equals("w")) {
+				#] request basicrobot -m  step : step($STEP_TIME) [#
+				CANGO = true
+			} else {
+				#] 
+					forward basicrobot -m cmd : cmd($ACTION)
+					delay 500
+				[#
+					PLANNER!!.doMove(ACTION.toString())
+					JSON = "{\"state\":\"${STATE}\",\"action\":\"${CURRSTAGE!!.type}\",\"position\":{\"x\":\"${PLANNER.getPosX()}\",\"y\":\"${PLANNER.getPosY()}\"}}"
+				#]	updateResource [# JSON #] [#
+			}
+		#]
+	} Goto waitStepDone if [# CANGO #] else nextAction 
+	
+	State waitStepDone {
+	} Transition t
+		whenReply stepdone -> handleStepDone
+		whenMsg stoptrolley -> stopped
+		whenMsg parkcar and [# INTERRUPTIBLE #] -> handle
+		whenMsg pickupcar and [# INTERRUPTIBLE #] -> handle
+	
+	State handleStepDone {
+		[# 
+			PLANNER!!.doMove(ACTION.toString()) 
+			JSON = "{\"state\":\"${STATE}\",\"action\":\"${CURRSTAGE!!.type}\",\"position\":{\"x\":\"${PLANNER.getPosX()}\",\"y\":\"${PLANNER.getPosY()}\"}}"
+		#]
+		updateResource[# JSON #]
+	} Goto nextAction
+	
+	State stopped {
+		[# 
+			STATE = `it.unibo.parkmanagerservice.trolley`.TrolleyState.STOPPED 
+			JSON = "{\"state\":\"${STATE}\",\"action\":\"${CURRSTAGE?.type}\",\"position\":{\"x\":\"${PLANNER.getPosX()}\",\"y\":\"${PLANNER.getPosY()}\"}}"
+		#]
+		updateResource[# JSON #]
+	} Transition t
+		whenMsg resumetrolley -> nextAction
+	
 }
