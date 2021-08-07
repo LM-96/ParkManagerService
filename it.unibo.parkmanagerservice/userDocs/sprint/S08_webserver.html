@@ -270,58 +270,7 @@ div.imagedesc{
 
     This setup allow us to separate each service creating an application for each user inside the/outside the system.
 
-    <h3>Django Applications</h3>
-
-    Thanks to the requirement analysis dividing the server in different application came immediate.
-    <br>
-    The web server needs to manage two subjects: every client that wants to use the service and a manager that need to monitor the entire system.
-
-    So we decided to create two main applications to handle them. Also because the devices need to be simulated for testing we created another application for them.
-
-    By using the commands underlined befor for creating application we end up with this struncture.
-    <pre><span></span><span class="n">src</span><span class="o">/</span>
-            <span class="n">manage</span><span class="o">.</span><span class="n">py</span>
-            <span class="n">webServer</span><span class="o">/</span>
-                <span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>
-                <span class="n">settings</span><span class="o">.</span><span class="n">py</span>
-                <span class="n">urls</span><span class="o">.</span><span class="n">py</span>
-                <span class="n">asgi</span><span class="o">.</span><span class="n">py</span>
-                <span class="n">wsgi</span><span class="o">.</span><span class="n">py</span>
-            <span></span><span class="n">client</span><span class="o">/</span>
-                <span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>
-                <span class="n">admin</span><span class="o">.</span><span class="n">py</span>
-                <span class="n">urls</span><span class="o">.</span><span class="n">py</span>
-
-                <span class="n">apps</span><span class="o">.</span><span class="n">py</span>
-                <span class="n">migrations</span><span class="o">/</span>
-                    <span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>
-                <span class="n">models</span><span class="o">.</span><span class="n">py</span>
-                <span class="n">tests</span><span class="o">.</span><span class="n">py</span>
-                <span class="n">views</span><span class="o">.</span><span class="n">py</span>
-            <span></span><span class="n">manager</span><span class="o">/</span>
-                <span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>
-                <span class="n">admin</span><span class="o">.</span><span class="n">py</span>
-                <span class="n">urls</span><span class="o">.</span><span class="n">py</span>
-
-                <span class="n">apps</span><span class="o">.</span><span class="n">py</span>
-                <span class="n">migrations</span><span class="o">/</span>
-                    <span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>
-                <span class="n">models</span><span class="o">.</span><span class="n">py</span>
-                <span class="n">tests</span><span class="o">.</span><span class="n">py</span>
-                <span class="n">views</span><span class="o">.</span><span class="n">py</span>
-            <span></span><span class="n">devices</span><span class="o">/</span>
-                <span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>
-                <span class="n">admin</span><span class="o">.</span><span class="n">py</span>
-                <span class="n">urls</span><span class="o">.</span><span class="n">py</span>
-
-                <span class="n">apps</span><span class="o">.</span><span class="n">py</span>
-                <span class="n">migrations</span><span class="o">/</span>
-                    <span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>
-                <span class="n">models</span><span class="o">.</span><span class="n">py</span>
-                <span class="n">tests</span><span class="o">.</span><span class="n">py</span>
-                <span class="n">views</span><span class="o">.</span><span class="n">py</span>
-            </pre>
-
+    
         <h3>Django utilities</h3>
         Django thanks to the settings file make possible to separate static files and html template files for the APIs in order to
         better organize the structure and keep the same file type in a common folder so we know where to look when bugs come to roost.        .
@@ -337,6 +286,13 @@ div.imagedesc{
         This file will be filled up with all the static information that will not change along the developing phase and that are the most recurrent one. This would allow
         us to just modify the yaml file if something changes.
         A "munch" library will allow us to use the file as an object and accessing the values as they are properties of the object.
+
+        <h3>Django Views Chart</h3>
+        Below the graph on how a Django view works:
+        <center><img src="../sprint/img/general_view.png" style="max-width:100%" alt="general view" /></center>
+
+        From now on this will be the basic operation of all the system views.
+
 </div>
 
 

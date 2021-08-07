@@ -20,7 +20,6 @@ fan_socket.onmessage = function (e) {
 }
 
 document.getElementById("fan_control").onclick =function () {
-            console.log("TUA MAMMA  ")
             var status = document.getElementById("status_fan").innerHTML
             if(status == "ON"){
                 fancontrol_socket.send("{\"data\": \"OFF\"}")

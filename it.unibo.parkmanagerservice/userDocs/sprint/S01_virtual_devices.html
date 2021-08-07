@@ -207,6 +207,7 @@ div.imagedesc{
 			<li><a href="#interactionfromview">from view side</a></li>
 		</ul>
 	</li>
+    <li><a href="#messages">Messages</a></li>
 	<li><a href="#state">State</a></li>
 	<li><a href="#results">Final Result</a></li>
 	<li><a href="#testing">Testing</a></li>
@@ -296,16 +297,26 @@ div.imagedesc{
         we created one <a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.webServerTest/src/devices/consumers" target="code"><ks>consumer</ks></a> for device. This class is the medium between the sender and the receivers. Each consumer handle messages
         coming from on websocket group and manage to send it to the others connected to that websocket.
         <h3 id="interactionfromview">From view side</h3>
-        <a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.webServerTest/src/static/js" target="code">Javascript</a> will handle the connection to the websocket and will send/receive the deta and update the relative view.
+        <a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.webServerTest/src/static/js/devices" target="code">Javascript</a> will handle the connection to the websocket and will send/receive the deta and update the relative view.
         Each time a slider is moved the script relative to the slider will write in the websocket and each time a message is received the script reads it and updates the slider value and a text box with the correct value.
+</div>
+
+<h2 id="messages">Messages</h2>
+<div class="remark">
+    For the messagging part of the interaction between the virtual devices and the devices actors the server will send JSON 
+    messages over the websocket with unique key <ks>"data"</ks> followed my the virtual value captured by the GUI, like this:
+    <pre>{"data":"30.0"}</pre>
+    The key "data" is used for all the messages in every davice, this because it is possible to create a more generic class to handle every message that needs to be sent.
+    <br>
+    The value relative to the key is up the the GUI component choosen in the <a href="#interface">previous chapter</a>.
 </div>
 
 <h2 id="state">State</h2>
 <div class="remark">
         In order to maintain a consistent value during all the usages of the devices virtual environment we created a singleton class that keeps track of the 
-        current value for the four devices. The consuemr will send the current value of the relative device to the websocket each time someone connect to it so who connects will be updated about the last changes.
+        current value for the four devices. The consumer will send the current value of the relative device to the websocket each time someone connect to it, so who connects will be updated about the last changes.
         The state is updated by the consumer each time a message is sent to the websocket.
-        Before the value is updated is parsed in order to read only the interested value that we decided to send with key "data".
+        Before the value is updated is parsed in order to read only the interested value that we have decided to send with key "data".
 </div>
 
 <h2 id="results">Final Result</h2>

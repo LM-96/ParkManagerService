@@ -1,0 +1,486 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+<style type="text/css">
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+	font-size: 93%;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+	border-radius: 10px;
+	padding: 5px;
+}
+
+top {
+	width: 100%;
+}
+
+
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 90%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #abe876;
+    color: #1632cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 90%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+ks{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #0000CD	;
+	font-size: 90%;
+}
+kc{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #008000	;
+	font-size: 90%;
+}
+pre{
+	font-family: "Consolas";
+	font-size: 85%;
+	background-color: #f5f5f5;
+	border: 1.5px solid silver;
+	padding: 5px;
+}
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+	 
+    font-size: 18px;
+}
+k{
+    color: #990000;
+	font-weight: bold;
+	font-size: 90%;
+}
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+	padding: 10px;
+}
+
+h2 {
+    background-color: #9ed8ff;
+    font-size: 130%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 100%;
+}
+h4 {
+    background-color: #ccffcc;
+    font-size: 100%;
+	width: 95%;
+	border-radius: 5px;
+	padding: 2px;
+}
+h5 {
+    background-color: #d5ffb0;
+    font-size: 100%;
+
+}
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}
+div.remark{
+	background-color: #E3F2FD;
+    border: 1.5px solid #d5f2ed;
+    padding: 15px;
+    margin: 10px;
+	border-radius: 25px;
+}
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+ol, ul, li {
+  margin: 0;
+  margin-left: 10px;
+  padding: 0;
+  padding-bottom: 5px;
+}
+
+table, th, td {
+	border: 1px solid black;
+}
+
+img {
+	border: 1.5px solid #d5f2ed
+
+}
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+div.wrapdesc{
+	width: 90%;
+	margin: auto;
+}
+
+div.imagedesc{
+	width: 85%;
+	margin: auto;
+}
+</style>
+    
+<head>
+   
+<title>ParkServiceStatusGUI</title></head>
+    
+<body>
+<div id="top">
+<h1>LABORATORIO DI INGEGNERIA DEI SISTEMI SOFTWARE <font size="5"></font> </h1>
+</div>  
+
+
+<ol>
+	<li><a href="#ParkServiceStatusGUI">ParkServiceStatusGUI</a></li>
+    <li><a href="#creation">App creation</a></li>
+	<li><a href="#consumers">Consumers</a></li>
+	<li><a href="#state">State</a></li>
+    <li><a href="#apis">APIs</a></li>
+    <li><a href="#login">Login</a></li>
+    <li><a href="#logout">Logout</a></li>
+    <li><a href="#status">Status</a></li>
+	
+</ol>
+
+
+<div class="body"> 
+<h2 id="ParkServiceStatusGUI">ParkServiceStatusGUI</h2>
+
+The ParkingServiceGUI is a user interacting component that allow the parking-manager to observe the status 
+of the parking-area including temperature, indoor-area, outdoor-area and status of the fan and the robot. Also allow the manager 
+to turn on/off the trolley and the fan.
+
+<h3 id="creation">App creation</h3>
+<div class="remark">
+    To add the ParkServiceStatusGUI to the Django webServer it is needed to create a Django application that will handle it.
+    <pre><span></span><span class="gp">$ </span>django-admin startapp manager
+    </pre>
+
+    <pre><span></span><span class="n">manager</span><span class="o">/</span>
+        <span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>
+        <span class="n">admin</span><span class="o">.</span><span class="n">py</span>
+        <span class="n">apps</span><span class="o">.</span><span class="n">py</span>
+        <span class="n">migrations</span><span class="o">/</span>
+            <span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>
+        <span class="n">models</span><span class="o">.</span><span class="n">py</span>
+        <span class="n">tests</span><span class="o">.</span><span class="n">py</span>
+        <span class="n">views</span><span class="o">.</span><span class="n">py</span>
+    </pre>
+
+    This will create all the Python scripts to handle the interactions between the manager and the Django webServer. 
+
+</div>
+
+<h3 id="state">Status aggregation</h3>
+<div class="remark">
+    From the requirement analysis the status of the system is composed by: 
+    <ul>
+        <li>Information about the state of the trolley;</li>
+        <li>Information about the state of the fan;</li>
+        <li>Temperature of the parking-area</li>
+        <li>Information about the state of the outdoor-area</li>
+        <li>Information about the state of the indoor-area</li>
+        <li>Information about the state of the parking-slots</li>
+        <li>Value of the sonar;</li>
+        <li>Value of the weight sensor;</li>
+    </ul>
+
+    These informations are gathered from different QAKAtors within the system:
+
+    <table style="width:100%" border="1">
+        <tr>
+            <td style="width:50%">
+                <h4>State of the trolley</h4>
+                <li><b>Actor</b>: trolley;</li>
+            </td>
+        <td><h4>State of the fan</h4>
+            <li><b>Actor</b>: fanactor;</li></td>
+        </tr>
+        <tr>
+            <td style="width:50%">
+                <h4>State of the outdoor-area</h4>
+                <li><b>Actor</b>: weightsensoractor;</li>
+            </td>
+        <td><h4>State of the indoor-area</h4>
+            <li><b>Actor</b>: sonaractor;</li></td>
+        </tr>
+        <tr>
+            <td style="width:50%">
+                <h4>State of the parking-slots</h4>
+                <li><b>Actor</b>: parkingmanagerservice;</li>
+            </td>
+        <td><h4>Temperature</h4>
+            <li><b>Actor</b>: thermometeractor;</li>
+        </td>
+        </tr>
+        <tr>
+            <td style="width:50%">
+                <h4>Value of the sonar</h4>
+                <li><b>Actor</b>: sonaractor;</li>
+            </td>
+        <td><h4>Value of the weight sensor</h4>
+            <li><b>Actor</b>: weightsensoractor;</li>
+        </td>
+        </tr>
+    </table>
+    
+</div>
+
+<h3 id="state">Status consistency</h3>
+<div class="remark">
+    The manager must be able to view the current status of the system in any moment he/she login. To face the fact that the manager 
+    can be logged out during some status updates, each important value must be saved to maintain consistency inside the status view.
+    This is handled by a Singleton class <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.webServerTest/src/manager/state.py">State</a>. Each attribute belongs to a actor and can have multiple information inside that are stored using Python dictionaries. <br>
+</div>
+
+<h3 id="consumers">Status update</h3>
+<div class="remark">
+    Each actor is a QAKActor that expose its state using COAP. Due to some Django limitation was not possible to directly observe the COAP updates from the web server.
+    So a proxy was implemented to face the issue. This proxy is a COAP observer that sends the updates over a web socket. So the server opens
+    as many websocket as there are QAKActors and the same does the proxy. For each websocket Django needs a <ks>consumer</ks> that handles every message coming/going over the 
+    websocket. A unique <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.webServerTest/src/manager/consumers/consumer.py">consumer</a> is created for a generic websocket and all the other consumers inherit from it and define the websocket group
+    for the relative websocket they have to handle. 
+    Every time that COAP updates a value, the proxy notifies it on the websocket relative to the actor responsible of the update and, on the web server side, the websocket consumer will update the state class attribute.
+   </div>
+
+
+
+<h3 id="apis">APIs</h3>
+<div class="remark">
+    The manager has three main activities that need to be handled:<br>
+    the manager must be able to ...
+    <ol>
+        <li>log into the system using the personal credential given by the system admin;</li>
+        <li>view the system status;</li>
+        <li>log out the system;</li>
+    </ol>
+    As analized in the requirement analysis we will call this APIs respectivelly: <br>
+    <ks>status</ks>, <ks>login</ks>, <ks>logout</ks>. <br>
+</div>
+
+<h3 id="login">Login</h3>
+<div class="remark">
+    From the requirement analysis the manager must be authenticated by the system in order to view the system status.
+    
+    As underlined in the webServer sprint, each application must be mapped with a URL and a relative VIEW (or GUI). 
+
+    So inside the urls.py script we specify the url 'notifyinterest' and the relative method that will handle the http requests on that url.
+
+    <pre>
+    urlpatterns = [
+        path('login', login_view, name="login"),
+    ]
+    </pre>
+
+    This will allow Django to handle GET and POST requests to the url 'login' using the 'login_view' method.
+
+    <h4>View</h4>
+
+    The view must allow to manaer to have access to a html page in order to enter the personal credential needed which are <ks>username</ks> and <ks>password</ks>, <ks>email</ks>  and see the slotnum in response or other notifications.<br>
+
+    <table style="width:100%" border="1">
+        <tr>
+            <td>
+                <h5 style="padding-left:10px"><a name="GET" style="text-decoration:none;"><ks>GET</ks></a></h5>
+                <ol>
+                    <li>Renders the html page "login.html";</li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h5 style="padding-left:10px"><a name="POST" style="text-decoration:none;"><ks>POST</ks></a></h5>
+                <ol>
+                    <li>Valids the form submitted by the manager;</li>
+                    <li>Using Django built-in method the manager is authenticated if the credential are correct;</li>
+                    <li>Until logout the user is authenticated and does not need to login agiain;</li>
+                </ol>
+            </td>
+        </tr>
+    </table>
+    
+
+</div>
+
+<h3 id="logout">Logout</h3>
+<div class="remark">
+    From the requirement analysis the manager must be able of loging out of the system.
+
+    Inside the urls.py script we specify the url 'logout' and the relative method that will handle the http requests on that url.
+
+    <pre>
+    urlpatterns = [
+        path('login', login_view, name="login"),
+        path('logout', logout_view, name="logout"),
+    ]
+    </pre>
+
+    This will allow Django to handle GET and POST requests to the url 'logout' using the 'logout_view' method.
+
+    <h4>View</h4>
+
+    The view must allow to user to logout.
+
+    <table style="width:100%" border="1">
+        <tr>
+            <td>
+                <h5 style="padding-left:10px"><a name="POST" style="text-decoration:none;"><ks>GET/POST</ks></a></h5>
+                <ol>
+                    <li>Remove the authenticated manager's ID from the request and flush his/her session
+                        data;</li>
+                </ol>
+            </td>
+        </tr>
+    </table>
+    
+
+</div>
+
+
+<h3 id="status">Status</h3>
+<div class="remark">
+    From the requirement analysis the manager must be able of viewing the status of the system and turn on/off the fan and the trolley.
+
+    Inside the urls.py script we specify the url relative to the home (path = '') and the relative method that will handle the http requests on that url.
+
+    <pre>
+    urlpatterns = [
+        path('login', login_view, name="login"),
+        path('logout', logout_view, name="logout"),
+        path('', status_view, name="status"),
+    ]
+    </pre>
+
+    This will allow Django to handle GET and POST requests to the home url using the 'status_view' method.
+
+    <h4>View</h4>
+
+    The view must allow to user to have access to a html page in order to view the status of the system and being able of turning on/off the fan and the trolley.
+
+    <table style="width:100%" border="1">
+        <tr>
+            <td>
+                <h5 style="padding-left:10px"><a name="GET" style="text-decoration:none;"><ks>GET</ks></a></h5>
+                <ol>
+                    <li>Renders the html page "status.html";</li>
+                </ol>
+            </td>
+        </tr>
+       
+    </table>
+
+    <h4>Template</h4>
+    In order to show as many information as possible in the most tidy way, it  has been decided to render a html colored grid containing some of the information of the status, in particular:
+    <ul>
+        <li>Position of the trolley and relative status;</li>
+        <li>Status of the parking-slots;</li>
+        <li>Status of the outdoor-area;</li>
+        <li>Status of the indoor-area;</li>
+    </ul>
+    All the other informations are availlable on html text boxes.
+
+    <h4>JScript</h4>
+    For changing the values on the html page a JScript file is used. Thanks to the js "WebSocket" object it is possible to connect to the websocket relative to the QAKActor that 
+    has informations about the status. Every time an update message is sent over the websocket by a QAKActor, the relative Jscript file intercept, parse the message and update the value on the html page.
+    Fpr the fan and the trolley a button triggers a js method that send a turno on/off message over the websocket that is handled by the consumer as said in the consumer chapter.
+
+    
+
+</div>
+
+
+
+
+
+
+
+
+
+
+ 
+<!-- USEFUL
+<table style="width:100%" border="1">
+<tr>
+<td style="width:50%">
+</td>
+<td></td>
+</tr>
+</table>
+-->
+	      	
+<br/><br/> 	
+</div>  
+
+<div style="background-color:rgba(86, 56, 253, 0.9); width:60%;text-align:left;color:white">
+By studentName email: student@studio.unibo.it  
+<img src="./img/emiglio.png" alt="mbot" width="15%" height="15%">
+</div> 
+</body>
+</html>
