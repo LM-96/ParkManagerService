@@ -85,6 +85,7 @@ QActor parkingmanagerservice context ctxcarparking {
 		
 		val CHANNEL = it.unibo.parkmanagerservice.notification.NotificationChannel.CHANNEL
 		var JSON : String = ""
+        val JSONSTATE = it.unibo.parkmanagerservice.persistence.StateJSONIZER()
 		var USERERR : Pair<it.unibo.parkmanagerservice.bean.User?, it.unibo.parkmanagerservice.controller.ParkManagerError?>
 		var SLOTERR : Pair<it.unibo.parkmanagerservice.bean.ParkingSlot?, it.unibo.parkmanagerservice.controller.ParkManagerError?>
 		var USERSLOT : Pair<it.unibo.parkmanagerservice.bean.User?,it.unibo.parkmanagerservice.bean.ParkingSlot?>
@@ -131,8 +132,8 @@ QActor parkingmanagerservice context ctxcarparking {
 						if(CONTROLLER.reserveDoorForUserOrEnqueue(INDOOR, USER!!)) {
 							JSON = "{\"slotnum\":\"$SLOTNUM\",\"indoor\":\"FREE\",\"time\":\"${ITOCC}\"}"
 					#]
-							updateResource[# "{\"door\":\"indoor\",\"state\":\"RESERVED\"}" #]
-							updateResource[# "{\"slot\":\"${SLOTNUM}\",\"user\":\"${USER!!.mail}\",\"state\":\"RESERVED\"}" #]
+							updateResource[# JSONSTATE
+								.updateDoor(INDOOR).updateSlotReserved(SLOTNUM, USER!!).toString() #]
 							forward weightsensoractor -m dopolling : dopolling($INDOOR_POLLING)
 							forward itocccounter -m startItoccCounter : startItoccCounter(START)
 					[#
@@ -153,7 +154,7 @@ QActor parkingmanagerservice context ctxcarparking {
 		[# 
 			USER = CONTROLLER.setSomeoneOnDoor(INDOOR)!!
 		#]
-		updateResource[# "{\"door\":\"indoor\",\"state\":\"OCCUPIED\"}" #]
+		updateResource[# JSONSTATE.updateDoor(INDOOR).toString() #]
 	} Goto work
 	
 	State handleIndoorReturnFree {
@@ -167,7 +168,7 @@ QActor parkingmanagerservice context ctxcarparking {
 		#]
 			forward notificationactor -m notifyuser : notifyuser(NOTIFY)
 			forward weightsensoractor -m stoppolling : stoppolling(STOP)
-			updateResource[# "{\"door\":\"indoor\",\"state\":\"FREE\"}" #]
+			updateResource[# JSONSTATE.updateDoor(INDOOR).toString() #]
 	} Goto enterNext if [# (CONTROLLER.getDoorQueue(INDOOR).remaining()) > 0 #] else work
 	
 	State enterNext {
@@ -183,9 +184,8 @@ QActor parkingmanagerservice context ctxcarparking {
 					forward notificationactor -m notifyuser : notifyuser(NOTIFY)
 					forward weightsensoractor -m dopolling : dopolling($INDOOR_POLLING)
 					forward itocccounter -m startItoccCounter : startItoccCounter(START)
-					updateResource[# "{\"door\":\"indoor\",\"state\":\"RESERVED\"}" #]
-					updateResource[# "{\"slot\":\"${SLOTNUM}\",\"user\":\"${USER!!.mail}\",\"state\":\"RESERVED\"}" #]
-					
+					updateResource[# JSONSTATE
+								.updateDoor(INDOOR).updateSlotReserved(SLOTNUM, USER!!).toString() #]
 		[# 	}
 		#]
 	} Goto work
@@ -193,14 +193,14 @@ QActor parkingmanagerservice context ctxcarparking {
 	State handleCarEnter {
 		printCurrentMessage
 		onMsg(carenter : carenter(SLOTNUM,MAIL)) {
-			[# 	
+			[# 	SLOTNUM = payloadArg(0).toLong()
 				USERERR = CONTROLLER.assignTokenToUserAtIndoor(payloadArg(0), payloadArg(1))
 				if(USERERR.first != null && USERERR.second == null) {
 					JSON = "{\"token\":\"${USERERR.first!!.token!!.toString()}\"}"
 			#]
 							forward itocccounter -m stopCount:stopCount(STOP)
 							forward trolley -m parkcar : parkcar($SLOTNUM)
-							updateResource[# "{\"slot\":\"${SLOTNUM}\",\"user\":\"${USERERR.first!!.mail}\",\"state\":\"OCCUPIED\"}" #]
+							updateResource[# JSONSTATE.updateSlotOccupied(SLOTNUM).toString() #]
 			[#
 				} else JSON = "{\"err\":\"${USERERR!!.second!!.msg}\"}"
 			#]
@@ -222,7 +222,7 @@ QActor parkingmanagerservice context ctxcarparking {
 					if(CONTROLLER.reserveDoorForUserOrEnqueue(OUTDOOR, SLOTERR.first!!.user!!)) {
 						JSON = "{\"msg\":\"The transport trolley will transport your car to the outdoor: you will get a notification when your car is ready. Plase stay near the ourdoor\"}"
 			#]
-						updateResource[# "{\"slot\":\"${SLOTNUM}\",\"user\":\"${SLOTERR.first!!.user!!.mail}\",\"state\":\"ALMOST_FREE\"}" #]
+						updateResource[#JSONSTATE.updateSlotAlmostFree(SLOTERR.first!!.slotnum).toString() #]
 						forward dtfreecounter -m startDtfreeCounter : startDtfreeCounter($OUTDOOR_POLLING)
 			[#
 					} else
@@ -232,7 +232,6 @@ QActor parkingmanagerservice context ctxcarparking {
 			#]
 					println("$name | reply with canPickup(${JSON!!})")
 					replyTo pickup with canPickup : canPickup($JSON)
-					updateResource[# "canPickup($JSON)" #]
 		}
 	} Goto work
 	
@@ -251,14 +250,14 @@ QActor parkingmanagerservice context ctxcarparking {
 		#]
 				forward notificationactor -m notifyuser : notifyuser(NOTIFY)
 				forward trolley -m pickupcar : pickupcar($SLOTNUM)
-				updateResource[# "{\"door\":\"outdoor\",\"state\":\"OCCUPIED\"}" #]
-				updateResource[# "{\"slot\":\"${USERSLOT.second!!.slotnum}\",\"user\":\"${USER!!.mail}\",\"state\":\"FREE\"}" #]
+				updateResource[# JSONSTATE
+								.updateDoor(OUTDOOR).updateSlotFree(USERSLOT.second!!.slotnum).toString() #]
 		[# } #]
 	} Goto work
 	
 	State handleOutdoorReturnFree {
 		[# CONTROLLER.setFreeDoor(OUTDOOR) #]
-		updateResource[# "{\"door\":\"outdoor\",\"state\":\"FREE\"}" #]
+		updateResource[# JSONSTATE.updateDoor(OUTDOOR).toString() #]
 	} Goto exitNext if [# (CONTROLLER.getDoorQueue(OUTDOOR).remaining()) > 0 #] else work
 	
 	State exitNext {
@@ -270,6 +269,8 @@ QActor parkingmanagerservice context ctxcarparking {
 					forward dtfreecounter -m startDtfreeCounter : startDtfreeCounter(START)
 					updateResource[# "{\"door\":\"outdoor\",\"state\":\"RESERVED\"}" #]
 					updateResource[# "{\"slot\":\"${SLOTNUM}\",\"user\":\"${USER!!.mail}\",\"state\":\"ALMOST_FREE\"}" #]
+					updateResource[# JSONSTATE
+								.updateDoor(OUTDOOR).updateSlotAlmostFree(SLOTNUM).toString() #]
 					
 		[# 	}
 		#]

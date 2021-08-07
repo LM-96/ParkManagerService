@@ -452,14 +452,14 @@ div.imagedesc{
 	The <em>parkingmanagerservice</em> exposes the state of the doors and the slots by using CoAP. The state is a <ks>JSON</ks> string with the format:
 <pre style="white-space: pre-wrap;">
  {
- "indoor":{"state":"[INDOOR_STATE]", "user":"[USER_MAIL]"},
- "outdoor":{"state":"[OUTDOOR_STATE]", "user":"[USER_MAIL]"},
- "1":{"state":"[SLOT_STATE]", "user":"[USER]"},
- "2":{"state":"[SLOT_STATE]", "user":"[USER]"},
- "3":{"state":"[SLOT_STATE]", "user":"[USER]"},
- "4":{"state":"[SLOT_STATE]", "user":"[USER]"},
- "5":{"state":"[SLOT_STATE]", "user":"[USER]"},
- "6":{"state":"[SLOT_STATE]", "user":"[USER]"}
+ "indoor":{"state":"[INDOOR_STATE]", "user":"[USER_MAIL_IN]"},
+ "outdoor":{"state":"[OUTDOOR_STATE]", "user":"[USER_MAIL_OUT]"},
+ "1":{"state":"[SLOT_STATE_1]", "user":"[USER_1]"},
+ "2":{"state":"[SLOT_STATE_2]", "user":"[USER_2]"},
+ "3":{"state":"[SLOT_STATE_3]", "user":"[USER_3]"},
+ "4":{"state":"[SLOT_STATE_4]", "user":"[USER_4]"},
+ "5":{"state":"[SLOT_STATE_5]", "user":"[USER_5]"},
+ "6":{"state":"[SLOT_STATE_6]", "user":"[USER_6]"}
  }
 </pre>
 Then this JSON has these keys:

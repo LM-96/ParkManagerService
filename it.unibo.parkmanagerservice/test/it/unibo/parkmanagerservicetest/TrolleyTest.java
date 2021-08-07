@@ -256,6 +256,7 @@ public class TrolleyTest {
 		}
 	}
 	
+	/*
 	@Test
 	public void testPickFromAllSlot() throws IOException, JSONException, InterruptedException {
 		List<String> history = new ArrayList<String>();
