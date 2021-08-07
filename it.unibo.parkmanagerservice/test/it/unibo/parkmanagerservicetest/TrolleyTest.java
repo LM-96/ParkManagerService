@@ -185,7 +185,6 @@ public class TrolleyTest {
 		history.clear();
 	}
 	
-	/*
 	@Test
 	public void testPickupOneCar() throws IOException, JSONException, InterruptedException {
 		List<String> history = new ArrayList<String>();

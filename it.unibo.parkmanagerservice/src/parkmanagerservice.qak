@@ -433,8 +433,13 @@ QActor trolley context ctxcarparking {
 		val PLANNER = itunibo.planner.plannerUtil
 		val STEP_TIME = "340"
 		val SLOTMAP = it.unibo.parkmanagerservice.trolley.SlotMap
+		val DOORMAP = it.unibo.parkmanagerservice.trolley.DoorMap
+		val INDOOR = it.unibo.parkmanagerservice.bean.DoorType.INDOOR
+		val OUTDOOR = it.unibo.parkmanagerservice.bean.DoorType.OUTDOOR
+		val POSTOIN = DOORMAP.getAdiacentAllowedPositionFromDoor(INDOOR)!!
+		val POSTOOUT = DOORMAP.getAdiacentAllowedPositionFromDoor(OUTDOOR)!!
 		var DEST : Pair<Int, Int>? = null
-		val TRIPBUILDER = it.unibo.parkmanagerservice.trolley.CompleteTripBuilder(6, 1, 6, 3)
+		val TRIPBUILDER = it.unibo.parkmanagerservice.trolley.CompleteTripBuilder(POSTOIN.first, POSTOIN.second, POSTOOUT.first, POSTOOUT.second)
 		var TTRIP : kotlin.collections.Iterator<it.unibo.parkmanagerservice.trolley.TripStage>? = null
 		var PLAN : kotlin.collections.Iterator<aima.core.agent.Action>? = null
 		var ACTION : aima.core.agent.Action? = null
@@ -442,6 +447,7 @@ QActor trolley context ctxcarparking {
 		var CANGO = false
 		var STATE = it.unibo.parkmanagerservice.trolley.TrolleyState.IDLE
 		var INTERRUPTIBLE = false
+		var EXPECTED_DIRECTION : String?
 		var JSON = ""
 		PLANNER.initAI()
 		
@@ -535,13 +541,23 @@ QActor trolley context ctxcarparking {
 			}
 		#]
 	} Goto checkStage if [# CANGO #] else home
-	
 	State checkStage {
 	} Goto elevator if [# CURRSTAGE!!.type ==  `it.unibo.parkmanagerservice.trolley`.TripStageType.LOAD_CAR ||
 			CURRSTAGE!!.type ==  `it.unibo.parkmanagerservice.trolley`.TripStageType.UNLOAD_CAR #] else nextAction
 	
 	State elevator {
 		[# 
+			EXPECTED_DIRECTION = DOORMAP.getDirection(PLANNER.getPosX(), PLANNER.getPosY()) ?: SLOTMAP.getDirection(PLANNER.getPosX(), PLANNER.getPosY())
+			if(EXPECTED_DIRECTION != null) {
+				while(EXPECTED_DIRECTION != PLANNER.getDirection()) {
+					#] 
+						forward basicrobot -m cmd : cmd(l)
+						delay 500
+					[#
+						PLANNER.doMove("l")
+				}
+			}
+			
 			when(CURRSTAGE!!.type) {
 				`it.unibo.parkmanagerservice.trolley`.TripStageType.LOAD_CAR -> {
 					println("$name | I will load the car")
@@ -614,19 +630,22 @@ QActor trolley context ctxcarparking {
 	
 	State handleStepDone {
 		[# 
-			PLANNER!!.doMove(ACTION.toString()) 
 			JSON = "{\"state\":\"${STATE}\",\"action\":\"${CURRSTAGE!!.type}\",\"position\":{\"x\":\"${PLANNER.getPosX()}\",\"y\":\"${PLANNER.getPosY()}\"}}"
 		#]
 		updateResource[# JSON #]
 	} Goto nextAction
 	
 	State stopped {
-		[# 
+		onMsg (stepdone : stepdone(V)) {
+			[# PLANNER!!.doMove(ACTION.toString()) #]
+		}
+		[#  
 			STATE = `it.unibo.parkmanagerservice.trolley`.TrolleyState.STOPPED 
 			JSON = "{\"state\":\"${STATE}\",\"action\":\"${CURRSTAGE?.type}\",\"position\":{\"x\":\"${PLANNER.getPosX()}\",\"y\":\"${PLANNER.getPosY()}\"}}"
 		#]
 		updateResource[# JSON #]
 	} Transition t
 		whenMsg resumetrolley -> nextAction
+		whenReply stepdone -> stopped
 	
 }

@@ -201,7 +201,12 @@ div.imagedesc{
 	<li><a href="#lastarch">Last Architecture and aim of this sprint</a></li>
 	<li><a href="#intro">Introduction</a></li>
 	<li><a href="#classes">Utility Classes</a></li>
-	<li><a href="#actor">Trolley as actor</a></li>
+	<li><a href="#actor">Trolley as actor</a>
+		<ul>
+			<li><a href="#generalview">General view</a></li>
+			<li><a href="#states">States description</a></li>
+		</ul>
+	</li>
 	<li><a href="#testing">Testing</a></li>
 	<li><a href="#results">Final results of this sprint</a></li>
 	
@@ -255,99 +260,193 @@ div.imagedesc{
 <h2 id="classes">Utility classes</h2>
 <h4><center>Package <a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/trolley">it.unibo.parkmanagerservice.trolley</a></center></h4>
 <div class="remark">
-
-	<h3 id="generalview">General view of the controller package</h3>
 	
-	<center><img src="img/controller_UML.png" style="max-width:100%; padding: 10px 10px 10px 10px" /></center>
+	<center><img src="img/trolley_UML.png" style="max-width:100%; padding: 10px 10px 10px 10px" /></center>
 	
 	<table>
 	<tr>
 		<td style="padding:10px 10px 10px 10px" width="50%">
-			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/controller/ParkManagerServiceController.kt" target="code"><em>ParkManagerServiceController.kt</em></a> and <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/controller/KParkManagerServiceController.kt" target="code"><em>KParkManagerServiceController.kt</em></a></h5>
-			The <em>ParkManagerServiceController</em> is the main interface that defines the methods that the controller implementation <k>must have</k> in order to realize the business logic. This interface has only one implementation, <em>KParkManagerServiceController</em>, that uses the classes seen in the previous sprints (bean, repository, doors management).
-			All methods of this classes will be discussed soon.
-			
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/trolley/SlotMap.kt" target="code"><em>SlotMap.kt</em></a></h5>
+			This class is an utility class that contains the allowed position for the robot associated to the slotnums. So, when the robot has to go to a certain slotnum to load or unload a car, the trolley can ask to the <em>SlotMap</em> to get the position to go near the slot.
+			This mechanism is configuranle by a JSON file located at <i>configs/slots.json</i> that as lots of this entry, one for slot present at the parking area:
+			<pre style="white-space: pre-wrap;">
+{"slotnum": "1", "x":"3", "y":"1", "allowedX":"4", "allowedY":"1", "orientation":"right"}
+</pre>
+			<ul>
+				<li><ks>slotnum</ks>: the slotnum to configure;</li>
+				<li><ks>x</ks> and <ks>y</ks>: the coordinates of the slot;</li>
+				<li><ks>allowedX</ks>, <ks>allowedY</ks>: the adiacent position near the slot used by the robot to load/unload the car;</li>
+				<li><ks>direction</ks>: the direction the robot must have to load/unload the car.</li>
+			</ul>
 			
 		</td>
-		<td style="padding:10px 10px 10px 10px">
-			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/controller/ParkManagerError.kt" target="code"><em>ErrorType</em></a> (inside <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/controller/ParkManagerError.kt" target="code"><em>ParkManagerError.kt</em></a>)</h5>
-			This enumeration defines a possible error returned by some method of the controller.
-			Then:
+		<td style="padding:10px 10px 10px 10px" width="50%">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/trolley/DoorMap.kt" target="code"><em>DoorMap.kt</em></a></h5>
+			This class is an utility class that equivalent of the preious but for the two doors.
+			It also has a JSON file located at <i>configs/doorsmap.json</i> that as two entry, one for door:
+			<pre style="white-space: pre-wrap;">
+{"door": "INDOOR", "x":"6", "y":"0", "allowedX":"6", "allowedY":"1", "direction":"downDir"}
+</pre>
 			<ul>
-				<li><ks>INVALID_SLOTNUM</ks>, <ks>INVALID_TOKEN</ks>, <ks>INVALID_MAIL</ks>: errors thrown when slotnum ot token or mail are not valid;</li>
-				<li><ks>NO_USER_AT_DOOR</ks>: errors throws when there is no user at the door (but he is expected by the caller);</li>
-				<li><ks>DOOR_NOT_RESERVED</ks>: error returned when the door is not reserved (but it is expected by the caller);</li>
-				<li><ks>NO_RESERVATION_FOR_USER</ks>: error throws when there is no reservation for the user passed as argument;</li>
-				<li><ks>NO_NAME</ks>, <ks>NO_SURNAME</ks>, <ks>NO_MAIL</ks>: error returned when is missing some data;</li>
+				<li><ks>door</ks>: the door to configure (indoor or outdoor);</li>
+				<li><ks>x</ks> and <ks>y</ks>: the coordinates of the door;</li>
+				<li><ks>allowedX</ks>, <ks>allowedY</ks>: the adiacent position near the door used by the robot to load/unload the car;</li>
+				<li><ks>direction</ks>: the direction the robot must have to load/unload the car.</li>
 			</ul>
 			
 		</td>
 	</tr>
 	<tr>
 		<td style="padding:10px 10px 10px 10px" width="50%">
-			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/controller/ControllerBuilder.kt" target="code"><em>ControllerBuilder.kt</em></a></h5>
-			A simple <a href="https://en.wikipedia.org/wiki/Builder_pattern" target="web">Builder</a> class in order to build and get the controller of the system. Obviously, this controller is also a <k>Singleton</k> then, only one creation is permitted: if the controller has been already built, then the invocation of the methods <span style="font-family:Courier New, Courier">createK()</span> or <span style="font-family:Courier New, Courier">inject()</span> has no effect.
-			To build and get the controller using basic repositories and local door state, the <em>APP-SERVER</em> must do:
-<pre style="white-space: pre-wrap;">
-ParkingRepository.createBasics(&#60 number of required slot &#62)
-<k>val</k> CONTROLLER = ControllerBuilder.createK(
-	ParkingRepository.getUserRepository(),
-	ParkingRepository.getParkingSlotRepository(),
-	DoorQueues.getIndoorQueue(),
-	DoorQueues.getOutdoorQueue(),
-	LocalDoorState.get()
-).get()
-</pre>
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/trolley/TripStageType.kt" target="code"><em>TripStageType.kt</em></a> and <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/trolley/TripStage.kt" target="code"><em>TripStage.kt</em></a></h5>
+			The class <em>TripStage</em> defines a <i>stage</i> of the complete trip of the robot. It contains the destination of the current stage and also the type, that corresponds to those defined in the analysis and explained at the <a href="#intro">introduction</a>.<br/>
+			The only difference between <em>TripStageType</em> and the operations defined into the analysis is that in this enumeration there is no difference between <span style="font-family:Courier New, Courier">moveToSlotIn</span> and <span style="font-family:Courier New, Courier">moveToSlotOut</span>: this two are collapsed in <ks>TripStageType.MOVING_TO_SLOT</ks>. Same for <span style="font-family:Courier New, Courier">backToHome</span> and <span style="font-family:Courier New, Courier">moveToHome</span>, that are collapsed into <ks>TripStageType.MOVING_TO_HOME</ks>. Notice that in the trip stage with type <em>LOAD_CAR</em> and <em>UNLOAD_CAR</em>, the trolley has not to move and stays in the same position, so the destination must be ignored.
 			
 		</td>
 		<td style="padding:10px 10px 10px 10px">
-			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/controller/ParkManagerError.kt" target="code"><em>ParkManagerError.kt</em></a></h5>
-			A simple data class used for returning error after a method invocation.
-			This class might not even be designed and exception could have been used instad, but Kotlin is a little bit difference from Java concerning exception (see <a href="https://kotlinlang.org/docs/exceptions.html#checked-exceptions" target="web">Checked Expression</a>). Then we decide to <k>force the programmer</k> to check if there was some error during the method invocation by an appropriate class for error.
-			General, every controller method that can produce error returns an object <span style="font-family:Courier New, Courier">Pair &#60 T?, ParkManagerError? &#62</span>, in which <span style="font-family:Courier New, Courier">T</span> is the type return ofthe method: then, if the error is not null, it means that during the method execution there was an error.
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/trolley/CompleteTripBuilder.kt" target="code"><em>CompleteTripBuilder.kt</em></a></h5>
+			A simple <a href="https://en.wikipedia.org/wiki/Builder_pattern" target="web"><ks>Builder Class</ks></a> that easily allow to create a <ks>complete trip</ks>. For <i>complete trip</i> we refer to the stage related to the high-level trolley operation (park and pick up).<br/>
+			In order to create a <em>CompleteTripBuilder</em> object, are need the coordinates of the indoor and the outdoor:
+<pre style="white-space: pre-wrap;">
+<k>val</k> builder = ControllerBuilder(&#60 INDOOR_X &#62, &#60 INDOOR_Y &#62, &#60 OUTDOOR_X &#62, &#60 OUTDOOR_Y &#62)
+</pre>
+			So, to build the default complete trip, the trolley should use:
+			<ul>
+				<li><ks>park</ks>:
+<pre style="white-space: pre-wrap;">
+<k>vat</k> tripIterator = builder
+    .clean()
+    .addParkTrip(&#60 SLOT_X &#62, &#60 SLOT_Y &#62)
+    .build()
+</pre>
+				</li>
+				<li><ks>pick up</ks>:
+<pre style="white-space: pre-wrap;">
+<k>vat</k> tripIterator = builder
+    .clean()
+    .addPickupTrip(&#60 SLOT_X &#62, &#60 SLOT_Y &#62)
+    .build()
+</pre>
+				</li>
+			</ul>
 			
+		</td>
+	</tr>
+	<tr>
+		<td style="padding:10px 10px 10px 10px" width="50%">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/trolley/MapLoader.kt" target="code"><em>MapLoader.kt</em></a></h5>
+			This class is an utility class that let the system to easily load the <em>RoomMap</em> from a txt file. Indeed, the consumer does not give us the <i>.bin</i> file required to load the map using the default loader, but only a <i>.txt</i> containing the map (<a href="https://github.com/anatali/issLab2021/blob/main/it.unibo.issLabStart/userDocs/parkingMap.txt" target="code"><em>parkingMap.txt</em></a>).
+			For details about <em>RoomMap</em> and <em>Planner</em>, see the document and the code given by the consumer at <a href="http://htmlpreview.github.io/?https://github.com/anatali/issLab2021/blob/main/it.unibo.planner20/userDocs/LabPlanner.html" target="web"><em>LabPlanner.html</em></a>.
+			
+		</td>
+		<td style="padding:10px 10px 10px 10px" width="50%">
+			<h5 style="padding-left:10px"><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/trolley/TrolleyState.kt" target="code"><em>TrolleyState.kt</em></a></h5>
+			This enum simply represents the states in which the trolley can be as defined in the requirements:
+			<ul>
+				<li><ks>IDLE</ks>;</li>
+				<li><ks>WORKING</ks>;</li>
+				<li><ks>STOPPED</ks>.</li>
+			</ul>
 		</td>
 	</tr>
 	</table><br/><br/>
 	
+	Now, all is ready to design the <em>trolley</em> as an actor.
+	
+</div>
+
+<h2 id="actor">Trolley as actor</h2>
+<div class="remark">
+	<h3 id="generalview">General view</h3>
+	<center><img src="img/trolley_actor.png" style="max-width:90%; padding: 10px 10px 10px 10px" /></center>
+	
+	The structure of this actor is a little bit complicated, but it is designed to be as reusable as possible. Indeed, the main logic of this actor is:
+	<ol>
+		<li><k>find the position of the destination</k>, by parsing the received dispatch (pick up or park);</li>
+		<li>if the position is valid, <k>calculate the complete trip</k>, using the <em>CompleteTripBuilder</em>;</li>
+		<li><k>iterate over all stage</k>;</li>
+		<li>for all stage, <k>calculate the robot actions</k> by using the <em>plannerUtil</em>;</li>
+		<li><k>iterate over the actions</k> and send the command to <em>basicrobot</em> for executing it.</li>
+	</ol>
+	
+	In addition to this logic, <k>the actor must save his state using CoAP</k>. This state consists in a JSON string that has this format:
+<pre style="white-space: pre-wrap;">
+ {"state":"WORKING","action":"MOVING_TO_SLOT","position":{"x":"6","y":"2"}}
+</pre>
+	<ul>
+		<li><ks>state</ks>: is the state of the trolley (WORKING, IDLE, or STOPPED);</li>
+		<li><ks>action</ks>: is the action that the robot is performing (a value of <em>TripStageType</em>) or null if the robot is in IDLE state;</li>
+		<li><ks>position</ks>: a JSON object that contains the coordinates of the robot into the map.</li>
+	</ul>
 	
 </div>
 
 <div class="remark">
-	<h3 id="controllerzoom">Zooming into the controller</h3>
+	<h3 id="states">States description</h3>
 	
-	In order to make a zoom into the controller strongly describing it, we decide to produce the <ks>KDoc</ks> for all classes contained into the controller package. All controller methods have been fully described in this KDoc, produced by using <a href="https://kotlinlang.org/docs/kotlin-doc.html" target="web">Dokka</a>.<br/><br/>
+	Considering that the <em>trolley</em> actor has a complicated structure, it is needed a small description of all states:
+	<ul>
+		<li><ks>home</ks>: in this state the robot is at home and the state of the trolley is IDLE.</li>
+		
+		<li><ks>handle</ks>: in this state the trolley handles the dispatch sended by the other entities and calculate the stages he should perform. The slotnum arrived from the dispatch is parsed as coordinates stored into the variable <span style="font-family:Courier New, Courier">DEST</span>: then, if no slot was found, <span style="font-family:Courier New, Courier">DEST</span> is null and the trolley return in the state <em>home</em>.</li>
+		
+		<li><ks>nextStage</ks>: in this state the trolley makes an iteration on the stage iterator. So, if the iterator has no more elements, the boolean <span style="font-family:Courier New, Courier">CANGO</span> is set to <ks>false</ks> (the trolley has ended the trip, then return to home). Otherwise, if another stage is present, the robot go to the state <em>checkStage</em>. In addition to this, if the current stage contains some robot moves to do, in this state the robot use the <em>plannerUtil</em> to calculate them (but if no action was found, then <span style="font-family:Courier New, Courier">CANGO</span> is set to false (an error is thrown).</li>
+		
+		<li><ks>checkStage</ks>: this state has the only role to <i>route</i> the current stage by its type (if is load/unload car then go to <em>elevator</em>, otherwise is an action, then go to <em>nextAction</em>.</li>
+		
+		<li><ks>elevator</ks>: this state manages the stages that require to load or unload a car. In this state, the trolley corrects the direction of the robot in order to allow it to load or unload the car, then execute the operation.</li>
+		
+		<li><ks>nextAction</ks>: in this state the trolley get the next action to do from the iterator obtained by the <em>plannerUtil</em>. If the current action is null or is <i>noOp</i>, than <span style="font-family:Courier New, Courier">CANGO</span> is set to <k>false</k> and the trolley goes to analyze the next stage.</li>
+		
+		<li><ks>doAction</ks>: in this state the trolley request to the <em>basicrobot</em> to execute the current action to do. If the action requires a <ks>step</ks> message (the action is a forward), than <span style="font-family:Courier New, Courier">CANGO</span> is set to <k>true</k> and the trolley goes to wait the response, otherwise it sends the <ks>cmd</ks> message, and goes to obtain the next action. Notice that after a <i>cmd</i> dispatch sent it is needed to insert a small <k>delay</k>, in order to <i>wait</i> that the robot has executed the action (that certainly is a turn).</li>
+		
+		<li><ks>waitStepDone</ks>: in this state the trolley wait for a <i>stepdone</i> response after its <i>step</i> request. Notice that in this state it is possible to stop the state of the robot.</li>
+		
+		<li><ks>handleStepDone</ks>: this state simply handles the received <i>stepdone</i> and go to <em>nextAction</em></li>
+		
+		<li><ks>stopped</ks>: in this state the robot is stopped. Notice that if this state is reached from <em>waitStepDone</em> it is needed to handle the <i>stepdone</i> response.</li>
+	</ul>
 	
-	Go to the KDoc related to the package <em>it.unibo.parkmanagerservice.controller</em>: <a href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/LM-96/ParkManagerService/main/it.unibo.parkmanagerservice/userDocs/sprint/kdocs/it.unibo.parkmanagerservice.controller/it/unibo/parkmanagerservice/controller/package-summary.html" target="web">KDoc</a><br/><br/>
+	Also pay attention to the <span style="font-family:Courier New, Courier">INTERRUPTIBLE</span> variable, that can make a certain stage <i>interruptible</i>: in other words, if this value is true, then the trolley stop its stage and serve a new request. <k>This variable becomes true only if the stage is MOVING_TO_HOME type</k>.<br/>
 	
-	Go to the KDoc related to the class <em>it.unibo.parkmanager.controller.ParkManagerServiceController</em>: <a href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/LM-96/ParkManagerService/main/it.unibo.parkmanagerservice/userDocs/sprint/kdocs/it.unibo.parkmanagerservice.controller/it/unibo/parkmanagerservice/controller/ParkManagerServiceController.html" target="web">KDoc</a><br/><br/>
+	As a final consideration, <ks>we decide that the trolley can be also stopped in the states <em>home</em> and <em>waitStepDone</em></ks>, so only if:
+	<ul>
+		<li>the robot is at home, in the state IDLE;</li>
+		<li>the robot is waiting for a <i>stepdone</i>, then if the robot is walking, in the state WORKING.</li>
+	</ul><br/>
 	
-	The usages of the controller methods and his relation with the states of the <em>APP-SERVER</em> will be clarified in the next sprint.
-	
-	
+	In addition to all this, we leave some open points:
+	<ul>
+		<li>what if a <i>stepfail</i> is received? </li></li>
+		<li>how is possible to load and unload the car? What device is required?</li>
+	</ul>
 </div>
-
-<div class="remark">
-	<h3 id="tokengen">Token Generation</h3>
-	
-	From the analysis nothing emerges about the token and his format: the consumer has specified nothing concerning this.
-	However, from the analysis, is clear that the token is <k>a unique string associated to the user</k> after he has parked a car: the user must use this token in order to pickup his car.
-	
-	<center><img src="img/tokgen_UML.png" style="max-width:100%; padding: 10px 10px 10px 10px" /></center>
-	
-	The interface <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/controller/TokenGenerator.kt" target="code"><em>TokenGenerator</em></a> defines the method <ks>generateToken()</ks> that can be used from the controller in his method <ks>assignTokenToUserAtIndoor()</ks> in order to generate the token.
-	Because of the association between <em>User</em> and <em>ParkingSlot</em> is unique, the class <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/src/it/unibo/parkmanagerservice/controller/SimpleTokenGenerator.kt" target="code"><em>SimpleTokenGenerator.kt</em></a> is an implementation of the generator interface the use this relationship to produce surely univocal tokens. We also remeber that every generated token is associated to the user at the token property of the bean <em>User</em> and then saved into the data structures of the system thanks to an update invoked on the <em>UserRepository</em>.
-	
-</div>
-
 
 <h2 id="testing">Testing</h2>
 <div class="remark">
-The test of the <em>ParkManagerServiceController</em> is very delicate and need to test almost all methods of this class because it realizes the main business logic. To do testing, we have created this Junit Test Case:
+The test of the <em>trolley</em> consists in a serveral situation in which the trolley may find itself.
+However, the main patter for all test case is:
 
-<h4><a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/ControllerTest.java" target="code"><em>ControllerTest.java</em></a></h4>
+<pre style="white-space: pre-wrap;">
+let HISTORY =  &#60 empty String list &#62
+let OBS = &#60 istantiate CoAP observer &#62
+OBS.start()
+&#60 start <em>trolley</em> actor &#62
 
-Notice that in this test case is inserted a <i>special test</i>, <em>testOnlyOneUserCompleteCicle()</em> that shows the sequence of the calls of the controller methods for a <i>normal</i> interation user-service with no interferences.
+while ((OBS.nextChange().state) != "IDLE")
+
+<k>forward</k> &#60 park/pickup dispatch &#62 to <em>trolley</em>
+
+while ((OBS.nextChange().state != "WORKING")
+
+while((let CHANGE = OBS.nextChange()).state != IDLE) {
+    add CHANGE to HISTORY
+}
+
+&#60 check HISTORY contains the expected values &#62
+</pre>
+
+A complete Junit Test Case can be found here: <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/TrolleyTest.java" target="code"><em>TrolleyTest.java</em></a>
 
 </div>
 
@@ -358,15 +457,16 @@ Notice that in this test case is inserted a <i>special test</i>, <em>testOnlyOne
 	<table>
 		<tr><td width="60%"><h3><b>Logical Architecture</b></h3></td><td><h3><b>Resources</b></h3></td></tr>
 		<tr>
-			<td width="60%"><center style="padding:10px 10px 10px 10px"><img src="img/logical_arch_5.png" style="max-width:100%;padding:2px 2px 2px 2px" /></center></td>
+			<td width="60%"><center style="padding:10px 10px 10px 10px"><img src="img/logical_arch_6.png" style="max-width:100%;padding:2px 2px 2px 2px" /></center></td>
 			<td  style="padding:10px 10px 10px 10px">
 				<h4>Executable QAK Model</h4>
-				<a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.parkmanagerservice/src/parkmanagerservice_2.2.qako" target="code"><em>parkmanagerservice_2.2.qak</em></a><br/><br/>
+				<a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.parkmanagerservice/src/parkmanagerservice_2.3.qako" target="code"><em>parkmanagerservice_2.3.qak</em></a><br/><br/>
 				<h4>Test Files</h4>
 				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/FirstTestPlan.java" target="code"><em>FirstTestPlan.java</em></a>
 				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/PersistenceTest.java" target="code"><em>PersistenceTest.java</em></a>
 				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/TestMailNotifier.java" target="code"><em>TestMailNotifier.java</em></a>
 				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/ControllerTest.java" target="code"><em>ControllerTest.java</em></a>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/TrolleyTest.java" target="code"><em>TrolleyTest.java</em></a>
 				<h4>Basicdevice QAK Model</h4>
 				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/basicdevice1.0.qako" target="code"><em>basicdevice1.0.qako</em></a><br/><br/>
 				<h4>Basicdevice Test Files</h4>

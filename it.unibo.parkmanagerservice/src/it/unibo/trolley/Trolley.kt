@@ -21,8 +21,13 @@ class Trolley ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 				val PLANNER = itunibo.planner.plannerUtil
 				val STEP_TIME = "340"
 				val SLOTMAP = it.unibo.parkmanagerservice.trolley.SlotMap
+				val DOORMAP = it.unibo.parkmanagerservice.trolley.DoorMap
+				val INDOOR = it.unibo.parkmanagerservice.bean.DoorType.INDOOR
+				val OUTDOOR = it.unibo.parkmanagerservice.bean.DoorType.OUTDOOR
+				val POSTOIN = DOORMAP.getAdiacentAllowedPositionFromDoor(INDOOR)!!
+				val POSTOOUT = DOORMAP.getAdiacentAllowedPositionFromDoor(OUTDOOR)!!
 				var DEST : Pair<Int, Int>? = null
-				val TRIPBUILDER = it.unibo.parkmanagerservice.trolley.CompleteTripBuilder(6, 1, 6, 3)
+				val TRIPBUILDER = it.unibo.parkmanagerservice.trolley.CompleteTripBuilder(POSTOIN.first, POSTOIN.second, POSTOOUT.first, POSTOOUT.second)
 				var TTRIP : kotlin.collections.Iterator<it.unibo.parkmanagerservice.trolley.TripStage>? = null
 				var PLAN : kotlin.collections.Iterator<aima.core.agent.Action>? = null
 				var ACTION : aima.core.agent.Action? = null
@@ -30,6 +35,7 @@ class Trolley ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 				var CANGO = false
 				var STATE = it.unibo.parkmanagerservice.trolley.TrolleyState.IDLE
 				var INTERRUPTIBLE = false
+				var EXPECTED_DIRECTION : String?
 				var JSON = ""
 				PLANNER.initAI()
 				
@@ -145,6 +151,16 @@ class Trolley ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 				state("elevator") { //this:State
 					action { //it:State
 						 
+									EXPECTED_DIRECTION = DOORMAP.getDirection(PLANNER.getPosX(), PLANNER.getPosY()) ?: SLOTMAP.getDirection(PLANNER.getPosX(), PLANNER.getPosY())
+									if(EXPECTED_DIRECTION != null) {
+										while(EXPECTED_DIRECTION != PLANNER.getDirection()) {
+						forward("cmd", "cmd(l)" ,"basicrobot" ) 
+						delay(500) 
+						
+												PLANNER.doMove("l")
+										}
+									}
+									
 									when(CURRSTAGE!!.type) {
 										`it.unibo.parkmanagerservice.trolley`.TripStageType.LOAD_CAR -> {
 											println("$name | I will load the car")
@@ -230,7 +246,6 @@ class Trolley ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 				state("handleStepDone") { //this:State
 					action { //it:State
 						 
-									PLANNER!!.doMove(ACTION.toString()) 
 									JSON = "{\"state\":\"${STATE}\",\"action\":\"${CURRSTAGE!!.type}\",\"position\":{\"x\":\"${PLANNER.getPosX()}\",\"y\":\"${PLANNER.getPosY()}\"}}"
 						updateResourceRep( JSON  
 						)
@@ -239,13 +254,18 @@ class Trolley ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 				}	 
 				state("stopped") { //this:State
 					action { //it:State
-						 
+						if( checkMsgContent( Term.createTerm("stepdone(V)"), Term.createTerm("stepdone(V)"), 
+						                        currentMsg.msgContent()) ) { //set msgArgList
+								 PLANNER!!.doMove(ACTION.toString())  
+						}
+						  
 									STATE = `it.unibo.parkmanagerservice.trolley`.TrolleyState.STOPPED 
 									JSON = "{\"state\":\"${STATE}\",\"action\":\"${CURRSTAGE?.type}\",\"position\":{\"x\":\"${PLANNER.getPosX()}\",\"y\":\"${PLANNER.getPosY()}\"}}"
 						updateResourceRep( JSON  
 						)
 					}
 					 transition(edgeName="t27",targetState="nextAction",cond=whenDispatch("resumetrolley"))
+					transition(edgeName="t28",targetState="stopped",cond=whenReply("stepdone"))
 				}	 
 			}
 		}
