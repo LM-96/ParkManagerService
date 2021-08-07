@@ -160,7 +160,6 @@ class KParkManagerServiceController(
             println("Controller | Registered parked car for user [${user.toString()}]")
             return user
         }
-
         return null
     }
 

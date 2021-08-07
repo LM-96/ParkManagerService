@@ -197,14 +197,42 @@ div.imagedesc{
 </div>  
 
 <ol>
+	<li><a href="#lastarch">Last Architecture and aim of this sprint</a></li>
 	<li><a href="#ParkingServiceGUI">ParkingServiceGUI</a></li>
     <li><a href="#creation">App creation</a></li>
     <li><a href="#apis">APIs</a></li>
     <li><a href="#notifyinterest">Notify Interest</a></li>
     <li><a href="#carenter">Car Enter</a></li>
     <li><a href="#pickup">Pick Up</a></li>
+	<li><a href="#results">Final results of this sprint</a></li>
 	
 </ol>
+
+<h2 id="lastarch">Last Architecture and aim of this sprint</h2>
+<div class="remark">
+	<table>
+		<tr><td style="padding:10px 10px 10px 10px"><h3><b>Logical Architecture</b></h3>
+			<center style="padding:10px 10px 10px 10px"><img src="img/logical_arch_7.png" style="max-width:100%;padding:2px 2px 2px 2px" /></center></td>
+		</tr>
+		<tr><td style="padding:10px 10px 10px 10px"><h3><b>Resources</b></h3>
+				<h4>Executable QAK Model</h4>
+				<a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.parkmanagerservice/src/parkmanagerservice_3.0.qako" target="code"><em>parkmanagerservice_3.0.qak</em></a><br/><br/>
+				<h4>Test Files</h4>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/FirstTestPlan.java" target="code"><em>FirstTestPlan.java</em></a>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/PersistenceTest.java" target="code"><em>PersistenceTest.java</em></a>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/TestMailNotifier.java" target="code"><em>TestMailNotifier.java</em></a>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/ControllerTest.java" target="code"><em>ControllerTest.java</em></a>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/TrolleyTest.java" target="code"><em>TrolleyTest.java</em></a>
+				<h4>Basicdevice QAK Model</h4>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/basicdevice1.0.qako" target="code"><em>basicdevice1.0.qako</em></a><br/><br/>
+				<h4>Basicdevice Test Files</h4>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.webServerTest/src/devices_pytest.py" target="code"><em>devices_pytest.py</em></a>
+				
+			</td>
+		</tr>
+	</table><br/><br/>
+	In this sprint we are going to put the design the <em>ParkingServiceGUI</em> as a web application that communicates with the <em>parkingmanagerservice</em> using TCP.
+</div>
 
 <div class="body"> 
 <h2 id="ParkingServiceGUI">ParkingServiceGUI</h2>
@@ -406,14 +434,33 @@ interest of entering the car into the parking-area, call the trolley to park the
 </div>
 
 
-
-
-
-
-
-
-
-
+<h2 id="results">Final results of this sprint</h2>
+<div class="remark">
+	<table>
+		<tr><td style="padding:10px 10px 10px 10px"><h3><b>Logical Architecture</b></h3>
+			<center style="padding:10px 10px 10px 10px"><img src="img/logical_arch_9.png" style="max-width:100%;padding:2px 2px 2px 2px" /></center></td>
+		</tr>
+		<tr><td style="padding:10px 10px 10px 10px"><h3><b>Resources</b></h3>
+				<h4>Executable QAK Model</h4>
+				<a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.parkmanagerservice/src/parkmanagerservice_3.0.qako" target="code"><em>parkmanagerservice_3.0.qak</em></a><br/><br/>
+				<h4>Test Files</h4>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/FirstTestPlan.java" target="code"><em>FirstTestPlan.java</em></a>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/PersistenceTest.java" target="code"><em>PersistenceTest.java</em></a>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/TestMailNotifier.java" target="code"><em>TestMailNotifier.java</em></a>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/ControllerTest.java" target="code"><em>ControllerTest.java</em></a>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/TrolleyTest.java" target="code"><em>TrolleyTest.java</em></a>
+				<h4>Basicdevice QAK Model</h4>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/basicdevice1.0.qako" target="code"><em>basicdevice1.0.qako</em></a><br/><br/>
+				<h4>Basicdevice Test Files</h4>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.webServer/src/devices_pytest.py" target="code"><em>devices_pytest.py</em></a>
+				<h4>Django Directories</h4>
+				<a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.webServer/src/client" target="code"><em>ParkServiceGUI</em></a>
+				
+				
+			</td>
+		</tr>
+	</table>
+</div>
 
  
 <!-- USEFUL
@@ -429,9 +476,14 @@ interest of entering the car into the parking-area, call the trolley to park the
 <br/><br/> 	
 </div>  
 
-<div style="background-color:rgba(86, 56, 253, 0.9); width:60%;text-align:left;color:white">
-By studentName email: student@studio.unibo.it  
-<img src="./img/emiglio.png" alt="mbot" width="15%" height="15%">
+<div style="background-color:rgba(86, 56, 253, 0.9); width:60%;text-align:center;color:white; margin: auto">
+<br>
+<p>By students</br>
+    Names: Simone Mattioli , Luca Marchegiani</br>
+    Email: <a href= "mailto:simone.mattioli6@studio.unibo.it" target="mail" style="color:white;">simone.mattioli6@studio.unibo.it</a> , <a href="mailto:luca.marchegiani3@studio.unibo.it" target="mail" style="color:white">luca.marchegiani3@studio.unibo.it</a></br>
+    Git Repo:  <a href="https://github.com/LM-96/ParkManagerService" target="web" style="color:white">https://github.com/LM-96/ParkManagerService</a></p>
+<!--<img src="./img/profile_2.png" alt="mbot" width="40%" height="40%">-->
+<br>
 </div> 
 </body>
 </html>

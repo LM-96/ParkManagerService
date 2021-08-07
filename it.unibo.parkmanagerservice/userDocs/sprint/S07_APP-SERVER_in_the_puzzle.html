@@ -204,6 +204,7 @@ div.imagedesc{
 		<ul>
 		<li><a href="#states">General view and states description</a></li>
 		<li><a href="#messages">About the content of messages</a></li>
+		<li><a hred="#state">About the state</a></li>
 		</ul>
 	</li>
 	<li><a href="#testing">Testing</a></li>
@@ -229,7 +230,7 @@ div.imagedesc{
 				<h4>Basicdevice QAK Model</h4>
 				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/basicdevice1.0.qako" target="code"><em>basicdevice1.0.qako</em></a><br/><br/>
 				<h4>Basicdevice Test Files</h4>
-				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.webServerTest/src/devices_pytest.py" target="code"><em>devices_pytest.py</em></a>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.webServer/src/devices_pytest.py" target="code"><em>devices_pytest.py</em></a>
 				
 			</td>
 		</tr>
@@ -445,6 +446,29 @@ div.imagedesc{
 			</ol></li><br/>
 	</ul>
 </div>
+<div class="remark">
+	<h3 id="state">About the state</h3>
+	
+	The <em>parkingmanagerservice</em> exposes the state of the doors and the slots by using CoAP. The state is a <ks>JSON</ks> string with the format:
+<pre style="white-space: pre-wrap;">
+ {
+ "indoor":{"state":"[INDOOR_STATE]", "user":"[USER_MAIL_IN]"},
+ "outdoor":{"state":"[OUTDOOR_STATE]", "user":"[USER_MAIL_OUT]"},
+ "1":{"state":"[SLOT_STATE_1]", "user":"[USER_1]"},
+ "2":{"state":"[SLOT_STATE_2]", "user":"[USER_2]"},
+ "3":{"state":"[SLOT_STATE_3]", "user":"[USER_3]"},
+ "4":{"state":"[SLOT_STATE_4]", "user":"[USER_4]"},
+ "5":{"state":"[SLOT_STATE_5]", "user":"[USER_5]"},
+ "6":{"state":"[SLOT_STATE_6]", "user":"[USER_6]"}
+ }
+</pre>
+Then this JSON has these keys:
+<ul>
+	<li><ks>indoor</ks>: another JSON object for the INDOOR with the field <ks>state</ks>, that can be FREE, RESERVED or OCCUPIED, and <ks>user</ks>, that contains the mail of the user that is occupying or reserving the indoor;</li>
+	<li><ks>outdoor</ks>: another JSON object for the OUTDOOR with the field <ks>state</ks>, that can be FREE, RESERVED or OCCUPIED, and <ks>user</ks>, that contains the mail of the user that is occupying or reserving the indoor;</li>
+	<li>from <ks>1</ks> to <ks>6</ks>: the slots, each of them is a JSON object that containt the key <ks>state</ks>, that can bee FREE, RESERVED or OCCUPIED, and the other <ks>user</ks>, that contains the mail of the user that is occupying or reserving the relative slot.</li>
+</ul>
+</div>
 
 <h2 id="testing">Testing</h2>
 <div class="remark">
@@ -471,7 +495,7 @@ TODO
 				<h4>Basicdevice QAK Model</h4>
 				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/basicdevice1.0.qako" target="code"><em>basicdevice1.0.qako</em></a><br/><br/>
 				<h4>Basicdevice Test Files</h4>
-				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.webServerTest/src/devices_pytest.py" target="code"><em>devices_pytest.py</em></a>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.webServer/src/devices_pytest.py" target="code"><em>devices_pytest.py</em></a>
 				
 			</td>
 		</tr>

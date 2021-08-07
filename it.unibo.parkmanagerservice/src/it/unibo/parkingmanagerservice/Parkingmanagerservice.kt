@@ -29,6 +29,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 				
 				val CHANNEL = it.unibo.parkmanagerservice.notification.NotificationChannel.CHANNEL
 				var JSON : String = ""
+		        val JSONSTATE = it.unibo.parkmanagerservice.persistence.StateJSONIZER()
 				var USERERR : Pair<it.unibo.parkmanagerservice.bean.User?, it.unibo.parkmanagerservice.controller.ParkManagerError?>
 				var SLOTERR : Pair<it.unibo.parkmanagerservice.bean.ParkingSlot?, it.unibo.parkmanagerservice.controller.ParkManagerError?>
 				var USERSLOT : Pair<it.unibo.parkmanagerservice.bean.User?,it.unibo.parkmanagerservice.bean.ParkingSlot?>
@@ -81,9 +82,8 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 														
 														if(CONTROLLER.reserveDoorForUserOrEnqueue(INDOOR, USER!!)) {
 															JSON = "{\"slotnum\":\"$SLOTNUM\",\"indoor\":\"FREE\",\"time\":\"${ITOCC}\"}"
-								updateResourceRep( "{\"door\":\"indoor\",\"state\":\"RESERVED\"}"  
-								)
-								updateResourceRep( "{\"slot\":\"${SLOTNUM}\",\"user\":\"${USER!!.mail}\",\"state\":\"RESERVED\"}"  
+								updateResourceRep( JSONSTATE
+																.updateDoor(INDOOR).updateSlotReserved(SLOTNUM, USER!!).toString()  
 								)
 								forward("dopolling", "dopolling($INDOOR_POLLING)" ,"weightsensoractor" ) 
 								forward("startItoccCounter", "startItoccCounter(START)" ,"itocccounter" ) 
@@ -104,7 +104,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 						forward("stopCount", "stopCount(STOP)" ,"itocccounter" ) 
 						 
 									USER = CONTROLLER.setSomeoneOnDoor(INDOOR)!!
-						updateResourceRep( "{\"door\":\"indoor\",\"state\":\"OCCUPIED\"}"  
+						updateResourceRep( JSONSTATE.updateDoor(INDOOR).toString()  
 						)
 					}
 					 transition( edgeName="goto",targetState="work", cond=doswitch() )
@@ -120,7 +120,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 									CHANNEL.send(NOTIFICATION)
 						forward("notifyuser", "notifyuser(NOTIFY)" ,"notificationactor" ) 
 						forward("stoppolling", "stoppolling(STOP)" ,"weightsensoractor" ) 
-						updateResourceRep( "{\"door\":\"indoor\",\"state\":\"FREE\"}"  
+						updateResourceRep( JSONSTATE.updateDoor(INDOOR).toString()  
 						)
 					}
 					 transition( edgeName="goto",targetState="enterNext", cond=doswitchGuarded({ (CONTROLLER.getDoorQueue(INDOOR).remaining()) > 0  
@@ -141,9 +141,8 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 						forward("notifyuser", "notifyuser(NOTIFY)" ,"notificationactor" ) 
 						forward("dopolling", "dopolling($INDOOR_POLLING)" ,"weightsensoractor" ) 
 						forward("startItoccCounter", "startItoccCounter(START)" ,"itocccounter" ) 
-						updateResourceRep( "{\"door\":\"indoor\",\"state\":\"RESERVED\"}"  
-						)
-						updateResourceRep( "{\"slot\":\"${SLOTNUM}\",\"user\":\"${USER!!.mail}\",\"state\":\"RESERVED\"}"  
+						updateResourceRep( JSONSTATE
+														.updateDoor(INDOOR).updateSlotReserved(SLOTNUM, USER!!).toString()  
 						)
 						 	}
 					}
@@ -154,13 +153,13 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 						println("$name in ${currentState.stateName} | $currentMsg")
 						if( checkMsgContent( Term.createTerm("carenter(SLOTNUM,MAIL)"), Term.createTerm("carenter(SLOTNUM,MAIL)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
-								 	
+								 	SLOTNUM = payloadArg(0).toLong()
 												USERERR = CONTROLLER.assignTokenToUserAtIndoor(payloadArg(0), payloadArg(1))
 												if(USERERR.first != null && USERERR.second == null) {
 													JSON = "{\"token\":\"${USERERR.first!!.token!!.toString()}\"}"
 								forward("stopCount", "stopCount(STOP)" ,"itocccounter" ) 
 								forward("parkcar", "parkcar($SLOTNUM)" ,"trolley" ) 
-								updateResourceRep( "{\"slot\":\"${SLOTNUM}\",\"user\":\"${USERERR.first!!.mail}\",\"state\":\"OCCUPIED\"}"  
+								updateResourceRep( JSONSTATE.updateSlotOccupied(SLOTNUM).toString()  
 								)
 								
 												} else JSON = "{\"err\":\"${USERERR!!.second!!.msg}\"}"
@@ -183,7 +182,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 													SLOTNUM = SLOTERR.first!!.slotnum
 													if(CONTROLLER.reserveDoorForUserOrEnqueue(OUTDOOR, SLOTERR.first!!.user!!)) {
 														JSON = "{\"msg\":\"The transport trolley will transport your car to the outdoor: you will get a notification when your car is ready. Plase stay near the ourdoor\"}"
-								updateResourceRep( "{\"slot\":\"${SLOTNUM}\",\"user\":\"${SLOTERR.first!!.user!!.mail}\",\"state\":\"ALMOST_FREE\"}"  
+								updateResourceRep(JSONSTATE.updateSlotAlmostFree(SLOTERR.first!!.slotnum).toString()  
 								)
 								forward("startDtfreeCounter", "startDtfreeCounter($OUTDOOR_POLLING)" ,"dtfreecounter" ) 
 								
@@ -193,8 +192,6 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 													JSON = "{\"msg\":\"$SLOTERR.second!!\"}"
 								println("$name | reply with canPickup(${JSON!!})")
 								answer("pickup", "canPickup", "canPickup($JSON)"   )  
-								updateResourceRep( "canPickup($JSON)"  
-								)
 						}
 					}
 					 transition( edgeName="goto",targetState="work", cond=doswitch() )
@@ -214,9 +211,8 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 										CHANNEL.send(NOTIFICATION)
 						forward("notifyuser", "notifyuser(NOTIFY)" ,"notificationactor" ) 
 						forward("pickupcar", "pickupcar($SLOTNUM)" ,"trolley" ) 
-						updateResourceRep( "{\"door\":\"outdoor\",\"state\":\"OCCUPIED\"}"  
-						)
-						updateResourceRep( "{\"slot\":\"${USERSLOT.second!!.slotnum}\",\"user\":\"${USER!!.mail}\",\"state\":\"FREE\"}"  
+						updateResourceRep( JSONSTATE
+														.updateDoor(OUTDOOR).updateSlotFree(USERSLOT.second!!.slotnum).toString()  
 						)
 						 }  
 					}
@@ -225,7 +221,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 				state("handleOutdoorReturnFree") { //this:State
 					action { //it:State
 						 CONTROLLER.setFreeDoor(OUTDOOR)  
-						updateResourceRep( "{\"door\":\"outdoor\",\"state\":\"FREE\"}"  
+						updateResourceRep( JSONSTATE.updateDoor(OUTDOOR).toString()  
 						)
 					}
 					 transition( edgeName="goto",targetState="exitNext", cond=doswitchGuarded({ (CONTROLLER.getDoorQueue(OUTDOOR).remaining()) > 0  
@@ -243,6 +239,9 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 						updateResourceRep( "{\"door\":\"outdoor\",\"state\":\"RESERVED\"}"  
 						)
 						updateResourceRep( "{\"slot\":\"${SLOTNUM}\",\"user\":\"${USER!!.mail}\",\"state\":\"ALMOST_FREE\"}"  
+						)
+						updateResourceRep( JSONSTATE
+														.updateDoor(OUTDOOR).updateSlotAlmostFree(SLOTNUM).toString()  
 						)
 						 	}
 					}
