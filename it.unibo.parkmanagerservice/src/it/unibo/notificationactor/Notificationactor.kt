@@ -18,7 +18,8 @@ class Notificationactor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		 
 				val NOTIFIER = it.unibo.parkmanagerservice.notification.SystemNotifier.get()
-				val CHANNEL = it.unibo.parkmanagerservice.notification.NotificationChannel.CHANNEL	
+				val DEQUE = it.unibo.parkmanagerservice.notification.CCNotificationDeque
+				var NOTIFICATION : it.unibo.parkmanagerservice.notification.Notification? = null
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
@@ -35,11 +36,15 @@ class Notificationactor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm
 				state("handleNotificationToSend") { //this:State
 					action { //it:State
 						 
-									NOTIFIER.sendNotification(CHANNEL.receive())
+									NOTIFICATION = DEQUE.get()
+									if(NOTIFICATION != null) {
+										NOTIFIER.sendNotification(NOTIFICATION!!)
+										println("$name | Notification sent")
+									}
 					}
-					 transition( edgeName="goto",targetState="work", cond=doswitchGuarded({ CHANNEL.isEmpty  
+					 transition( edgeName="goto",targetState="work", cond=doswitchGuarded({ NOTIFICATION == null  
 					}) )
-					transition( edgeName="goto",targetState="handleNotificationToSend", cond=doswitchGuarded({! ( CHANNEL.isEmpty  
+					transition( edgeName="goto",targetState="handleNotificationToSend", cond=doswitchGuarded({! ( NOTIFICATION == null  
 					) }) )
 				}	 
 			}

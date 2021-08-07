@@ -48,7 +48,8 @@ Dispatch resumetrolley : resumetrolley(X)
 /* Messages for basicrobot */
 Dispatch cmd        : cmd(MOVE) 
 Request step       : step( TIME )	
-Reply   stepdone   : stepdone(V) 
+Reply   stepdone   : stepdone(V)
+Reply   stepfail   : stepfail(DURATION, CAUSE)
 
 /* Main context */
 Context ctxcarparking ip[host="localhost" port=8010]
@@ -83,7 +84,7 @@ QActor parkingmanagerservice context ctxcarparking {
 			
 		
 		
-		val CHANNEL = it.unibo.parkmanagerservice.notification.NotificationChannel.CHANNEL
+		val DEQUE = it.unibo.parkmanagerservice.notification.CCNotificationDeque
 		var JSON : String = ""
         val JSONSTATE = it.unibo.parkmanagerservice.persistence.StateJSONIZER()
 		var USERERR : Pair<it.unibo.parkmanagerservice.bean.User?, it.unibo.parkmanagerservice.controller.ParkManagerError?>
@@ -103,13 +104,11 @@ QActor parkingmanagerservice context ctxcarparking {
 	
 	State s0 initial {
 		println("$name | started")
-		updateResource[# "{\"door\":\"indoor\",\"state\":\"FREE\"}" #]
-		updateResource[# "{\"door\":\"outdoor\",\"state\":\"FREE\"}" #]
 	} Goto work
 	
 	State work {
 		println("$name | waiting for request...")
-		updateResource [# "work" #]
+		updateResource [# JSONSTATE.toString() #]
 	} Transition t
 		whenRequest enter -> handleEnter
 		whenRequest carenter -> handleCarEnter
@@ -164,7 +163,7 @@ QActor parkingmanagerservice context ctxcarparking {
 						USER!!,
 						`it.unibo.parkmanagerservice`.notification.NotificationType.TOKEN,
 						arrayOf(USER!!.token!!))
-			CHANNEL.send(NOTIFICATION)
+			DEQUE.put(NOTIFICATION)
 		#]
 			forward notificationactor -m notifyuser : notifyuser(NOTIFY)
 			forward weightsensoractor -m stoppolling : stoppolling(STOP)
@@ -179,7 +178,7 @@ QActor parkingmanagerservice context ctxcarparking {
 					USER!!,
 					`it.unibo.parkmanagerservice`.notification.NotificationType.SLOTNUM,
 					arrayOf(CONTROLLER.getSlotReservedForUser(USER!!)!!.slotnum.toString(), ITOCC.toString()))
-				CHANNEL.send(NOTIFICATION)
+				DEQUE.put(NOTIFICATION)
 		#]
 					forward notificationactor -m notifyuser : notifyuser(NOTIFY)
 					forward weightsensoractor -m dopolling : dopolling($INDOOR_POLLING)
@@ -223,7 +222,9 @@ QActor parkingmanagerservice context ctxcarparking {
 						JSON = "{\"msg\":\"The transport trolley will transport your car to the outdoor: you will get a notification when your car is ready. Plase stay near the ourdoor\"}"
 			#]
 						updateResource[#JSONSTATE.updateSlotAlmostFree(SLOTERR.first!!.slotnum).toString() #]
-						forward dtfreecounter -m startDtfreeCounter : startDtfreeCounter($OUTDOOR_POLLING)
+						forward trolley -m pickupcar : pickupcar($SLOTNUM)
+						forward sonaractor -m dopolling : dopolling($OUTDOOR_POLLING)
+						
 			[#
 					} else
 						JSON = "{\"msg\":\"The outdoor is already engaged. When possible, the trolley will transport your car to the outdoor. You will be notified as soon.\"}"
@@ -244,12 +245,12 @@ QActor parkingmanagerservice context ctxcarparking {
 				NOTIFICATION = `it.unibo.parkmanagerservice`.notification.DefaultNotificationFactory.createForUser(
 						USER!!,
 						`it.unibo.parkmanagerservice`.notification.NotificationType.PICKUP,
-						arrayOf<String>(DTFREE.toString())
+						arrayOf<String>((DTFREE / 1000).toString())
 					)
-				CHANNEL.send(NOTIFICATION)
+				DEQUE.put(NOTIFICATION)
 		#]
 				forward notificationactor -m notifyuser : notifyuser(NOTIFY)
-				forward trolley -m pickupcar : pickupcar($SLOTNUM)
+				forward dtfreecounter -m startDtfreeCounter : startDtfreeCounter($OUTDOOR_POLLING)
 				updateResource[# JSONSTATE
 								.updateDoor(OUTDOOR).updateSlotFree(USERSLOT.second!!.slotnum).toString() #]
 		[# } #]
@@ -257,6 +258,7 @@ QActor parkingmanagerservice context ctxcarparking {
 	
 	State handleOutdoorReturnFree {
 		[# CONTROLLER.setFreeDoor(OUTDOOR) #]
+		forward sonaractor -m stoppolling : stoppolling(STOP)
 		updateResource[# JSONSTATE.updateDoor(OUTDOOR).toString() #]
 	} Goto exitNext if [# (CONTROLLER.getDoorQueue(OUTDOOR).remaining()) > 0 #] else work
 	
@@ -267,8 +269,7 @@ QActor parkingmanagerservice context ctxcarparking {
 		#]
 					forward  sonaractor -m dopolling : dopolling($OUTDOOR_POLLING)
 					forward dtfreecounter -m startDtfreeCounter : startDtfreeCounter(START)
-					updateResource[# "{\"door\":\"outdoor\",\"state\":\"RESERVED\"}" #]
-					updateResource[# "{\"slot\":\"${SLOTNUM}\",\"user\":\"${USER!!.mail}\",\"state\":\"ALMOST_FREE\"}" #]
+					forward trolley -m pickupcar : pickupcar($SLOTNUM)
 					updateResource[# JSONSTATE
 								.updateDoor(OUTDOOR).updateSlotAlmostFree(SLOTNUM).toString() #]
 					
@@ -374,7 +375,8 @@ QActor notificationactor context ctxcarparking {
 	
 	[# 
 		val NOTIFIER = it.unibo.parkmanagerservice.notification.SystemNotifier.get()
-		val CHANNEL = it.unibo.parkmanagerservice.notification.NotificationChannel.CHANNEL	
+		val DEQUE = it.unibo.parkmanagerservice.notification.CCNotificationDeque
+		var NOTIFICATION : it.unibo.parkmanagerservice.notification.Notification? = null
 	#]
 	
 	State s0 initial {
@@ -388,9 +390,13 @@ QActor notificationactor context ctxcarparking {
 	
 	State handleNotificationToSend {
 		[# 
-			NOTIFIER.sendNotification(CHANNEL.receive())
+			NOTIFICATION = DEQUE.get()
+			if(NOTIFICATION != null) {
+				NOTIFIER.sendNotification(NOTIFICATION!!)
+				println("$name | Notification sent")
+			}
 		#]
-	} Goto work if [# CHANNEL.isEmpty #] else handleNotificationToSend
+	} Goto work if [# NOTIFICATION == null #] else handleNotificationToSend
 }
 
 QActor antifireactor context ctxcarparking {
@@ -465,6 +471,13 @@ QActor trolley context ctxcarparking {
 	State home {
 		println("$name | work")
 		[# 
+			if(!PLANNER.atHome()) {
+				PLANNER.setGoal(0, 0)
+				PLAN = PLANNER.doPlan()?.iterator()
+				if(PLAN != null) {
+					while(PLAN!!.hasNext()) PLANNER.doMove(PLAN!!.next().toString())
+				}
+			}
 			STATE = `it.unibo.parkmanagerservice.trolley`.TrolleyState.IDLE
 			TTRIP = null
 			CURRSTAGE = null
@@ -553,10 +566,10 @@ QActor trolley context ctxcarparking {
 			if(EXPECTED_DIRECTION != null) {
 				while(EXPECTED_DIRECTION != PLANNER.getDirection()) {
 					#] 
-						forward basicrobot -m cmd : cmd(l)
-						delay 500
+						forward basicrobot -m cmd : cmd(r)
+						delay 1000
 					[#
-						PLANNER.doMove("l")
+						PLANNER.doMove("r")
 				}
 			}
 			
@@ -626,6 +639,7 @@ QActor trolley context ctxcarparking {
 	State waitStepDone {
 	} Transition t
 		whenReply stepdone -> handleStepDone
+		whenReply stepfail -> home
 		whenMsg stoptrolley -> stopped
 		whenMsg parkcar and [# INTERRUPTIBLE #] -> handle
 		whenMsg pickupcar and [# INTERRUPTIBLE #] -> handle
@@ -633,6 +647,7 @@ QActor trolley context ctxcarparking {
 	State handleStepDone {
 		[# 
 			JSON = "{\"state\":\"${STATE}\",\"action\":\"${CURRSTAGE!!.type}\",\"position\":{\"x\":\"${PLANNER.getPosX()}\",\"y\":\"${PLANNER.getPosY()}\"}}"
+			PLANNER!!.doMove(ACTION.toString())
 		#]
 		updateResource[# JSON #]
 	} Goto nextAction

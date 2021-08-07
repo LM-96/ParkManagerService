@@ -27,7 +27,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 					
 				
 				
-				val CHANNEL = it.unibo.parkmanagerservice.notification.NotificationChannel.CHANNEL
+				val DEQUE = it.unibo.parkmanagerservice.notification.CCNotificationDeque
 				var JSON : String = ""
 		        val JSONSTATE = it.unibo.parkmanagerservice.persistence.StateJSONIZER()
 				var USERERR : Pair<it.unibo.parkmanagerservice.bean.User?, it.unibo.parkmanagerservice.controller.ParkManagerError?>
@@ -47,17 +47,13 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 				state("s0") { //this:State
 					action { //it:State
 						println("$name | started")
-						updateResourceRep( "{\"door\":\"indoor\",\"state\":\"FREE\"}"  
-						)
-						updateResourceRep( "{\"door\":\"outdoor\",\"state\":\"FREE\"}"  
-						)
 					}
 					 transition( edgeName="goto",targetState="work", cond=doswitch() )
 				}	 
 				state("work") { //this:State
 					action { //it:State
 						println("$name | waiting for request...")
-						updateResourceRep( "work"  
+						updateResourceRep( JSONSTATE.toString()  
 						)
 					}
 					 transition(edgeName="t0",targetState="handleEnter",cond=whenRequest("enter"))
@@ -117,7 +113,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 												USER!!,
 												`it.unibo.parkmanagerservice`.notification.NotificationType.TOKEN,
 												arrayOf(USER!!.token!!))
-									CHANNEL.send(NOTIFICATION)
+									DEQUE.put(NOTIFICATION)
 						forward("notifyuser", "notifyuser(NOTIFY)" ,"notificationactor" ) 
 						forward("stoppolling", "stoppolling(STOP)" ,"weightsensoractor" ) 
 						updateResourceRep( JSONSTATE.updateDoor(INDOOR).toString()  
@@ -137,7 +133,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 											USER!!,
 											`it.unibo.parkmanagerservice`.notification.NotificationType.SLOTNUM,
 											arrayOf(CONTROLLER.getSlotReservedForUser(USER!!)!!.slotnum.toString(), ITOCC.toString()))
-										CHANNEL.send(NOTIFICATION)
+										DEQUE.put(NOTIFICATION)
 						forward("notifyuser", "notifyuser(NOTIFY)" ,"notificationactor" ) 
 						forward("dopolling", "dopolling($INDOOR_POLLING)" ,"weightsensoractor" ) 
 						forward("startItoccCounter", "startItoccCounter(START)" ,"itocccounter" ) 
@@ -184,7 +180,8 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 														JSON = "{\"msg\":\"The transport trolley will transport your car to the outdoor: you will get a notification when your car is ready. Plase stay near the ourdoor\"}"
 								updateResourceRep(JSONSTATE.updateSlotAlmostFree(SLOTERR.first!!.slotnum).toString()  
 								)
-								forward("startDtfreeCounter", "startDtfreeCounter($OUTDOOR_POLLING)" ,"dtfreecounter" ) 
+								forward("pickupcar", "pickupcar($SLOTNUM)" ,"trolley" ) 
+								forward("dopolling", "dopolling($OUTDOOR_POLLING)" ,"sonaractor" ) 
 								
 													} else
 														JSON = "{\"msg\":\"The outdoor is already engaged. When possible, the trolley will transport your car to the outdoor. You will be notified as soon.\"}"
@@ -206,11 +203,11 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 										NOTIFICATION = `it.unibo.parkmanagerservice`.notification.DefaultNotificationFactory.createForUser(
 												USER!!,
 												`it.unibo.parkmanagerservice`.notification.NotificationType.PICKUP,
-												arrayOf<String>(DTFREE.toString())
+												arrayOf<String>((DTFREE / 1000).toString())
 											)
-										CHANNEL.send(NOTIFICATION)
+										DEQUE.put(NOTIFICATION)
 						forward("notifyuser", "notifyuser(NOTIFY)" ,"notificationactor" ) 
-						forward("pickupcar", "pickupcar($SLOTNUM)" ,"trolley" ) 
+						forward("startDtfreeCounter", "startDtfreeCounter($OUTDOOR_POLLING)" ,"dtfreecounter" ) 
 						updateResourceRep( JSONSTATE
 														.updateDoor(OUTDOOR).updateSlotFree(USERSLOT.second!!.slotnum).toString()  
 						)
@@ -221,6 +218,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 				state("handleOutdoorReturnFree") { //this:State
 					action { //it:State
 						 CONTROLLER.setFreeDoor(OUTDOOR)  
+						forward("stoppolling", "stoppolling(STOP)" ,"sonaractor" ) 
 						updateResourceRep( JSONSTATE.updateDoor(OUTDOOR).toString()  
 						)
 					}
@@ -236,10 +234,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 									if(USER != null) {	
 						forward("dopolling", "dopolling($OUTDOOR_POLLING)" ,"sonaractor" ) 
 						forward("startDtfreeCounter", "startDtfreeCounter(START)" ,"dtfreecounter" ) 
-						updateResourceRep( "{\"door\":\"outdoor\",\"state\":\"RESERVED\"}"  
-						)
-						updateResourceRep( "{\"slot\":\"${SLOTNUM}\",\"user\":\"${USER!!.mail}\",\"state\":\"ALMOST_FREE\"}"  
-						)
+						forward("pickupcar", "pickupcar($SLOTNUM)" ,"trolley" ) 
 						updateResourceRep( JSONSTATE
 														.updateDoor(OUTDOOR).updateSlotAlmostFree(SLOTNUM).toString()  
 						)

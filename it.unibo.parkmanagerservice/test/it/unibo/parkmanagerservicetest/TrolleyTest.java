@@ -26,6 +26,7 @@ import it.unibo.parkimanagerservice.test.utils.CoapObserver;
 import it.unibo.parkimanagerservice.test.utils.JCoapChangeObserver;
 import it.unibo.parkmanagerservice.actorchat.ActorChatter;
 import it.unibo.parkmanagerservice.trolley.SlotMap;
+import itunibo.planner.plannerUtil;
 import kotlin.Pair;
 
 public class TrolleyTest {

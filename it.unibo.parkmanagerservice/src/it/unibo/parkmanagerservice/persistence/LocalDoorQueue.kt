@@ -7,7 +7,8 @@ class LocalDoorQueue : DoorQueue {
     private val queue = ArrayDeque<User>()
 
     override fun addUser(user: User) {
-        queue.add(user)
+        if(!queue.contains(user))
+            queue.add(user)
     }
 
     override fun pullNextUser(): User? {

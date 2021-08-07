@@ -33,39 +33,39 @@ class StateJSONIZER() {
 
     fun updateSlotReserved(slotnum : Long, user : User) : StateJSONIZER{
         JSON.put(slotnum.toString(), JSONObject()
-            .put("state", ParkingSlotState.RESERVED))
-            .put("user", user.mail)
+            .put("state", ParkingSlotState.RESERVED)
+            .put("user", user.mail))
 
         return this
     }
 
     fun updateSlotOccupied(slotnum : Long) : StateJSONIZER {
-        val user = JSON.getJSONObject(slotnum.toString()).getString("user")
+        val user = (JSON.getJSONObject(slotnum.toString())).getString("user")
         JSON.put(slotnum.toString(), JSONObject()
-            .put("state", ParkingSlotState.RESERVED))
-            .put("user", user)
+            .put("state", ParkingSlotState.RESERVED)
+            .put("user", user))
 
         return this
     }
 
     fun updateSlotAlmostFree(slotnum : Long) : StateJSONIZER {
-        val user = JSON.getJSONObject(slotnum.toString()).getString("user")
+       val user = (JSON.getJSONObject(slotnum.toString())).getString("user")
         JSON.put(slotnum.toString(), JSONObject()
-            .put("state", ParkingSlotState.ALMOST_FREE))
-            .put("user", user)
+            .put("state", ParkingSlotState.ALMOST_FREE)
+            .put("user", user))
 
         return this
     }
 
     fun updateSlotFree(slotnum : Long) : StateJSONIZER {
         JSON.put(slotnum.toString(), JSONObject()
-            .put("state", ParkingSlotState.ALMOST_FREE))
-            .put("user", "")
+            .put("state", ParkingSlotState.ALMOST_FREE)
+            .put("user", ""))
 
         return this
     }
 
-    fun generateString() : String {
+    override fun toString() : String {
         return JSON.toString()
     }
 }

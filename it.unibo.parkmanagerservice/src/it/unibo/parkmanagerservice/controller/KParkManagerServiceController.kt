@@ -231,6 +231,12 @@ class KParkManagerServiceController(
             println("Controller | Mail not valid. Expected mail=${user.mail} instead of $mail")
             return Pair(slot, ParkManagerError(ErrorType.INVALID_TOKEN, "Invalid token or mail. Please try again."))
         }
+        if(user.mail == mail && slot.slotstate == ParkingSlotState.ALMOST_FREE) {
+           if(doors.getUserAtDoor(DoorType.OUTDOOR) == user)
+               return Pair(slot, ParkManagerError(ErrorType.INVALID_TOKEN, "Ypu have already requested to pick up. The outdoor is reserved for you: move your car at the door please."))
+            else
+               return Pair(slot, ParkManagerError(ErrorType.INVALID_TOKEN, "Ypu have already requested to pick up. The outdoor is already engaged: please wait."))
+        }
 
         println("Controller | Correct token for slot [${slot.toString()}]")
         slot.slotstate = ParkingSlotState.ALMOST_FREE

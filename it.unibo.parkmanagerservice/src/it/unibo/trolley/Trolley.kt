@@ -51,6 +51,13 @@ class Trolley ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 					action { //it:State
 						println("$name | work")
 						 
+									if(!PLANNER.atHome()) {
+										PLANNER.setGoal(0, 0)
+										PLAN = PLANNER.doPlan()?.iterator()
+										if(PLAN != null) {
+											while(PLAN!!.hasNext()) PLANNER.doMove(PLAN!!.next().toString())
+										}
+									}
 									STATE = `it.unibo.parkmanagerservice.trolley`.TrolleyState.IDLE
 									TTRIP = null
 									CURRSTAGE = null
@@ -154,10 +161,10 @@ class Trolley ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 									EXPECTED_DIRECTION = DOORMAP.getDirection(PLANNER.getPosX(), PLANNER.getPosY()) ?: SLOTMAP.getDirection(PLANNER.getPosX(), PLANNER.getPosY())
 									if(EXPECTED_DIRECTION != null) {
 										while(EXPECTED_DIRECTION != PLANNER.getDirection()) {
-						forward("cmd", "cmd(l)" ,"basicrobot" ) 
-						delay(500) 
+						forward("cmd", "cmd(r)" ,"basicrobot" ) 
+						delay(1000) 
 						
-												PLANNER.doMove("l")
+												PLANNER.doMove("r")
 										}
 									}
 									
@@ -237,16 +244,18 @@ class Trolley ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 					action { //it:State
 					}
 					 transition(edgeName="t23",targetState="handleStepDone",cond=whenReply("stepdone"))
-					transition(edgeName="t24",targetState="stopped",cond=whenDispatch("stoptrolley"))
-					transition(edgeName="t25",targetState="handle",cond=whenDispatchGuarded("parkcar",{ INTERRUPTIBLE  
+					transition(edgeName="t24",targetState="home",cond=whenReply("stepfail"))
+					transition(edgeName="t25",targetState="stopped",cond=whenDispatch("stoptrolley"))
+					transition(edgeName="t26",targetState="handle",cond=whenDispatchGuarded("parkcar",{ INTERRUPTIBLE  
 					}))
-					transition(edgeName="t26",targetState="handle",cond=whenDispatchGuarded("pickupcar",{ INTERRUPTIBLE  
+					transition(edgeName="t27",targetState="handle",cond=whenDispatchGuarded("pickupcar",{ INTERRUPTIBLE  
 					}))
 				}	 
 				state("handleStepDone") { //this:State
 					action { //it:State
 						 
 									JSON = "{\"state\":\"${STATE}\",\"action\":\"${CURRSTAGE!!.type}\",\"position\":{\"x\":\"${PLANNER.getPosX()}\",\"y\":\"${PLANNER.getPosY()}\"}}"
+									PLANNER!!.doMove(ACTION.toString())
 						updateResourceRep( JSON  
 						)
 					}
@@ -264,8 +273,8 @@ class Trolley ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 						updateResourceRep( JSON  
 						)
 					}
-					 transition(edgeName="t27",targetState="nextAction",cond=whenDispatch("resumetrolley"))
-					transition(edgeName="t28",targetState="stopped",cond=whenReply("stepdone"))
+					 transition(edgeName="t28",targetState="nextAction",cond=whenDispatch("resumetrolley"))
+					transition(edgeName="t29",targetState="stopped",cond=whenReply("stepdone"))
 				}	 
 			}
 		}
