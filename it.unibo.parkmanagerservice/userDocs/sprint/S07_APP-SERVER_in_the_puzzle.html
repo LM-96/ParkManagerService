@@ -1,0 +1,493 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+<style type="text/css">
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+	font-size: 93%;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+	border-radius: 10px;
+	padding: 5px;
+}
+
+top {
+	width: 100%;
+}
+
+
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 90%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #abe876;
+    color: #1632cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 90%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+ks{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #0000CD	;
+	font-size: 90%;
+}
+kc{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #008000	;
+	font-size: 90%;
+}
+pre{
+	font-family: "Consolas";
+	font-size: 85%;
+	background-color: #f5f5f5;
+	border: 1.5px solid silver;
+	padding: 5px;
+}
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+	 
+    font-size: 18px;
+}
+k{
+    color: #990000;
+	font-weight: bold;
+	font-size: 90%;
+}
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+	padding: 10px;
+}
+
+h2 {
+    background-color: #9ed8ff;
+    font-size: 130%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 100%;
+}
+h4 {
+    background-color: #ccffcc;
+    font-size: 100%;
+	width: 95%;
+	border-radius: 5px;
+	padding: 2px;
+}
+h5 {
+    background-color: #d5ffb0;
+    font-size: 100%;
+
+}
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}
+div.remark{
+	background-color: #E3F2FD;
+    border: 1.5px solid #d5f2ed;
+    padding: 15px;
+    margin: 10px;
+	border-radius: 25px;
+}
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+ol, ul, li {
+  margin: 0;
+  margin-left: 10px;
+  padding: 0;
+  padding-bottom: 5px;
+}
+
+table, th, td {
+	border: 1px solid black;
+}
+
+img {
+	border: 1.5px solid #d5f2ed
+
+}
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+div.wrapdesc{
+	width: 90%;
+	margin: auto;
+}
+
+div.imagedesc{
+	width: 85%;
+	margin: auto;
+}
+</style>
+    
+<head>
+   
+<title>SPRINT 7: APP-SERVER in the puzzle</title></head>
+    
+<body>
+<div id="top">
+<h1>SPRINT 7: APP-SERVER in the puzzle<font size="5"></font> </h1>
+</div>  
+
+<div class="body"> 
+<ol>
+	<li><a href="#lastarch">Last Architecture and aim of this sprint</a></li>
+	<li><a href="#intro">Introduction</a></li>
+	<li><a href="#actor">ParkingManagerService actor</a>
+		<ul>
+		<li><a href="#states">General view and states description</a></li>
+		<li><a href="#messages">About the content of messages</a></li>
+		</ul>
+	</li>
+	<li><a href="#testing">Testing</a></li>
+	<li><a href="#results">Final results of this sprint</a></li>
+	
+</ol>
+
+<h2 id="lastarch">Last Architecture and aim of this sprint</h2>
+<div class="remark">
+	<table>
+		<tr><td width="60%"><h3><b>Logical Architecture</b></h3></td><td><h3><b>Resources</b></h3></td></tr>
+		<tr>
+			<td width="60%"><center style="padding:10px 10px 10px 10px"><img src="img/logical_arch_6.png" style="max-width:100%;padding:2px 2px 2px 2px" /></center></td>
+			<td  style="padding:10px 10px 10px 10px">
+				<h4>Executable QAK Model</h4>
+				<a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.parkmanagerservice/src/parkmanagerservice_2.3.qako" target="code"><em>parkmanagerservice_2.3.qak</em></a><br/><br/>
+				<h4>Test Files</h4>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/FirstTestPlan.java" target="code"><em>FirstTestPlan.java</em></a>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/PersistenceTest.java" target="code"><em>PersistenceTest.java</em></a>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/TestMailNotifier.java" target="code"><em>TestMailNotifier.java</em></a>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/ControllerTest.java" target="code"><em>ControllerTest.java</em></a>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/TrolleyTest.java" target="code"><em>TrolleyTest.java</em></a>
+				<h4>Basicdevice QAK Model</h4>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/basicdevice1.0.qako" target="code"><em>basicdevice1.0.qako</em></a><br/><br/>
+				<h4>Basicdevice Test Files</h4>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.webServerTest/src/devices_pytest.py" target="code"><em>devices_pytest.py</em></a>
+				
+			</td>
+		</tr>
+	</table><br/><br/>
+	In this sprint we are going to put the <i>puzzle</i> pieces all together in order to crate the component that we have called <em>APP-SERVER</em>.
+	At the end of this sprint, we will have <ks>the first working demo</ks> with all functionality expressed into the previous sprint.
+</div>
+
+<h2 id="intro">Introduction</h2>
+<div class="remark">
+	It is clear that the <em>APP-SERVER</em> must be an actor that realizes the main server logic of the system. From the previous sprint, we have:
+	<ul>
+		<li>the technologies to manage the <ks>device</ks> (<a href="http://htmlpreview.github.io/?https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/userDocs/sprint/S02_device_mapping.html" target="web">SPRINT 2</a>);</li>
+		<li>the technologies to maintein the <ks>state</ks> releated to the business logic (<a href="http://htmlpreview.github.io/?https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/userDocs/sprint/S03_state_maintenance.html" target="web">SPRINT 3</a>);</li>
+		<li>the technologies for sending asnchronous <ks>notification</ks> (only via mail, <a href="http://htmlpreview.github.io/?https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/userDocs/sprint/S04_notification.html" target="web">SPRINT 4</a>);</li>
+		<li>a software <ks>controller</ks> that realizes the main operation of the business logic (<a href="http://htmlpreview.github.io/?https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/userDocs/sprint/S05_controller.html" target="web">SPRINT 5</a>);</li>
+		<li>the technologies that control the robot and realize the transport <ks>trolley</ks> (<a href="http://htmlpreview.github.io/?https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/userDocs/sprint/S06_transport_trolley.html" target="web">SPRINT 6</a>).</li>
+	</ul>
+	Then, we have a sort of <k>puzzle</k> in which all piece is an important component of the final application.
+	In particular, the state, the notification and the controller are a set of POJO directly used by the APP-SERVER actor and the device and the trolley are other actors with which the server interact.<br/>
+	Now, to build the server of the system, all that remains is to assemble the pieces of this puzzle together with the APP-SERVER, that from now will be called <em>parkingmanagerservice</em> actor (this name is already present in all QAK files).
+</div>
+
+<h2 id="actor">ParkingManagerService actor</h2>
+<div class="remark">
+	<h3 id="states">General view and states description</h3>
+	<center><img src="img/parkingmanagerservice_actor.png" style="max-width:95%; padding: 10px 10px 10px 10px" /></center>
+	
+	<table>
+	<tr>
+		<td style="padding:10px 10px 10px 10px" width="20%">
+			<h5 style="padding-left:10px">State</h5>
+		</td>
+		<td style="padding:10px 10px 10px 10px" width="30%">
+			<h5 style="padding-left:10px">Controller Methods Used</h5>
+		</td>
+		<td style="padding:10px 10px 10px 10px">
+			<h5 style="padding-left:10px">Fast Description</h5>
+		</td>
+	</tr>
+	<tr>
+		<td style="padding:10px 10px 10px 10px" width="20%">
+			<em>work</em>
+		</td>
+		<td style="padding:10px 10px 10px 10px" width="30%">
+			<h5 style="padding-left:10px"></h5>
+		</td>
+		<td style="padding:10px 10px 10px 10px">
+			In this state, the <em>parkingmanagerservice</em> update his state and for a request (enter, carenter or token) or an event (sonaron, sonaroff, weighton, weightoff).
+		</td>
+	</tr>
+	<tr>
+		<td style="padding:10px 10px 10px 10px" width="20%">
+			<em>handleEnter</em>
+		</td>
+		<td style="padding:10px 10px 10px 10px" width="30%">
+			<ul>
+				<li><ks>createUser()</ks></li>
+				<li><ks>assignSlotToUser()</ks></li>
+				<li><ks>reserveDoorForUserOrEnqueue()</ks></li>
+			</ul>
+		</td>
+		<td style="padding:10px 10px 10px 10px">
+			In this state, the <em>parkingmanagerservice</em> handles an enter request. Then, the service persists the user information and find the slotnum to use as response. In addition to this, if the slotnum is higher than 0 (a slot is found), the service tries to reserve the indoor to the user or enqueue him to the indoor queue.
+		</td>
+	</tr>
+	<tr>
+		<td style="padding:10px 10px 10px 10px" width="20%">
+			<em>handleCarEnter</em>
+		</td>
+		<td style="padding:10px 10px 10px 10px" width="30%">
+			<ul>
+				<li><ks>assignTokenToUserAtIndoor()</ks></li>
+			</ul>
+		</td>
+		<td style="padding:10px 10px 10px 10px">
+			In this state, the <em>parkingmanagerservice</em> handles a carenter request. Then, the service check if the user's car is at the indoor, then send the message to the trolley for park the car and reply to the user with the token.
+		</td>
+	</tr>
+	<tr>
+		<td style="padding:10px 10px 10px 10px" width="20%">
+			<em>handlePickup</em>
+		</td>
+		<td style="padding:10px 10px 10px 10px" width="30%">
+			<ul>
+				<li><ks>analyzeToken()</ks></li>
+				<li><ks>reserveDoorForUserOrEnqueue()</ks></li>
+			</ul>
+		</td>
+		<td style="padding:10px 10px 10px 10px">
+			In this state, the <em>parkingmanagerservice</em> handles a pickup request. Then, the service analyze the token in order to enstablish if is correct, then tries to reserve the outdoor to the user associated to the token or enqueue him if the door is already engaged.
+		</td>
+	</tr>
+	<tr>
+		<td style="padding:10px 10px 10px 10px" width="20%">
+			<em>handleSomeoneInIndoor</em>
+		</td>
+		<td style="padding:10px 10px 10px 10px" width="30%">
+			<ul>
+				<li><ks>setSomeoneOnDoor()</ks></li>
+			</ul>
+		</td>
+		<td style="padding:10px 10px 10px 10px">
+			In this state, the <em>parkingmanagerservice</em> handles a weighton event. Then, the service set the state of the indoor to OCCUPIED and start the ITOCC counter.
+		</td>
+	</tr>
+	<tr>
+		<td style="padding:10px 10px 10px 10px" width="20%">
+			<em>handleIndoorReturnFree</em>
+		</td>
+		<td style="padding:10px 10px 10px 10px" width="30%">
+			<ul>
+				<li><ks>setCarOfUserAtIndoorParked()</ks></li>
+			</ul>
+		</td>
+		<td style="padding:10px 10px 10px 10px">
+			In this state, the <em>parkingmanagerservice</em> handles a weightoff event. Then, the service set the state of the indoor to FREE, occupying the slot reserved to user that was at the door. At the transition moment, this state see the queue of the indoor: if some user is waiting for, then it is needed to reserve the indoor for him (enterNext state).
+		</td>
+	</tr>
+	<tr>
+		<td style="padding:10px 10px 10px 10px" width="20%">
+			<em>enterNext</em>
+		</td>
+		<td style="padding:10px 10px 10px 10px" width="30%">
+			<ul>
+				<li><ks>reserveDoorForNextUser()</ks></li>
+			</ul>
+		</td>
+		<td style="padding:10px 10px 10px 10px">
+			In this state, the <em>parkingmanagerservice</em> reserves the indoor for the next user inside the queue, pulling it out.
+		</td>
+	</tr>
+	<tr>
+		<td style="padding:10px 10px 10px 10px" width="20%">
+			<em>handleOutdoorReturnFree</em>
+		</td>
+		<td style="padding:10px 10px 10px 10px" width="30%">
+			<ul>
+				<li><ks>setFreeUser()</ks></li>
+			</ul>
+		</td>
+		<td style="padding:10px 10px 10px 10px">
+			In this state, the <em>parkingmanagerservice</em> handles a sonaroff event. Then, the service set the state of the outdoor to FREE. At the transition moment, this state see the queue of the outdoor: if some user is waiting for, then it is needed to reserve the door for him (exitNext state).
+		</td>
+	</tr>
+	<tr>
+		<td style="padding:10px 10px 10px 10px" width="20%">
+			<em>exitNext</em>
+		</td>
+		<td style="padding:10px 10px 10px 10px" width="30%">
+			<ul>
+				<li><ks>reserveDoorForNextUser()</ks></li>
+			</ul>
+		</td>
+		<td style="padding:10px 10px 10px 10px">
+			In this state, the <em>parkingmanagerservice</em> reserves the outdoor for the next user inside the queue, pulling it out.
+		</td>
+	</tr>
+	<tr>
+		<td style="padding:10px 10px 10px 10px" width="20%">
+			<em>handleSomeoneInOutdoor</em>
+		</td>
+		<td style="padding:10px 10px 10px 10px" width="30%">
+			<ul>
+				<li><ks>setSomeoneOnDoor()</ks></li>
+				<li><ks>freeSlotByUsedByUserAtOutdoor()</ks></li>
+			</ul>
+		</td>
+		<td style="padding:10px 10px 10px 10px">
+			In this state, the <em>parkingmanagerservice</em> handle a sonaron event. Then, the service set the state of the outdoor to OCCUPIED, free the slot used by the user and start the DTFREE counter, notifying the user.
+		</td>
+	</tr>
+	</table><br/><br/>
+	
+</div>
+
+<div class="remark">
+	<h3 id="messages">About the content of messages</h3>
+	
+	The messages received and sent by and from the <em>parkingmanagerservice</em> actor have their own format. Then, it is needed to explain every message:
+	<ul>
+		<li><ks>enter(NAME,SURNAME,MAIL)</ks>: a simple message containing the user information passed as arguments.</li><br/>
+		
+		<li><ks>slotnum(SLOTNUM)</ks>: the reply of the enter message. <k>It contains data in JSON format</k>:
+<pre style="white-space: pre-wrap;">
+ {"slotnum":"[SLOTNUM]","indoor":"[INDOOR_STATE]","err":"[ERROR MESSAGE]"}
+</pre>
+			<ol>
+				<li><ks>slotnum</ks>: contains the slotnum as a integer number;</li>
+				<li><ks>indoor</ks>: contains the state of the door (FREE or OCCUPIED), if is FREE, then the user can enter the car;</li>
+				<li><ks>err</ks>: an error message that must be displayed to the user; can be null (then no error is returned) or not (than the JSON has only this field).</li>
+			</ol></li><br/>
+			
+		<li><ks>carenter(SLOTNUM,MAIL)</ks>: a simple message containing the carenter information (slotnum and mail).</li><br/>
+		
+		<li><ks>token(TOKEN)</ks>: the reply of the carenter message. <k>It contains data in JSON format</k>:
+<pre style="white-space: pre-wrap;">
+ {"token:"[TOKEN]","err":"[ERROR MESSAGE]"}
+</pre>
+			<ol>
+				<li><ks>token</ks>: contains the token as a alphanumeric string;</li>
+				<li><ks>err</ks>: an error message that must be displayed to the user; can be null (then no error is returned) or not (than the JSON has only this field).</li>
+			</ol></li><br/>
+			
+			<li><ks>pickup(TOKEN,MAIL)</ks>: a simple message containing the pickup information (token and mail).</li><br/>
+		
+		<li><ks>canPickup(X)</ks>: the reply of the pickup message. <k>It contains data in JSON format</k>:
+<pre style="white-space: pre-wrap;">
+ {"msg:"[MESSAGE]"}
+</pre>
+			<ol>
+				<li><ks>msg</ks>: a message contains some information about the car pickup;</li>
+			</ol></li><br/>
+	</ul>
+</div>
+
+<h2 id="testing">Testing</h2>
+<div class="remark">
+TODO
+</div>
+
+
+
+<h2 id="results">Final results of this sprint</h2>
+<div class="remark">
+	<table>
+		<tr><td width="60%"><h3><b>Logical Architecture</b></h3></td><td><h3><b>Resources</b></h3></td></tr>
+		<tr>
+			<td width="60%"><center style="padding:10px 10px 10px 10px"><img src="img/logical_arch_7.png" style="max-width:100%;padding:2px 2px 2px 2px" /></center></td>
+			<td  style="padding:10px 10px 10px 10px">
+				<h4>Executable QAK Model</h4>
+				<a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.parkmanagerservice/src/parkmanagerservice_3.0.qako" target="code"><em>parkmanagerservice_3.0.qak</em></a><br/><br/>
+				<h4>Test Files</h4>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/FirstTestPlan.java" target="code"><em>FirstTestPlan.java</em></a>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/PersistenceTest.java" target="code"><em>PersistenceTest.java</em></a>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/TestMailNotifier.java" target="code"><em>TestMailNotifier.java</em></a>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/ControllerTest.java" target="code"><em>ControllerTest.java</em></a>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/test/it/unibo/parkmanagerservicetest/TrolleyTest.java" target="code"><em>TrolleyTest.java</em></a>
+				<h4>Basicdevice QAK Model</h4>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.basicdevices/src/basicdevice1.0.qako" target="code"><em>basicdevice1.0.qako</em></a><br/><br/>
+				<h4>Basicdevice Test Files</h4>
+				<a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.webServerTest/src/devices_pytest.py" target="code"><em>devices_pytest.py</em></a>
+				
+			</td>
+		</tr>
+	</table>
+</div>
+
+
+<div style="background-color:rgba(86, 56, 253, 0.9); width:60%;text-align:center;color:white; margin: auto">
+<br>
+<p>By students</br>
+    Names: Simone Mattioli , Luca Marchegiani</br>
+    Email: <a href= "mailto:simone.mattioli6@studio.unibo.it" target="mail" style="color:white;">simone.mattioli6@studio.unibo.it</a> , <a href="mailto:luca.marchegiani3@studio.unibo.it" target="mail" style="color:white">luca.marchegiani3@studio.unibo.it</a></br>
+    Git Repo:  <a href="https://github.com/LM-96/ParkManagerService" target="web" style="color:white">https://github.com/LM-96/ParkManagerService</a></p>
+<!--<img src="./img/profile_2.png" alt="mbot" width="40%" height="40%">-->
+<br>
+</div>  
+</div>
+</body>
+</html>

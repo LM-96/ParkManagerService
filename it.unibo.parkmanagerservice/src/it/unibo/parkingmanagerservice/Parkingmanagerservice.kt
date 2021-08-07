@@ -185,7 +185,6 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 														JSON = "{\"msg\":\"The transport trolley will transport your car to the outdoor: you will get a notification when your car is ready. Plase stay near the ourdoor\"}"
 								updateResourceRep( "{\"slot\":\"${SLOTNUM}\",\"user\":\"${SLOTERR.first!!.user!!.mail}\",\"state\":\"ALMOST_FREE\"}"  
 								)
-								forward("pickupcar", "pickupcar($SLOTNUM)" ,"trolley" ) 
 								forward("startDtfreeCounter", "startDtfreeCounter($OUTDOOR_POLLING)" ,"dtfreecounter" ) 
 								
 													} else
@@ -203,6 +202,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 				state("handleSomeoneInOutdoor") { //this:State
 					action { //it:State
 						
+									CONTROLLER.setSomeoneOnDoor(OUTDOOR)!!
 									USERSLOT = CONTROLLER.freeSlotUsedByUserAtOutdoor()
 									USER = USERSLOT.first
 									if(USER!! != null) {
@@ -213,6 +213,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 											)
 										CHANNEL.send(NOTIFICATION)
 						forward("notifyuser", "notifyuser(NOTIFY)" ,"notificationactor" ) 
+						forward("pickupcar", "pickupcar($SLOTNUM)" ,"trolley" ) 
 						updateResourceRep( "{\"door\":\"outdoor\",\"state\":\"OCCUPIED\"}"  
 						)
 						updateResourceRep( "{\"slot\":\"${USERSLOT.second!!.slotnum}\",\"user\":\"${USER!!.mail}\",\"state\":\"FREE\"}"  
@@ -235,7 +236,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 				state("exitNext") { //this:State
 					action { //it:State
 						 
-									USER = CONTROLLER.reserveDoorForNextUser(INDOOR)
+									USER = CONTROLLER.reserveDoorForNextUser(OUTDOOR)
 									if(USER != null) {	
 						forward("dopolling", "dopolling($OUTDOOR_POLLING)" ,"sonaractor" ) 
 						forward("startDtfreeCounter", "startDtfreeCounter(START)" ,"dtfreecounter" ) 
