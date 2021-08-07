@@ -67,12 +67,9 @@ class State(metaclass=Singleton):
         elif name == "thermometer_group_manager":
             self.thermometer_state = data
         elif name == "carparking_group_manager":
-            print("WEEEEEEEEEEEEEEEEEE")
-            print(type(data))
             json_data = json.loads(data)
             for key, value in json_data.items():
                 self.carparking[key] = value
-            
         elif name == "robot_group_manager":
             self.robot_coords = data
 

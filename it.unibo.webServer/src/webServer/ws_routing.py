@@ -1,3 +1,4 @@
+from manager.consumers.timer_itocc_consumer import TimerITOCCConsumerManager
 from django.urls import re_path
 from devices.consumers.thermometer_consumer import ThermometerConsumer
 from devices.consumers.weightsensor_consumer import WeightSensorConsumer
@@ -26,6 +27,7 @@ websocket_urlpatterns = [
     re_path(r'manager/sonar/$', SonarConsumerManager.as_asgi()),
     re_path(r'manager/carparking/$', CarparkingConsumerManager.as_asgi()),
     re_path(r'manager/timerdtfree/$', TimerDTFREEConsumerManager.as_asgi()),
+    re_path(r'manager/timeritocc/$', TimerITOCCConsumerManager.as_asgi()),
     re_path(r'manager/trolley/$', TrolleyConsumerManager.as_asgi()),
     re_path(r'manager/fancontrol/$', FancontrolConsumerManager.as_asgi()),
     re_path(r'manager/trolleycontrol/$', TrolleycontrolConsumerManager.as_asgi()),

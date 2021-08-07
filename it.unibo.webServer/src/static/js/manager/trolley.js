@@ -17,10 +17,10 @@ const trolleycontrol_socket = new WebSocket(
 
 document.getElementById("trolley_control").onclick =function () {
     var status = document.getElementById("status_trolley").innerHTML
-    if(status == "ON"){
-        fancontrol_socket.send("{\"data\": \"OFF\"}")
-    }else if(status == "OFF"){
+    if(status == "STOPPED"){
         fancontrol_socket.send("{\"data\": \"ON\"}")
+    }else{
+        fancontrol_socket.send("{\"data\": \"OFF\"}")
     }
 }
 
