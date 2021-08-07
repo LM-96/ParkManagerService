@@ -196,13 +196,25 @@ div.imagedesc{
 <h1>SPRINT 9: ParkingServiceGUI<font size="5"></font> </h1>
 </div>  
 
+<ol>
+	<li><a href="#ParkingServiceGUI">ParkingServiceGUI</a></li>
+    <li><a href="#creation">App creation</a></li>
+    <li><a href="#apis">APIs</a></li>
+    <li><a href="#notifyinterest">Notify Interest</a></li>
+    <li><a href="#carenter">Car Enter</a></li>
+    <li><a href="#pickup">Pick Up</a></li>
+	
+</ol>
+
 <div class="body"> 
-<h2>ParkingServiceGUI</h2>
+<h2 id="ParkingServiceGUI">ParkingServiceGUI</h2>
+
+
 
 The ParkingServiceGUI is the user interacting component that allow the client to manifest the 
 interest of entering the car into the parking-area, call the trolley to park the car and call the trolley to pickup the car at the outdoor-area.
 
-<h3>App creation</h3>
+<h3 id="creation">App creation</h3>
 <div class="remark">
     To add the ParkingServiceGUI to the Django webServer it is needed to create a Django application that will handle it.
     <pre><span></span><span class="gp">$ </span>django-admin startapp client
@@ -224,7 +236,7 @@ interest of entering the car into the parking-area, call the trolley to park the
 
 </div>
 
-<h3>APIs</h3>
+<h3 id="apis">APIs</h3>
 <div class="remark">
     The client has three main activities that need to be handled:<br>
     the client must be able to ...
@@ -238,7 +250,7 @@ interest of entering the car into the parking-area, call the trolley to park the
     This APIs will be mapped on the Django main URL preceded by <ks>"/client"</ks> in order to separate the different application access points.
 </div>
 
-<h3>Notify Interest</h3>
+<h3 id="notifyinterest">Notify Interest</h3>
 <div class="remark">
     From the requirement analysis this API will handle the first interaction between the user and the webServer.
     
@@ -290,7 +302,7 @@ interest of entering the car into the parking-area, call the trolley to park the
 
 </div>
 
-<h3>Car Enter</h3>
+<h3 id="carenter">Car Enter</h3>
 <div class="remark">
     From the requirement analysis this API will handle the request from the user to enter the car inside the parking slot.
 
@@ -341,7 +353,7 @@ interest of entering the car into the parking-area, call the trolley to park the
 </div>
 
 
-<h3>Pick up</h3>
+<h3 id="pickup">Pick Up</h3>
 <div class="remark">
     From the requirement analysis this API will handle the request from the user to pick up the car from the outdoor-area.
 
