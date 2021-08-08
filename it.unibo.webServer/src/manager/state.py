@@ -17,8 +17,10 @@ class State(metaclass=Singleton):
                 "x": "0",
                 "y": "0"
             },
-            "state": "OCCUPIED"
+            "state": "IDLE"
         }
+        self.itocc_state = {"data": "WORK"}
+        self.dtfree_state = {"data": "WORK"}
         self.sonar_state = {"data": "1000"}
         self.weightsensor_state = {"data": "0"}
         self.fan_state = 'OFF'
@@ -62,6 +64,10 @@ class State(metaclass=Singleton):
             self.fan_state = data
         elif name == "weightsensor_group_manager":
             self.weightsensor_state = data
+        elif name == "timer_dtfree_group_manager":
+            self.dtfree_state = data
+        elif name == "timer_itocc_group_manager":
+            self.itocc_state = data
         elif name == "sonar_group_manager":
             self.sonar_state = data
         elif name == "thermometer_group_manager":
@@ -78,6 +84,10 @@ class State(metaclass=Singleton):
             return self.fan_state
         elif name == "weightsensor_group_manager":
             return self.weightsensor_state
+        elif name == "timer_dtfree_group_manager":
+            return self.dtfree_state
+        elif name == "timer_itocc_group_manager":
+            return self.itocc_state
         elif name == "sonar_group_manager":
             return self.sonar_state
         elif name == "thermometer_group_manager":

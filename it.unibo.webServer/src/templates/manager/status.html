@@ -10,18 +10,36 @@
       margin-right: 20px;
     }
 
-    .info > p, button{
-        padding: 1em;
+    .info > p{
         font-size:100%;
+        margin: 20px;
+    }
+
+    .info2 > p, button{
+        margin: 20px;
+        font-size:100%;
+        float: left;
     }
 
     .info{
+      border: solid black;
+      margin-top: 10px;
         float: left;
+        margin-left: 50px;
+    }
+
+    .info2{
+      border: solid black;
+      margin-top: 10px;
+        float: left;
+        margin-left: 50px;
     }
 
     .grid{
         float: left;
     }
+
+    
   </style>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,17 +58,23 @@
      <span ><a  class="hello-msg" href="{% url 'logout' %}">Logout</a></span>
    
    </nav>
-
+<script>
+  function showemail(x) {
+    x.children[0].style.display = "block"
+  }
+  function hideemail(x) {
+    x.children[0].style.display = "none"
+  }
+</script>
 <div class="grid">
 {% for y in rows %}
     <div class="nested">
     {% for x in cols %}
-
-        <div id="{{x}}{{y}}">
+    
+        <div id="{{x}}{{y}}" onmouseover="showemail(this)" onmouseout="hideemail(this)">
           {{x}}{{y}}
-          <p id="user-{{x}}{{y}}"></p>
+            <span id="user-{{x}}{{y}}" style="display:none"></span>
         </div>
-
     {% endfor %}   
     </div> 
 {% endfor %}
@@ -58,16 +82,17 @@
 <div class="info">
     <p>TEMPERATURE: <span id="status_thermometer"></span></p>
     <p>WEIGHT SENSOR: <span id="status_weightsensor"></span></p>
-    <p>SONAR: <span id="status_sonar"></span></p> 
-    
-    <p>STATUS FAN: <span id="status_fan"></span></p>
-    <button id="fan_control">SWITCH</button>
-    <p>STATUS TROLLEY: <span id="status_trolley"></span></p>
-    <button id="trolley_control">SWITCH</button>
     <p>STATUS INDOOR: <span id="status_indoor"></span></p>
     <p>STATUS OUTDOOR: <span id="status_outdoor"></span></p>
     <p>STATUS ITOCC TIMER: <span id="status_itocctimer"></span></p>
     <p>STATUS DTFREE TIMER: <span id="status_dtfreetimer"></span></p>
+    <p>SONAR: <span id="status_sonar"></span></p> 
+</div>
+<div class="info2">
+    <p >STATUS TROLLEY: <span id="status_trolley"></span></p>
+    <button  id="trolley_control"></button>
+    <p>STATUS FAN: <span id="status_fan"></span></p> 
+    <button id="fan_control"></button>
 </div>
 
 <script src="{% static '/js/manager/thermometer.js' %}"></script>

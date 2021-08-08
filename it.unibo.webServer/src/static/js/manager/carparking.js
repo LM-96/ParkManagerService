@@ -91,3 +91,6 @@ function colorParkingSlot(coord, info){
     document.getElementById("user-".concat(coord)).innerHTML = info.user
     
 }
+
+
+

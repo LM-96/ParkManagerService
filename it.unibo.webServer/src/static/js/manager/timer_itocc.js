@@ -12,6 +12,6 @@ timeritocc_socket.onmessage = function (e) {
     const json_data = JSON.parse(e.data);
     console.log(json_data)
 
-    status_trolley.innerHTML = json_data.data
+    status_timer_itocc.innerHTML = json_data.data
 }
 

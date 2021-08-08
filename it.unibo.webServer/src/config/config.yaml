@@ -38,6 +38,9 @@ weightsensor:
     group_name: "weightsensor_group"
     init_value: '0'
 
+trolley:
+    actor: "trolley"
+    
 carparking:
     ws_manager: "ws://localhost:8000/manager/carparking/"
     port: 8010
