@@ -59,7 +59,7 @@ class StateJSONIZER() {
 
     fun updateSlotFree(slotnum : Long) : StateJSONIZER {
         JSON.put(slotnum.toString(), JSONObject()
-            .put("state", ParkingSlotState.ALMOST_FREE)
+            .put("state", ParkingSlotState.FREE)
             .put("user", ""))
 
         return this
