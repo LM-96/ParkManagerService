@@ -1,0 +1,287 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+<style type="text/css">
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+	font-size: 93%;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+	border-radius: 10px;
+	padding: 5px;
+}
+
+top {
+	width: 100%;
+}
+
+
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 90%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #abe876;
+    color: #1632cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 90%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+ks{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #0000CD	;
+	font-size: 90%;
+}
+kc{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #008000	;
+	font-size: 90%;
+}
+pre{
+	font-family: "Consolas";
+	font-size: 85%;
+	background-color: #f5f5f5;
+	border: 1.5px solid silver;
+	padding: 5px;
+}
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+	 
+    font-size: 18px;
+}
+k{
+    color: #990000;
+	font-weight: bold;
+	font-size: 90%;
+}
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+	padding: 10px;
+}
+
+h2 {
+    background-color: #9ed8ff;
+    font-size: 130%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 100%;
+}
+h4 {
+    background-color: #ccffcc;
+    font-size: 100%;
+	width: 95%;
+	border-radius: 5px;
+	padding: 2px;
+}
+h5 {
+    background-color: #d5ffb0;
+    font-size: 100%;
+
+}
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}
+div.remark{
+	background-color: #E3F2FD;
+    border: 1.5px solid #d5f2ed;
+    padding: 15px;
+    margin: 10px;
+	border-radius: 25px;
+}
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+ol, ul, li {
+  margin: 0;
+  margin-left: 10px;
+  padding: 0;
+  padding-bottom: 5px;
+}
+
+table, th, td {
+	border: 1px solid black;
+}
+
+img {
+	border: 1.5px solid #d5f2ed
+
+}
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+div.wrapdesc{
+	width: 90%;
+	margin: auto;
+}
+
+div.imagedesc{
+	width: 85%;
+	margin: auto;
+}
+</style>
+    
+<head>
+   
+<title>Guidance to start the system</title></head>
+    
+<body>
+
+<div id="top">
+<h1>Guidance to start the system<font size="5"></font> </h1>
+</div>  
+
+<ol>
+	<li><a href="#guidance">Distribution directories</a></li>
+	<li><a href="#start">How to start the system</a></li>
+	
+</ol>
+
+<div class="body"> 
+
+<h2 id="guidance">Distribution directories</h2>
+<div class="remark">
+For a time reason, it was not possible to create a complete deployment for the system. However, we have create the directory <a href="https://github.com/LM-96/ParkManagerService/tree/main/distrib" target="web">distrib</a> that contains the <k>gradle distribution</k> for all system introduced in the project.<br/>
+Instead, because of the <em>WebServer</em> is written in Python using Django, his <i>fast</i> deployment consists of the directory:<br/><br/>
+<ul>
+	<li><a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.webServer" target="web"><em>it.unibo.webServer</em></a>: contains the file <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.webServer/requirements.txt" target="text"><em>requirements.txt</em></a>, that has the python dependencies used by the web server, and the <a href="https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.webServer/src/manage.py" target="code"><em>src/manage.py</em></a>, that can start the web application and the virtual device environment.</li>
+</ul>
+In order to istall the <i>requirements</i>, open a command prompt into the <em>it.unibo.webServer</em> directory and give the command:
+<pre>
+pip -r install requirements.txt
+</pre>
+After you have all dependencies installer, you can run the server using:
+<pre>
+cd src
+python manage.py runserver
+</pre>
+
+The other components of the system are in the <a href="https://github.com/LM-96/ParkManagerService/tree/main/distrib" target="web"><em>distrib</em></a> folder
+that contains:<br/><br/>
+
+<ul>
+	<li><a href="https://github.com/LM-96/ParkManagerService/tree/main/distrib/it.unibo.qak21.basicrobot-1.0" target="web"><em>it.unibo.qak21.basicrobot-1.0</em></a>: contains the gradle build of the <ks>basicrobot</ks> given by the consumer;</li><br/>
+	
+	<li><a href="https://github.com/LM-96/ParkManagerService/tree/main/distrib/it.unibo.basicdevices-1.0" target="web"><em>it.unibo.basicdevices-1.0</em></a>: contains the gradle build of the <ks>basicdevices</ks> environment defined into the <a href="http://htmlpreview.github.io/?https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/userDocs/sprint/S02_device_mapping.html" target="web"><em>SPRINT 2</em></a>;</li><br/>
+	
+	<li><a href="https://github.com/LM-96/ParkManagerService/tree/main/distrib/it.unibo.parkmanagerservice-1.0" target="web"><em>it.unibo.parkmanagerservice-1.0</em></a>: contains the <ks>ParkManagerService</ks> system with the central actor defined into <a href="http://htmlpreview.github.io/?https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/userDocs/sprint/S07_APP-SERVER_in_the_puzzle.html" target="web"><em>SPRINT 7</em></a>;</li><br/>
+	
+	<li><a href="https://github.com/LM-96/ParkManagerService/tree/main/distrib/KCProxy-1.0" target="web"><em>KCProxy-1.0</em></a>: contains the <ks>KCProxy</ks>, not completely described for time reasons but are cited in the <a href="http://htmlpreview.github.io/?https://github.com/LM-96/ParkManagerService/blob/main/it.unibo.parkmanagerservice/userDocs/sprint/S10_manager.html#consumers" target="web"><em>SPRINT 10</em></a>. This proxy is used to redirect the CoAP update of all QAK actors from TCP to dedicated WebSocket opened by the web server;</li>
+</ul>
+
+</div>
+
+<h2 id="start">How to start the system</h2>
+<div class="remark">
+Before starting the system, make sure you have <ks>Java</ks> and <ks>Python</ks> installed. You also have to start the <ks>Virtual Robot</ks> if you use it, as indicated into the <a href="http://htmlpreview.github.io/?https://github.com/anatali/issLab2021/blob/main/it.unibo.qak21.basicrobot/userDocs/basicrobot2021.html" target="web">basicrobot.html</a>.
+To start the system on <em>Linux</em> or on <em>Windows</em> with <a href="https://docs.microsoft.com/en-us/windows/wsl/install-win10" target="web"><em>WSL</em></a>, it is needed to run, in order, these components:<br/><br/>
+<ol>
+	<li><k>START THE WEBSERVER</k> (with embedded virtual devices)<br/>Open a terminal into <a href="https://github.com/LM-96/ParkManagerService/tree/main/it.unibo.webServer/src" target="web"><em>it.unibo.webServer/src</em></a> and give the command:
+	<pre>pyhton manage.py runserver</pre>
+	and wait for server starting;
+	</li><br/>
+	
+	<li><k>START THE BASICROBOT</k><br/>Open a terminal into <a href="https://github.com/LM-96/ParkManagerService/tree/main/distrib/it.unibo.qak21.basicrobot-1.0/bin" target="web"><em>distrib/it.unibo.qak21.basicrobot-1.0/bin</em></a> and give the command:
+	<pre>bash it.unibo.qak21.basicrobot-1.0</pre>
+	</li><br/>
+	
+	<li><k>START THE BASICDEVICES</k><br/>Open a terminal into <a href="https://github.com/LM-96/ParkManagerService/tree/main/distrib/it.unibo.basicdevices-1.0/bin" target="web"><em>distrib/it.unibo.basicdevices-1.0/bin</em></a> and give the command:
+	<pre>bash it.unibo.basicdevices-1.0</pre>
+	</li><br/>
+	
+	<li><k>START THE PARKMANAGERSERVICE</k><br/>Open a terminal into <a href="https://github.com/LM-96/ParkManagerService/tree/main/distrib/it.unibo.parkmanagerservice-1.0/bin" target="web"><em>distrib/it.unibo.parkmanagerservice-1.0/bin</em></a> and give the command:
+	<pre>bash it.unibo.parkmanagerservice-1.0</pre>
+	</li><br/>
+	
+	<li><k>START THE KCPROXY</k><br/>Open a terminal into <a href="https://github.com/LM-96/ParkManagerService/tree/main/distrib/KCProxy-1.0/bin" target="web"><em>distrib/KCProxy-1.0/bin</em></a> and give the command:
+	<pre>bash KCProxy-1.0</pre>
+	</li><br/>
+</ol>
+
+Notice that, as explained into the previous sprint, each <em>bin</em> folder in the list above contains a <em>configs</em> directory with the specific configuration for the components that allows it.<br/>
+Concluding, we have also built a small <ks>bat script</ks> that automatizes the start of this systems on the same machine in <ks>Windows</ks> (with WSL): <a href="https://github.com/LM-96/ParkManagerService/blob/main/starter.bat" target="web"><em>starter.bat</em></a><br/>
+Simply open a terminal on the root directory of the repository and give the command:
+<pre>starter.bat</pre>
+(after see the instructions on the console).
+
+</div>
+
+
+<div style="background-color:rgba(86, 56, 253, 0.9); width:60%;text-align:center;color:white; margin: auto">
+<br>
+<p>By students</br>
+    Names: Simone Mattioli , Luca Marchegiani</br>
+    Email: <a href= "mailto:simone.mattioli6@studio.unibo.it" target="mail" style="color:white;">simone.mattioli6@studio.unibo.it</a> , <a href="mailto:luca.marchegiani3@studio.unibo.it" target="mail" style="color:white">luca.marchegiani3@studio.unibo.it</a></br>
+    Git Repo:  <a href="https://github.com/LM-96/ParkManagerService" target="web" style="color:white">https://github.com/LM-96/ParkManagerService</a></p>
+<!--<img src="./img/profile_2.png" alt="mbot" width="40%" height="40%">-->
+<br>
+</div>  
+</div>
+</body>
+</html>
