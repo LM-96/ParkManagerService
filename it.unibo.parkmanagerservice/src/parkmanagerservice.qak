@@ -266,6 +266,7 @@ QActor parkingmanagerservice context ctxcarparking {
 	State handleOutdoorReturnFree {
 		[# CONTROLLER.setFreeDoor(OUTDOOR) #]
 		forward sonaractor -m stoppolling : stoppolling(STOP)
+		forward dtfreecounter -m stopCount : stopCount(STOP)
 		updateResource[# JSONSTATE.updateDoor(OUTDOOR).toString() #]
 	} Goto exitNext if [# (CONTROLLER.getDoorQueue(OUTDOOR).remaining()) > 0 #] else work
 	
