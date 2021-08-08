@@ -1,6 +1,7 @@
 import socket
 import json
 from manage import config
+from channels.generic.websocket import AsyncWebsocketConsumer
 
 from manager.state import State
 
