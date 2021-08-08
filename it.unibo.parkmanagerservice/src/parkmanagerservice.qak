@@ -51,6 +51,10 @@ Request step       : step( TIME )
 Reply   stepdone   : stepdone(V)
 Reply   stepfail   : stepfail(DURATION, CAUSE)
 
+/* Message for the antifire */
+Dispatch autoantifire : autoantifire(X)
+Dispatch manualantifire : manualantifire(X)
+
 /* Main context */
 Context ctxcarparking ip[host="localhost" port=8010]
 
@@ -100,6 +104,7 @@ QActor parkingmanagerservice context ctxcarparking {
 		val OUTDOOR_POLLING = it.unibo.parkmanagerservice.bean.Timers.get().OUTDOOR_POLLING
 		val ITOCC = it.unibo.parkmanagerservice.bean.Timers.get().ITOCC
 		val DTFREE = it.unibo.parkmanagerservice.bean.Timers.get().DTFREE
+		val ADMIN = it.unibo.parkmanagerservice.bean.User.getAdmin()
 	#]
 	
 	State s0 initial {
@@ -241,7 +246,7 @@ QActor parkingmanagerservice context ctxcarparking {
 			CONTROLLER.setSomeoneOnDoor(OUTDOOR)!!
 			USERSLOT = CONTROLLER.freeSlotUsedByUserAtOutdoor()
 			USER = USERSLOT.first
-			if(USER!! != null) {
+			if(USER != null) {
 				NOTIFICATION = `it.unibo.parkmanagerservice`.notification.DefaultNotificationFactory.createForUser(
 						USER!!,
 						`it.unibo.parkmanagerservice`.notification.NotificationType.PICKUP,
@@ -276,6 +281,48 @@ QActor parkingmanagerservice context ctxcarparking {
 		[# 	}
 		#]
 	} Goto work
+	
+	State dtfreeReached {
+		[# 
+			if(ADMIN != null) {
+				USER = CONTROLLER.getDoorsManager().getUserAtDoor(OUTDOOR)
+				
+				if(USER != null) {
+					NOTIFICATION = `it.unibo.parkmanagerservice`.notification.DefaultNotificationFactory.createForUser(
+						USER!!,
+						`it.unibo.parkmanagerservice`.notification.NotificationType.USER_DTFREE_REACHED,
+						arrayOf<String>()
+					)
+					DEQUE.put(NOTIFICATION)
+					#] forward notificationactor -m notifyuser : notifyuser(NOTIFY) [#
+					NOTIFICATION = `it.unibo.parkmanagerservice`.notification.DefaultNotificationFactory.createForUser(
+						USER!!,
+						`it.unibo.parkmanagerservice`.notification.NotificationType.ADMIN_DTFREE_REACHED,
+						arrayOf<String>()
+					)
+					NOTIFICATION.destination = ADMIN.mail
+					DEQUE.put(NOTIFICATION)
+					#] forward notificationactor -m notifyuser : notifyuser(NOTIFY) [#
+				}
+			}
+		#]
+	} Goto work
+	
+	State itoccReached {
+		[# 
+			USER = CONTROLLER.getDoorsManager().getUserAtDoor(OUTDOOR)
+			if(USER != null) {
+				NOTIFICATION = `it.unibo.parkmanagerservice`.notification.DefaultNotificationFactory.createForUser(
+						USER!!,
+						`it.unibo.parkmanagerservice`.notification.NotificationType.LOSEN_RIGHT,
+						arrayOf<String>()
+					)
+					DEQUE.put(NOTIFICATION)
+					#] forward notificationactor -m notifyuser : notifyuser(NOTIFY) [#
+			}
+		#]
+		
+	} Goto work
 }
 
 
@@ -284,6 +331,7 @@ QActor itocccounter context ctxcarparking {
 	[# 	
 		val ITOCC = it.unibo.parkmanagerservice.bean.Timers.get().ITOCC
 		var REACHED = false
+		var JSON = "{\"state\":\"INIT\"}"
 	#]
 	
 	State s0 initial {
@@ -291,13 +339,14 @@ QActor itocccounter context ctxcarparking {
 	} Goto work
 	
 	State work {
-		[# if(REACHED) {
-			REACHED = false
-		 #]
-			updateResource [# "reached"#]
-		[# } else { #]
-			updateResource [# "work"#]
-		[# } #]
+		[# 
+			if(REACHED) {
+				REACHED = false
+				var JSON = "{\"state\":\"REACHED\"}"
+			} else { 
+				JSON = "{\"state\":\"WORK\"}"
+			} #]
+		updateResource [# JSON #]
 		println("$name | waiting for command")
 	} Transition t
 		whenMsg startItoccCounter -> count
@@ -305,7 +354,8 @@ QActor itocccounter context ctxcarparking {
 	
 	State count {
 		println("$name | start ITOCC count...")
-		updateResource [# "count"#]
+		[# JSON = "{\"state\":\"COUNTING\"}" #]
+		updateResource[# JSON #]
 	} Transition t
 		whenTimeVar ITOCC -> reached
 		whenMsg startItoccCounter -> count
@@ -313,8 +363,8 @@ QActor itocccounter context ctxcarparking {
 		
 	State reached {
 		println("$name | ITOCC reached")
+		[# REACHED = true #]
 		emit itoccReached : itoccReached(REACHED)
-		updateResource[# "reached" #]
 	} Goto work
 }
 
@@ -322,6 +372,7 @@ QActor dtfreecounter context ctxcarparking {
 	[# 	
 		val DTFREE = it.unibo.parkmanagerservice.bean.Timers.get().DTFREE
 		var REACHED = false
+		var JSON = "{\"state\":\"INIT\"}"
 	#]
 	
 	State s0 initial {
@@ -329,13 +380,14 @@ QActor dtfreecounter context ctxcarparking {
 	} Goto work
 	
 	State work {
-		[# if(REACHED) {
-			REACHED = false
-		 #]
-			updateResource [# "reached"#]
-		[# } else { #]
-			updateResource [# "work"#]
-		[# } #]
+		[# 
+			if(REACHED) {
+				REACHED = false
+				JSON = "{\"state\":\"REACHED\"}"
+		  	} else {
+		  		JSON = "{\"state\":\"WORK\"}"
+		  	} #]
+		updateResource [# JSON #]
 		println("$name | waiting for command")
 	} Transition t
 		whenMsg startDtfreeCounter -> count
@@ -343,7 +395,8 @@ QActor dtfreecounter context ctxcarparking {
 	
 	State count {
 		println("$name | start DTFREE count...")
-		updateResource[# "count" #]
+		[# JSON = "{\"state\":\"COUNTING\"}" #]
+		updateResource[# JSON #]
 	} Transition t
 		whenTimeVar DTFREE -> reached
 		whenMsg startDtfreeCounter -> count
@@ -351,23 +404,8 @@ QActor dtfreecounter context ctxcarparking {
 	
 	State reached {
 		println("$name | DTFREE reached")
+		[# REACHED = true #]
 		emit dtfreeReached : dtfreeReached(REACHED)
-		updateResource[# "reached" #]
-	} Goto work
-}
-
-QActor parkingservicestatusgui context ctxcarparking {
-	State s0 initial {
-		println("$name | started")
-	} Goto work
-	
-	State work {
-		println("$name | working")
-	} Transition t
-		whenEvent dtfreeReached -> receivedDtfreeAlarm
-	
-	State receivedDtfreeAlarm {
-		println("$name | the manager has been notified for DTFREE reached")
 	} Goto work
 }
 
@@ -401,7 +439,14 @@ QActor notificationactor context ctxcarparking {
 
 QActor antifireactor context ctxcarparking {
 	
-	[# var type : String #]
+	[#
+		var type : String
+		var MODE = it.unibo.parkmanagerservice.bean.AntifireMode.AUTO
+		var JSON = "{\"temp\":\"NORMAL\",\"mode\":\"$MODE\"}"
+		val ADMIN = it.unibo.parkmanagerservice.bean.User.getAdmin()
+		var NOTIFICATION : it.unibo.parkmanagerservice.notification.Notification? = null
+		val DEQUE = it.unibo.parkmanagerservice.notification.CCNotificationDeque
+	#]
 	
 	State s0 initial {
 		println("$name | started")
@@ -409,29 +454,50 @@ QActor antifireactor context ctxcarparking {
 	
 	State work {
 		println("$name | working")
+		updateResource[# JSON #]
 	} Transition t0
 		whenEvent criticaltemp -> handleCriticalTemp
+		whenMsg autoantifire -> setAuto
+		whenMsg manualantifire -> setManual
 	
 	State handleCriticalTemp {
 		onMsg(criticaltemp:criticaltemp(X)) {
 			[# 
-				type = payloadArg(0) 
-				if(type.equals("CRITICAL")) {
-					//Must send and alert to the manager
-			#]
-					println("$name | thermometer signaled critical temperature")
-					forward fanactor -m fanon : fanon(ON)
-			[#
-				} else if(type.equals("NORMAL")) {
-			#]
-					println("$name | thermothere signaled normal temperature")
-					forward fanactor -m fanoff : fanoff(OFF)
-			[#
-					
+				type = payloadArg(0)
+				JSON = "{\"temp\":\"$type\",\"mode\":\"$MODE\"}"
+				if(MODE == `it.unibo.parkmanagerservice`.bean.AntifireMode.AUTO) {
+					if(type.equals("CRITICAL")) {
+						if(ADMIN != null) {
+							NOTIFICATION = `it.unibo.parkmanagerservice`.notification.DefaultNotificationFactory.createForUser(
+							ADMIN!!,
+							`it.unibo.parkmanagerservice`.notification.NotificationType.ADMIN_TEMP,
+							arrayOf<String>(MODE.toString()))
+							DEQUE.put(NOTIFICATION!!)
+							#] forward notificationactor -m notifyuser : notifyuser(NOTIFY) [#
+						}
+				#]
+						println("$name | thermometer signaled critical temperature")
+						forward fanactor -m fanon : fanon(ON)
+				[#
+					} else if(type.equals("NORMAL")) {
+				#]
+						println("$name | thermothere signaled normal temperature")
+						forward fanactor -m fanoff : fanoff(OFF)
+				[#
+						
+					}
 				}
 			#]
 		}
 	} Goto work
+	
+	State setManual {
+		[# MODE = `it.unibo.parkmanagerservice`.bean.AntifireMode.MANUAL #]
+	} Goto work
+	
+	State setAuto {
+		[# MODE = `it.unibo.parkmanagerservice`.bean.AntifireMode.AUTO #]
+	}
 }
 
 QActor trolley context ctxcarparking {

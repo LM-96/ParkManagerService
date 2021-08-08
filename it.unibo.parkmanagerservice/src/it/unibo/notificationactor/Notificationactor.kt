@@ -31,7 +31,7 @@ class Notificationactor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm
 					action { //it:State
 						println("$name | working")
 					}
-					 transition(edgeName="t018",targetState="handleNotificationToSend",cond=whenDispatch("notifyuser"))
+					 transition(edgeName="t017",targetState="handleNotificationToSend",cond=whenDispatch("notifyuser"))
 				}	 
 				state("handleNotificationToSend") { //this:State
 					action { //it:State

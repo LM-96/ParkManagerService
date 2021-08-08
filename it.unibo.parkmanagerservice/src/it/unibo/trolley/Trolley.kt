@@ -67,9 +67,9 @@ class Trolley ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 						updateResourceRep( JSON  
 						)
 					}
-					 transition(edgeName="t020",targetState="handle",cond=whenDispatch("parkcar"))
-					transition(edgeName="t021",targetState="handle",cond=whenDispatch("pickupcar"))
-					transition(edgeName="t022",targetState="stopped",cond=whenDispatch("stoptrolley"))
+					 transition(edgeName="t021",targetState="handle",cond=whenDispatch("parkcar"))
+					transition(edgeName="t022",targetState="handle",cond=whenDispatch("pickupcar"))
+					transition(edgeName="t023",targetState="stopped",cond=whenDispatch("stoptrolley"))
 				}	 
 				state("handle") { //this:State
 					action { //it:State
@@ -243,12 +243,12 @@ class Trolley ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 				state("waitStepDone") { //this:State
 					action { //it:State
 					}
-					 transition(edgeName="t23",targetState="handleStepDone",cond=whenReply("stepdone"))
-					transition(edgeName="t24",targetState="home",cond=whenReply("stepfail"))
-					transition(edgeName="t25",targetState="stopped",cond=whenDispatch("stoptrolley"))
-					transition(edgeName="t26",targetState="handle",cond=whenDispatchGuarded("parkcar",{ INTERRUPTIBLE  
+					 transition(edgeName="t24",targetState="handleStepDone",cond=whenReply("stepdone"))
+					transition(edgeName="t25",targetState="home",cond=whenReply("stepfail"))
+					transition(edgeName="t26",targetState="stopped",cond=whenDispatch("stoptrolley"))
+					transition(edgeName="t27",targetState="handle",cond=whenDispatchGuarded("parkcar",{ INTERRUPTIBLE  
 					}))
-					transition(edgeName="t27",targetState="handle",cond=whenDispatchGuarded("pickupcar",{ INTERRUPTIBLE  
+					transition(edgeName="t28",targetState="handle",cond=whenDispatchGuarded("pickupcar",{ INTERRUPTIBLE  
 					}))
 				}	 
 				state("handleStepDone") { //this:State
@@ -273,8 +273,8 @@ class Trolley ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 						updateResourceRep( JSON  
 						)
 					}
-					 transition(edgeName="t28",targetState="nextAction",cond=whenDispatch("resumetrolley"))
-					transition(edgeName="t29",targetState="stopped",cond=whenReply("stepdone"))
+					 transition(edgeName="t29",targetState="nextAction",cond=whenDispatch("resumetrolley"))
+					transition(edgeName="t30",targetState="stopped",cond=whenReply("stepdone"))
 				}	 
 			}
 		}

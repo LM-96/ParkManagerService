@@ -19,6 +19,7 @@ class Itocccounter ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( nam
 		 	
 				val ITOCC = it.unibo.parkmanagerservice.bean.Timers.get().ITOCC
 				var REACHED = false
+				var JSON = "{\"state\":\"INIT\"}"
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
@@ -28,14 +29,15 @@ class Itocccounter ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( nam
 				}	 
 				state("work") { //this:State
 					action { //it:State
-						 if(REACHED) {
-									REACHED = false
-						updateResourceRep( "reached" 
+						 
+									if(REACHED) {
+										REACHED = false
+										var JSON = "{\"state\":\"REACHED\"}"
+									} else { 
+										JSON = "{\"state\":\"WORK\"}"
+									}  
+						updateResourceRep( JSON  
 						)
-						 } else {  
-						updateResourceRep( "work" 
-						)
-						 }  
 						println("$name | waiting for command")
 					}
 					 transition(edgeName="t7",targetState="count",cond=whenDispatch("startItoccCounter"))
@@ -44,7 +46,8 @@ class Itocccounter ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( nam
 				state("count") { //this:State
 					action { //it:State
 						println("$name | start ITOCC count...")
-						updateResourceRep( "count" 
+						 JSON = "{\"state\":\"COUNTING\"}"  
+						updateResourceRep( JSON  
 						)
 						stateTimer = TimerActor("timer_count", 
 							scope, context!!, "local_tout_itocccounter_count", ITOCC )
@@ -56,9 +59,8 @@ class Itocccounter ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( nam
 				state("reached") { //this:State
 					action { //it:State
 						println("$name | ITOCC reached")
+						 REACHED = true  
 						emit("itoccReached", "itoccReached(REACHED)" ) 
-						updateResourceRep( "reached"  
-						)
 					}
 					 transition( edgeName="goto",targetState="work", cond=doswitch() )
 				}	 

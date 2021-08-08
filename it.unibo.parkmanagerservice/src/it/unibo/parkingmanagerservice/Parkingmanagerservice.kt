@@ -43,6 +43,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 				val OUTDOOR_POLLING = it.unibo.parkmanagerservice.bean.Timers.get().OUTDOOR_POLLING
 				val ITOCC = it.unibo.parkmanagerservice.bean.Timers.get().ITOCC
 				val DTFREE = it.unibo.parkmanagerservice.bean.Timers.get().DTFREE
+				val ADMIN = it.unibo.parkmanagerservice.bean.User.getAdmin()
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
@@ -199,7 +200,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 									CONTROLLER.setSomeoneOnDoor(OUTDOOR)!!
 									USERSLOT = CONTROLLER.freeSlotUsedByUserAtOutdoor()
 									USER = USERSLOT.first
-									if(USER!! != null) {
+									if(USER != null) {
 										NOTIFICATION = `it.unibo.parkmanagerservice`.notification.DefaultNotificationFactory.createForUser(
 												USER!!,
 												`it.unibo.parkmanagerservice`.notification.NotificationType.PICKUP,
@@ -239,6 +240,52 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 														.updateDoor(OUTDOOR).updateSlotAlmostFree(SLOTNUM).toString()  
 						)
 						 	}
+					}
+					 transition( edgeName="goto",targetState="work", cond=doswitch() )
+				}	 
+				state("dtfreeReached") { //this:State
+					action { //it:State
+						 
+									if(ADMIN != null) {
+										USER = CONTROLLER.getDoorsManager().getUserAtDoor(OUTDOOR)
+										
+										if(USER != null) {
+											NOTIFICATION = `it.unibo.parkmanagerservice`.notification.DefaultNotificationFactory.createForUser(
+												USER!!,
+												`it.unibo.parkmanagerservice`.notification.NotificationType.USER_DTFREE_REACHED,
+												arrayOf<String>()
+											)
+											DEQUE.put(NOTIFICATION)
+						forward("notifyuser", "notifyuser(NOTIFY)" ,"notificationactor" ) 
+						
+											NOTIFICATION = `it.unibo.parkmanagerservice`.notification.DefaultNotificationFactory.createForUser(
+												USER!!,
+												`it.unibo.parkmanagerservice`.notification.NotificationType.ADMIN_DTFREE_REACHED,
+												arrayOf<String>()
+											)
+											NOTIFICATION.destination = ADMIN.mail
+											DEQUE.put(NOTIFICATION)
+						forward("notifyuser", "notifyuser(NOTIFY)" ,"notificationactor" ) 
+						
+										}
+									}
+					}
+					 transition( edgeName="goto",targetState="work", cond=doswitch() )
+				}	 
+				state("itoccReached") { //this:State
+					action { //it:State
+						 
+									USER = CONTROLLER.getDoorsManager().getUserAtDoor(OUTDOOR)
+									if(USER != null) {
+										NOTIFICATION = `it.unibo.parkmanagerservice`.notification.DefaultNotificationFactory.createForUser(
+												USER!!,
+												`it.unibo.parkmanagerservice`.notification.NotificationType.LOSEN_RIGHT,
+												arrayOf<String>()
+											)
+											DEQUE.put(NOTIFICATION)
+						forward("notifyuser", "notifyuser(NOTIFY)" ,"notificationactor" ) 
+						
+									}
 					}
 					 transition( edgeName="goto",targetState="work", cond=doswitch() )
 				}	 

@@ -16,7 +16,13 @@ class Antifireactor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( na
 	@kotlinx.coroutines.ObsoleteCoroutinesApi
 	@kotlinx.coroutines.ExperimentalCoroutinesApi			
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
-		 var type : String  
+		
+				var type : String
+				var MODE = it.unibo.parkmanagerservice.bean.AntifireMode.AUTO
+				var JSON = "{\"temp\":\"NORMAL\",\"mode\":\"$MODE\"}"
+				val ADMIN = it.unibo.parkmanagerservice.bean.User.getAdmin()
+				var NOTIFICATION : it.unibo.parkmanagerservice.notification.Notification? = null
+				val DEQUE = it.unibo.parkmanagerservice.notification.CCNotificationDeque
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
@@ -27,29 +33,55 @@ class Antifireactor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( na
 				state("work") { //this:State
 					action { //it:State
 						println("$name | working")
+						updateResourceRep( JSON  
+						)
 					}
-					 transition(edgeName="t019",targetState="handleCriticalTemp",cond=whenEvent("criticaltemp"))
+					 transition(edgeName="t018",targetState="handleCriticalTemp",cond=whenEvent("criticaltemp"))
+					transition(edgeName="t019",targetState="setAuto",cond=whenDispatch("autoantifire"))
+					transition(edgeName="t020",targetState="setManual",cond=whenDispatch("manualantifire"))
 				}	 
 				state("handleCriticalTemp") { //this:State
 					action { //it:State
 						if( checkMsgContent( Term.createTerm("criticaltemp(X)"), Term.createTerm("criticaltemp(X)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								 
-												type = payloadArg(0) 
-												if(type.equals("CRITICAL")) {
-													//Must send and alert to the manager
+												type = payloadArg(0)
+												JSON = "{\"temp\":\"$type\",\"mode\":\"$MODE\"}"
+												if(MODE == `it.unibo.parkmanagerservice`.bean.AntifireMode.AUTO) {
+													if(type.equals("CRITICAL")) {
+														if(ADMIN != null) {
+															NOTIFICATION = `it.unibo.parkmanagerservice`.notification.DefaultNotificationFactory.createForUser(
+															ADMIN!!,
+															`it.unibo.parkmanagerservice`.notification.NotificationType.ADMIN_TEMP,
+															arrayOf<String>(MODE.toString()))
+															DEQUE.put(NOTIFICATION!!)
+								forward("notifyuser", "notifyuser(NOTIFY)" ,"notificationactor" ) 
+								
+														}
 								println("$name | thermometer signaled critical temperature")
 								forward("fanon", "fanon(ON)" ,"fanactor" ) 
 								
-												} else if(type.equals("NORMAL")) {
+													} else if(type.equals("NORMAL")) {
 								println("$name | thermothere signaled normal temperature")
 								forward("fanoff", "fanoff(OFF)" ,"fanactor" ) 
 								
-													
+														
+													}
 												}
 						}
 					}
 					 transition( edgeName="goto",targetState="work", cond=doswitch() )
+				}	 
+				state("setManual") { //this:State
+					action { //it:State
+						 MODE = `it.unibo.parkmanagerservice`.bean.AntifireMode.MANUAL  
+					}
+					 transition( edgeName="goto",targetState="work", cond=doswitch() )
+				}	 
+				state("setAuto") { //this:State
+					action { //it:State
+						 MODE = `it.unibo.parkmanagerservice`.bean.AntifireMode.AUTO  
+					}
 				}	 
 			}
 		}

@@ -14,7 +14,6 @@ context(ctxbasicrobot, "127.0.0.1",  "TCP", "8020").
   qactor( parkingmanagerservice, ctxcarparking, "it.unibo.parkingmanagerservice.Parkingmanagerservice").
   qactor( itocccounter, ctxcarparking, "it.unibo.itocccounter.Itocccounter").
   qactor( dtfreecounter, ctxcarparking, "it.unibo.dtfreecounter.Dtfreecounter").
-  qactor( parkingservicestatusgui, ctxcarparking, "it.unibo.parkingservicestatusgui.Parkingservicestatusgui").
   qactor( notificationactor, ctxcarparking, "it.unibo.notificationactor.Notificationactor").
   qactor( antifireactor, ctxcarparking, "it.unibo.antifireactor.Antifireactor").
   qactor( trolley, ctxcarparking, "it.unibo.trolley.Trolley").

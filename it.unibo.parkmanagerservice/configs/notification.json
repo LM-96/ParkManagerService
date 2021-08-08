@@ -7,3 +7,4 @@
 {"type":"ADMIN_DTFREE_REACHED","subject":"Notifica DTFREE [ParkManagerService]", "content-type": "text/html","html":"resources/admin_dtfree_reached.html","linkpattern": "http://localhost:8080/amin"}
 {"type":"USER_DTFREE_REACHED","subject":"Notifica DTFREE [ParkManagerService]", "content-type": "text/html","html":"resources/user_dtfree_reached.html","linkpattern":"http://localhost:8080/"}
 {"type":"GENERAL","subject":"Comunicazione [ParkManagerService]", "content-type": "text/html","html":"resources/general.html","linkpattern":"http://localhost:8080/"}
+{"type":"ADMIN_TEMP","subject":"Temperatura critica [ParkManagerService]", "content-type": "text/html","html":"resources/admin_temp.html","linkpattern": "http://localhost:8080/amin"}

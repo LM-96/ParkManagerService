@@ -19,6 +19,7 @@ class Dtfreecounter ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( na
 		 	
 				val DTFREE = it.unibo.parkmanagerservice.bean.Timers.get().DTFREE
 				var REACHED = false
+				var JSON = "{\"state\":\"INIT\"}"
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
@@ -28,14 +29,15 @@ class Dtfreecounter ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( na
 				}	 
 				state("work") { //this:State
 					action { //it:State
-						 if(REACHED) {
-									REACHED = false
-						updateResourceRep( "reached" 
+						 
+									if(REACHED) {
+										REACHED = false
+										JSON = "{\"state\":\"REACHED\"}"
+								  	} else {
+								  		JSON = "{\"state\":\"WORK\"}"
+								  	}  
+						updateResourceRep( JSON  
 						)
-						 } else {  
-						updateResourceRep( "work" 
-						)
-						 }  
 						println("$name | waiting for command")
 					}
 					 transition(edgeName="t12",targetState="count",cond=whenDispatch("startDtfreeCounter"))
@@ -44,7 +46,8 @@ class Dtfreecounter ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( na
 				state("count") { //this:State
 					action { //it:State
 						println("$name | start DTFREE count...")
-						updateResourceRep( "count"  
+						 JSON = "{\"state\":\"COUNTING\"}"  
+						updateResourceRep( JSON  
 						)
 						stateTimer = TimerActor("timer_count", 
 							scope, context!!, "local_tout_dtfreecounter_count", DTFREE )
@@ -56,9 +59,8 @@ class Dtfreecounter ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( na
 				state("reached") { //this:State
 					action { //it:State
 						println("$name | DTFREE reached")
+						 REACHED = true  
 						emit("dtfreeReached", "dtfreeReached(REACHED)" ) 
-						updateResourceRep( "reached"  
-						)
 					}
 					 transition( edgeName="goto",targetState="work", cond=doswitch() )
 				}	 

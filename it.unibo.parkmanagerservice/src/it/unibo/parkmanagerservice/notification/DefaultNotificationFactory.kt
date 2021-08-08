@@ -108,7 +108,7 @@ object DefaultNotificationFactory {
 
                 NotificationType.ADMIN_DTFREE_REACHED -> {
                     res.content = "${res.content
-                        .replace("${'$'}BTNAME", "ParkManagerService")
+                        .replace("${'$'}BTNAME", "Login")
                         .replace("${'$'}NAME", user.name)
                         .replace("${'$'}SURNAME", user.surname)
                         .replace("${'$'}MAIL", user.mail)
@@ -127,6 +127,13 @@ object DefaultNotificationFactory {
                     res.content = "${res.content
                         .replace("${'$'}BTNAME", "ParkManagerService")
                         .replace("${'$'}TEXT", args[0])
+                    }"
+                }
+
+                NotificationType.ADMIN_TEMP -> {
+                    res.content = "${res.content
+                        .replace("${'$'}BTNAME", "Login")
+                        .replace("${'$'}MODE", args[0])
                     }"
                 }
             }
