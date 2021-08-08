@@ -40,7 +40,7 @@ class ManagerConsumer(AsyncWebsocketConsumer):
 
 
     async def receive(self, text_data):
-        print(text_data)
+        print("WEEIIIIII " + text_data)
         
         if self.group_name == "fancontrol_group_manager":
             socket_fan = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
