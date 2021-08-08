@@ -13,5 +13,9 @@ timerdtfree_socket.onmessage = function (e) {
     console.log(json_data)
 
     status_timer_dtfree.innerHTML = json_data.data
+
+    if(json_data.data == "REACHED"){
+        alert("The dtfree timer is reached and the outdoorarea is still occupied!")
+    }
 }
 
