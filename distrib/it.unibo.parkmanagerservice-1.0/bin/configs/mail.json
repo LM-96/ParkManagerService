@@ -1,0 +1,2 @@
+{"mail":"info@parkmanagersl.it","pass":"P@rk1ngManager123","host":"authsmtp.parkmanagersl.it","port": "25","ssl-enabled": "false","auth": "true"}
+{"mail":"info@parkmanagersl.it","pass":"P@rk1ngManager123","host":"authsmtp.parkmanagersl.it","port": "465","ssl-enabled": "true","auth": "true"}
