@@ -290,7 +290,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 											CONTROLLER.setFreeDoor(INDOOR)
 											SLOT = CONTROLLER.freeSlotReservedByUser(USER!!)
 						updateResourceRep( JSONSTATE
-														.updateDoor(OUTDOOR).updateSlotAlmostFree(SLOT!!).toString()  
+														.updateDoor(INDOOR).updateSlotFree(SLOT!!.slotnum).toString()  
 						)
 						
 									}
