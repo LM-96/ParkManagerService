@@ -28,11 +28,13 @@
         margin-left: 50px;
     }
 
+
     .info2{
-      border: solid black;
-      margin-top: 10px;
+        border: solid black;
+        margin-top: 10px;
         float: left;
-        margin-left: 50px;
+        margin-left: 1em;
+        
     }
 
     .grid{
@@ -88,6 +90,7 @@
     <p>STATUS DTFREE TIMER: <span id="status_dtfreetimer"></span></p>
     <p>SONAR: <span id="status_sonar"></span></p> 
 </div>
+<div style="float: left; width: 100%;">
 <div class="info2">
     <p >STATUS TROLLEY: <span id="status_trolley"></span></p>
     <button  id="trolley_control"></button>
@@ -96,7 +99,7 @@
     <p>STATUS ANTIFIRE: <span id="status_antifire"></span></p> 
     <button id="antifire_control"></button>
 </div>
-
+</div>
 <script src="{% static '/js/manager/thermometer.js' %}"></script>
 <script src="{% static '/js/manager/weightsensor.js' %}"></script>
 <script src="{% static '/js/manager/fan.js' %}"></script>

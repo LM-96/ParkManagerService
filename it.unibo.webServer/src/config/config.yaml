@@ -41,8 +41,8 @@ weightsensor:
 trolley:
     actor: "trolley"
 
-trolley:
-    actor: "antifire"
+antifire:
+    actor: "antifireactor"
 
 carparking:
     ws_manager: "ws://localhost:8000/manager/carparking/"

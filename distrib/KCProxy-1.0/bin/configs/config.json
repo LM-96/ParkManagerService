@@ -6,3 +6,4 @@
 {"resource": "trolley","coapUrl": "coap://localhost:8010/ctxcarparking/trolley","fwport": "0","fwwsurl":"ws://localhost:8000/manager/trolley/","fwprotocol": "ws", "proxytype": "coroutined"}
 {"resource": "itocccounter","coapUrl": "coap://localhost:8010/ctxcarparking/itocccounter","fwport": "0","fwwsurl":"ws://localhost:8000/manager/timeritocc/","fwprotocol": "ws", "proxytype": "coroutined"}
 {"resource": "dtfreecounter","coapUrl": "coap://localhost:8010/ctxcarparking/dtfreecounter","fwport": "0","fwwsurl":"ws://localhost:8000/manager/timerdtfree/","fwprotocol": "ws", "proxytype": "coroutined"}
+{"resource": "antifireactor","coapUrl": "coap://localhost:8010/ctxcarparking/antifireactor","fwport": "0","fwwsurl":"ws://localhost:8000/manager/antifire/","fwprotocol": "ws", "proxytype": "coroutined"}

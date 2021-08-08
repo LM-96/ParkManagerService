@@ -14,11 +14,13 @@ const antifirecontrol_socket = new WebSocket(
 
 
 antifire_socket.onmessage = function (e) {
-    console.log(e.mode)
+    console.log(e.data)
+    const json_data = JSON.parse(e.data)
 
-    status_antifire.innerHTML = e.mode;
 
-    if(e.mode == "MANUAL"){
+    status_antifire.innerHTML = json_data.mode;
+
+    if(json_data.mode == "MANUAL"){
         document.getElementById("antifire_control").textContent = "AUTO"
     }else{
         document.getElementById("antifire_control").textContent  = "MANUAL"

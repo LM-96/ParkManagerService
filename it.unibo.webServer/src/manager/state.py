@@ -12,7 +12,7 @@ class Singleton(type):
 class State(metaclass=Singleton):
     def __init__(self):
         self.thermometer_state = {"data": "18"}
-        self.robot_coords = {
+        self.trolley_coords = {
             "position": {
                 "x": "0",
                 "y": "0"
@@ -77,8 +77,8 @@ class State(metaclass=Singleton):
             json_data = json.loads(data)
             for key, value in json_data.items():
                 self.carparking[key] = value
-        elif name == "robot_group_manager":
-            self.robot_coords = data
+        elif name == "trolley_group_manager":
+            self.trolley_coords = data
         elif name == "antifire_group_manager":
             self.antifire_state = data
 
@@ -97,8 +97,8 @@ class State(metaclass=Singleton):
             return self.thermometer_state
         elif name == "carparking_group_manager":
             return self.carparking
-        elif name == "robot_group_manager":
-            return self.robot_coords
+        elif name == "trolley_group_manager":
+            return self.trolley_coords
         elif name == "antifire_group_manager":
             return self.antifire_state
 
