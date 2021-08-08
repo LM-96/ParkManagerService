@@ -40,7 +40,10 @@ weightsensor:
 
 trolley:
     actor: "trolley"
-    
+
+trolley:
+    actor: "antifire"
+
 carparking:
     ws_manager: "ws://localhost:8000/manager/carparking/"
     port: 8010

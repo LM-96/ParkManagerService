@@ -21,6 +21,7 @@ class State(metaclass=Singleton):
         }
         self.itocc_state = {"data": "WORK"}
         self.dtfree_state = {"data": "WORK"}
+        self.antifire_state = {"temp": "NORMAL", "mode": "AUTO"}
         self.sonar_state = {"data": "1000"}
         self.weightsensor_state = {"data": "0"}
         self.fan_state = 'OFF'
@@ -78,6 +79,8 @@ class State(metaclass=Singleton):
                 self.carparking[key] = value
         elif name == "robot_group_manager":
             self.robot_coords = data
+        elif name == "antifire_group_manager":
+            self.antifire_state = data
 
     def get(self, name):
         if name == "fan_group_manager":
@@ -96,6 +99,8 @@ class State(metaclass=Singleton):
             return self.carparking
         elif name == "robot_group_manager":
             return self.robot_coords
+        elif name == "antifire_group_manager":
+            return self.antifire_state
 
         return None
     

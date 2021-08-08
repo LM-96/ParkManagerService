@@ -1,3 +1,5 @@
+from manager.consumers.antifire_consumer import AntifireConsumerManager
+from manager.consumers.antifirecontrol_consumer import AntifirecontrolConsumerManager
 from manager.consumers.timer_itocc_consumer import TimerITOCCConsumerManager
 from django.urls import re_path
 from devices.consumers.thermometer_consumer import ThermometerConsumer
@@ -31,6 +33,8 @@ websocket_urlpatterns = [
     re_path(r'manager/trolley/$', TrolleyConsumerManager.as_asgi()),
     re_path(r'manager/fancontrol/$', FancontrolConsumerManager.as_asgi()),
     re_path(r'manager/trolleycontrol/$', TrolleycontrolConsumerManager.as_asgi()),
+    re_path(r'manager/antifirecontrol/$', AntifirecontrolConsumerManager.as_asgi()),
+    re_path(r'manager/antifire/$', AntifireConsumerManager.as_asgi()),
 
 ]
 

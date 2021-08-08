@@ -61,6 +61,16 @@ class ManagerConsumer(AsyncWebsocketConsumer):
             byt=msg.encode()   
             socket_trolley.send(byt)
             socket_trolley.close()
+        elif self.group_name == "antifirecontrol_group_manager":
+            socket_trolley = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            socket_trolley.connect((config.system.host, config.carparking.port))
+            text_json = json.loads(text_data)
+            msg_type = 'manualantifire' if text_json['data'] == "MANUAL" else 'autoantifire'
+            msg = f'msg({msg_type}, dispatch, python, {config.antifire.actor}, {msg_type}(ON), 1)\n'
+            
+            byt=msg.encode()   
+            socket_trolley.send(byt)
+            socket_trolley.close()
         else:
             self.state.set(self.group_name, text_data)
 
