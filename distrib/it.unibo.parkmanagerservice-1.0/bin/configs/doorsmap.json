@@ -1,0 +1,2 @@
+{"door": "INDOOR", "x":"6", "y":"0", "allowedX":"6", "allowedY":"1", "direction":"downDir"}
+{"door": "OUTDOOR", "x":"6", "y":"4", "allowedX":"6", "allowedY":"3", "direction":"upDir"}
