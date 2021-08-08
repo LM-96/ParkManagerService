@@ -291,6 +291,15 @@ class KParkManagerServiceController(
         }
         return slot
     }
+	
+	override fun destroyUserAtOudoor() : User? {
+		val user = doors.getUserAtDoor(DoorType.OUTDOOR)
+		if(user != null) {
+			userRepo.delete(user)
+		}
+		
+		return user
+	}
 
 
 }

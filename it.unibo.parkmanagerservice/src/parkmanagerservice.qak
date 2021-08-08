@@ -264,7 +264,11 @@ QActor parkingmanagerservice context ctxcarparking {
 	} Goto work
 	
 	State handleOutdoorReturnFree {
-		[# CONTROLLER.setFreeDoor(OUTDOOR) #]
+		[# 
+			CONTROLLER.destroyUserAtOudoor()
+			CONTROLLER.setFreeDoor(OUTDOOR)
+			
+		#]
 		forward sonaractor -m stoppolling : stoppolling(STOP)
 		forward dtfreecounter -m stopCount : stopCount(STOP)
 		updateResource[# JSONSTATE.updateDoor(OUTDOOR).toString() #]

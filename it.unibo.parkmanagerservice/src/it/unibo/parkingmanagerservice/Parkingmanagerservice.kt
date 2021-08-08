@@ -219,7 +219,10 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 				}	 
 				state("handleOutdoorReturnFree") { //this:State
 					action { //it:State
-						 CONTROLLER.setFreeDoor(OUTDOOR)  
+						 
+									CONTROLLER.destroyUserAtOudoor()
+									CONTROLLER.setFreeDoor(OUTDOOR)
+									
 						forward("stoppolling", "stoppolling(STOP)" ,"sonaractor" ) 
 						forward("stopCount", "stopCount(STOP)" ,"dtfreecounter" ) 
 						updateResourceRep( JSONSTATE.updateDoor(OUTDOOR).toString()  
