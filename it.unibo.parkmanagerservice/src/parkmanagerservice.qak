@@ -349,7 +349,7 @@ QActor itocccounter context ctxcarparking {
 	State work {
 		[# 
 			if(REACHED) {
-				var JSON = "{\"data\":\"REACHED\"}"
+				JSON = "{\"data\":\"REACHED\"}"
 				REACHED = false
 			} else { 
 				JSON = "{\"data\":\"WORK\"}"
