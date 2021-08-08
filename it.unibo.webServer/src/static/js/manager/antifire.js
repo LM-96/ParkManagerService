@@ -25,6 +25,10 @@ antifire_socket.onmessage = function (e) {
     }else{
         document.getElementById("antifire_control").textContent  = "MANUAL"
     }
+
+    if (json_data.temp == "CRITICAL"){
+        alert("The temperature reached a critical level!!\nThe antifire is on " + json_data.mode)
+    }
 }
 
 
