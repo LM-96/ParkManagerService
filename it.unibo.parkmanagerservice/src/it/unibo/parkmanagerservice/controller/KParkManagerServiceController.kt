@@ -287,6 +287,7 @@ class KParkManagerServiceController(
             slot = slotopt.get()
             slot.user = null
             slot.slotstate = ParkingSlotState.FREE
+			slotRepo.update(slot)
         }
         return slot
     }
