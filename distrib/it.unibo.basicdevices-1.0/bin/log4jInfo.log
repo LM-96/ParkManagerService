@@ -1348,3 +1348,70 @@
 2021-08-08 19:18:13 INFO  CoapResource:722 - successfully established observe relation between /127.0.0.1:55253#[bf9a606afcb00ca5] and resource /ctxsonar/sonaractor (Exchange[R3], size 1)
 2021-08-08 19:18:13 INFO  CoapResource:722 - successfully established observe relation between /127.0.0.1:55253#[736354c9469b6ff3] and resource /ctxthermometer/thermometeractor (Exchange[R2], size 1)
 2021-08-08 19:18:13 INFO  CoapResource:722 - successfully established observe relation between /127.0.0.1:55253#[4f6ba64134cb7121] and resource /ctxweightsensor/weightsensoractor (Exchange[R4], size 1)
+2021-08-08 19:25:01 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.basicdevices-1.0\bin\Californium.properties
+2021-08-08 19:25:01 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-08-08 19:25:02 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-08-08 19:25:02 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-08-08 19:25:02 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-08-08 19:25:02 INFO  CoapServer:207 - Starting server
+2021-08-08 19:25:02 INFO  UDPConnector:161 - UDPConnector starts up 1 sender threads and 1 receiver threads
+2021-08-08 19:25:02 INFO  UDPConnector:187 - UDPConnector listening on /[0:0:0:0:0:0:0:0]:8001, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-08-08 19:25:02 INFO  CoapEndpoint:485 - Started endpoint at coap://[0:0:0:0:0:0:0:0]:8001
+2021-08-08 19:25:02 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-08-08 19:25:02 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-08-08 19:25:02 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-08-08 19:25:02 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-08-08 19:25:02 INFO  CoapServer:207 - Starting server
+2021-08-08 19:25:02 INFO  UDPConnector:161 - UDPConnector starts up 1 sender threads and 1 receiver threads
+2021-08-08 19:25:02 INFO  UDPConnector:187 - UDPConnector listening on /[0:0:0:0:0:0:0:0]:8002, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-08-08 19:25:02 INFO  CoapEndpoint:485 - Started endpoint at coap://[0:0:0:0:0:0:0:0]:8002
+2021-08-08 19:25:02 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-08-08 19:25:02 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-08-08 19:25:02 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-08-08 19:25:02 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-08-08 19:25:02 INFO  CoapServer:207 - Starting server
+2021-08-08 19:25:02 INFO  UDPConnector:161 - UDPConnector starts up 1 sender threads and 1 receiver threads
+2021-08-08 19:25:02 INFO  UDPConnector:187 - UDPConnector listening on /[0:0:0:0:0:0:0:0]:8003, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-08-08 19:25:02 INFO  CoapEndpoint:485 - Started endpoint at coap://[0:0:0:0:0:0:0:0]:8003
+2021-08-08 19:25:02 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-08-08 19:25:02 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-08-08 19:25:02 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-08-08 19:25:02 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-08-08 19:25:02 INFO  CoapServer:207 - Starting server
+2021-08-08 19:25:02 INFO  UDPConnector:161 - UDPConnector starts up 1 sender threads and 1 receiver threads
+2021-08-08 19:25:02 INFO  UDPConnector:187 - UDPConnector listening on /[0:0:0:0:0:0:0:0]:8004, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-08-08 19:25:02 INFO  CoapEndpoint:485 - Started endpoint at coap://[0:0:0:0:0:0:0:0]:8004
+2021-08-08 19:25:05 INFO  CoapResource:722 - successfully established observe relation between /127.0.0.1:64998#[89cb2c367960f800] and resource /ctxthermometer/thermometeractor (Exchange[R3], size 1)
+2021-08-08 19:25:05 INFO  CoapResource:722 - successfully established observe relation between /127.0.0.1:64998#[fdb954053cde490c] and resource /ctxfan/fanactor (Exchange[R1], size 1)
+2021-08-08 19:25:05 INFO  CoapResource:722 - successfully established observe relation between /127.0.0.1:64998#[cf8f820775e8325f] and resource /ctxsonar/sonaractor (Exchange[R2], size 1)
+2021-08-08 19:25:05 INFO  CoapResource:722 - successfully established observe relation between /127.0.0.1:64998#[956f15b10ae87be2] and resource /ctxweightsensor/weightsensoractor (Exchange[R4], size 1)
+2021-08-08 19:26:07 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:64998#[cf8f820775e8325f] and resource /ctxsonar/sonaractor (new Exchange[R5], size 1)
+2021-08-08 19:26:07 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:64998#[fdb954053cde490c] and resource /ctxfan/fanactor (new Exchange[R6], size 1)
+2021-08-08 19:26:07 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:64998#[956f15b10ae87be2] and resource /ctxweightsensor/weightsensoractor (new Exchange[R7], size 1)
+2021-08-08 19:27:09 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:64998#[cf8f820775e8325f] and resource /ctxsonar/sonaractor (new Exchange[R8], size 1)
+2021-08-08 19:27:09 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:64998#[fdb954053cde490c] and resource /ctxfan/fanactor (new Exchange[R9], size 1)
+2021-08-08 19:27:09 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:64998#[956f15b10ae87be2] and resource /ctxweightsensor/weightsensoractor (new Exchange[R10], size 1)
+2021-08-08 19:28:11 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:64998#[cf8f820775e8325f] and resource /ctxsonar/sonaractor (new Exchange[R11], size 1)
+2021-08-08 19:28:11 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:64998#[fdb954053cde490c] and resource /ctxfan/fanactor (new Exchange[R12], size 1)
+2021-08-08 19:28:11 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:64998#[956f15b10ae87be2] and resource /ctxweightsensor/weightsensoractor (new Exchange[R13], size 1)
+2021-08-08 19:29:13 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:64998#[cf8f820775e8325f] and resource /ctxsonar/sonaractor (new Exchange[R14], size 1)
+2021-08-08 19:29:13 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:64998#[fdb954053cde490c] and resource /ctxfan/fanactor (new Exchange[R15], size 1)
+2021-08-08 19:29:13 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:64998#[956f15b10ae87be2] and resource /ctxweightsensor/weightsensoractor (new Exchange[R16], size 1)
+2021-08-08 19:30:15 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:64998#[cf8f820775e8325f] and resource /ctxsonar/sonaractor (new Exchange[R17], size 1)
+2021-08-08 19:30:15 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:64998#[fdb954053cde490c] and resource /ctxfan/fanactor (new Exchange[R18], size 1)
+2021-08-08 19:30:15 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:64998#[956f15b10ae87be2] and resource /ctxweightsensor/weightsensoractor (new Exchange[R19], size 1)
+2021-08-08 19:31:17 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:64998#[cf8f820775e8325f] and resource /ctxsonar/sonaractor (new Exchange[R20], size 1)
+2021-08-08 19:31:17 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:64998#[fdb954053cde490c] and resource /ctxfan/fanactor (new Exchange[R21], size 1)
+2021-08-08 19:31:17 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:64998#[956f15b10ae87be2] and resource /ctxweightsensor/weightsensoractor (new Exchange[R22], size 1)
+2021-08-08 19:32:19 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:64998#[cf8f820775e8325f] and resource /ctxsonar/sonaractor (new Exchange[R23], size 1)
+2021-08-08 19:32:19 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:64998#[fdb954053cde490c] and resource /ctxfan/fanactor (new Exchange[R24], size 1)
+2021-08-08 19:32:19 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:64998#[956f15b10ae87be2] and resource /ctxweightsensor/weightsensoractor (new Exchange[R25], size 1)
+2021-08-08 19:33:21 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:64998#[cf8f820775e8325f] and resource /ctxsonar/sonaractor (new Exchange[R26], size 1)
+2021-08-08 19:33:21 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:64998#[fdb954053cde490c] and resource /ctxfan/fanactor (new Exchange[R27], size 1)
+2021-08-08 19:33:21 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:64998#[956f15b10ae87be2] and resource /ctxweightsensor/weightsensoractor (new Exchange[R28], size 1)
+2021-08-08 19:34:23 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:64998#[cf8f820775e8325f] and resource /ctxsonar/sonaractor (new Exchange[R29], size 1)
+2021-08-08 19:34:23 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:64998#[fdb954053cde490c] and resource /ctxfan/fanactor (new Exchange[R30], size 1)
+2021-08-08 19:34:23 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:64998#[956f15b10ae87be2] and resource /ctxweightsensor/weightsensoractor (new Exchange[R31], size 1)
+2021-08-08 19:35:25 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:64998#[cf8f820775e8325f] and resource /ctxsonar/sonaractor (new Exchange[R33], size 1)
+2021-08-08 19:35:25 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:64998#[fdb954053cde490c] and resource /ctxfan/fanactor (new Exchange[R32], size 1)
+2021-08-08 19:35:25 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:64998#[956f15b10ae87be2] and resource /ctxweightsensor/weightsensoractor (new Exchange[R34], size 1)
