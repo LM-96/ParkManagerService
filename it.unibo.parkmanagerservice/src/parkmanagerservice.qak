@@ -158,7 +158,7 @@ QActor parkingmanagerservice context ctxcarparking {
 	State handleSomeoneInIndoor {
 		forward itocccounter -m stopCount : stopCount(STOP)
 		[# 
-			USER = CONTROLLER.setSomeoneOnDoor(INDOOR)!!
+			USER = CONTROLLER.setSomeoneOnDoor(INDOOR)
 		#]
 		updateResource[# JSONSTATE.updateDoor(INDOOR).toString() #]
 	} Goto work
@@ -459,6 +459,7 @@ QActor antifireactor context ctxcarparking {
 	
 	State work {
 		println("$name | working")
+		[# JSON = "{\"temp\":\"NORMAL\",\"mode\":\"$MODE\"}" #]
 		updateResource[# JSON #]
 	} Transition t0
 		whenEvent criticaltemp -> handleCriticalTemp
@@ -497,12 +498,14 @@ QActor antifireactor context ctxcarparking {
 	} Goto work
 	
 	State setManual {
+		println("$name | Set to manual")
 		[# MODE = `it.unibo.parkmanagerservice`.bean.AntifireMode.MANUAL #]
 	} Goto work
 	
 	State setAuto {
+		println("$name | Set to auto")
 		[# MODE = `it.unibo.parkmanagerservice`.bean.AntifireMode.AUTO #]
-	}
+	} Goto work
 }
 
 QActor trolley context ctxcarparking {

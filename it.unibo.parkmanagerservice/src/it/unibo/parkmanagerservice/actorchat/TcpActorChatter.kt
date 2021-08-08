@@ -36,7 +36,11 @@ class TcpActorChatter(contextIp : String, contextPort : Int, actor : String) : A
 	override fun newDispatchWriter() : DispatchWriter {
 		return DedicatedDispatchWriter(outSock, counter, actor)
 	}
-	
+
+	override fun newEventWriter(): EventWriter {
+		return DedicatedEventWriter(outSock, counter, actor)
+	}
+
 	override fun sendRequest(type : String, content : String) {
 		outSock.write("msg($type,request,tcpactorchatter,$actor,$type($content),${counter.addAndGet(1)})\n")
 		outSock.flush()
@@ -46,7 +50,12 @@ class TcpActorChatter(contextIp : String, contextPort : Int, actor : String) : A
 		outSock.write("msg($type,dispatch,tcpactorchatter,$actor,$type($content),${counter.addAndGet(1)})\n")
 		outSock.flush()
 	}
-	
+
+	override fun sendEvent(type: String, content: String) {
+		outSock.write("msg($type,event,tcpactorchatter,$actor,$type($content),${counter.addAndGet(1)})\n")
+		outSock.flush()
+	}
+
 	override fun readLastResponse() : ApplMessage {
 		return input.read()
 	}
@@ -75,6 +84,18 @@ private class DedicatedDispatchWriter(writer : BufferedWriter, counter : AtomicI
 		writer.flush()
 	}
 	
+}
+
+private class DedicatedEventWriter(writer : BufferedWriter, counter : AtomicInteger, actor : String) : EventWriter {
+
+	private val actor = actor
+	private val counter = counter
+	private val writer = writer
+
+	override fun writeEvent(type : String, content : String) {
+		writer.write("msg($type,event,tcpactorchatter,$actor,$type($content),${counter.addAndGet(1)})\n")
+	}
+
 }
 
 private class BufferedMessageOutputStream(writer : BufferedWriter) : MessageOutputStream {
