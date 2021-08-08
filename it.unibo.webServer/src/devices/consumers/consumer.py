@@ -39,9 +39,8 @@ class BasicConsumer(AsyncWebsocketConsumer):
 
 
     async def receive(self, text_data):
-        print(text_data)
+       
         msg_json = json.loads(text_data)
-        
         if 'data' in msg_json:
             data = msg_json['data']
             self.state.set(self.group_name, data)

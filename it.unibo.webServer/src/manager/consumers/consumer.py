@@ -40,8 +40,8 @@ class ManagerConsumer(AsyncWebsocketConsumer):
 
 
     async def receive(self, text_data):
+        print(text_data)
         
-
         if self.group_name == "fancontrol_group_manager":
             socket_fan = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             socket_fan.connect( (config.system.host, config.fan.port))
@@ -65,7 +65,6 @@ class ManagerConsumer(AsyncWebsocketConsumer):
             print("MESSAGE SENT FROM WS")
             socket_trolley.close()
         else:
-            print(text_data)
             self.state.set(self.group_name, text_data)
 
         await self.channel_layer.group_send(
@@ -77,9 +76,7 @@ class ManagerConsumer(AsyncWebsocketConsumer):
         ) 
 
     async def data_message(self, event):
-        print(event)
         data = event['data']
-        print(data)
         if data != None:
             if type(data) == dict:
                 print(type(data))
