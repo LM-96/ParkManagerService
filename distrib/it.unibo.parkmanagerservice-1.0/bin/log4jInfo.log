@@ -659,3 +659,39 @@
 2021-08-08 17:55:20 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:51346#[c9ec39e55a0731f4] and resource /ctxcarparking/itocccounter (new Exchange[R22], size 1)
 2021-08-08 17:55:20 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:51346#[f9d621b192237728] and resource /ctxcarparking/dtfreecounter (new Exchange[R23], size 1)
 2021-08-08 17:55:20 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:51346#[4378d40aa3bae240] and resource /ctxcarparking/trolley (new Exchange[R24], size 1)
+2021-08-08 17:56:33 INFO  NetworkConfig:372 - loading properties from file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-08-08 17:56:33 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-08-08 17:56:33 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-08-08 17:56:33 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-08-08 17:56:33 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-08-08 17:56:33 INFO  CoapServer:207 - Starting server
+2021-08-08 17:56:33 INFO  UDPConnector:161 - UDPConnector starts up 1 sender threads and 1 receiver threads
+2021-08-08 17:56:33 INFO  UDPConnector:187 - UDPConnector listening on /[0:0:0:0:0:0:0:0]:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-08-08 17:56:33 INFO  CoapEndpoint:485 - Started endpoint at coap://[0:0:0:0:0:0:0:0]:8010
+2021-08-08 17:56:35 INFO  CoapResource:722 - successfully established observe relation between /127.0.0.1:59988#[3331c28ae7d22fae] and resource /ctxcarparking/parkingmanagerservice (Exchange[R1], size 1)
+2021-08-08 17:56:35 INFO  CoapResource:722 - successfully established observe relation between /127.0.0.1:59988#[899194ae0367fbb3] and resource /ctxcarparking/itocccounter (Exchange[R3], size 1)
+2021-08-08 17:56:35 INFO  CoapResource:722 - successfully established observe relation between /127.0.0.1:59988#[1d679e30ad3a752b] and resource /ctxcarparking/trolley (Exchange[R2], size 1)
+2021-08-08 17:56:35 INFO  CoapResource:722 - successfully established observe relation between /127.0.0.1:59988#[f151379d41718927] and resource /ctxcarparking/dtfreecounter (Exchange[R4], size 1)
+2021-08-08 17:57:37 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:59988#[1d679e30ad3a752b] and resource /ctxcarparking/trolley (new Exchange[R5], size 1)
+2021-08-08 17:57:37 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:59988#[899194ae0367fbb3] and resource /ctxcarparking/itocccounter (new Exchange[R7], size 1)
+2021-08-08 17:57:37 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:59988#[3331c28ae7d22fae] and resource /ctxcarparking/parkingmanagerservice (new Exchange[R8], size 1)
+2021-08-08 17:57:37 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:59988#[f151379d41718927] and resource /ctxcarparking/dtfreecounter (new Exchange[R6], size 1)
+2021-08-08 17:58:39 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:59988#[1d679e30ad3a752b] and resource /ctxcarparking/trolley (new Exchange[R9], size 1)
+2021-08-08 17:58:39 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:59988#[3331c28ae7d22fae] and resource /ctxcarparking/parkingmanagerservice (new Exchange[R10], size 1)
+2021-08-08 17:58:39 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:59988#[899194ae0367fbb3] and resource /ctxcarparking/itocccounter (new Exchange[R11], size 1)
+2021-08-08 17:58:39 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:59988#[f151379d41718927] and resource /ctxcarparking/dtfreecounter (new Exchange[R12], size 1)
+2021-08-08 17:59:41 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:59988#[1d679e30ad3a752b] and resource /ctxcarparking/trolley (new Exchange[R13], size 1)
+2021-08-08 17:59:41 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:59988#[3331c28ae7d22fae] and resource /ctxcarparking/parkingmanagerservice (new Exchange[R14], size 1)
+2021-08-08 17:59:41 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:59988#[f151379d41718927] and resource /ctxcarparking/dtfreecounter (new Exchange[R16], size 1)
+2021-08-08 17:59:41 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:59988#[899194ae0367fbb3] and resource /ctxcarparking/itocccounter (new Exchange[R15], size 1)
+2021-08-08 18:00:43 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:59988#[f151379d41718927] and resource /ctxcarparking/dtfreecounter (new Exchange[R18], size 1)
+2021-08-08 18:00:43 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:59988#[3331c28ae7d22fae] and resource /ctxcarparking/parkingmanagerservice (new Exchange[R17], size 1)
+2021-08-08 18:00:43 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:59988#[899194ae0367fbb3] and resource /ctxcarparking/itocccounter (new Exchange[R19], size 1)
+2021-08-08 18:01:23 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:59988#[1d679e30ad3a752b] and resource /ctxcarparking/trolley (new Exchange[R20], size 1)
+2021-08-08 18:01:45 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:59988#[f151379d41718927] and resource /ctxcarparking/dtfreecounter (new Exchange[R21], size 1)
+2021-08-08 18:01:45 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:59988#[899194ae0367fbb3] and resource /ctxcarparking/itocccounter (new Exchange[R23], size 1)
+2021-08-08 18:01:45 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:59988#[3331c28ae7d22fae] and resource /ctxcarparking/parkingmanagerservice (new Exchange[R22], size 1)
+2021-08-08 18:02:25 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:59988#[1d679e30ad3a752b] and resource /ctxcarparking/trolley (new Exchange[R24], size 1)
+2021-08-08 18:02:47 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:59988#[899194ae0367fbb3] and resource /ctxcarparking/itocccounter (new Exchange[R26], size 1)
+2021-08-08 18:02:47 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:59988#[3331c28ae7d22fae] and resource /ctxcarparking/parkingmanagerservice (new Exchange[R25], size 1)
+2021-08-08 18:02:47 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:59988#[f151379d41718927] and resource /ctxcarparking/dtfreecounter (new Exchange[R27], size 1)
