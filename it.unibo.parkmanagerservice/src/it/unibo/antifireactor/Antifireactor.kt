@@ -17,7 +17,7 @@ class Antifireactor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( na
 	@kotlinx.coroutines.ExperimentalCoroutinesApi			
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		
-				var type : String
+				var type = "NORMAL"
 				var MODE = it.unibo.parkmanagerservice.bean.AntifireMode.AUTO
 				var JSON = "{\"temp\":\"NORMAL\",\"mode\":\"$MODE\"}"
 				val ADMIN = it.unibo.parkmanagerservice.bean.User.getAdmin()
@@ -33,7 +33,7 @@ class Antifireactor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( na
 				state("work") { //this:State
 					action { //it:State
 						println("$name | working")
-						 JSON = "{\"temp\":\"NORMAL\",\"mode\":\"$MODE\"}"  
+						 JSON = "{\"temp\":\"$type\",\"mode\":\"$MODE\"}"  
 						updateResourceRep( JSON  
 						)
 					}
@@ -47,7 +47,6 @@ class Antifireactor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( na
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								 
 												type = payloadArg(0)
-												JSON = "{\"temp\":\"$type\",\"mode\":\"$MODE\"}"
 												if(MODE == `it.unibo.parkmanagerservice`.bean.AntifireMode.AUTO) {
 													if(type.equals("CRITICAL")) {
 														if(ADMIN != null) {
