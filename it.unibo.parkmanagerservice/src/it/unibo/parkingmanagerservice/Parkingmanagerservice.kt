@@ -277,6 +277,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 					action { //it:State
 						 
 									USER = CONTROLLER.getDoorsManager().getUserAtDoor(INDOOR)
+									println("$name | ITOCC - $USER")
 									if(USER != null) {
 										NOTIFICATION = `it.unibo.parkmanagerservice`.notification.DefaultNotificationFactory.createForUser(
 												USER!!,
