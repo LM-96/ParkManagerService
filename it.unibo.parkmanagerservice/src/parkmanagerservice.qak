@@ -542,7 +542,7 @@ QActor trolley context ctxcarparking {
 	State home {
 		println("$name | work")
 		[# 
-			if(!PLANNER.atHome()) {
+			if(!(PLANNER.getPosX() == 0 && PLANNER.getPosY() == 0)) {
 				PLANNER.setGoal(0, 0)
 				PLAN = PLANNER.doPlan()?.iterator()
 				if(PLAN != null) {
@@ -739,5 +739,6 @@ QActor trolley context ctxcarparking {
 	} Transition t
 		whenMsg resumetrolley -> nextAction
 		whenReply stepdone -> stopped
+		whenReply stepfail -> home
 	
 }

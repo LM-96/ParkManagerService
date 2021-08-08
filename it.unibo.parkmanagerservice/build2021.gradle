@@ -154,6 +154,7 @@ distZip {
 		from '.'
 		include 'resources/*'
 		include '*.pl'
+		include 'configs/*'
 	}
 }
  

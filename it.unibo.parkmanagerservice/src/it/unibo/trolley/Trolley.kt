@@ -51,7 +51,7 @@ class Trolley ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 					action { //it:State
 						println("$name | work")
 						 
-									if(!PLANNER.atHome()) {
+									if(!(PLANNER.getPosX() == 0 && PLANNER.getPosY() == 0)) {
 										PLANNER.setGoal(0, 0)
 										PLAN = PLANNER.doPlan()?.iterator()
 										if(PLAN != null) {
@@ -279,6 +279,7 @@ class Trolley ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 					}
 					 transition(edgeName="t31",targetState="nextAction",cond=whenDispatch("resumetrolley"))
 					transition(edgeName="t32",targetState="stopped",cond=whenReply("stepdone"))
+					transition(edgeName="t33",targetState="home",cond=whenReply("stepfail"))
 				}	 
 			}
 		}
