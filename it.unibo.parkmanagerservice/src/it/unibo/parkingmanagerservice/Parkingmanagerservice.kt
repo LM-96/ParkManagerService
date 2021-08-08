@@ -276,7 +276,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 				state("handleItoccReached") { //this:State
 					action { //it:State
 						 
-									USER = CONTROLLER.getDoorsManager().getUserAtDoor(OUTDOOR)
+									USER = CONTROLLER.getDoorsManager().getUserAtDoor(INDOOR)
 									if(USER != null) {
 										NOTIFICATION = `it.unibo.parkmanagerservice`.notification.DefaultNotificationFactory.createForUser(
 												USER!!,

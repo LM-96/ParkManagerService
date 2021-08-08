@@ -312,7 +312,7 @@ QActor parkingmanagerservice context ctxcarparking {
 	
 	State handleItoccReached {
 		[# 
-			USER = CONTROLLER.getDoorsManager().getUserAtDoor(OUTDOOR)
+			USER = CONTROLLER.getDoorsManager().getUserAtDoor(INDOOR)
 			if(USER != null) {
 				NOTIFICATION = `it.unibo.parkmanagerservice`.notification.DefaultNotificationFactory.createForUser(
 						USER!!,
