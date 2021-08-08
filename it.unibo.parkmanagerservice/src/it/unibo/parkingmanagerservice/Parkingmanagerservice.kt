@@ -102,7 +102,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 					action { //it:State
 						forward("stopCount", "stopCount(STOP)" ,"itocccounter" ) 
 						 
-									USER = CONTROLLER.setSomeoneOnDoor(INDOOR)!!
+									USER = CONTROLLER.setSomeoneOnDoor(INDOOR)
 						updateResourceRep( JSONSTATE.updateDoor(INDOOR).toString()  
 						)
 					}

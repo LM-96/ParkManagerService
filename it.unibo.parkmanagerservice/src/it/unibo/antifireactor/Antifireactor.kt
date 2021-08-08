@@ -33,6 +33,7 @@ class Antifireactor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( na
 				state("work") { //this:State
 					action { //it:State
 						println("$name | working")
+						 JSON = "{\"temp\":\"NORMAL\",\"mode\":\"$MODE\"}"  
 						updateResourceRep( JSON  
 						)
 					}
@@ -74,14 +75,17 @@ class Antifireactor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( na
 				}	 
 				state("setManual") { //this:State
 					action { //it:State
+						println("$name | Set to manual")
 						 MODE = `it.unibo.parkmanagerservice`.bean.AntifireMode.MANUAL  
 					}
 					 transition( edgeName="goto",targetState="work", cond=doswitch() )
 				}	 
 				state("setAuto") { //this:State
 					action { //it:State
+						println("$name | Set to auto")
 						 MODE = `it.unibo.parkmanagerservice`.bean.AntifireMode.AUTO  
 					}
+					 transition( edgeName="goto",targetState="work", cond=doswitch() )
 				}	 
 			}
 		}

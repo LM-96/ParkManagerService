@@ -15,9 +15,11 @@ interface ActorChatter {
 	
 	fun newRequestWriter() : RequestWriter
 	fun newDispatchWriter() : DispatchWriter
+	fun newEventWriter() : EventWriter
 	
 	fun sendRequest(type : String, content : String)
 	fun sendDispatch(type : String, content : String)
+	fun sendEvent(type : String, content : String)
 	fun readLastResponse() : ApplMessage
 	
 }
