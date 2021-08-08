@@ -1248,3 +1248,26 @@
 2021-08-08 20:16:55 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:51622#[6b4be932dcf2169c] and resource /ctxcarparking/trolley (new Exchange[R7], size 1)
 2021-08-08 20:16:55 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:51622#[bd71dbf1c72c0d74] and resource /ctxcarparking/dtfreecounter (new Exchange[R8], size 1)
 2021-08-08 20:16:55 INFO  CoapResource:719 - replacing observe relation between /127.0.0.1:51622#[215f7c90368c2ecd] and resource /ctxcarparking/antifireactor (new Exchange[R9], size 1)
+2021-08-08 20:23:44 INFO  NetworkConfig:422 - writing properties to file C:\Users\simom\Desktop\Unibo\UniboM\ISS\ParkManagerService\distrib\it.unibo.parkmanagerservice-1.0\bin\Californium.properties
+2021-08-08 20:23:44 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-08-08 20:23:44 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-08-08 20:23:44 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-08-08 20:23:44 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-08-08 20:23:44 INFO  CoapServer:207 - Starting server
+2021-08-08 20:23:44 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-08-08 20:23:44 INFO  UDPConnector:187 - UDPConnector listening on /[0:0:0:0:0:0:0:0]:8010, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-08-08 20:23:44 INFO  CoapEndpoint:485 - Started endpoint at coap://[0:0:0:0:0:0:0:0]:8010
+2021-08-08 20:23:48 INFO  CoapResource:722 - successfully established observe relation between /127.0.0.1:63205#[8d05b191cc09000c] and resource /ctxcarparking/trolley (Exchange[R2], size 1)
+2021-08-08 20:23:48 INFO  CoapResource:722 - successfully established observe relation between /127.0.0.1:63205#[935794abb00f024d] and resource /ctxcarparking/parkingmanagerservice (Exchange[R1], size 1)
+2021-08-08 20:23:48 INFO  CoapResource:722 - successfully established observe relation between /127.0.0.1:63205#[9731cab2be9a4512] and resource /ctxcarparking/itocccounter (Exchange[R3], size 1)
+2021-08-08 20:23:48 INFO  CoapResource:722 - successfully established observe relation between /127.0.0.1:63205#[4f7aa46093a060fd] and resource /ctxcarparking/dtfreecounter (Exchange[R4], size 1)
+2021-08-08 20:23:48 INFO  CoapResource:722 - successfully established observe relation between /127.0.0.1:63205#[43462678bbcd0458] and resource /ctxcarparking/antifireactor (Exchange[R5], size 1)
+2021-08-08 20:24:10 INFO  RandomTokenGenerator:55 - using tokens of 8 bytes in length
+2021-08-08 20:24:10 INFO  CoapEndpoint:423 - CoapEndpoint uses udp plain
+2021-08-08 20:24:10 INFO  BlockwiseLayer:207 - BlockwiseLayer uses MAX_MESSAGE_SIZE=1024, PREFERRED_BLOCK_SIZE=512, BLOCKWISE_STATUS_LIFETIME=300000 and MAX_RESOURCE_BODY_SIZE=8192
+2021-08-08 20:24:10 INFO  ReliabilityLayer:83 - ReliabilityLayer uses ACK_TIMEOUT=2000, ACK_RANDOM_FACTOR=1.5, and ACK_TIMEOUT_SCALE=2.0
+2021-08-08 20:24:10 INFO  CoapEndpoint:452 - Endpoint [coap://0.0.0.0:0] requires an executor to start, using default single-threaded daemon executor
+2021-08-08 20:24:10 INFO  UDPConnector:161 - UDPConnector starts up 16 sender threads and 16 receiver threads
+2021-08-08 20:24:10 INFO  UDPConnector:187 - UDPConnector listening on /[0:0:0:0:0:0:0:0]:55376, recv buf = 65536, send buf = 65536, recv packet size = 2048
+2021-08-08 20:24:10 INFO  CoapEndpoint:485 - Started endpoint at coap://[0:0:0:0:0:0:0:0]:55376
+2021-08-08 20:24:10 INFO  EndpointManager:140 - created implicit endpoint coap://[0:0:0:0:0:0:0:0]:55376 for coap
