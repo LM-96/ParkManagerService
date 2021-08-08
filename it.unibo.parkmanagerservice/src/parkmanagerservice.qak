@@ -324,6 +324,8 @@ QActor parkingmanagerservice context ctxcarparking {
 						
 					CONTROLLER.setFreeDoor(INDOOR)
 					SLOT = CONTROLLER.freeSlotReservedByUser(USER!!)
+					#] updateResource[# JSONSTATE
+								.updateDoor(OUTDOOR).updateSlotAlmostFree(SLOT!!).toString() #] [#
 			}
 		#]
 		
@@ -346,8 +348,8 @@ QActor itocccounter context ctxcarparking {
 	State work {
 		[# 
 			if(REACHED) {
-				REACHED = false
 				var JSON = "{\"data\":\"REACHED\"}"
+				REACHED = false
 			} else { 
 				JSON = "{\"data\":\"WORK\"}"
 			} #]

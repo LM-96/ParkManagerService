@@ -289,6 +289,10 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 												
 											CONTROLLER.setFreeDoor(INDOOR)
 											SLOT = CONTROLLER.freeSlotReservedByUser(USER!!)
+						updateResourceRep( JSONSTATE
+														.updateDoor(OUTDOOR).updateSlotAlmostFree(SLOT!!).toString()  
+						)
+						
 									}
 					}
 					 transition( edgeName="goto",targetState="enterNext", cond=doswitchGuarded({ (CONTROLLER.getDoorQueue(INDOOR).remaining()) > 0  

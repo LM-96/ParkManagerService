@@ -31,8 +31,8 @@ class Itocccounter ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( nam
 					action { //it:State
 						 
 									if(REACHED) {
-										REACHED = false
 										var JSON = "{\"data\":\"REACHED\"}"
+										REACHED = false
 									} else { 
 										JSON = "{\"data\":\"WORK\"}"
 									}  
