@@ -42,7 +42,7 @@ class StateJSONIZER() {
     fun updateSlotOccupied(slotnum : Long) : StateJSONIZER {
         val user = (JSON.getJSONObject(slotnum.toString())).getString("user")
         JSON.put(slotnum.toString(), JSONObject()
-            .put("state", ParkingSlotState.RESERVED)
+            .put("state", ParkingSlotState.OCCUPIED)
             .put("user", user))
 
         return this

@@ -210,5 +210,7 @@ interface ParkManagerServiceController {
      */
     fun getSlotReservedForUser(user : User) : ParkingSlot?
 
+    fun freeSlotReservedByUser(user : User) : ParkingSlot?
+
 
 }

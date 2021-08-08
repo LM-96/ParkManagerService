@@ -19,7 +19,7 @@ class Dtfreecounter ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( na
 		 	
 				val DTFREE = it.unibo.parkmanagerservice.bean.Timers.get().DTFREE
 				var REACHED = false
-				var JSON = "{\"state\":\"INIT\"}"
+				var JSON = "{\"data\":\"INIT\"}"
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
@@ -32,29 +32,29 @@ class Dtfreecounter ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( na
 						 
 									if(REACHED) {
 										REACHED = false
-										JSON = "{\"state\":\"REACHED\"}"
+										JSON = "{\"data\":\"REACHED\"}"
 								  	} else {
-								  		JSON = "{\"state\":\"WORK\"}"
+								  		JSON = "{\"data\":\"WORK\"}"
 								  	}  
 						updateResourceRep( JSON  
 						)
 						println("$name | waiting for command")
 					}
-					 transition(edgeName="t12",targetState="count",cond=whenDispatch("startDtfreeCounter"))
-					transition(edgeName="t13",targetState="work",cond=whenDispatch("stopCount"))
+					 transition(edgeName="t14",targetState="count",cond=whenDispatch("startDtfreeCounter"))
+					transition(edgeName="t15",targetState="work",cond=whenDispatch("stopCount"))
 				}	 
 				state("count") { //this:State
 					action { //it:State
 						println("$name | start DTFREE count...")
-						 JSON = "{\"state\":\"COUNTING\"}"  
+						 JSON = "{\"data\":\"COUNTING\"}"  
 						updateResourceRep( JSON  
 						)
 						stateTimer = TimerActor("timer_count", 
 							scope, context!!, "local_tout_dtfreecounter_count", DTFREE )
 					}
-					 transition(edgeName="t14",targetState="reached",cond=whenTimeout("local_tout_dtfreecounter_count"))   
-					transition(edgeName="t15",targetState="count",cond=whenDispatch("startDtfreeCounter"))
-					transition(edgeName="t16",targetState="work",cond=whenDispatch("stopCount"))
+					 transition(edgeName="t16",targetState="reached",cond=whenTimeout("local_tout_dtfreecounter_count"))   
+					transition(edgeName="t17",targetState="count",cond=whenDispatch("startDtfreeCounter"))
+					transition(edgeName="t18",targetState="work",cond=whenDispatch("stopCount"))
 				}	 
 				state("reached") { //this:State
 					action { //it:State

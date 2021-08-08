@@ -64,6 +64,8 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 					transition(edgeName="t4",targetState="handleIndoorReturnFree",cond=whenEvent("weightoff"))
 					transition(edgeName="t5",targetState="handleSomeoneInOutdoor",cond=whenEvent("sonaron"))
 					transition(edgeName="t6",targetState="handleOutdoorReturnFree",cond=whenEvent("sonaroff"))
+					transition(edgeName="t7",targetState="handleDtfreeReached",cond=whenEvent("dtfreeReached"))
+					transition(edgeName="t8",targetState="handleItoccReached",cond=whenEvent("itoccReached"))
 				}	 
 				state("handleEnter") { //this:State
 					action { //it:State
@@ -115,9 +117,10 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 												`it.unibo.parkmanagerservice`.notification.NotificationType.TOKEN,
 												arrayOf(USER!!.token!!))
 									DEQUE.put(NOTIFICATION)
+									SLOT =  CONTROLLER.getSlotReservedForUser(USER!!)
 						forward("notifyuser", "notifyuser(NOTIFY)" ,"notificationactor" ) 
 						forward("stoppolling", "stoppolling(STOP)" ,"weightsensoractor" ) 
-						updateResourceRep( JSONSTATE.updateDoor(INDOOR).toString()  
+						updateResourceRep( JSONSTATE.updateDoor(INDOOR).updateSlotOccupied(SLOT!!.slotnum).toString()  
 						)
 					}
 					 transition( edgeName="goto",targetState="enterNext", cond=doswitchGuarded({ (CONTROLLER.getDoorQueue(INDOOR).remaining()) > 0  
@@ -162,8 +165,6 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 												} else JSON = "{\"err\":\"${USERERR!!.second!!.msg}\"}"
 								println("$name | reply to CARENTER with $JSON")
 								answer("carenter", "token", "token($JSON)"   )  
-								updateResourceRep( "reply to CARENTER with $JSON"  
-								)
 						}
 					}
 					 transition( edgeName="goto",targetState="work", cond=doswitch() )
@@ -243,7 +244,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 					}
 					 transition( edgeName="goto",targetState="work", cond=doswitch() )
 				}	 
-				state("dtfreeReached") { //this:State
+				state("handleDtfreeReached") { //this:State
 					action { //it:State
 						 
 									if(ADMIN != null) {
@@ -272,7 +273,7 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 					}
 					 transition( edgeName="goto",targetState="work", cond=doswitch() )
 				}	 
-				state("itoccReached") { //this:State
+				state("handleItoccReached") { //this:State
 					action { //it:State
 						 
 									USER = CONTROLLER.getDoorsManager().getUserAtDoor(OUTDOOR)
@@ -285,9 +286,15 @@ class Parkingmanagerservice ( name: String, scope: CoroutineScope  ) : ActorBasi
 											DEQUE.put(NOTIFICATION)
 						forward("notifyuser", "notifyuser(NOTIFY)" ,"notificationactor" ) 
 						
+												
+											CONTROLLER.setFreeDoor(INDOOR)
+											SLOT = CONTROLLER.freeSlotReservedByUser(USER!!)
 									}
 					}
-					 transition( edgeName="goto",targetState="work", cond=doswitch() )
+					 transition( edgeName="goto",targetState="enterNext", cond=doswitchGuarded({ (CONTROLLER.getDoorQueue(INDOOR).remaining()) > 0  
+					}) )
+					transition( edgeName="goto",targetState="work", cond=doswitchGuarded({! ( (CONTROLLER.getDoorQueue(INDOOR).remaining()) > 0  
+					) }) )
 				}	 
 			}
 		}

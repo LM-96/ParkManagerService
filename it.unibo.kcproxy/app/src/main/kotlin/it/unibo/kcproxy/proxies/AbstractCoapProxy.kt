@@ -74,8 +74,8 @@ abstract class AbstractCoapProxy(coapUrl : String) : CoapProxy {
                 }
 
                 override fun onError() {
-                    onCoap.invoke("Coap Error")
-                    println(red.format("CoapListener[${client.uri}] | Coap error"))
+                    //onCoap.invoke("Coap Error")
+                    println(red.format("CoapListener[${client.uri}] | Coap error... have you started the server?"))
                 }
 
             })

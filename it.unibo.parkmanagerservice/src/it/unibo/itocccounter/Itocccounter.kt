@@ -19,7 +19,7 @@ class Itocccounter ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( nam
 		 	
 				val ITOCC = it.unibo.parkmanagerservice.bean.Timers.get().ITOCC
 				var REACHED = false
-				var JSON = "{\"state\":\"INIT\"}"
+				var JSON = "{\"data\":\"INIT\"}"
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
@@ -32,29 +32,29 @@ class Itocccounter ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( nam
 						 
 									if(REACHED) {
 										REACHED = false
-										var JSON = "{\"state\":\"REACHED\"}"
+										var JSON = "{\"data\":\"REACHED\"}"
 									} else { 
-										JSON = "{\"state\":\"WORK\"}"
+										JSON = "{\"data\":\"WORK\"}"
 									}  
 						updateResourceRep( JSON  
 						)
 						println("$name | waiting for command")
 					}
-					 transition(edgeName="t7",targetState="count",cond=whenDispatch("startItoccCounter"))
-					transition(edgeName="t8",targetState="work",cond=whenDispatch("stopCount"))
+					 transition(edgeName="t9",targetState="count",cond=whenDispatch("startItoccCounter"))
+					transition(edgeName="t10",targetState="work",cond=whenDispatch("stopCount"))
 				}	 
 				state("count") { //this:State
 					action { //it:State
 						println("$name | start ITOCC count...")
-						 JSON = "{\"state\":\"COUNTING\"}"  
+						 JSON = "{\"data\":\"COUNTING\"}"  
 						updateResourceRep( JSON  
 						)
 						stateTimer = TimerActor("timer_count", 
 							scope, context!!, "local_tout_itocccounter_count", ITOCC )
 					}
-					 transition(edgeName="t9",targetState="reached",cond=whenTimeout("local_tout_itocccounter_count"))   
-					transition(edgeName="t10",targetState="count",cond=whenDispatch("startItoccCounter"))
-					transition(edgeName="t11",targetState="work",cond=whenDispatch("stopCount"))
+					 transition(edgeName="t11",targetState="reached",cond=whenTimeout("local_tout_itocccounter_count"))   
+					transition(edgeName="t12",targetState="count",cond=whenDispatch("startItoccCounter"))
+					transition(edgeName="t13",targetState="work",cond=whenDispatch("stopCount"))
 				}	 
 				state("reached") { //this:State
 					action { //it:State

@@ -280,5 +280,16 @@ class KParkManagerServiceController(
         return slotRepo.getReservedForUser(user.id).orElse(null)
     }
 
+    override fun freeSlotReservedByUser(user: User): ParkingSlot? {
+        val slotopt = slotRepo.getReservedForUser(user.id)
+        var slot : ParkingSlot? = null
+        if(slotopt.isPresent) {
+            slot = slotopt.get()
+            slot.user = null
+            slot.slotstate = ParkingSlotState.FREE
+        }
+        return slot
+    }
+
 
 }

@@ -36,9 +36,9 @@ class Antifireactor ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( na
 						updateResourceRep( JSON  
 						)
 					}
-					 transition(edgeName="t018",targetState="handleCriticalTemp",cond=whenEvent("criticaltemp"))
-					transition(edgeName="t019",targetState="setAuto",cond=whenDispatch("autoantifire"))
-					transition(edgeName="t020",targetState="setManual",cond=whenDispatch("manualantifire"))
+					 transition(edgeName="t020",targetState="handleCriticalTemp",cond=whenEvent("criticaltemp"))
+					transition(edgeName="t021",targetState="setAuto",cond=whenDispatch("autoantifire"))
+					transition(edgeName="t022",targetState="setManual",cond=whenDispatch("manualantifire"))
 				}	 
 				state("handleCriticalTemp") { //this:State
 					action { //it:State

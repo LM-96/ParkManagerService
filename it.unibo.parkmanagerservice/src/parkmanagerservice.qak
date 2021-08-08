@@ -122,6 +122,8 @@ QActor parkingmanagerservice context ctxcarparking {
 		whenEvent weightoff -> handleIndoorReturnFree
 		whenEvent sonaron -> handleSomeoneInOutdoor
 		whenEvent sonaroff -> handleOutdoorReturnFree
+		whenEvent dtfreeReached -> handleDtfreeReached
+		whenEvent itoccReached -> handleItoccReached
 	
 	State handleEnter {
 		printCurrentMessage
@@ -169,10 +171,11 @@ QActor parkingmanagerservice context ctxcarparking {
 						`it.unibo.parkmanagerservice`.notification.NotificationType.TOKEN,
 						arrayOf(USER!!.token!!))
 			DEQUE.put(NOTIFICATION)
+			SLOT =  CONTROLLER.getSlotReservedForUser(USER!!)
 		#]
 			forward notificationactor -m notifyuser : notifyuser(NOTIFY)
 			forward weightsensoractor -m stoppolling : stoppolling(STOP)
-			updateResource[# JSONSTATE.updateDoor(INDOOR).toString() #]
+			updateResource[# JSONSTATE.updateDoor(INDOOR).updateSlotOccupied(SLOT!!.slotnum).toString() #]
 	} Goto enterNext if [# (CONTROLLER.getDoorQueue(INDOOR).remaining()) > 0 #] else work
 	
 	State enterNext {
@@ -211,7 +214,6 @@ QActor parkingmanagerservice context ctxcarparking {
 			
 			println("$name | reply to CARENTER with $JSON")
 			replyTo carenter with token:token($JSON)
-			updateResource[# "reply to CARENTER with $JSON" #]
 			
 		}
 	} Goto work
@@ -282,7 +284,7 @@ QActor parkingmanagerservice context ctxcarparking {
 		#]
 	} Goto work
 	
-	State dtfreeReached {
+	State handleDtfreeReached {
 		[# 
 			if(ADMIN != null) {
 				USER = CONTROLLER.getDoorsManager().getUserAtDoor(OUTDOOR)
@@ -308,7 +310,7 @@ QActor parkingmanagerservice context ctxcarparking {
 		#]
 	} Goto work
 	
-	State itoccReached {
+	State handleItoccReached {
 		[# 
 			USER = CONTROLLER.getDoorsManager().getUserAtDoor(OUTDOOR)
 			if(USER != null) {
@@ -319,10 +321,13 @@ QActor parkingmanagerservice context ctxcarparking {
 					)
 					DEQUE.put(NOTIFICATION)
 					#] forward notificationactor -m notifyuser : notifyuser(NOTIFY) [#
+						
+					CONTROLLER.setFreeDoor(INDOOR)
+					SLOT = CONTROLLER.freeSlotReservedByUser(USER!!)
 			}
 		#]
 		
-	} Goto work
+	} Goto enterNext if [# (CONTROLLER.getDoorQueue(INDOOR).remaining()) > 0 #] else work
 }
 
 
@@ -331,7 +336,7 @@ QActor itocccounter context ctxcarparking {
 	[# 	
 		val ITOCC = it.unibo.parkmanagerservice.bean.Timers.get().ITOCC
 		var REACHED = false
-		var JSON = "{\"state\":\"INIT\"}"
+		var JSON = "{\"data\":\"INIT\"}"
 	#]
 	
 	State s0 initial {
@@ -342,9 +347,9 @@ QActor itocccounter context ctxcarparking {
 		[# 
 			if(REACHED) {
 				REACHED = false
-				var JSON = "{\"state\":\"REACHED\"}"
+				var JSON = "{\"data\":\"REACHED\"}"
 			} else { 
-				JSON = "{\"state\":\"WORK\"}"
+				JSON = "{\"data\":\"WORK\"}"
 			} #]
 		updateResource [# JSON #]
 		println("$name | waiting for command")
@@ -354,7 +359,7 @@ QActor itocccounter context ctxcarparking {
 	
 	State count {
 		println("$name | start ITOCC count...")
-		[# JSON = "{\"state\":\"COUNTING\"}" #]
+		[# JSON = "{\"data\":\"COUNTING\"}" #]
 		updateResource[# JSON #]
 	} Transition t
 		whenTimeVar ITOCC -> reached
@@ -372,7 +377,7 @@ QActor dtfreecounter context ctxcarparking {
 	[# 	
 		val DTFREE = it.unibo.parkmanagerservice.bean.Timers.get().DTFREE
 		var REACHED = false
-		var JSON = "{\"state\":\"INIT\"}"
+		var JSON = "{\"data\":\"INIT\"}"
 	#]
 	
 	State s0 initial {
@@ -383,9 +388,9 @@ QActor dtfreecounter context ctxcarparking {
 		[# 
 			if(REACHED) {
 				REACHED = false
-				JSON = "{\"state\":\"REACHED\"}"
+				JSON = "{\"data\":\"REACHED\"}"
 		  	} else {
-		  		JSON = "{\"state\":\"WORK\"}"
+		  		JSON = "{\"data\":\"WORK\"}"
 		  	} #]
 		updateResource [# JSON #]
 		println("$name | waiting for command")
@@ -395,7 +400,7 @@ QActor dtfreecounter context ctxcarparking {
 	
 	State count {
 		println("$name | start DTFREE count...")
-		[# JSON = "{\"state\":\"COUNTING\"}" #]
+		[# JSON = "{\"data\":\"COUNTING\"}" #]
 		updateResource[# JSON #]
 	} Transition t
 		whenTimeVar DTFREE -> reached
@@ -543,6 +548,10 @@ QActor trolley context ctxcarparking {
 				if(PLAN != null) {
 					while(PLAN!!.hasNext()) PLANNER.doMove(PLAN!!.next().toString())
 				}
+				while("downDir" != PLANNER.getDirection()) {
+						PLANNER.doMove("r")
+				}
+				
 			}
 			STATE = `it.unibo.parkmanagerservice.trolley`.TrolleyState.IDLE
 			TTRIP = null
