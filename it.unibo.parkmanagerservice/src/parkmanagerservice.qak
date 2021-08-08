@@ -445,7 +445,7 @@ QActor notificationactor context ctxcarparking {
 QActor antifireactor context ctxcarparking {
 	
 	[#
-		var type : String
+		var type = "NORMAL"
 		var MODE = it.unibo.parkmanagerservice.bean.AntifireMode.AUTO
 		var JSON = "{\"temp\":\"NORMAL\",\"mode\":\"$MODE\"}"
 		val ADMIN = it.unibo.parkmanagerservice.bean.User.getAdmin()
@@ -459,7 +459,7 @@ QActor antifireactor context ctxcarparking {
 	
 	State work {
 		println("$name | working")
-		[# JSON = "{\"temp\":\"NORMAL\",\"mode\":\"$MODE\"}" #]
+		[# JSON = "{\"temp\":\"$type\",\"mode\":\"$MODE\"}" #]
 		updateResource[# JSON #]
 	} Transition t0
 		whenEvent criticaltemp -> handleCriticalTemp
@@ -470,7 +470,6 @@ QActor antifireactor context ctxcarparking {
 		onMsg(criticaltemp:criticaltemp(X)) {
 			[# 
 				type = payloadArg(0)
-				JSON = "{\"temp\":\"$type\",\"mode\":\"$MODE\"}"
 				if(MODE == `it.unibo.parkmanagerservice`.bean.AntifireMode.AUTO) {
 					if(type.equals("CRITICAL")) {
 						if(ADMIN != null) {
