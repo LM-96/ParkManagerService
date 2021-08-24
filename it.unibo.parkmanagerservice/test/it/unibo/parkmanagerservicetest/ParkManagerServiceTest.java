@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.stream.Stream;
 
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -20,12 +21,26 @@ import it.unibo.ctxcarparking.MainCtxcarparkingKt;
 import it.unibo.parkimanagerservice.test.utils.CoapObserver;
 import it.unibo.parkimanagerservice.test.utils.JCoapChangeObserver;
 import it.unibo.parkmanagerservice.actorchat.ActorChatter;
+import it.unibo.parkmanagerservice.bean.DoorType;
+import it.unibo.parkmanagerservice.bean.DoorsManager;
+import it.unibo.parkmanagerservice.bean.LocalDoorState;
+import it.unibo.parkmanagerservice.bean.ParkingSlot;
+import it.unibo.parkmanagerservice.bean.ParkingSlotState;
+import it.unibo.parkmanagerservice.bean.User;
+import it.unibo.parkmanagerservice.bean.UserState;
+import it.unibo.parkmanagerservice.persistence.ParkingRepositories;
+import it.unibo.parkmanagerservice.persistence.ParkingSlotRepository;
+import it.unibo.parkmanagerservice.persistence.UserRepository;
 
 public class ParkManagerServiceTest {
 	
 	private static ActorChatter pmschat;
 	private static CoapObserver pmscoap;
 	private static Path TMPPL;
+	
+	private static UserRepository userRepo;
+	private static ParkingSlotRepository slotRepository;
+	private static DoorsManager doors = LocalDoorState.get();
 	
 	@BeforeClass
 	public static void setup() throws IOException, InterruptedException {
@@ -43,6 +58,11 @@ public class ParkManagerServiceTest {
 		pmscoap.nextChange();
 		
 		pmschat = ActorChatter.Companion.newChatterFor("localhost", 8010, "parkingmanagerservice");
+		
+		while(slotRepository == null) {
+			slotRepository = ParkingRepositories.getParkingSlotRepository();
+		}
+		userRepo = ParkingRepositories.getUserRepository();
 	}
 	
 	@AfterClass
@@ -85,12 +105,19 @@ public class ParkManagerServiceTest {
 		Files.delete(TMPPL);
 	}
 	
+	@Before
+	public void before() {
+		pmscoap.clear();		
+	}
+	
 
 	@Test
-	public void test() throws IOException {
-		pmschat.sendEvent("weighton", "X");
-		System.out.println("\t\t##event sended");
-		System.in.read();
+	public void test() throws IOException, InterruptedException {
+		pmschat.sendRequest("enter", "n1,s1,m1");
+		String slot1 = pmschat.readLastResponse().msgContent();
+		System.out.println("*******" + slot1);
+		assertEquals(doors.getUserAtDoor(DoorType.INDOOR).getMail(), "m1");
+		
 	}
 
 }
